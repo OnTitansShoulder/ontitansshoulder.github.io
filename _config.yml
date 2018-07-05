@@ -1,0 +1,29 @@
+# this file is *NOT* reloaded automatically
+# Site settings
+# accessed via {{ site.title }}, {{ site.email }}, and so on.
+title: Zhongkai Liu Site
+email: liu676785882@gmail.com
+description: >- # ignore newlines
+  Zhongkai Liu's personal website, about, projects, past experiences, and resume
+baseurl: ""
+url: "http://zkliu.net"
+twitter_username: kevin_liu
+github_username:  ontitansshoulder
+
+# Build settings
+markdown: kramdown
+theme: minima
+plugins:
+  - jekyll-feed
+
+# Exclude from processing.
+# The following items will not be processed, by default. Create a custom list
+# to override the default setting.
+# exclude:
+#   - Gemfile
+#   - Gemfile.lock
+#   - node_modules
+#   - vendor/bundle/
+#   - vendor/cache/
+#   - vendor/gems/
+#   - vendor/ruby/
