@@ -1,0 +1,32 @@
+---
+layout: default
+title: Projects
+permalink: /projects/
+---
+<main role="main">
+  <div class="album">
+    <div class="container">
+      {% for proj in site.projs %}
+        <div class="col-xs-12 col-sm-4">
+          <div class="thumbnail">
+            <img src="/assets/project_pics/{{ proj.short }}.jpg" alt="image missing" class="cardImg"/>
+          </div>
+          <div class="two-side-row">
+            <div><p class="card-title">{{ proj.title }}</p></div>
+            {% if proj.ext-web %}
+              <p><a class="btn btn-default" target="_blank" href="{{ proj.ext-web }}" role="button">Check it out &raquo;</a></p>
+            {% endif %}
+            {% if proj.git-link %}
+              <p><a class="btn btn-default" target="_blank" href="{{ proj.git-link }}" role="button">View on Github &raquo;</a></p>
+            {% endif %}
+            {% if proj.video-link %}
+              <p><a class="btn btn-default" target="_blank" href="{{ proj.video-link }}" role="button">Video Demo &raquo;</a></p>
+            {% endif %}
+          </div>
+          <p class="card-text">{{ proj.summary }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</main>
+<br />

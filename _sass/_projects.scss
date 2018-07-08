@@ -1,0 +1,24 @@
+main {
+  color: #FFF
+}
+.two-side-row {
+  display: flex;
+}
+.two-side-row > div:first-child{
+  margin-right: auto;
+}
+.two-side-row > div:last-child{
+  margin-left: auto;
+}
+
+.card-text {
+  font-size: 14px;
+}
+.card-title {
+  font-size: 20px;
+}
+.cardImg {
+  min-height: 100px;
+  max-width: 330px;
+  width: auto;
+}

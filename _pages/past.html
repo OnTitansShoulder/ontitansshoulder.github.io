@@ -1,0 +1,49 @@
+---
+layout: default
+title: Past Experiences
+permalink: /past/
+---
+<link rel="stylesheet" href="/css/offcanvas.css">
+<div class="container">
+  <div class="col-sm-3">
+    <div class="list-group affix" id="jumpMenu">
+      {% for post in site.posts %}
+        <a id="{{ "Link" | prepend: post.short }}" href="#{{ post.short }}"
+          class="list-group-item"
+          >
+          {{ post.long }}
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="col-sm-9">
+    <p class="pull-right visible-xs">
+      <button type="button" class="btn btn-primary btn-sm" data-toggle="offcanvas">Toggle nav</button>
+    </p>
+    {% for post in site.posts %}
+      <div id="{{ post.short }}" class="row odd{{ forloop.index | modulo: 2 }} xtarget">
+        <div class="col-xs-1 visible-xs"></div>
+        <div class="col-xs-10 col-sm-8 text">
+          <h3 class="listTitle">{{ post.title }}</h3>
+          <p class="listTime">{{ post.dateStr }}</p>
+          <p class="listSummary">{{ post.summary }}</p>
+          {% if post.brief %}
+            <p class="listSummary hidden" id="{{ "_H" | prepend: post.short }}">
+              {{ post.brief }}
+            </p>
+            <p><button class="btn btn-default" id="{{ "_B" | prepend: post.short }}" role="button"
+              onclick="toggleShowMore('{{ post.short }}');">Show More &darr;</button></p>
+          {% endif %}
+          {% if post.ext-web %}
+            <p><a class="btn btn-default" target="_blank" href="{{ post.ext-web }}" role="button">Check it out &raquo;</a></p>
+          {% endif %}
+        </div>
+        <div class="col-xs-2 visible-xs"></div>
+        <img class="descriptiveImg" src="/assets/experience_pics/{{ post.short }}.png"/>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+<script src="/js/past.js"></script>
+<script src="https://twemoji.maxcdn.com/twemoji.min.js"></script>
+<script src="/js/emoji.js"></script>

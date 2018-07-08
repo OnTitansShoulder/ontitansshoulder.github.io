@@ -1,0 +1,53 @@
+$dark-grey: #333;
+$light-cyan: #19CCAA;
+
+html, body {
+  height: 100%;
+  background-color: $dark-grey;
+}
+body {
+  padding-top: 55px;
+  background: url("/assets/back_black.gif") no-repeat center;
+}
+body > nav {
+  color: #FFF;
+  background-color: #000;
+}
+a.anchor {
+  display: block;
+  position: relative;
+  top: -50px;
+  visibility: hidden;
+}
+
+// header and navbar
+@media (min-width:768px) {
+ .navbar-default, .navbar-header, .navbar-confiner {
+   max-height: 50px;
+ }
+}
+.navbar-brand{
+  margin: 0px;
+  padding: 10px !important;
+  color: #FFF;
+}
+.navbar-nav>li>a:hover, .navbar-brand:hover {
+ font-size: 20px;
+ border-bottom: 2px solid transparent;
+ background-color: transparent;
+ border-bottom-color: $light-cyan;
+}
+
+// common settings
+.canvas {
+  background-color: #FFF;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-radius: 3px;
+}
+.container, .container .row, .container>.row>div{
+  height: 100%;
+}
+.glyphicon{
+  text-align: center;
+}
