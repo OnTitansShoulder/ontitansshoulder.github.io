@@ -24,7 +24,13 @@ permalink: /past/
       <div id="{{ post.short }}" class="row odd{{ forloop.index | modulo: 2 }} xtarget">
         <div class="col-xs-1 visible-xs"></div>
         <div class="col-xs-10 col-sm-8 text">
-          <h3 class="listTitle">{{ post.title }}</h3>
+          {% if post.hasContent %}
+            <a href="{{ post.url }}" style="color: #337ab7">
+              <h3 class="listTitle">{{ post.title }}</h3>
+            </a>
+          {% else %}
+            <h3 class="listTitle">{{ post.title }}</h3>
+          {% endif %}
           <p class="listTime">{{ post.dateStr }}</p>
           <p class="listSummary">{{ post.summary }}</p>
           {% if post.brief %}
@@ -39,7 +45,7 @@ permalink: /past/
           {% endif %}
         </div>
         <div class="col-xs-2 visible-xs"></div>
-        <img class="descriptiveImg" src="/assets/experience_pics/{{ post.short }}.png"/>
+        <img class="descriptiveImg" src="{{ post.thumbUrl }}"/>
       </div>
     {% endfor %}
   </div>

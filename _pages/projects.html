@@ -9,7 +9,7 @@ permalink: /projects/
       {% for proj in site.projs %}
         <div class="col-xs-12 col-sm-4">
           <div class="thumbnail">
-            <img src="/assets/project_pics/{{ proj.short }}.jpg" alt="image missing" class="cardImg"/>
+            <img src="{{ proj.thumbUrl }}.jpg" alt="image missing" class="cardImg"/>
           </div>
           <div class="two-side-row">
             <div><p class="card-title">{{ proj.title }}</p></div>
