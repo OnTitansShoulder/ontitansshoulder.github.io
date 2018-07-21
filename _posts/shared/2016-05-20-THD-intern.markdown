@@ -7,7 +7,7 @@ dateStr: During Summer 2016
 thumbUrl: 'https://i.imgur.com/yIvWT15.png'
 hasContent: true
 imgUrls: ['https://i.imgur.com/1b834G3.png', 'https://i.imgur.com/YSUCwqB.png']
-categories: shared work internship project
+categories: [shared, work, internship, project]
 summary: Worked on a backend RESTful service, built with spring-boot, to intercept purchase orders and add another security level.
 ---
 ### The business need:
