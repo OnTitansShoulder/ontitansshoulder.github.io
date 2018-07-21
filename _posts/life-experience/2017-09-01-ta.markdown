@@ -5,7 +5,7 @@ short: UGTA
 long: CISE Teaching Assistant
 dateStr: During UF school year 2017-2018
 thumbUrl: 'https://i.imgur.com/BxrFdN3.png'
-categories: life-experience school work
+categories: life-experience work part-time academic
 summary: Served three classes including Intro to Software Engineering, Intro to Database Systems, and Programming Fundamentals 2.
 brief: Responsible for leading lab sessions for Programming Fundamentals, helping students with learning MEAN stack and Agile development in Software Engineering discussion sessions, assisting students with learning SQL and Database systems, and holding office hours to help with any questions.
 ---

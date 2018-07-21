@@ -6,25 +6,46 @@ permalink: /projects/
 <main role="main">
   <div class="album">
     <div class="container">
-      {% for proj in site.projs %}
-        <div class="col-xs-12 col-sm-4">
-          <div class="thumbnail">
-            <img src="{{ proj.thumbUrl }}.jpg" alt="image missing" class="cardImg"/>
+      {% assign counter = 0 %}
+      {% for proj in site.posts %}
+        {% if proj.path contains 'project' or proj.path contains 'shared' %}
+          {% assign counter = counter | plus: 1 %}
+          {% assign temp = counter | modulo: 3 %}
+          {% if temp == 1 %}
+          <div class="row">
+          {% endif %}
+          <div class="col-xs-12 col-sm-4">
+            <div class="thumbnail">
+              <img src="{{ proj.thumbUrl }}.jpg" alt="image missing" class="cardImg"/>
+            </div>
+            <div class="two-side-row">
+              <div>
+                {% if proj.hasContent %}
+                  <p class="card-title">
+                    <a href="{{ proj.url }}" class="card-link">
+                      {{ proj.title }}
+                    </a>
+                  </p>
+                {% else %}
+                  <p class="card-title">{{ proj.title }}</p>
+                {% endif %}
+              </div>
+              {% if proj.ext-web %}
+                <p><a class="btn btn-default" target="_blank" href="{{ proj.ext-web }}" role="button">Check it out &raquo;</a></p>
+              {% endif %}
+              {% if proj.git-link %}
+                <p><a class="btn btn-default" target="_blank" href="{{ proj.git-link }}" role="button">View on Github &raquo;</a></p>
+              {% endif %}
+              {% if proj.video-link %}
+                <p><a class="btn btn-default" target="_blank" href="{{ proj.video-link }}" role="button">Video Demo &raquo;</a></p>
+              {% endif %}
+            </div>
+            <p class="card-text">{{ proj.summary }}</p>
           </div>
-          <div class="two-side-row">
-            <div><p class="card-title">{{ proj.title }}</p></div>
-            {% if proj.ext-web %}
-              <p><a class="btn btn-default" target="_blank" href="{{ proj.ext-web }}" role="button">Check it out &raquo;</a></p>
-            {% endif %}
-            {% if proj.git-link %}
-              <p><a class="btn btn-default" target="_blank" href="{{ proj.git-link }}" role="button">View on Github &raquo;</a></p>
-            {% endif %}
-            {% if proj.video-link %}
-              <p><a class="btn btn-default" target="_blank" href="{{ proj.video-link }}" role="button">Video Demo &raquo;</a></p>
-            {% endif %}
+          {% if temp == 0 %}
           </div>
-          <p class="card-text">{{ proj.summary }}</p>
-        </div>
+          {% endif %}
+        {% endif %}
       {% endfor %}
     </div>
   </div>

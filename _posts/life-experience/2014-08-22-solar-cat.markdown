@@ -5,7 +5,7 @@ short: SolarCat
 long: Solar Car Captain
 dateStr: During WHS school year 2014-2015
 thumbUrl: 'https://i.imgur.com/2hkjIPS.png'
-categories: life-experience school project
+categories: life-experience school club
 summary: Meet the SolarCat, the result of a hardworking team in Western High School.
 ext-web: http://thesolarcats.com/
 ---
