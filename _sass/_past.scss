@@ -1,6 +1,9 @@
+html,
+body {
+  overflow-x: hidden; /* Prevent scroll on narrow devices */
+}
 body {
   padding-top: 55px;
-  overflow-x: hidden; /* Prevent scroll on narrow devices */
 }
 
 .descriptiveImg {
