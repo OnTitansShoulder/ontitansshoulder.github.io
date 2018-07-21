@@ -1,15 +1,18 @@
-a {
+a.FFF {
   color: #FFF;
 }
 a:hover {
   color: #19CCAA;
 }
 #qq:hover::after {
-  content: "676785882"
+  content: "ID:676785882"
 }
 .jumbotron {
   margin-bottom: 0
 }
-.sidebar-offcanvas{
+.sidebar-offcanvas {
   text-align: center;
+}
+.text-highlight {
+  color: #134eff;
 }

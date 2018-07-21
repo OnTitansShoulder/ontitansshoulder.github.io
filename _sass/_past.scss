@@ -1,3 +1,8 @@
+body {
+  padding-top: 55px;
+  overflow-x: hidden; /* Prevent scroll on narrow devices */
+}
+
 .descriptiveImg {
   padding-left: 5px;
 }
