@@ -5,7 +5,17 @@ short: SolarCat
 long: Solar Car Captain
 dateStr: During WHS school year 2014-2015
 thumbUrl: 'https://i.imgur.com/2hkjIPS.png'
+hasContent: true
+imgUrls: ['https://i.imgur.com/bZItuPJ.jpg','https://i.imgur.com/cdth6pe.jpg','https://i.imgur.com/T9AVvK0.jpg','https://i.imgur.com/dmyW299.jpg','https://i.imgur.com/Zd7pOx9.jpg','https://i.imgur.com/Eti5UOQ.jpg','https://i.imgur.com/lowOsAw.jpg','https://i.imgur.com/lGbQG0l.jpg','https://i.imgur.com/UqYiGUH.jpg']
 categories: life-experience school club
-summary: Meet the SolarCat, the result of a hardworking team in Western High School.
-ext-web: http://thesolarcats.com/
+summary: Meet the SolarCat, the product from a hardworking team at Western High School.
 ---
+Yes, [SolarCat](http://thesolarcats.com/) is a car powered with sunlight. We named it "SolarCat" as our school's mascot is Wildcat. We are indeed pretty wild, that our mentor Mr. Alex Marron often-time called us "beasts". Honestly, I nearly chose mechanical engineering as my major when I started college at UF. Anyways, I love computers more.
+
+I learned all kinds of power-tool skills from building SolarCat. Drilling and cutting with precision are so hard. The knowledge from Physics II paid off a bit when I was figuring out the wiring of batteries and solar panels to achieve the best charging efficiency from the sun.
+
+So much time are dedicated to this project that we meet on weekends besides the daily meetings. Under the mentorship of Mr. Marron as well as the help from Motorola Solutions and other local business, we were able to create the solar car design from scratch, weld the bear-bone structure, figure out setting up solar panels and batteries, put everything together and finally make SolarCat visually appealing. The team's hard work paid off. The next summer we competed at Texas Motor Speedway and placed the seventh.
+
+I always loved hands-on works. The SolarCat is one of the best things ever happened in my life. I enjoyed building SolarCat, and will forever cherish the time spent with the team. Every year students become alumni of Western High STEM, new students come in fill the gap and start building new awesome things.
+
+Always appreciate this kind of opportunities as well as those supporting what keeps inspiring more and more young souls to do more great things in the future.
