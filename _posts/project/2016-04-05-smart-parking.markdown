@@ -1,6 +1,6 @@
 ---
 layout: project
-title: Smart Parking
+ptitle: Smart Parking
 categories: project c++
 short: smart-parking
 pthumbUrl: 'https://i.imgur.com/WWr0GgP.jpg'

@@ -16,6 +16,9 @@ permalink: /projects/
           {% endif %}
           <div class="col-xs-12 col-sm-4">
             <div class="thumbnail">
+              {% if proj.path contains 'shared' %}
+              <div style="position:absolute; right:20px; background-color:#54dbff; padding: 0px 4px 2px 4px">Internship Project</div>
+              {% endif %}
               <img src="{{ proj.pthumbUrl }}" alt="image missing" class="cardImg"/>
             </div>
             <div class="two-side-row">
@@ -23,11 +26,11 @@ permalink: /projects/
                 {% if proj.hasContent %}
                   <p class="card-title">
                     <a href="{{ proj.url }}" class="card-link">
-                      {{ proj.title }}
+                      {{ proj.ptitle }}
                     </a>
                   </p>
                 {% else %}
-                  <p class="card-title">{{ proj.title }}</p>
+                  <p class="card-title">{{ proj.ptitle }}</p>
                 {% endif %}
               </div>
               {% if proj.ext-web %}

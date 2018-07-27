@@ -1,6 +1,6 @@
 ---
 layout: project
-title: Eat Where
+ptitle: Eat Where
 categories: project meanjs
 short: eat-where
 pthumbUrl: 'https://i.imgur.com/03UXeY5.jpg'

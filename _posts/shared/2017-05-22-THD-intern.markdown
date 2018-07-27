@@ -1,6 +1,7 @@
 ---
 layout: post
 title:  Internship at The Home Depot IT
+ptitle: Payment Apps Monitoring Dashboard
 short: THDIntern17
 long: THD Internship 2017
 dateStr: During Summer 2017

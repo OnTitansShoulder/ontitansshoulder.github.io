@@ -1,6 +1,7 @@
 ---
 layout: post
-title:  DevOps Engineering at Nielsen
+title:  Software Engineering DevOps Intern at Nielsen
+ptitle: CI/CD Pipeline for a Golang App
 short: Nielsen
 long: Nielsen Internship
 dateStr: During Summer 2018

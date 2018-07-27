@@ -1,6 +1,7 @@
 ---
 layout: post
 title:  Internship at The Home Depot IT
+ptitle: Payment Requests Interceptor
 short: THDIntern16
 long: THD Internship 2016
 dateStr: During Summer 2016

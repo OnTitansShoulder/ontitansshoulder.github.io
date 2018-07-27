@@ -1,6 +1,6 @@
 ---
 layout: project
-title: TotoRoyale
+ptitle: TotoRoyale
 categories: project java
 short: totoroyale
 pthumbUrl: 'https://i.imgur.com/oD80kAK.jpg'

@@ -1,6 +1,6 @@
 ---
 layout: project
-title: "Game: WuKong"
+ptitle: "Game: WuKong"
 categories: project game-arts
 short: wukong
 pthumbUrl: 'https://i.imgur.com/hWhNrFG.jpg'

@@ -1,13 +1,13 @@
 ---
 layout: post
-title: Alien Terrain
+ptitle: Alien Terrain
 dateStr: Spring 2018
 short: alien
 pthumbUrl: 'https://i.imgur.com/knqHqRi.png'
 hasContent: true
 imgUrls: ['https://i.imgur.com/axCDMkd.png','https://i.imgur.com/JiXoPe1.png','https://i.imgur.com/NgKRD8y.png','https://i.imgur.com/hLQQw7D.png','https://i.imgur.com/oAmkVq0.png','https://i.imgur.com/XELh5tc.png']
 categories: [project, personal, game]
-summary: One of the games rapidly developed with Unity engine throughout an advanced game design class.
+summary: A 3D game created with Unity3D. The goal is to collect stones on Mars within certain time limit without being destroyed by bombs.
 video-link: https://youtu.be/i90mBh6qT0A
 ---
 This game is inspired from a game design class I took.
