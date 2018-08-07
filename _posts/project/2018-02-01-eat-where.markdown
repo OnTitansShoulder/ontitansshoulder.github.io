@@ -4,6 +4,7 @@ ptitle: Eat Where
 categories: project meanjs
 short: eat-where
 pthumbUrl: 'https://i.imgur.com/03UXeY5.jpg'
+imgUrls: ['https://i.imgur.com/f9ImvR4.gif']
 summary: A dish search engine! Search for the food that best fit your taste when you are in a new place.
 ext-web: https://eatwhereapp.herokuapp.com/
 ---

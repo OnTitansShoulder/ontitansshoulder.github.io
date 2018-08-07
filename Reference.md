@@ -6,7 +6,8 @@ This site is built with Jekyll for my ease of adding the most recent stories and
 * Vertical - N/A?
 
 post layout parameter functions:
-* title - displayed on experience card title
+* title - displayed on experience card title (and as h1 in article)
+  * ptitle - used on project type post
 * short - used for card id
 * long - displayed on experience shortcut title
 * dateStr - displayed as date range
