@@ -34,3 +34,7 @@ $light-blue: #b7f9ff;
   color: $light-blue;
   background: none;
 }
+.thumbnail {
+  background-color: transparent !important;
+  border: none !important;
+}

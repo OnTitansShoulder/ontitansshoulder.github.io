@@ -45,9 +45,12 @@ a.anchor {
   padding-bottom: 10px;
   border-radius: 3px;
 }
-.container, .container .row, .container>.row>div{
+.container, .container .row, .container>.row>div {
   height: 100%;
 }
-.glyphicon{
+.glyphicon {
   text-align: center;
+}
+.navbar-toggle .icon-bar {
+  background-color: #FFF
 }

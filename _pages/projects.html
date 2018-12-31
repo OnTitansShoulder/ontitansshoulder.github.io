@@ -10,11 +10,11 @@ permalink: /projects/
       {% for proj in site.posts %}
         {% if proj.path contains 'project' or proj.path contains 'shared' %}
           {% assign counter = counter | plus: 1 %}
-          {% assign temp = counter | modulo: 3 %}
+          {% assign temp = counter | modulo: 2 %}
           {% if temp == 1 %}
           <div class="row">
           {% endif %}
-          <div class="col-xs-12 col-sm-4">
+          <div class="col-xs-offset-1 col-xs-10 col-sm-4">
             <div class="thumbnail">
               {% if proj.path contains 'shared' %}
               <div style="position:absolute; right:20px; background-color:#54dbff; padding: 0px 4px 2px 4px">Internship Project</div>
@@ -45,6 +45,8 @@ permalink: /projects/
             </div>
             <p class="card-text">{{ proj.summary }}</p>
           </div>
+          <div class="clearfix visible-xs-block"></div>
+          <div class="visible-xs clear-block"></div>
           {% if temp == 0 %}
           </div>
           {% endif %}
