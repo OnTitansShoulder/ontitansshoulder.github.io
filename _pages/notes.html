@@ -1,0 +1,26 @@
+---
+layout: default
+title: Random Notes
+permalink: /notes/
+---
+<div class="container text-white">
+  <div class="row">
+    <div class="col-sm-10 col-sm-offset-1">
+      <h3>I like to take notes using Atom editor and in markdown language because I
+        found a plug-in that can transform markdown into a pdf, which can come in handy
+        if I want to print it as a reference... And I am happy to share them with you.</h3>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-10 col-sm-offset-1">
+      {% for post in site.posts %}
+        {% if post.path contains 'notes' %}
+          <a href="{{ post.url }}"
+            class="list-group-item">
+            {{ post.title }}
+          </a>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
