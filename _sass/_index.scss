@@ -19,7 +19,9 @@ $light-blue: #b7f9ff;
   text-align: right;
   right: 0;
 }
-
+.container, .container .row, .container > .row > div {
+  height: 100%;
+}
 .inner-cover {
   display: table-cell;
   vertical-align: middle;
