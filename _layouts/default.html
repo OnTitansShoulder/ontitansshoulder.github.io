@@ -1,21 +1,84 @@
 <!DOCTYPE html>
-<html>
-	{% include head.html %}
-	<body id="body">
-		<script>window.jQuery || document.write('<script src="/js/jquery.min.js"><\/script>')</script>
-		{% include header.html %}
+<html lang="en" class="no-js">
+  {% include head.html %}
+	<body id="indexbody">
 		{{ content }}
-		<div class="hidden">
-			<a href="https://smallseotools.com/visitor-hit-counter/" target="_blank" title="Visitor Hit Counter">
-				<img src="https://smallseotools.com/counterDisplay/?code=d7888c8a1166efba3aba5c8f1269518c&style=0008&pad=6&type=ip&initCount=1"
-				title="Visitor Hit Counter" Alt="Visitor Hit Counter" border="0">
-			</a>
-		</div>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-		integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-		crossorigin="anonymous"></script>
-		<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-		<script src="/js/ie10-viewport-bug-workaround.js"></script>
+		<script src="/js/jquery.js"></script>
+		<script src="/js/jquerypp.custom.js"></script>
+		<script src="/js/jquery.bookblock.js"></script>
+		<script src="/js/bookblock.js"></script>
+		<script src="/js/bootstrap.min.js"></script>
+		<script src="/js/classie.js"></script>
+		<script src="/js/bookshelf.js"></script>
+		<script src="/js/selectFx.js"></script>
 	</body>
+	<!-- Helper functions -->
+	<script src="/js/helper.js"></script>
+	<!-- controls nav bar click events -->
+	<script>
+		var Page = (function() {
+			var config = {
+					$bookBlock : $( '#bb-bookblock' ),
+					$navNext : $( '.bb-nav-next' ),
+					$navPrev : $( '.bb-nav-prev' ),
+          $navScroll : $( '#indexbody' )
+					// $navFirst : $( '.bb-nav-first' ),
+					// $navLast : $( '.bb-nav-last' ),
+					// $navClose : $( '.bb-nav-close' ),
+					// $navAbout: $( '#aboutBtn'),
+					// $navPast  : $( '#pastBtn' ),
+					// $navProj  : $( '#projBtn' ),
+					// $navResume: $( '#myresumeBtn' )
+				},
+				init = function() {
+					config.$bookBlock.bookblock( {
+						speed : 800,
+						shadowSides : 0.8,
+						shadowFlip : 0.7
+					} );
+					initEvents();
+				},
+				initEvents = function() {
+					var $slides = config.$bookBlock.children();
+					// add navigation events
+					config.$navNext.on( 'click touchstart', function() {
+						config.$bookBlock.bookblock( 'next' ); return false;
+					} );
+					config.$navPrev.on( 'click touchstart', function() {
+						config.$bookBlock.bookblock( 'prev' ); return false;
+					} );
+					// config.$navFirst.on( 'click touchstart', function() {
+					// 	config.$bookBlock.bookblock( 'first' ); return false;
+					// } );
+					// config.$navLast.on( 'click touchstart', function() {
+					// 	config.$bookBlock.bookblock( 'last' ); return false;
+					// } );
+          config.$navScroll.on( 'scroll', function(event) {
+            console.log(event);
+          });
+					// config.$navClose.on( 'click touchstart', function() {
+					// 	config.$bookBlock.bookblock( 'close' ); return false;
+					// })
+					// config.$navAbout.on( 'click touchstart', function() {
+					// 	config.$bookBlock.bookblock('jump', 1); return false;
+					// } );
+					// config.$navPast.on( 'click touchstart', function() {
+					// 	config.$bookBlock.bookblock('jump', 2); return false;
+					// } );
+					// config.$navProj.on( 'click touchstart', function() {
+					// 	config.$bookBlock.bookblock('jump', 3); return false;
+					// } );
+					// config.$navResume.on( 'click touchstart', function() {
+					// 	config.$bookBlock.bookblock( 'last' ); return false;
+					// });
+				};
+				return { init: init };
+		})();
+	</script>
+	<!-- have page load the nav control module -->
+	<script>
+		Page.init();
+	</script>
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+	<script src="/js/ie10-viewport-bug-workaround.js"></script>
 </html>

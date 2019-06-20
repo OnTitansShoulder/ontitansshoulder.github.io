@@ -1,0 +1,33 @@
+# this file is *NOT* reloaded automatically
+# Site settings
+# accessed via {{ site.title }}, {{ site.email }}, and so on.
+title: Zhongkai Liu
+email: zkliu@ufl.edu
+description: >- # ignore newlines
+  Zhongkai Liu's personal website, about, projects, past experiences, and resume
+url: "https://zkliu.info"
+twitter_username: kevin_liu
+github_username:  ontitansshoulder
+wechat_username:  676785882
+linkedin_link:    https://www.linkedin.com/in/zhongkai-liu-915457b6/
+
+# Build Settings
+collections:
+- projs
+sass:
+  sass_dir: _sass
+include: ['_pages']
+kramdown:
+  input: GFM
+
+# Exclude from processing.
+# The following items will not be processed, by default. Create a custom list
+# to override the default setting.
+# exclude:
+#   - Gemfile
+#   - Gemfile.lock
+#   - node_modules
+#   - vendor/bundle/
+#   - vendor/cache/
+#   - vendor/gems/
+#   - vendor/ruby/

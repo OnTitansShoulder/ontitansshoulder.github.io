@@ -1,8 +1,8 @@
 # this file is *NOT* reloaded automatically
 # Site settings
 # accessed via {{ site.title }}, {{ site.email }}, and so on.
-title: Zhongkai Liu
-email: zkliu@ufl.edu
+title: "Protfolio: Zhongkai Liu"
+email: zkliu95@yahoo.com
 description: >- # ignore newlines
   Zhongkai Liu's personal website, about, projects, past experiences, and resume
 url: "https://zkliu.info"

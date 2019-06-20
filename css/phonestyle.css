@@ -1,0 +1,128 @@
+
+@media screen and (max-width: 52.5em) {
+  /*book*/
+  .book {
+    position: relative;
+    margin: 0 auto;
+    width: 15em;
+    height: 20em;
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+  }
+
+  .fullscreen {
+  	margin: 0px 5px;
+    top: 30px;
+  }
+  .header {
+    height: 20px;
+  }
+
+  .bookshelf figure {
+    position: relative;
+    display: inline-block;
+    max-width: 75%;
+    width: auto;
+    vertical-align: top;
+  }
+
+  /*navigation*/
+  .bb-custom-wrapper > nav {
+    width: 100%;
+    height: 20px;
+    margin: 1em auto 0;
+    position: relative;
+    bottom: 40px;
+    z-index: 1000;
+    text-align: center;
+    opacity: .3;
+  }
+
+  .bb-custom-wrapper > nav a {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    border-radius: 1px;
+    background: #1b46de;
+    color: #fff;
+    font-size: 0;
+    margin: 1px;
+    text-decoration: none;
+    outline: none;
+  }
+
+  .bb-custom-icon:before {
+    font-family: 'arrows';
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    font-size: 15px;
+    line-height: 20px;
+    display: block;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .linkout {
+    display: block;
+    text-align: center;
+    font-size: 10px;
+    width: 100%;
+  }
+  .linkout a {
+    font-family: 'Montserrat', serif;
+    color: #0b0b0b;
+    font-size: 1.1em;
+    font-weight: lighter;
+    line-height: 20px;
+    transition: 0.3s;
+  }
+  .linkout {
+    text-align: center;
+  }
+  .linkcontainer {
+  	height: 100%;
+    margin-top: unset;
+  }
+
+  .fs-radio-group {
+    margin-left: -15px !important;
+    column-count: 2;
+  }
+
+  .fs-message-error {
+  	margin-left: 0% !important;
+  }
+
+  .fs-form-full {
+  	margin-left: 47px !important;
+  }
+
+  .custom-dropdown select {
+    background: #48ABE0;
+    border-radius: .2em;
+    color: #fff;
+    font-size: 0.8em;
+    font-family: 'Poppins', sans-serif !important;
+    padding: .5em;
+    padding-right: 2.5em;
+    border: 0;
+    margin: 0;
+    text-indent: 0.01px;
+    text-overflow: ellipsis;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  /* Adjustments */
+  .thumbnail {
+    margin-bottom: 0px;
+  }
+  p {
+    margin: 0 0 2px;
+  }
+}

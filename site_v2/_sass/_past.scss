@@ -1,0 +1,28 @@
+html,
+body {
+  overflow-x: hidden; /* Prevent scroll on narrow devices */
+}
+body {
+  padding-top: 55px;
+}
+
+.descriptiveImg {
+  padding-left: 5px;
+  padding-bottom: 30px;
+}
+.container {
+  padding: 0px 0px;
+}
+.odd1 {
+  background-color: #e2e2e2;
+}
+.odd0 {
+  background-color: #FFF;
+}
+.xtarget {
+  padding-top: 50px;
+}
+.extraPadding15 {
+  padding-left: 15px !important;
+  padding-right: 15px !important;
+}
