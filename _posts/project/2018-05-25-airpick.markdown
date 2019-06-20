@@ -1,0 +1,27 @@
+---
+layout: project
+ptitle: Airport Pick-up
+short: air-pick
+dateStr: During Summer 2018
+pthumbUrl: 'https://i.imgur.com/scfsX8Y.jpg'
+hasContent: true
+imgUrls: ['https://i.imgur.com/vskP9yu.gif']
+categories: project meanjs
+summary: A webapp that serves as a platform for international students requesting pickup ride or temporary lodging from our volunteers at UF.
+ext-web: http://www.uflcsa.org
+---
+As the IT director of CSA, I am responsible for maintaining CSA's website and organizing a team of our members to provide tech-support for CSA's hosted events. Airpick comes from CSA's desire to help the international students who are new to a foreign country and need help with getting started with new environment.
+
+Airpick is a web app developed during the summer 2018. It serves as a platform for volunteers to help our new international students with free aiport pick-up service. Currently, there are 200+ registered users and 150+ pick-up/lodging requests being handled by our volunteers.
+
+For this project, I served both as a developer and a product owner for the team of four. While contributing writing the core functionalities of Airpick (add/update/accept/view pick-up/lodging requests), I also helped my team members with learning how to develop in MEAN stack.
+
+One thing worth noting is that I was able to deploy the entire node app as well as the mongo database at a much lower cost. This saved CSA more than $250 a year for hosting the webapp.
+
+We built this app within three weeks. Since our first deployment in production, there are bugs reported as we go along. I was always alerted for new bugs and fix them right away to maintain an error-free user experience. Right now, the system has been quite robust for the normal traffic and served the students and volunteers pretty well.
+
+I found myself learning so much from developing this app. Even though I had used MEAN stack before, it is from this app where I get to know the design pattern of MEAN stack better, to understand how each component work with each other, and the power of javascript. I have always wondered how to systematically learn web development and I discovered that the best way to learn is from doing it and learn from my mistakes.
+
+Now that, despite MEAN being a great web stack to use, it is indeed hard to get started. Web dev is ever evolving and MEAN has already lost its popularity. I need to continue learning and stay updated with the latest technology.
+
+![MongoDB Logo](/assets/logos/mongodb.png) -- ![Angularjs Logo](/assets/logos/angularjs.png) -- ![Nodejs Logo](/assets/logos/nodejs.png) -- ![Heroku Logo](/assets/logos/heroku.png)

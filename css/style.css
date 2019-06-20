@@ -91,6 +91,10 @@
 	margin-left: auto;
 	margin-right: auto;
 }
+a.hover-none:hover {
+	color: inherit;
+	cursor: pointer;
+}
 
 ::selection {
   background: rgba(128,201,149,0.7);

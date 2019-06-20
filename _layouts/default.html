@@ -21,14 +21,7 @@
 					$bookBlock : $( '#bb-bookblock' ),
 					$navNext : $( '.bb-nav-next' ),
 					$navPrev : $( '.bb-nav-prev' ),
-          $navScroll : $( '#indexbody' )
-					// $navFirst : $( '.bb-nav-first' ),
-					// $navLast : $( '.bb-nav-last' ),
-					// $navClose : $( '.bb-nav-close' ),
-					// $navAbout: $( '#aboutBtn'),
-					// $navPast  : $( '#pastBtn' ),
-					// $navProj  : $( '#projBtn' ),
-					// $navResume: $( '#myresumeBtn' )
+          $navScroll : $( '#book-1' )
 				},
 				init = function() {
 					config.$bookBlock.bookblock( {
@@ -40,37 +33,22 @@
 				},
 				initEvents = function() {
 					var $slides = config.$bookBlock.children();
-					// add navigation events
 					config.$navNext.on( 'click touchstart', function() {
 						config.$bookBlock.bookblock( 'next' ); return false;
 					} );
 					config.$navPrev.on( 'click touchstart', function() {
 						config.$bookBlock.bookblock( 'prev' ); return false;
 					} );
-					// config.$navFirst.on( 'click touchstart', function() {
-					// 	config.$bookBlock.bookblock( 'first' ); return false;
-					// } );
-					// config.$navLast.on( 'click touchstart', function() {
-					// 	config.$bookBlock.bookblock( 'last' ); return false;
-					// } );
-          config.$navScroll.on( 'scroll', function(event) {
-            console.log(event);
+          config.$navScroll.on( 'wheel', function(e) {
+            e.preventDefault();
+            let deltaY = e.originalEvent.deltaY;
+            if (deltaY < 0) {
+              config.$bookBlock.bookblock( 'prev' );
+            } else if (deltaY > 0) {
+              config.$bookBlock.bookblock( 'next' );
+            }
+            return false;
           });
-					// config.$navClose.on( 'click touchstart', function() {
-					// 	config.$bookBlock.bookblock( 'close' ); return false;
-					// })
-					// config.$navAbout.on( 'click touchstart', function() {
-					// 	config.$bookBlock.bookblock('jump', 1); return false;
-					// } );
-					// config.$navPast.on( 'click touchstart', function() {
-					// 	config.$bookBlock.bookblock('jump', 2); return false;
-					// } );
-					// config.$navProj.on( 'click touchstart', function() {
-					// 	config.$bookBlock.bookblock('jump', 3); return false;
-					// } );
-					// config.$navResume.on( 'click touchstart', function() {
-					// 	config.$bookBlock.bookblock( 'last' ); return false;
-					// });
 				};
 				return { init: init };
 		})();
