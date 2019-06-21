@@ -39,7 +39,9 @@ permalink: /
 				</div>
 				<div class="bb-custom-side">
 					<div class="container">
-						<div class="row"><p class="txtheader">Some Fun Facts About Zhongkai</p></div>
+						<div class="row" style="text-align: right">
+							<p class="txtheader">Some Fun Facts About Zhongkai</p>
+						</div>
 						<div class="row">
 							<div class="hostrow">
 								<div class="imgbox f-left">
@@ -98,55 +100,88 @@ permalink: /
 					</div>
 				</div>
 			</div>
-			<div class="bb-item" id="item2">
-				<div class="bb-custom-side bbsidebor">
-					<p class="txtheader">Some Past Stories...</p>
-
-				</div>
-				<div class="bb-custom-side">
-					<div class="centeroutter">
-						<div class="centermiddle">
-							<div class="centerinner">
-								<p class="txtheader">If you are seeing this, more will come, soon!</p>
-							</div>
+			{% assign counter = 0 %}{% assign temp = 0 %}
+			{% assign bbside = 0 %}{% assign bbside-close = 0 %}
+			{% assign bbitem = 0 %}{% assign bbitem-close = 0 %}
+			{% for post in site.posts %}
+			{% if post.path contains 'life-experience' or post.path contains 'shared' %}
+			  {% assign temp = counter | modulo: 6 %}
+			  {% if temp == 0  %}
+			    <div class="bb-item">
+			    {% assign bbitem = bbitem | plus: 1 %}
+			  {% endif %}
+			    {% assign temp = counter | modulo: 3 %}
+			    {% if temp == 0 %}
+			      <div class="bb-custom-side bbsidebor">
+			        {% assign bbside = bbside | plus: 1 %}
+			        {% if counter == 0 %}
+			          <p class="txtheader">Some Past Stories...</p>
+							{% else %}
+							{% assign temp = bbside | modulo: 2 %}
+								{% if temp == 1 %}
+									<p class="txtheader">Stories Continues...</p>
+								{% else %}
+								<div style="text-align: right">
+									<p class="txtheader">Stories Continues...</p>
+								</div>
+								{% endif %}
+			        {% endif %}
+			    {% endif %}
+			          <div class="row story-row">
+									<div class="col-xs-3">
+				            <img class="thumbnail descriptiveImg" src="{{ post.thumbUrl }}"/>
+									</div>
+									<div class="col-xs-9 text extraPadding15">
+				            {% if post.hasContent %}
+				              <a href="{{ post.url }}" style="color: #337ab7">
+				                <h3 class="listTitle">{{ post.title }}</h3>
+				              </a>
+				            {% else %}
+				              <h3 class="listTitle">{{ post.title }}</h3>
+				            {% endif %}
+				            <p class="listTime">{{ post.dateStr }}</p>
+				            <p class="listSummary">{{ post.summary }}</p>
+				            {% if post.brief %}
+				              <p class="listSummary hidden" id="{{ "_H" | prepend: post.short }}">
+				                {{ post.brief }}
+				              </p>
+				              <p><button class="btn btn-default" id="{{ "_B" | prepend: post.short }}" role="button"
+				                onclick="toggleShowMore('{{ post.short }}');">Show More &darr;</button></p>
+				            {% endif %}
+				            {% if post.ext-web %}
+				              <p><a class="btn btn-default" target="_blank" href="{{ post.ext-web }}" role="button">Check it out &raquo;</a></p>
+				            {% endif %}
+									</div>
+			          </div>
+			      {% assign counter = counter | plus: 1 %}
+			      {% assign temp = counter | modulo: 3 %}
+			      {% if temp == 0 %}
+			        </div>
+			        {% assign bbside-close = bbside-close | plus: 1 %}
+			      {% endif %}
+			    {% assign temp = counter | modulo: 6 %}
+			    {% if temp == 0 %}
+			      </div>
+						{% assign bbitem-close = bbitem-close | plus: 1 %}
+			    {% endif %}
+			  {% endif %}
+			  {% endfor %}
+			  {% if bbside > bbside-close %}
+			    </div>
+			  {% endif %}
+			  {% assign temp = bbside | modulo: 2 %}
+			  {% if temp == 1 %}
+			    <div class="bb-custom-side bbsidebor centeroutter" style="height: 100%">
+			      <div class="centermiddle">
+			        <div class="centerinner">
+			          <p class="txtheader">If you are seeing this, more contents to come soon!</p>
+			        </div>
 						</div>
-					</div>
-				</div>
-			</div>
-			<!-- <div class="bb-item">
-				<div class="bb-custom-side">
-					placeholder
-				</div>
-				<div class="bb-custom-side apply-page">
-					<div class="message-form">
-						placeholder
-					</div>
-				</div>
-			</div>
-			<div class="bb-item">
-				<div class="bb-custom-side">
-					Place holder
-				</div>
-				<div class="bb-custom-side overflow-scroll">
-					placeholder
-				</div>
-			</div>
-			<div class="bb-item">
-				<div class="bb-custom-side">
-					placeholder
-				</div>
-				<div class="bb-custom-side">
-					placeholder
-				</div>
-			</div>
-			<div class="bb-item">
-				<div class="bb-custom-side">
-					placeholder
-				</div>
-				<div class="bb-custom-side">
-					<div class="final-title">placeholder</div>
-				</div>
-			</div> -->
+			    </div>
+			  {% endif %}
+			{% if bbitem > bbitem-close %}
+			  </div>
+			{% endif %}
 		</div>
 		<!-- Nav buttons at bottom of booklet -->
 		<nav>

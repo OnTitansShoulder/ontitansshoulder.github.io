@@ -151,7 +151,7 @@ a.hover-none:hover {
 	min-height: 300px;
 	width: auto;
 	position: absolute;
-	top: 40px;
+	top: 0;
 	bottom: 0;
 	left: 0;
 	right: 0;

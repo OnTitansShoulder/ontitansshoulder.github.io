@@ -1,0 +1,43 @@
+---
+layout: default
+---
+<div class="container xtarget" id="markdown">
+  <div class="row">
+    <div class="col-sm-offset-1 col-sm-10 col-xs-offset-1 col-xs-10">
+      <h1>{{ page.title }}</h1>
+      <h3>{{ page.dateStr }}</h3>
+      <br />
+      {{ content }}
+      <br />
+      <div style="padding: 0px 30px">
+        <div id="slides" class="carousel slide" data-ride="carousel">
+          <ol id="slides-inds" class="carousel-indicators">
+            {% for url in page.imgUrls %}
+            <li data-target="#slides" data-slide-to="{{ forloop.index | minus: 1 }}" class=""></li>
+            {% endfor %}
+          </ol>
+          <div id="slides-inner" class="carousel-inner" role="listbox">
+            {% for url in page.imgUrls %}
+            <div class="item">
+              <img src="{{ url }}">
+              <div class="carousel-caption">
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          <a class="left carousel-control" href="#slides" role="button" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+          </a>
+          <a class="right carousel-control" href="#slides" role="button" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+          </a>
+        </div>
+      </div>
+      <br />
+    </div>
+  </div>
+</div>
+<script>
+  $("#slides-inner").children(":first-child").addClass("active");
+  $("#slides-inds").children(":first-child").addClass("active");
+</script>
