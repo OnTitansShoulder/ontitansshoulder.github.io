@@ -38,6 +38,18 @@ function openBook() {
 function showTip() {
   $('#qq').tooltip();
 }
+function toggleShowMore(targetId){
+  let showMoreElement = document.getElementById(targetId + "_H");
+  let showMoreButton = document.getElementById(targetId + "_B");
+  if(showMoreElement.classList.contains('hidden')){
+    showMoreElement.classList.remove('hidden');
+    showMoreButton.innerHTML = "Show Less &uarr;";
+  } else {
+    showMoreElement.classList.add('hidden');
+    showMoreButton.innerHTML = "Show More &darr;";
+  }
+}
+
 // document.getElementById("resumeBtn").onchange = function () {
 //   $("#fileContainer").css("backgroundColor", "#6C9668");
 //   var value = this.value.split(/[\/\\]/).pop();

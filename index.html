@@ -128,17 +128,11 @@ permalink: /
 			        {% endif %}
 			    {% endif %}
 			          <div class="row story-row">
-									<div class="col-xs-3">
+									<div class="col-xs-4">
 				            <img class="thumbnail descriptiveImg" src="{{ post.thumbUrl }}"/>
 									</div>
-									<div class="col-xs-9 text extraPadding15">
-				            {% if post.hasContent %}
-				              <a href="{{ post.url }}" style="color: #337ab7">
-				                <h3 class="listTitle">{{ post.title }}</h3>
-				              </a>
-				            {% else %}
-				              <h3 class="listTitle">{{ post.title }}</h3>
-				            {% endif %}
+									<div class="col-xs-8 text extraPadding15">
+				            <h3 class="listTitle">{{ post.title }}</h3>
 				            <p class="listTime">{{ post.dateStr }}</p>
 				            <p class="listSummary">{{ post.summary }}</p>
 				            {% if post.brief %}

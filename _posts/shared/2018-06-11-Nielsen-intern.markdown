@@ -1,11 +1,11 @@
 ---
 layout: post
-title:  Software Engineering DevOps Intern at Nielsen
+title:  Software DevOps Intern at Nielsen
 ptitle: CI/CD Pipeline for a Golang App
 short: Nielsen
 long: Nielsen Internship
 dateStr: During Summer 2018
-thumbUrl: 'https://i.imgur.com/9ej4oMT.jpg'
+thumbUrl: '/assets/img/media/nielsen.jpg'
 pthumbUrl: 'https://i.imgur.com/nI283Q1.jpg'
 hasContent: true
 imgUrls: ['https://i.imgur.com/ZxuCbs2.jpg', 'https://i.imgur.com/XlfxB8Q.jpg']

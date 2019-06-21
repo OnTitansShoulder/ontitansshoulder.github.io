@@ -4,7 +4,7 @@ title:  WHS SolarCat
 short: SolarCat
 long: Solar Car Captain
 dateStr: During WHS school year 2014-2015
-thumbUrl: 'https://i.imgur.com/2hkjIPS.png'
+thumbUrl: '/assets/img/media/solar_car_2.jpg'
 hasContent: true
 imgUrls: ['https://i.imgur.com/bZItuPJ.jpg','https://i.imgur.com/cdth6pe.jpg','https://i.imgur.com/T9AVvK0.jpg','https://i.imgur.com/dmyW299.jpg','https://i.imgur.com/Zd7pOx9.jpg','https://i.imgur.com/Eti5UOQ.jpg','https://i.imgur.com/lowOsAw.jpg','https://i.imgur.com/lGbQG0l.jpg','https://i.imgur.com/UqYiGUH.jpg']
 categories: life-experience school club

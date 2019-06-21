@@ -5,7 +5,7 @@ ptitle: Payment Apps Monitoring Dashboard
 short: THDIntern17
 long: THD Internship 2017
 dateStr: During Summer 2017
-thumbUrl: 'https://i.imgur.com/rjACtgZ.png'
+thumbUrl: '/assets/img/media/homedepot_2.jpg'
 pthumbUrl: 'https://i.imgur.com/b8Ys1Kk.jpg'
 hasContent: true
 imgUrls: ['https://i.imgur.com/VuJjPlB.jpg', 'https://i.imgur.com/eufhpr7.jpg', 'https://i.imgur.com/1ejXmF1.jpg', 'https://i.imgur.com/8TSPU8c.jpg']
