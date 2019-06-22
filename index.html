@@ -5,6 +5,8 @@ permalink: /
 <div class="fullscreen">
 	<div class="bb-custom-wrapper" id="book-1">
 		<div id="bb-bookblock" class="bb-bookblock bb-vertical text-responsive">
+
+			<!-- Intro Section -->
 			<div class="bb-item firstitem" id="pg1">
 				<div class="bb-custom-side">
 					<div style="text-align: center">
@@ -87,7 +89,7 @@ permalink: /
 								<div class="briefbox centeroutter">
 									<div class="centermiddle">
 										<div class="centerinner">
-											<p><i>Craziest Experience</i> <span class="glyphicon glyphicon-arrow-right"></span> Building a solar car!</p>
+											<p><i>Most Memoriable Experience</i> <span class="glyphicon glyphicon-arrow-right"></span> Building a solar car!</p>
 											<p>I am so lucky that my high school, Western High, offers special
 												STEM programs. The Solar Car project was one of the most awesomes
 												things happened here. So much thanks to my awesome team and my mentors, Mr. Marron and Dr. Liu
@@ -97,9 +99,30 @@ permalink: /
 								</div>
 							</div>
 						</div>
+						<div class="row">
+							<div class="hostrow">
+								<div class="briefbox centeroutter briefbox-right">
+									<div class="centermiddle">
+										<div class="centerinner">
+											<p style="text-align: right">
+												Ping pong, Tennis, Badminton <span class="glyphicon glyphicon-arrow-left"></span> <i>Sports!</i>
+											</p>
+											<p>In other words, I am willing to play any sports for which I can use a racket to hit a ball.
+												Ping pong is so much fun and it is my favorite.
+											</p>
+										</div>
+									</div>
+								</div>
+								<div class="imgbox f-right">
+									<img class="roundimg" src="/assets/img/media/sports.jpg" />
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
+
+			<!-- Past Stories Section -->
 			{% assign counter = 0 %}{% assign temp = 0 %}
 			{% assign bbside = 0 %}{% assign bbside-close = 0 %}
 			{% assign bbitem = 0 %}{% assign bbitem-close = 0 %}
@@ -128,10 +151,13 @@ permalink: /
 			        {% endif %}
 			    {% endif %}
 			          <div class="row story-row">
-									<div class="col-xs-4">
+									{% assign temp = bbside | modulo: 2 %}
+									{% if temp == 1 %}
+									<div class="col-xs-4 phone-no-padding">
 				            <img class="thumbnail descriptiveImg" src="{{ post.thumbUrl }}"/>
 									</div>
-									<div class="col-xs-8 text extraPadding15">
+									{% endif %}
+									<div class="col-xs-8 text phone-reduced-padding">
 				            <h3 class="listTitle">{{ post.title }}</h3>
 				            <p class="listTime">{{ post.dateStr }}</p>
 				            <p class="listSummary">{{ post.summary }}</p>
@@ -139,13 +165,18 @@ permalink: /
 				              <p class="listSummary hidden" id="{{ "_H" | prepend: post.short }}">
 				                {{ post.brief }}
 				              </p>
-				              <p><button class="btn btn-default" id="{{ "_B" | prepend: post.short }}" role="button"
+				              <p class="center-text"><button class="btn btn-default" id="{{ "_B" | prepend: post.short }}" role="button"
 				                onclick="toggleShowMore('{{ post.short }}');">Show More &darr;</button></p>
 				            {% endif %}
 				            {% if post.ext-web %}
 				              <p><a class="btn btn-default" target="_blank" href="{{ post.ext-web }}" role="button">Check it out &raquo;</a></p>
 				            {% endif %}
 									</div>
+									{% if temp == 0 %}
+									<div class="col-xs-4 phone-no-padding">
+				            <img class="thumbnail descriptiveImg" src="{{ post.thumbUrl }}"/>
+									</div>
+									{% endif %}
 			          </div>
 			      {% assign counter = counter | plus: 1 %}
 			      {% assign temp = counter | modulo: 3 %}
@@ -167,8 +198,8 @@ permalink: /
 			  {% if temp == 1 %}
 			    <div class="bb-custom-side bbsidebor centeroutter" style="height: 100%">
 			      <div class="centermiddle">
-			        <div class="centerinner">
-			          <p class="txtheader">If you are seeing this, more contents to come soon!</p>
+			        <div class="centerinner center-text">
+			          <p class="txtheader">More stories to come soon!</p>
 			        </div>
 						</div>
 			    </div>
@@ -176,7 +207,111 @@ permalink: /
 			{% if bbitem > bbitem-close %}
 			  </div>
 			{% endif %}
+
+			<!-- Project Showcase section -->
+			{% assign counter = 0 %}{% assign temp = 0 %}
+			{% assign bbside = 0 %}{% assign bbside-close = 0 %}
+			{% assign bbitem = 0 %}{% assign bbitem-close = 0 %}
+			{% for post in site.posts %}
+			{% if post.path contains 'project' or post.path contains 'shared' %}
+			  {% assign temp = counter | modulo: 8 %}
+			  {% if temp == 0  %}
+			    <div class="bb-item">
+			    {% assign bbitem = bbitem | plus: 1 %}
+			  {% endif %}
+			    {% assign temp = counter | modulo: 4 %}
+			    {% if temp == 0 %}
+			      <div class="bb-custom-side bbsidebor">
+			        {% assign bbside = bbside | plus: 1 %}
+			        {% if counter == 0 %}
+			          <p class="txtheader">Some Projects worked on...</p>
+							{% else %}
+							{% assign temp = bbside | modulo: 2 %}
+								{% if temp == 1 %}
+									<p class="txtheader">Projects Continues...</p>
+								{% else %}
+								<div style="text-align: right">
+									<p class="txtheader">Projects Continues...</p>
+								</div>
+								{% endif %}
+			        {% endif %}
+			    {% endif %}
+						{% assign temp = counter | modulo: 2 %}
+						{% if temp == 0 %}
+			          <div class="row story-row">
+						{% endif %}
+									<div class="col-xs-6"><!-- A new card section -->
+										<div style="display: flex; padding-bottom: 1em">
+											<div class="thumbnail" style="margin: auto">
+												{% if post.path contains 'shared' %}
+												<div class="special-text">Internship</div>
+												{% endif %}
+												<img src="{{ post.pthumbUrl }}" alt="image missing" class="cardImg"/>
+											</div>
+										</div>
+										<div class="two-side-row">
+											<div>
+												{% if post.hasContent %}
+													<p class="card-title">
+														<a href="{{ post.url }}" class="card-link">
+															{{ post.ptitle }}
+														</a>
+													</p>
+												{% else %}
+													<p class="card-title">{{ post.ptitle }}</p>
+												{% endif %}
+											</div>
+											{% if post.ext-web %}
+												<p><a class="btn btn-default" target="_blank" href="{{ post.ext-web }}" role="button">Check it out &raquo;</a></p>
+											{% endif %}
+											{% if post.git-link %}
+												<p><a class="btn btn-default" target="_blank" href="{{ post.git-link }}" role="button">View on Github &raquo;</a></p>
+											{% endif %}
+											{% if post.video-link %}
+												<p><a class="btn btn-default" target="_blank" href="{{ post.video-link }}" role="button">Video Demo &raquo;</a></p>
+											{% endif %}
+										</div>
+										<p class="card-text">{{ post.summary }}</p>
+									</div>
+				      {% assign counter = counter | plus: 1 %}
+				      {% assign temp = counter | modulo: 2 %}
+				      {% if temp == 0 %}
+				        </div><!-- closing story-row -->
+				      {% endif %}
+				    {% assign temp = counter | modulo: 4 %}
+				    {% if temp == 0 %}
+				      </div><!-- closing bb-side -->
+							{% assign bbside-close = bbside-close | plus: 1 %}
+				    {% endif %}
+					{% assign temp = counter | modulo: 8 %}
+					{% if temp == 0 %}
+						</div><!-- closing bb-item -->
+						{% assign bbitem-close = bbitem-close | plus: 1 %}
+					{% endif %}
+			  {% endif %}
+			  {% endfor %}
+				{% assign temp = counter | modulo: 2 %}
+				{% if temp == 1 %}
+					</div><!-- closing uncovered story-row -->
+				{% endif %}
+			  {% if bbside > bbside-close %}
+			    </div><!-- closing uncovered bb-side -->
+			  {% endif %}
+			  {% assign temp = bbside | modulo: 2 %}
+			  {% if temp == 1 %}
+			    <div class="bb-custom-side bbsidebor centeroutter" style="height: 100%">
+			      <div class="centermiddle">
+			        <div class="centerinner">
+			          <p class="txtheader">More contents to come soon!</p>
+			        </div>
+						</div>
+			    </div>
+			  {% endif %}
+			{% if bbitem > bbitem-close %}
+			  </div><!-- closing uncovered bb-item -->
+			{% endif %}
 		</div>
+
 		<!-- Nav buttons at bottom of booklet -->
 		<nav>
 			<a href="#" class="bb-custom-icon bb-custom-icon-arrow-left bb-nav-prev">Previous</a>

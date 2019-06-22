@@ -9,15 +9,16 @@
     -webkit-transform-style: preserve-3d;
     transform-style: preserve-3d;
   }
-
   .fullscreen {
-  	margin: 0px 5px;
-    top: 30px;
+  	margin: 10px 5px 0px 5px;
+    top: 0;
+  }
+  .bb-custom-side {
+    padding: 10px
   }
   .header {
     height: 20px;
   }
-
   .bookshelf figure {
     position: relative;
     display: inline-block;
@@ -25,7 +26,6 @@
     width: auto;
     vertical-align: top;
   }
-
   /*navigation*/
   .bb-custom-wrapper > nav {
     width: 100%;
@@ -37,7 +37,6 @@
     text-align: center;
     opacity: .3;
   }
-
   .bb-custom-wrapper > nav a {
     display: inline-block;
     width: 20px;
@@ -51,7 +50,6 @@
     text-decoration: none;
     outline: none;
   }
-
   .bb-custom-icon:before {
     font-family: 'arrows';
     speak: none;
@@ -65,7 +63,6 @@
     display: block;
     -webkit-font-smoothing: antialiased;
   }
-
   .linkout {
     display: block;
     text-align: center;
@@ -87,20 +84,6 @@
   	height: 100%;
     margin-top: unset;
   }
-
-  .fs-radio-group {
-    margin-left: -15px !important;
-    column-count: 2;
-  }
-
-  .fs-message-error {
-  	margin-left: 0% !important;
-  }
-
-  .fs-form-full {
-  	margin-left: 47px !important;
-  }
-
   .custom-dropdown select {
     background: #48ABE0;
     border-radius: .2em;
@@ -117,12 +100,34 @@
     -webkit-appearance: none;
     appearance: none;
   }
-
   /* Adjustments */
   .thumbnail {
     margin-bottom: 0px;
   }
   p {
     margin: 0 0 2px;
+  }
+  .story-row {
+    margin: 0px;
+  }
+  .phone-no-padding {
+    padding: 0px;
+  }
+  .phone-reduced-padding {
+    padding: 0px 2.5px;
+  }
+  .btn {
+    padding: 2px;
+    font-size: 80%;
+  }
+  .bb-custom-wrapper h3 {
+    margin: 0.4em 0;
+  }
+  .xtarget {
+    width: 90% !important;
+
+    padding: 5px;
+    margin-top: 10px;
+    margin-bottom: 5px;
   }
 }
