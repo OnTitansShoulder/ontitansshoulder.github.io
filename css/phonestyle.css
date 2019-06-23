@@ -4,8 +4,8 @@
   .book {
     position: relative;
     margin: 0 auto;
-    width: 15em;
-    height: 20em;
+    width: 9em;
+    height: 12em;
     -webkit-transform-style: preserve-3d;
     transform-style: preserve-3d;
   }

@@ -38,3 +38,83 @@ $light-blue: #b7f9ff;
   border: none !important;
   max-width: 256px;
 }
+/* layout for float-background elements */
+.ft-laptop {
+  width: 40%;
+  position: absolute;
+  top: -4%;
+  left: -10%;
+  transform: rotate(-30deg);
+}
+.ft-usb {
+  width: 6%;
+  position: absolute;
+  bottom: 40%;
+  left: 20%;
+}
+.ft-notebook {
+  width: 20%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  transform: rotate(-15deg);
+}
+.ft-pen {
+  width: 10%;
+  position: absolute;
+  bottom: 2%;
+  left: 16%;
+}
+.ft-notes {
+  width: 8%;
+  position: absolute;
+  top: 40%;
+  right: 20%;
+}
+.ft-mouse {
+  width: 10%;
+  position: absolute;
+  top: 4%;
+  left: 28%;
+  transform: rotate(-8deg);
+}
+.ft-calculator {
+  width: 10%;
+  position: absolute;
+  top: 0;
+  right: 24%;
+}
+.ft-checklist {
+  width: 22%;
+  position: absolute;
+  top: 4%;
+  right: -2%;
+  transform: rotate(-25deg);
+}
+.ft-docs {
+  width: 24%;
+  position: absolute;
+  bottom: 2%;
+  right: -4%;
+  transform: rotate(35deg);
+}
+.ft-pencil {
+  width: 8%;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  transform: rotate(125deg);
+}
+.ft-coffee {
+  width: 12%;
+  position: absolute;
+  bottom: 0;
+  right: 20%;
+}
+.ft-phone {
+  width: 16%;
+  position: absolute;
+  bottom: 0;
+  left: 40%;
+  transform: rotate(30deg);
+}

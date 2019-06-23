@@ -299,6 +299,7 @@ a.hover-none:hover {
 }
 
 .tabletop {
+	z-index: 700;
 	height: 100%;
 	transition: 0.3s;
 }

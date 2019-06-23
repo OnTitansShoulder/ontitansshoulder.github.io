@@ -305,19 +305,14 @@ body {
   right: 0;
 }
 
-/* Book navigation */
-
-.bb-custom-wrapper > nav {
+.float-background {
   width: 100%;
   height: 100%;
-  margin: 1em auto 0;
-  bottom: 0;
   position: fixed;
-  z-index: 1000;
+  top: 0;
+  z-index: 0;
   text-align: center;
-  opacity: .3;
 }
-.bb-custom-wrapper > nav a:hover { opacity: 1 }
 
 /****** Custom book colors and borders *****/
 
