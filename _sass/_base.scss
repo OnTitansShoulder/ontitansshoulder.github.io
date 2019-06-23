@@ -1,20 +1,6 @@
-
 $light-cyan: #19CCAA;
 
-a.anchor {
-  display: block;
-  position: relative;
-  top: -50px;
-  visibility: hidden;
-}
-
 // common settings
-.canvas {
-  background-color: #FFF;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  border-radius: 3px;
-}
 .glyphicon {
   text-align: center;
 }
@@ -24,9 +10,6 @@ a.anchor {
 }
 .story-row {
   margin: 10px;
-}
-.story-row > img {
-  margin: auto;
 }
 .special-text {
   position:absolute;
@@ -57,9 +40,6 @@ a.anchor {
 }
 .center-text {
   text-align: center;
-}
-.align-left {
-  text-align: left;
 }
 .carousel-control {
   width: 5%;

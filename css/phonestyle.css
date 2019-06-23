@@ -14,10 +14,11 @@
     top: 0;
   }
   .bb-custom-side {
-    padding: 10px
+    padding: 10px;
+    font-size: 70%;
   }
-  .header {
-    height: 20px;
+  .bookshelf{
+    margin: 0.5em auto 0;
   }
   .bookshelf figure {
     position: relative;
@@ -26,60 +27,10 @@
     width: auto;
     vertical-align: top;
   }
-  /*navigation*/
-  .bb-custom-icon:before {
-    font-family: 'arrows';
-    speak: none;
-    font-style: normal;
-    font-weight: normal;
-    font-variant: normal;
-    text-transform: none;
-    line-height: 1;
-    font-size: 15px;
-    line-height: 20px;
-    display: block;
-    -webkit-font-smoothing: antialiased;
-  }
-  .linkout {
-    display: block;
-    text-align: center;
-    font-size: 10px;
-    width: 100%;
-  }
-  .linkout a {
-    font-family: 'Montserrat', serif;
-    color: #0b0b0b;
-    font-size: 1.1em;
-    font-weight: lighter;
-    line-height: 20px;
-    transition: 0.3s;
-  }
-  .linkout {
-    text-align: center;
-  }
-  .linkcontainer {
-  	height: 100%;
-    margin-top: unset;
-  }
-  .custom-dropdown select {
-    background: #48ABE0;
-    border-radius: .2em;
-    color: #fff;
-    font-size: 0.8em;
-    font-family: 'Poppins', sans-serif !important;
-    padding: .5em;
-    padding-right: 2.5em;
-    border: 0;
-    margin: 0;
-    text-indent: 0.01px;
-    text-overflow: ellipsis;
-    -moz-appearance: none;
-    -webkit-appearance: none;
-    appearance: none;
-  }
+
   /* Adjustments */
   .thumbnail {
-    margin-bottom: 0px;
+    margin-bottom: 1em;
   }
   p {
     margin: 0 0 2px;
