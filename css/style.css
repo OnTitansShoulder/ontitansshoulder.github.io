@@ -298,6 +298,19 @@ a.hover-none:hover {
     100%   { border-color: rgba(255, 255, 255, 1); }
 }
 
+.attribution {
+  position: absolute;
+  bottom: 1%;
+  font-size: 0.6em;
+  text-align: center;
+  width: 100%;
+}
+@keyframes pulse {
+    0%   { display: inline; }
+    50% { display: none; }
+    100%   { display: inline; }
+}
+
 .tabletop {
 	z-index: 700;
 	height: 100%;
