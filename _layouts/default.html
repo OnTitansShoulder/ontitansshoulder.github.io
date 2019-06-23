@@ -3,7 +3,6 @@
   {% include head.html %}
 	<body id="indexbody">
 		{{ content }}
-		<script src="/js/jquery.js"></script>
 		<script src="/js/jquerypp.custom.js"></script>
 		<script src="/js/jquery.bookblock.js"></script>
 		<script src="/js/bookblock.js"></script>
@@ -50,6 +49,13 @@
 					} );
           config.$navScroll.on( 'wheel', function(e) {
             e.preventDefault();
+            var current_timestamp = (new Date()).getTime();
+            if (config.last_timestamp) {
+              if ((current_timestamp - config.last_timestamp) < 500) {
+                return false;
+              }
+            }
+            config.last_timestamp = current_timestamp;
             let deltaY = e.originalEvent.deltaY;
             if (deltaY < 0) {
               config.$bookBlock.bookblock( 'prev' );

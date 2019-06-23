@@ -401,32 +401,6 @@ a.hover-none:hover {
 	font-weight: 300;
 	margin: 0.4em 0 1em;
 }
-.bb-custom-icon:before {
-	font-family: 'arrows';
-    speak: none;
-    font-style: normal;
-    font-weight: normal;
-    font-variant: normal;
-    text-transform: none;
-    line-height: 1;
-    font-size: 30px;
-    line-height: 40px;
-    display: block;
-    -webkit-font-smoothing: antialiased;
-}
-.bb-custom-icon-first:before,
-.bb-custom-icon-last:before {
-	content: "\e002";
-}
-.bb-custom-icon-arrow-left:before,
-.bb-custom-icon-arrow-right:before {
-	content: "\e003";
-}
-.bb-custom-icon-arrow-left:before,
-.bb-custom-icon-first:before {
-	-webkit-transform: rotate(180deg);
-	transform: rotate(180deg);
-}
 
 /* No JS */
 .no-js .bb-custom-content {
@@ -473,8 +447,8 @@ a.hover-none:hover {
     justify-content: center;
 }
 
-.fa-heart {
-	-webkit-animation: pound 0.5s infinite alternate;
+.nav-btn {
+	-webkit-animation: hvr-bob 0.5s infinite alternate;
 	transition: font-size 0.5s ease-in-out;
 }
 @-webkit-keyframes pound {

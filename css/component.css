@@ -21,7 +21,7 @@ body {
 
 .bookshelf {
   position: relative;
-  margin: 15% auto 0;
+  margin: 10% auto 0;
   list-style: none;
   text-align: center;
 }
@@ -29,7 +29,7 @@ body {
 @media (max-width: 767px) {
   .bookshelf{
     position: relative;
-    margin: 40px auto 0;
+    margin: 0.5em auto 0;
     list-style: none;
     text-align: center;
   }
@@ -293,7 +293,6 @@ body {
   height: 100%;
 
 }
-
 .bb-custom-side::before {
   position: absolute;
   top: 0;
@@ -301,7 +300,6 @@ body {
   height: 100%;
   content: '';
 }
-
 .bb-custom-side:first-child::before {
   right: 0;
 }
@@ -310,29 +308,14 @@ body {
 
 .bb-custom-wrapper > nav {
   width: 100%;
-  height: 40px;
+  height: 100%;
   margin: 1em auto 0;
+  bottom: 0;
   position: fixed;
-  bottom: 20px;
   z-index: 1000;
   text-align: center;
   opacity: .3;
 }
-
-.bb-custom-wrapper > nav a {
-  display: inline-block;
-  width: 40px;
-  height: 40px;
-  text-align: center;
-  border-radius: 2px;
-  background: #1b46de;
-  color: #fff;
-  font-size: 0;
-  margin: 2px;
-  text-decoration: none;
-  outline: none;
-}
-
 .bb-custom-wrapper > nav a:hover { opacity: 1 }
 
 /****** Custom book colors and borders *****/
