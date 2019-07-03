@@ -6,7 +6,7 @@ short: THDIntern16
 long: THD Internship 2016
 dateStr: During Summer 2016
 thumbUrl: '/assets/img/media/homedepot.jpg'
-pthumbUrl: 'https://i.imgur.com/toitItR.jpg'
+pthumbUrl: 'https://i.imgur.com/18PJIkI.jpg'
 hasContent: true
 imgUrls: ['https://i.imgur.com/8t3FEEE.jpg', 'https://i.imgur.com/PWNS6Im.jpg']
 categories: [shared, work, internship, project]

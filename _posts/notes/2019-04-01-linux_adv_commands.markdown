@@ -1,7 +1,9 @@
 ---
-layout: post
-title: Some Powerful Linux Commands Frequently Used
+layout: notes
+title: Powerful & Freq-used Linux Commands
+title_short: linux_adv_commands
 dateStr: 2019-04-01
+category: Linux
 categories: notes
 ---
 ## Advanced Linux commands

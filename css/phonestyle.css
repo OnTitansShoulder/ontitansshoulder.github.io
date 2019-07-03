@@ -51,6 +51,7 @@
   .bb-custom-wrapper h3 {
     margin: 0.4em 0;
   }
+  /* posts specifics */
   .xtarget {
     width: 90% !important;
     padding: 5px;
@@ -66,5 +67,18 @@
   }
   .carousel-inner > .item > img {
     height: 18em;
+  }
+  .blog-header {
+    padding: 0 1em;
+  }
+  .blog-title {
+    font-size: 2em;
+  }
+  .blog-description {
+    font-size: 1.2em;
+    color: #999;
+  }
+  .blog-main {
+    font-size: 0.8em;
   }
 }

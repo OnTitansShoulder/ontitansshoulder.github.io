@@ -6,7 +6,7 @@ short: Nielsen
 long: Nielsen Internship
 dateStr: During Summer 2018
 thumbUrl: '/assets/img/media/nielsen.jpg'
-pthumbUrl: 'https://i.imgur.com/nI283Q1.jpg'
+pthumbUrl: 'https://i.imgur.com/jHRU2rg.jpg'
 hasContent: true
 imgUrls: ['https://i.imgur.com/ZxuCbs2.jpg', 'https://i.imgur.com/XlfxB8Q.jpg']
 categories: life-experience work internship project
