@@ -77,10 +77,11 @@
 		if( !this.ctrls ) return;
 
 		if( this.bb ) {
-			this.ctrls.querySelector( 'a:nth-child(1)' ).addEventListener( 'click', function( ev ) { ev.preventDefault(); self._open(); } );
-			this.opener.addEventListener( 'click', function( ev ) { ev.preventDefault(); self._open(); } );
+			this.ctrls.querySelector( 'a:nth-child(1)' ).addEventListener( 'click', function( ev ) { self._open(); } );
+			this.opener.addEventListener( 'click', function( ev ) { self._open(); } );
 			this.ctrlBBNext.addEventListener( 'click', function( ev ) { ev.preventDefault(); self._nextPage(); } );
 			this.ctrlBBPrev.addEventListener( 'click', function( ev ) { ev.preventDefault(); self._prevPage(); } );
+			this.ctrlBBClose.addEventListener( 'click', function( ev ) { self._close(); } );
 		}
 
 		// this.ctrls.querySelector( 'a:nth-child(2)' ).addEventListener( 'click', function( ev ) { ev.preventDefault(); self._showDetails(); } );
@@ -90,9 +91,18 @@
 	Book.prototype._open = function() {
 		docscroll = scrollY();
 
+		if (classie.hasClass( this.bbWrapper, 'hide' )) {
+			classie.remove( this.bbWrapper, 'hide' );
+		}
+		if (classie.hasClass( this.el, 'close' )) {
+			classie.remove( this.el, 'close' );
+		}
 		classie.add( this.el, 'open' );
+		classie.add( this.el, 'noboarder-override');
+		setTimeout(function() {
+			classie.add( this.el, 'bookhome-open-override');
+		}, 1000);
 		classie.add( this.bbWrapper, 'show' );
-
 		var self = this,
 			onOpenBookEndFn = function( ev ) {
 				this.removeEventListener( animEndEventName, onOpenBookEndFn );
@@ -108,11 +118,14 @@
 	}
 
 	Book.prototype._close = function() {
-		classie.remove( scrollWrap, 'hide-overflow' );
+		// classie.remove( scrollWrap, 'hide-overflow' );
 		setTimeout( function() { document.body.scrollTop = document.documentElement.scrollTop = docscroll; }, 25 );
 		classie.remove( this.el, 'open' );
+		classie.remove( this.el, 'noboarder-override');
+		classie.remove( this.el, 'bookhome-open-override');
 		classie.add( this.el, 'close' );
 		classie.remove( this.bbWrapper, 'show' );
+		// classie.remove( this.bbWrapper, 'bookwrapper-open-override' );
 		classie.add( this.bbWrapper, 'hide' );
 
 		var self = this,
@@ -133,7 +146,11 @@
 	}
 
 	Book.prototype._nextPage = function() {
-		this.bb.next();
+		if (this.bb.currentIdx === (this.bb.itemsCount-1)) {
+			this._close();
+		} else {
+			this.bb.next();
+		}
 	}
 
 	Book.prototype._prevPage = function() {

@@ -111,6 +111,14 @@ body {
 .buttons a:hover,
 .buttons a:active { color: #64696a }
 
+.close-book-btn {
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+
+}
+
 /* Custom BookBlock */
 .bb-custom-wrapper {
   position: fixed;
