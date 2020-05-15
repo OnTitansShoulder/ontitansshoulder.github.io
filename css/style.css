@@ -91,7 +91,7 @@
 	height: 0px;
 }
 
-#bookhome {
+.blink-border {
 	-webkit-transition: all 0.5s ease-in-out;
 	-moz-transition: all 0.5s ease-in-out;
 	-o-transition: all 0.5s ease-in-out;
@@ -109,6 +109,9 @@
 }
 .bookhome-open-override {
 	display: none !important;
+}
+.clickable-override {
+	z-index: 1000;
 }
 
 .close {

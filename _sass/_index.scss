@@ -5,80 +5,98 @@ $light-blue: #b7f9ff;
   border: none !important;
   max-width: 256px;
 }
+.float-background {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  z-index: 0;
+  text-align: center;
+}
 /* layout for float-background elements */
-.ft-laptop {
+#ft-laptop {
   width: 40%;
   position: absolute;
   top: -4%;
   left: -10%;
   transform: rotate(-30deg);
 }
-.ft-usb {
+#ft-laptop-cut {
+  width: 30%;
+  position: absolute;
+  top: -4%;
+  left: -4%;
+  cursor: pointer;
+  transform: rotate(-30deg);
+}
+#ft-usb {
   width: 6%;
   position: absolute;
   bottom: 40%;
   left: 20%;
 }
-.ft-notebook {
+#ft-notebook {
   width: 20%;
   position: absolute;
   bottom: 0;
   left: 0;
   transform: rotate(-15deg);
 }
-.ft-pen {
+#ft-pen {
   width: 10%;
   position: absolute;
   bottom: 2%;
   left: 16%;
 }
-.ft-notes {
+#ft-notes {
   width: 8%;
   position: absolute;
   top: 40%;
   right: 20%;
 }
-.ft-mouse {
+#ft-mouse {
   width: 10%;
   position: absolute;
   top: 4%;
   left: 28%;
   transform: rotate(-8deg);
 }
-.ft-calculator {
+#ft-calculator {
   width: 10%;
   position: absolute;
   top: 0;
   right: 24%;
 }
-.ft-checklist {
+#ft-checklist {
   width: 22%;
   position: absolute;
   top: 4%;
   right: -2%;
   transform: rotate(-25deg);
 }
-.ft-docs {
-  width: 24%;
+#ft-docs {
+  width: 18%;
   position: absolute;
   bottom: 2%;
-  right: -4%;
+  right: -2%;
+  cursor: pointer;
   transform: rotate(35deg);
 }
-.ft-pencil {
+#ft-pencil {
   width: 8%;
   position: absolute;
   bottom: 0;
   right: 0;
+  z-index: 1000;
   transform: rotate(125deg);
 }
-.ft-coffee {
+#ft-coffee {
   width: 12%;
   position: absolute;
   bottom: 0;
   right: 20%;
 }
-.ft-phone {
+#ft-phone {
   width: 16%;
   position: absolute;
   bottom: 0;

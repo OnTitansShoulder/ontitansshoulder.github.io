@@ -20,35 +20,16 @@ function removeSpecial (text) {
   return '';
 }
 function openBook() {
-  // $(".header").css("display", "block");
-  // $("#bookhome").css("border", "none");
   setTimeout(function() {
-    // $(".header").css("top", "0px");
-    // $(".head").css("height", "40px");
     $(".tabletop").addClass("book-open-tabletop");
 
     $('.shbook').removeClass('rotatedBefore');
     $('.shbook').addClass('rotated');
   },500);
-  // setTimeout(function() {
-  //   $(".book").css("display", "none");
-  //   $("#bookhome").css("display", "none");
-  // },1000);
 }
-function closeBook() {
-  // $(".header").css("display", "block");
-  // $("#bookhome").css("border", "none");
-  // setTimeout(function() {
-  //   $(".header").css("top", "0px");
-  //   // $(".head").css("height", "40px");
-  //   $(".tabletop").addClass("book-open-tabletop");
-  //
-  //   $('.shbook').removeClass('rotatedBefore');
-  //   $('.shbook').addClass('rotated');
-  // },500);
-  // $(".book").css("display", "block");
-  // $("#bookhome").css("display", "inline-block");
-  // $("#bookhome").css("border", "6px dotted #FFF");
+function jumpPage (page) {
+  console.log("jumpPage!");
+  window.location.href = page;
 }
 function showTip() {
   $('#qq').tooltip();
@@ -64,9 +45,3 @@ function toggleShowMore(targetId){
     showMoreButton.innerHTML = "Show More &darr;";
   }
 }
-
-// document.getElementById("resumeBtn").onchange = function () {
-//   $("#fileContainer").css("backgroundColor", "#6C9668");
-//   var value = this.value.split(/[\/\\]/).pop();
-//   $("#filetext").text(value.replace(/\.[^/.]+$/, ""));
-// }

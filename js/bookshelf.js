@@ -25,7 +25,8 @@
 		animEndEventName = animEndEventNames[ Modernizr.prefixed( 'animation' ) ],
 		scrollWrap = document.getElementById( 'scroll-wrap' ),
 		docscroll = 0,
-		books = document.querySelectorAll( '#bookshelf > figure' );
+		books = document.querySelectorAll( '#bookshelf > figure' ),
+		docs = document.getElementById( 'ft-docs' );
 
 	function scrollY() {
 		return window.pageYOffset || window.document.documentElement.scrollTop;
@@ -97,6 +98,7 @@
 		if (classie.hasClass( this.el, 'close' )) {
 			classie.remove( this.el, 'close' );
 		}
+		classie.remove( docs, 'clickable-override' );
 		classie.add( this.el, 'open' );
 		classie.add( this.el, 'noboarder-override');
 		setTimeout(function() {
@@ -127,6 +129,7 @@
 		classie.remove( this.bbWrapper, 'show' );
 		// classie.remove( this.bbWrapper, 'bookwrapper-open-override' );
 		classie.add( this.bbWrapper, 'hide' );
+		classie.add( docs, 'clickable-override' );
 
 		var self = this,
 			onCloseBookEndFn = function( ev ) {
