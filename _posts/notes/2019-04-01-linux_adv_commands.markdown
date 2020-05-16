@@ -1,10 +1,10 @@
 ---
-layout: notes
+layout: note_page
 title: Powerful & Freq-used Linux Commands
 title_short: linux_adv_commands
 dateStr: 2019-04-01
 category: Linux
-categories: notes
+categories: notes reference
 ---
 ## Advanced Linux commands
 

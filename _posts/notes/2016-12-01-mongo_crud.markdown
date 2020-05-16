@@ -1,10 +1,10 @@
 ---
-layout: notes
+layout: note_page
 title: "MongoDB: CRUD"
 title_short: mongodb_crud
 dateStr: 2016-12-01
 category: Database
-categories: notes
+categories: notes reference
 ---
 ## Mongo Notes Chapter 1 & 2 CRUD
 

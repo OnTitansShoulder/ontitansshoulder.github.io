@@ -1,10 +1,10 @@
 ---
-layout: notes
+layout: note_page
 title: Docker commands & Dockerfile
 title_short: docker_commands
 dateStr: 2018-08-05
-category: Docker
-categories: notes
+category: Container
+categories: notes cheetsheet
 ---
 ---------------Docker
 

@@ -1,10 +1,10 @@
 ---
-layout: notes
+layout: note_page
 title: Advanced Linux Shell Scripting
 title_short: linux_shell_scripting_adv
 dateStr: 2019-04-01
 category: Linux
-categories: notes
+categories: notes reference
 ---
 # Writing Shell Scripts
 

@@ -1,10 +1,10 @@
 ---
-layout: notes
+layout: note_page
 title: Linux Accounts Admin Commands
 title_short: linux_accounts_cmds
 dateStr: 2019-04-01
 category: Linux
-categories: notes
+categories: notes reference
 ---
 ## Linux Accounts Admin
 

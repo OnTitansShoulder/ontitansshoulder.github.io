@@ -1,10 +1,10 @@
 ---
-layout: notes
+layout: note_page
 title: Linux Vim How to Use It
 title_short: linux_vim_tricks
 dateStr: 2019-04-01
 category: Linux
-categories: notes
+categories: notes reference
 ---
 ## How to use vi and vim
 

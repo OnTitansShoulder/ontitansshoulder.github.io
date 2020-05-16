@@ -1,10 +1,10 @@
 ---
-layout: notes
+layout: note_page
 title: Basic Linux Concepts & Commands
 title_short: linux_basic_concepts
 dateStr: 2019-04-01
 category: Linux
-categories: notes
+categories: notes reference
 ---
 #### V_bird Linux Book Reading Notes
 

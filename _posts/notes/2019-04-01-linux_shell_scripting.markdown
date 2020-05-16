@@ -1,10 +1,10 @@
 ---
-layout: notes
+layout: note_page
 title: Basic Linux Shell Scripting
 title_short: linux_shell_scripting
 dateStr: 2019-04-01
 category: Linux
-categories: notes
+categories: notes reference
 ---
 # Learning_Shell
 

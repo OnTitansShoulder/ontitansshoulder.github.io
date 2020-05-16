@@ -3,13 +3,9 @@
   {% include head.html %}
 	<body id="indexbody">
 		{{ content }}
+    <div class="attribution"><a href="https://www.vecteezy.com" target="_blank" style="color: #3c3c3c">Desktop cliparts from Vecteezy.com</a></div>
 		<script src="/js/jquerypp.custom.js"></script>
 		<script src="/js/jquery.bookblock.js"></script>
-		<script src="/js/bookblock.js"></script>
-		<!-- <script src="/js/bootstrap.min.js"></script> -->
-		<script src="/js/classie.js"></script>
-		<script src="/js/bookshelf.js"></script>
-		<script src="/js/selectFx.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
 		integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
 		crossorigin="anonymous"></script>
@@ -20,60 +16,7 @@
 			</a>
 		</div>
 	</body>
-	<!-- Helper functions -->
-	<script src="/js/helper.js"></script>
-	<!-- controls nav bar click events -->
-	<script>
-		var Page = (function() {
-			var config = {
-					$bookBlock : $( '#bb-bookblock' ),
-					$navNext : $( '.bb-nav-next' ),
-					$navPrev : $( '.bb-nav-prev' )
-          // $navScroll : $( '#book-1' )
-				},
-				init = function() {
-					config.$bookBlock.bookblock( {
-						speed : 800,
-						shadowSides : 0.8,
-						shadowFlip : 0.7
-					} );
-					initEvents();
-				},
-				initEvents = function() {
-					var $slides = config.$bookBlock.children();
-					config.$navNext.on( 'click touchstart', function() {
-						config.$bookBlock.bookblock( 'next' );
-            return false;
-					} );
-					config.$navPrev.on( 'click touchstart', function() {
-						config.$bookBlock.bookblock( 'prev' );
-            return false;
-					} );
-          // config.$navScroll.on( 'wheel', function(e) {
-          //   e.preventDefault();
-          //   var current_timestamp = (new Date()).getTime();
-          //   if (config.last_timestamp) {
-          //     if ((current_timestamp - config.last_timestamp) < 500) {
-          //       return false;
-          //     }
-          //   }
-          //   config.last_timestamp = current_timestamp;
-          //   let deltaY = e.originalEvent.deltaY;
-          //   if (deltaY < 0) {
-          //     $( '.bb-nav-prev' ).trigger('click');
-          //   } else if (deltaY > 0) {
-          //     $( '.bb-nav-next' ).trigger('click');
-          //   }
-          //   return false;
-          // });
-				};
-				return { init: init };
-		})();
-	</script>
-	<!-- have page load the nav control module -->
-	<script>
-		Page.init();
-	</script>
+  <script src="/js/utilities.js"></script>
   <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 	<script src="/js/ie10-viewport-bug-workaround.js"></script>
 </html>

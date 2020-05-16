@@ -1,10 +1,10 @@
 ---
-layout: notes
+layout: note_page
 title: Basic Linux Server Concepts & Commands
 title_short: linux_server_concepts
 dateStr: 2019-04-01
 category: Linux
-categories: notes
+categories: notes reference
 ---
 ## Linux Server Setup and Maintain
 

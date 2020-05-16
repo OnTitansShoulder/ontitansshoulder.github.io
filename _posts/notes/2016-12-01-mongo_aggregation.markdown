@@ -1,10 +1,10 @@
 ---
-layout: notes
+layout: note_page
 title: "MongoDB: Aggregation"
 title_short: mongodb_aggregate
 dateStr: 2016-12-01
 category: Database
-categories: notes
+categories: notes reference
 ---
 # Mongo Notes Chapter 5 Aggregation
 
@@ -106,7 +106,7 @@ db.collectionName.aggregate([
     {$group:{
         '_id':"$city",
         'population': {$sum:"$pop"},
-        'zip_codes': {$addToSet: "$_id"}    
+        'zip_codes': {$addToSet: "$_id"}
     }},
     {$project:{
         '_id': 0,

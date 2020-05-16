@@ -1,10 +1,10 @@
 ---
-layout: notes
+layout: note_page
 title: Kubernetes Volumes How-to
 title_short: k8s_volumes
 dateStr: 2019-01-01
 category: Kubernetes
-categories: notes
+categories: notes template
 ---
 ## kubernetes volumes
 

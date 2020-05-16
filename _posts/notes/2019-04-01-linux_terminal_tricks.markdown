@@ -1,10 +1,10 @@
 ---
-layout: notes
+layout: note_page
 title: Linux Terminal Tricks
 title_short: linux_terminal_tricks
 dateStr: 2019-04-01
 category: Linux
-categories: notes
+categories: notes reference
 ---
 #### Some Quick Terminal shortcuts
 

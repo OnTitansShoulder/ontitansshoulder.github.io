@@ -1,10 +1,10 @@
 ---
-layout: notes
+layout: note_page
 title: Github Markdown Guide
 title_short: github_markdown
 dateStr: 2015-09-01
 category: Language
-categories: notes
+categories: notes cheetsheet
 ---
 # This is an \<h1\> tag
 ## This is an \<h2\> tag

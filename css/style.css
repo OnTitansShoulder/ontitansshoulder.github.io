@@ -128,9 +128,12 @@
 .attribution {
   position: absolute;
   bottom: 1%;
-  font-size: 0.6em;
+  font-size: 0.8em;
   text-align: center;
   width: 100%;
+}
+.attribution > a {
+	text-decoration: none;
 }
 
 .tabletop {

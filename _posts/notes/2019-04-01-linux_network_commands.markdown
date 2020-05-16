@@ -1,10 +1,10 @@
 ---
-layout: notes
+layout: note_page
 title: Linux Freq-used Network Commands
 title_short: linux_network_commands
 dateStr: 2019-04-01
 category: Linux
-categories: notes
+categories: notes reference
 ---
 ## Linux Networking Related Commands/Knowledge
 

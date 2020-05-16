@@ -1,9 +1,9 @@
 ---
-layout: notes
+layout: note_page
 title: Jenkinsfile for pipeline
 title_short: jenkinsfile
 dateStr: 2019-08-04
-category: Jenkins
+category: CI/CD
 categories: notes template
 ---
 ```

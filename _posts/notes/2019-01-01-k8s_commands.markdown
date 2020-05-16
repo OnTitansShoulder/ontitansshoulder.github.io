@@ -1,10 +1,10 @@
 ---
-layout: notes
+layout: note_page
 title: Kubernetes Freq-used Commands
 title_short: k8s_commands
 dateStr: 2019-01-01
 category: Kubernetes
-categories: notes
+categories: notes cheetsheet
 ---
 **Minikube**
 
