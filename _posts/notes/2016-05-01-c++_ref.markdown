@@ -4,25 +4,29 @@ title: C++ Lib Quick Reference
 title_short: c++_lib_ref
 dateStr: 2016-05-01
 category: Language
-categories: notes reference
+categories: notes cheatsheet
 ---
 ## C++
 
-A general purpose language, imperative, object-oriented, low-level memory manipulation.
+C++ is a general purpose language, imperative, object-oriented, low-level memory manipulation.
 Designed with a bias toward system programming and embedded, resource-constrained and large systems.
+
+This note is like a cheatsheet for finding functions that would be helpful.
+To view documentation related to the c++ functions, find the functions at http://www.cplusplus.com/
+Good C++ learning site: https://www.learncpp.com/
 
 #### Data Types
 
 ###### Simple data types
 
-- **Integral/Floating-Point Data Types**
-  - char, short, int, long, bool,
-  - unsigned char, unsigned int, unsigned long
-  - float, double, long double
+**Integral/Floating-Point Data Types**
+- char, short, int, long, bool
+- unsigned char, unsigned int, unsigned long
+- float, double, long double
 
 ###### Structured data types
 
-- class -
+- class
 - struct - like class without inheritance, all fields default public
 - array - datatype variable_name[size], datatype* pointer_name = new datatype[size_var]
 - union
@@ -34,15 +38,15 @@ Designed with a bias toward system programming and embedded, resource-constraine
 - use `*` to dereference address
 - use `&` to pass/accept data as address pointer reference
 - use `->` to access pointer class/struct type variables/functions
-- use ++, +, -, -- to move pointers
+- use `++, +, -, --` to move pointers
 
 ###### Operators
 
-- +, -, * , /, %, ++, --
-- <=, ==, >=, !=, <, >, &&, ||, !
-- &, |, ^, ~, <<, >> [Bit-wise and, or, Xor, Complement, left shift, right shift]
-- sizeof() gives the size of a variable
-- ? : ternary conditional operator
+- `+, -, * , /, %, ++, --`
+- `<=, ==, >=, !=, <, >, &&, ||, !`
+- `&, |, ^, ~, <<, >>`
+- `sizeof()` gives the size of a variable
+- `? :` ternary conditional operator
 
 #### Standard I/O
 
@@ -91,16 +95,15 @@ Designed with a bias toward system programming and embedded, resource-constraine
 
 #### misc functions
 
+**string - other type conversions**
 `<cstdlib>`
-- **string - other type conversions**
 - atof, atoi, atol, strtod, strtof, strtol
+- `<string>` stoi, stof, stoi, stol
 
-`<string>` stoi, stof, stoi, stol
+**other type - string conversions**
+- `<string>` to_string(...)
 
-- **other type - string conversions**
-
-`<string>` to_string(...)
-
+**other functions**
 - rand - random number generation
 - system - execute system commands
 - getenv - get environment string

@@ -67,6 +67,7 @@
 			shadowSides : 0.8,
 			shadowFlip : 0.4
 		} );
+		this.isBookOpen = false;
 		// boobkblock controls
 		this.ctrlBBClose = this.bbWrapper.querySelector( ' .bb-nav-close' );
 		this.ctrlBBNext = this.bbWrapper.querySelector( ' .bb-nav-next' );
@@ -117,6 +118,7 @@
 		else {
 			onOpenBookEndFn.call();
 		}
+		this.isBookOpen = true;
 	}
 
 	Book.prototype._close = function() {
@@ -146,10 +148,11 @@
 		else {
 			onCloseBookEndFn.call();
 		}
+		this.isBookOpen = false;
 	}
 
 	Book.prototype._nextPage = function() {
-		if (this.bb.currentIdx === (this.bb.itemsCount-1)) {
+		if (this.bb.currentIdx === (this.bb.itemsCount-1) && this.isBookOpen) {
 			this._close();
 		} else {
 			this.bb.next();
@@ -157,7 +160,11 @@
 	}
 
 	Book.prototype._prevPage = function() {
-		this.bb.prev();
+		if (this.bb.currentIdx === 0 && this.isBookOpen) {
+			this._close();
+		} else {
+			this.bb.prev();
+		}
 	}
 
 	Book.prototype._showDetails = function() {
