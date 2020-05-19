@@ -6,7 +6,7 @@ dateStr: During Summer 2018
 pthumbUrl: 'https://i.imgur.com/scfsX8Y.jpg'
 hasContent: true
 imgUrls: ['https://i.imgur.com/vskP9yu.gif']
-categories: project meanjs
+tags: project meanjs
 summary: A webapp that serves as a platform for international students requesting pickup ride or temporary lodging from our volunteers at UF.
 ext-web: http://www.uflcsa.org
 ---

@@ -9,7 +9,7 @@ thumbUrl: '/assets/img/media/homedepot.jpg'
 pthumbUrl: 'https://i.imgur.com/18PJIkI.jpg'
 hasContent: true
 imgUrls: ['https://i.imgur.com/8t3FEEE.jpg', 'https://i.imgur.com/PWNS6Im.jpg']
-categories: [shared, work, internship, project]
+tags: [shared, work, internship, project]
 summary: Worked on a backend RESTful service, built with spring-boot, to intercept purchase orders and add another security level.
 ---
 ### The business need:

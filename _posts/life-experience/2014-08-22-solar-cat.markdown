@@ -7,7 +7,7 @@ dateStr: During WHS school year 2014-2015
 thumbUrl: '/assets/img/media/solar_car_2.jpg'
 hasContent: true
 imgUrls: ['https://i.imgur.com/bZItuPJ.jpg','https://i.imgur.com/cdth6pe.jpg','https://i.imgur.com/T9AVvK0.jpg','https://i.imgur.com/dmyW299.jpg','https://i.imgur.com/Zd7pOx9.jpg','https://i.imgur.com/Eti5UOQ.jpg','https://i.imgur.com/lowOsAw.jpg','https://i.imgur.com/lGbQG0l.jpg','https://i.imgur.com/UqYiGUH.jpg']
-categories: life-experience school club
+tags: life-experience school club
 summary: Meet the SolarCat, the product from a hardworking team at Western High School.
 ---
 Yes, [SolarCat](http://thesolarcats.com/) is a car powered with sunlight. We named it "SolarCat" as our school's mascot is Wildcat. We are indeed pretty wild, that our mentor Mr. Alex Marron often-time called us "beasts". Honestly, I nearly chose mechanical engineering as my major when I started college at UF. Anyways, I love computers more.

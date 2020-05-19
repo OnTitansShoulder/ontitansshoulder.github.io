@@ -4,10 +4,8 @@ title: Linux Vim How to Use It
 title_short: linux_vim_tricks
 dateStr: 2019-04-01
 category: Linux
-categories: notes reference
+tags: notes reference
 ---
-## How to use vi and vim
-
 All Unix-like system have *vi*, but not necessarily other editors
 *vim* is an advanced version of vi, which supports syntax highlighting and helping software development.
 

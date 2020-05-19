@@ -4,7 +4,7 @@ title: "MongoDB: Aggregation"
 title_short: mongodb_aggregate
 dateStr: 2016-12-01
 category: Database
-categories: notes reference
+tags: notes reference
 ---
 # Mongo Notes Chapter 5 Aggregation
 

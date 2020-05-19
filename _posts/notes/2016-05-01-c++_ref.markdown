@@ -4,7 +4,7 @@ title: C++ Lib Quick Reference
 title_short: c++_lib_ref
 dateStr: 2016-05-01
 category: Language
-categories: notes cheatsheet
+tags: notes cheatsheet
 ---
 ## C++
 

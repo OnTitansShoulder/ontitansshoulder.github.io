@@ -4,7 +4,7 @@ title: Kubernetes Volumes How-to
 title_short: k8s_volumes
 dateStr: 2019-01-01
 category: Kubernetes
-categories: notes template
+tags: notes template
 ---
 ## kubernetes volumes
 

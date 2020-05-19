@@ -6,7 +6,7 @@ dateStr: During Fall 2018
 pthumbUrl: 'https://imgur.com/H53Zfbb.jpg'
 hasContent: true
 imgUrls: ['https://imgur.com/mLTRmv9.jpg','https://imgur.com/p31us8p.jpg', 'https://imgur.com/ddbdT1K.jpg','https://imgur.com/jLv6RiV.jpg','https://imgur.com/FOPxfYV.jpg','https://imgur.com/Dz3zwck.jpg','https://imgur.com/AY3GV1O.jpg','https://imgur.com/3tRH0Sj.jpg']
-categories: project reactjs redux
+tags: project reactjs redux
 summary: A platform connecting student drivers with students who need a long-distance ride during holidays
 ext-web: https://ridesshare.herokuapp.com/
 ---

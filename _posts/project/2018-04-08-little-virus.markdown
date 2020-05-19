@@ -6,7 +6,7 @@ short: virus
 pthumbUrl: 'https://i.imgur.com/APN5RY1.jpg'
 hasContent: true
 imgUrls: ['https://i.imgur.com/9CFJ5cR.png','https://i.imgur.com/YU8tpqC.png','https://i.imgur.com/dCTenIL.png','https://i.imgur.com/CTtGZ4Z.png']
-categories: [project, personal, game]
+tags: [project, personal, game]
 summary: A 2D game built with Unity, the goal is to control the virus to kill the host and avoid being killed by the white cells.
 video-link: https://youtu.be/i90mBh6qT0A
 ---

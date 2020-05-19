@@ -1,7 +1,7 @@
 ---
 layout: project
 ptitle: Smart Parking
-categories: project c++
+tags: project c++
 short: smart-parking
 pthumbUrl: 'https://i.imgur.com/WWr0GgP.jpg'
 summary: A C++ program that simulates an efficient way to assign parking spots.

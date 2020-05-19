@@ -4,7 +4,7 @@ title: Docker commands & Dockerfile
 title_short: docker_commands
 dateStr: 2018-08-05
 category: Container
-categories: notes cheetsheet
+tags: notes cheetsheet
 ---
 ---------------Docker
 

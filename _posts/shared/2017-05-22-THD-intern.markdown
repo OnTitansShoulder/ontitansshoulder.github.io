@@ -9,7 +9,7 @@ thumbUrl: '/assets/img/media/homedepot_2.jpg'
 pthumbUrl: 'https://i.imgur.com/7abEcVR.jpg'
 hasContent: true
 imgUrls: ['https://i.imgur.com/VuJjPlB.jpg', 'https://i.imgur.com/eufhpr7.jpg', 'https://i.imgur.com/1ejXmF1.jpg', 'https://i.imgur.com/8TSPU8c.jpg']
-categories: life-experience work internship project
+tags: life-experience work internship project
 summary: As a back-end web services developer, developed web-services that queries Google BigQuery, then analyze and aggregate data into meaningful metrics that provides insights on THD internal services performance.
 ---
 This project was aimed to provide a dashboard solution that can be used by different teams among THD internal network to monitor the services deployed in production. The functionalities includes:

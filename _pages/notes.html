@@ -43,13 +43,15 @@ permalink: /notes/
         {% assign sorted_posts = site.posts | sort: "title_short" %}
         {% for post in sorted_posts %}
           {% if post.path contains 'notes' %}
+            {% if post.tags contains "check" %}
           <tr class="note-container">
             <th scope="row">{{ counter }}</th>
             <td><a href="{{ post.url }}">{{ post.title }}</a></td>
             <td>{{ post.title_short }}</td>
             <td>{{ post.category }}</td>
           </tr>
-          {% assign counter = counter | plus: 1 %}
+              {% assign counter = counter | plus: 1 %}
+            {% endif %}
           {% endif %}
         {% endfor %}
         </tbody>

@@ -4,16 +4,23 @@ title: Github Markdown Guide
 title_short: github_markdown
 dateStr: 2015-09-01
 category: Language
-categories: notes cheetsheet
+tags: notes cheetsheet check
 ---
+<br/>
+
+#### Raw markdown code
+
+````
 # This is an \<h1\> tag
 ## This is an \<h2\> tag
 ###### This is an \<h6\> tag
 
 *This text will be italic*
+
 _This will also be italic_
 
 **This text will be bold**
+
 __This will also be bold__
 
 _You **can** combine them_
@@ -29,21 +36,20 @@ _You **can** combine them_
    1. Item 3a
    2. Item 3b
 
-![GitHub Logo](/images/logo.png)
-`Format: ![Alt Text](url)`
+![Alt Text if image fail to load](/images/logo.png)
 
-http://github.com - automatic!
-[GitHub](http://github.com)
+http://github.com (automatic link conversion)
 
-As Kanye West said:
+[GitHub](http://github.com) (link with text)
+
+Block quotes - as Kanye West said:
 
 > We're living the future so
 > the present is our past.
 
-I think you should use an
-`<addr>` element here instead.
+I think you should use an `<addr>` element here instead.
 
-```javascript
+``` javascript
 function fancyAlert(arg) {
   if(arg) {
     $.facebox({div:'#foo'})
@@ -65,18 +71,19 @@ Content in the first column | Content in the second column
 
 @octocat :+1: This PR looks great - it's ready to merge! :shipit:
 
+Following are the results redered from above formats
+````
 
-## Raw Markdown for Reference
-
-```
 # This is an \<h1\> tag
 ## This is an \<h2\> tag
 ###### This is an \<h6\> tag
 
 *This text will be italic*
+
 _This will also be italic_
 
 **This text will be bold**
+
 __This will also be bold__
 
 _You **can** combine them_
@@ -92,27 +99,26 @@ _You **can** combine them_
    1. Item 3a
    2. Item 3b
 
-![GitHub Logo](/images/logo.png)
-\`Format: ![Alt Text](url)\`
+![Alt Text if image fail to load](/images/logo.png)
 
-http://github.com - automatic!
-[GitHub](http://github.com)
+http://github.com (automatic link conversion)
 
-As Kanye West said:
+[GitHub](http://github.com) (link with text)
+
+Block quotes - as Kanye West said:
 
 > We're living the future so
 > the present is our past.
 
-I think you should use an
-\`<addr>\` element here instead.
+I think you should use an `<addr>` element here instead.
 
-\`\`\`javascript
+``` javascript
 function fancyAlert(arg) {
   if(arg) {
     $.facebox({div:'#foo'})
   }
 }
-\`\`\`
+```
 
 - [x] @mentions, #refs, [links](), **formatting**, and <del>tags</del> supported
 - [x] list syntax required (any unordered or ordered list supported)
@@ -127,5 +133,3 @@ Content in the first column | Content in the second column
 ~~this~~
 
 @octocat :+1: This PR looks great - it's ready to merge! :shipit:
-
-```

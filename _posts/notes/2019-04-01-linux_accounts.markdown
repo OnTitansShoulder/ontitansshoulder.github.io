@@ -4,7 +4,7 @@ title: Linux Accounts Admin Commands
 title_short: linux_accounts_cmds
 dateStr: 2019-04-01
 category: Linux
-categories: notes reference
+tags: notes reference
 ---
 ## Linux Accounts Admin
 

@@ -4,7 +4,7 @@ title: Jenkinsfile for pipeline
 title_short: jenkinsfile
 dateStr: 2019-08-04
 category: CI/CD
-categories: notes template
+tags: notes template
 ---
 ```
 pipeline { # declarative pipeline

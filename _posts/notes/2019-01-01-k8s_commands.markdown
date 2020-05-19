@@ -4,7 +4,7 @@ title: Kubernetes Freq-used Commands
 title_short: k8s_commands
 dateStr: 2019-01-01
 category: Kubernetes
-categories: notes cheetsheet
+tags: notes cheetsheet
 ---
 **Minikube**
 

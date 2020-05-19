@@ -4,7 +4,7 @@ title: Basic Linux Shell Scripting
 title_short: linux_shell_scripting
 dateStr: 2019-04-01
 category: Linux
-categories: notes reference
+tags: notes reference
 ---
 # Learning_Shell
 

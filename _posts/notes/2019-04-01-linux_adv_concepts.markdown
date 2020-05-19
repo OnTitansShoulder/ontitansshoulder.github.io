@@ -4,7 +4,7 @@ title: Advanced Linux Process/Concepts
 title_short: linux_adv_concepts
 dateStr: 2019-04-01
 category: Linux
-categories: notes reference
+tags: notes reference
 ---
 ## Linux Advanced Concepts
 

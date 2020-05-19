@@ -4,7 +4,7 @@ title: "MongoDB: Performance"
 title_short: mongodb_performance
 dateStr: 2016-12-01
 category: Database
-categories: notes reference
+tags: notes reference
 ---
 # Mongo Notes Chapter 4 Performance
 

@@ -6,7 +6,7 @@ short: marble
 pthumbUrl: 'https://i.imgur.com/FkSKkJl.jpg'
 hasContent: true
 imgUrls: ['https://i.imgur.com/GVfvpav.png', 'https://i.imgur.com/8dRERWI.png', 'https://i.imgur.com/4uUSDFp.png', 'https://i.imgur.com/zvD1XBO.png']
-categories: [project, personal, game]
+tags: [project, personal, game]
 summary: A 3D platformer game created with Unity3D. Control a marble to collect coins on the platforms.
 video-link: https://youtu.be/i90mBh6qT0A
 ---

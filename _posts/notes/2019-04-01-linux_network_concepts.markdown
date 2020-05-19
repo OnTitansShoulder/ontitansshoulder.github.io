@@ -4,7 +4,7 @@ title: Linux Network Concepts
 title_short: linux_network_concepts
 dateStr: 2019-04-01
 category: Linux
-categories: notes reference
+tags: notes reference
 ---
 ## Network and Internet Knowledge must knows for Linux
 
