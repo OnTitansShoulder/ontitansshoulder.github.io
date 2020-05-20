@@ -1,7 +1,7 @@
 ---
 layout: note_page
 title: Github Markdown Guide
-title_short: github_markdown
+title_short: github_markdown_syntax
 dateStr: 2015-09-01
 category: Language
 tags: notes cheetsheet check

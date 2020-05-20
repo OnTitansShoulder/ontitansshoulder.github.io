@@ -6,6 +6,8 @@ dateStr: 2020-04-01
 category: Language
 tags: notes cheetsheet check
 ---
+The regular expression engine starts as soon as it can, grabs as much as it can, then tries to finish as soon as it can, while taking the first decision available to it.
+
 <br/>
 
 #### Anchors
