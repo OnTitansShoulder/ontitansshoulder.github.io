@@ -102,9 +102,9 @@
 		classie.remove( docs, 'clickable-override' );
 		classie.add( this.el, 'open' );
 		classie.add( this.el, 'noboarder-override');
-		setTimeout(function() {
-			classie.add( this.el, 'bookhome-open-override');
-		}, 1000);
+		// setTimeout(function() {
+		// 	classie.add( this.el, 'bookhome-open-override');
+		// }, 1000);
 		classie.add( this.bbWrapper, 'show' );
 		var self = this,
 			onOpenBookEndFn = function( ev ) {

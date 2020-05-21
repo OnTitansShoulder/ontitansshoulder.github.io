@@ -9,55 +9,8 @@ layout: default
 <script src="/js/selectFx.js"></script>
 <!-- Helper functions -->
 <script src="/js/index.js"></script>
-<!-- controls nav bar click events -->
-<script>
-  var Page = (function() {
-    var config = {
-        $bookBlock : $( '#bb-bookblock' ),
-        $navNext : $( '.bb-nav-next' ),
-        $navPrev : $( '.bb-nav-prev' )
-        // $navScroll : $( '#book-1' )
-      },
-      init = function() {
-        config.$bookBlock.bookblock( {
-          speed : 800,
-          shadowSides : 0.8,
-          shadowFlip : 0.7
-        } );
-        initEvents();
-      },
-      initEvents = function() {
-        var $slides = config.$bookBlock.children();
-        config.$navNext.on( 'click touchstart', function() {
-          config.$bookBlock.bookblock( 'next' );
-          return false;
-        } );
-        config.$navPrev.on( 'click touchstart', function() {
-          config.$bookBlock.bookblock( 'prev' );
-          return false;
-        } );
-        // config.$navScroll.on( 'wheel', function(e) {
-        //   e.preventDefault();
-        //   var current_timestamp = (new Date()).getTime();
-        //   if (config.last_timestamp) {
-        //     if ((current_timestamp - config.last_timestamp) < 500) {
-        //       return false;
-        //     }
-        //   }
-        //   config.last_timestamp = current_timestamp;
-        //   let deltaY = e.originalEvent.deltaY;
-        //   if (deltaY < 0) {
-        //     $( '.bb-nav-prev' ).trigger('click');
-        //   } else if (deltaY > 0) {
-        //     $( '.bb-nav-next' ).trigger('click');
-        //   }
-        //   return false;
-        // });
-      };
-      return { init: init };
-  })();
-</script>
-<!-- have page load the nav control module -->
-<script>
-  Page.init();
+<script type="text/javascript">
+  $(function () {
+    $('[data-toggle="tooltip"]').tooltip();
+  });
 </script>
