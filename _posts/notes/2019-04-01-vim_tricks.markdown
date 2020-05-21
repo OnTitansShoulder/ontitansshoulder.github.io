@@ -25,6 +25,9 @@ Key Pressing - | - Function
 `j` / `down-arrow` | move down
 `k` / `up-arrow` | move up
 `l` / `right-arrow` | move right
+`w` | **jump forwards to the start of a word**
+`e` | jump forwards to the end of a word
+`b` | **jump backwards to the start of a word**
 `numb N` + `hjkl` | **move N times in that direction**
 `ctrl` + `f` | **page down**
 `ctrl` + `b` | **page up**
@@ -34,6 +37,7 @@ Key Pressing - | - Function
 `-` | move cursor to previous non empty line
 `numb N` + `[space]` | move cursor right N times
 `0` / `[Home]` | **move to the first char of this line**
+`^` | **move to the first non-blank char of this line**
 `$` / `[End]` | **move to last char of this line**
 `H` | **move to the first line first character of current view-port**
 `M` | **move to the middle line first character of current view-port**
@@ -41,6 +45,7 @@ Key Pressing - | - Function
 `G` | **move to the last line of this file**
 `nG` | **move to the nth line of this file**
 `gg` | **move to the first line of this file**
+`zz` | center cursor on screen
 `numb N` + `[enter]` | move cursor down for N lines
 
 <br/>
@@ -50,10 +55,11 @@ Key Pressing - | - Function
 -------------- | ----------
 `/word` | **move down and search for 'word'**
 `?word` | **move up and search for 'word'**
+`\vword end with period.` | **non-alphanumeric chars are interpreted as special regex symbols, no escaping needed**
 `n` | **repeat last search action**
 `N` | **repeat last action in reversed searching direction**
 `:n1,n2s/word1/word2/g` | find and replace! search for word1 between line n1 and n2 and replace them with word2
-`:1,$s/word1/word2/g` | find and replace from begin to the end of this file
+`:1,$s/word1/word2/g` | **find and replace from begin to the end of this file**
 `:1,$s/word1/word2/gc` | **find and replace from begin to the end, and asking for confirmation for each match**
 
 <br/>
@@ -68,7 +74,7 @@ Key Pressing - | - Function
 `d1G` | delete all lines from cursor to the beginning of the file
 `dG` | delete all lines from cursor to the end of the file
 `d$` | **delete all chars from cursor to end of the line**
-`d0` | **delete all chars from cursor to start of the line**
+`d0, D` | **delete all chars from cursor to start of the line**
 `yy` | **copy the line at the cursor**
 `nyy` | **copy n lines after cursor**
 `y1G` | copy all lines from cursor to the beginning of the file
@@ -88,8 +94,9 @@ Key Pressing - | - Function
 -------------- | ----------
 `i, I` | **enter insert mode from current cursor**
 `a, A` | enter insert mode, a is from next position of cursor, A is from last position of current line
-`o, O` | enter insert mode, o is insert a new line after cursor, O is insert a new line before cursor
+`o, O` | **enter insert mode, o is insert a new line after cursor, O is insert a new line before cursor**
 `r, R` | enter replace mode, r is replacing cursor char once, R is to keep replacing cursor char until ESC pressed
+`Esc` | leave current mode
 
 <br/>
 #### Save, quit, and line_numbers
@@ -97,6 +104,7 @@ Key Pressing - | - Function
 Key Pressing - | - Function
 -------------- | ----------
 `:w` | **write into filesystem**
+`:w !sudo tee %` | **save changes to a file that forgot using `sudo vim`**
 `:q` | **quit the editor**
 `:q!` | **quit without saving**
 `ZZ` | quit and ensure any edits saved
@@ -120,19 +128,47 @@ Key Pressing - | - Function
 `v` | **select single chars where cursor passes**
 `V` | **select lines where cursor passes**
 `ctrl-v` | **select rectangular blocks where cursor passes**
+`o` | move to the other end of marked area
+`O` | move to the other corner of block
+`ab` | **select the entire block within () where the cursor is**
+`aB` | **select the entire block within {} where the cursor is**
+`ib` | select the contents of a block within () where the cursor is
+`iB` | select the contents of a block within {} where the cursor is
+`>` | **add a tab indent to selected block**
+`<` | **remove a tab indent to selected block**
+`~` | switch case for selected block
 `y` | **copy selected area**
 `d` | **delete selected area**
+**Tip** | for multiple indenting, add a `numb N` before pressing `>` or `<`
 
 <br/>
-#### Multi-file editing
+#### Registers
 
-Need to open more than one files on startup of vim command, like this `vim hosts /etc/hosts`
+Registers allows copying
 
 Key Pressing - | - Function
 -------------- | ----------
-`:n` | **edit next file**
-`:N` | edit previous file
-`:files` | **show files opened**
+`:reg` | **show registers content**
+`:*` | contains contents on clipboard
+`:%` | contains current filename
+`"xy` | **yank into register 'x' (x could be a digit or a letter)**
+`"xp` | **paste contents of register 'x'**
+`"xNp` | **paste contents of register 'x' for N times**
+**Tip** | registers are stored in ~/.viminfo
+| saved registers will be loaded again at next start of vim
+**Tip** | Register-0 always contains the value of last yank command
+
+<br/>
+#### Marks
+
+Marks allows quickly jump to a saved position in a large file.
+
+Key Pressing - | - Function
+-------------- | ----------
+`:marks` | list of saved marks
+`ma` | set current position for mark 'a'
+`` `a `` | jump to position of mark 'a'
+`` y`a `` | yank text to position of mark 'a'
 
 <br/>
 #### Multi-window editing
@@ -142,12 +178,46 @@ You can even have three windows at the same time!
 
 Key Pressing - | - Function
 -------------- | ----------
-`:sp` | **open a separate window on the bottom side of the same file**
-`:sp [filename]` | **open a new file on the bottom side**
-`ctrl-w, then j OR downarrow` | **move to the window below**
-`ctrl-w, then k OR uparrow` | **move to the window above**
+`:sp` | **open a split window for the same file on the bottom side of this window**
+`:vsp` | **open a split window for the same file on the left side of this window**
+`:sp [filename]` | **open a split window for a new file on the bottom side of this window**
+`:vsp [filename]` | **open a split window for a new file on the left side of this window**
+`ctrl-w, then hjkl OR narrows` | **move to the window in the direction**
+`ctrl-w, then w` | **switch windows**
 `ctrl-w, then q` | **quit current window split**
 `:q` | can quit one of the window as well, like above
+
+<br/>
+#### Multi-file editing
+
+Need to open more than one files on startup of vim command, like this `vim hosts /etc/hosts`
+
+Key Pressing - | - Function
+-------------- | ----------
+`:e` | edit a file in a new buffer (while attempt to close current buffer)
+`:n` | **edit next file**
+`:N` | edit previous file
+`:bnext, :bn` | go to next buffer
+`:bprev, :bp` | go to previous buffer
+`:bd` | delete a buffer (close a file)
+`:ls` | **list all open buffers**
+`:files` | **show files opened**
+
+<br/>
+#### Multi-tab editing
+
+Probably not quite useful today, but still offers a way to organize your workspace within the same terminal using vim.
+
+Key Pressing - | - Function
+-------------- | ----------
+`:tabnew [filename]` | **open a file in a new tab**
+`ctrl-w, then T` | **move current split window to its own tab**
+`gt, :tabnext, :tabn` | **move to next tab**
+`gT, :tabprev, :tabp` | **move to previous tab**
+`Ngt` | move to tab N
+`:tabmove N` | move current tab to Nth position (starting from 0)
+`:tabclose, :tabc` | **close current tab and all its windows**
+`:tabdo command` | run command on all tabs
 
 <br/>
 #### Vim env config setting

@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  Software DevOps Intern at Nielsen
-ptitle: CI/CD Pipeline for a Golang App
+ptitle: CD Pipeline for a Golang App
 short: Nielsen
 long: Nielsen Internship
 dateStr: During Summer 2018
@@ -10,9 +10,9 @@ pthumbUrl: 'https://i.imgur.com/jHRU2rg.jpg'
 hasContent: true
 imgUrls: ['https://i.imgur.com/ZxuCbs2.jpg', 'https://i.imgur.com/XlfxB8Q.jpg']
 tags: life-experience work internship project
-summary: Created a CI/CD pipeline by using Jenkins to orchestrate the automated process of test, build, and deploy, which significantly saves time for software quality assurance and deployment into production.
+summary: Created a CD pipeline by using Jenkins to orchestrate the automated process of test, build, and deploy, which significantly saves time for software quality assurance and deployment into production.
 ---
-As a DevOps intern for Nielsen Engineering, I created a CI/CD pipeline solution that potentially can be used by many other teams for faster integration and delivery.
+As a DevOps intern for Nielsen Engineering, I created a CD pipeline solution that potentially can be used by many other teams for faster integration and delivery.
 
 I used Jenkins to orchestrate:
 * running unit tests

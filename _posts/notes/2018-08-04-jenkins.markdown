@@ -1,11 +1,13 @@
 ---
 layout: note_page
 title: Jenkinsfile for pipeline
-title_short: jenkinsfile
+title_short: jenkinsfile_template
 dateStr: 2019-08-04
-category: CI/CD
-tags: notes template
+category: Continuous-Delivery
+tags: notes template check
 ---
+This note shows only one template with brief explanations for the components of a jenkinsfile.
+
 ```
 pipeline { # declarative pipeline
     agent { # exec in Jenkins env depending on where the agent section is placed

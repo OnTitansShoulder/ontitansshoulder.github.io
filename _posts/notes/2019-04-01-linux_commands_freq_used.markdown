@@ -1,6 +1,6 @@
 ---
 layout: note_page
-title: Linux commands used (fairly) frequently
+title: Linux Frequently-used Commands
 title_short: linux_freq_used_commands
 dateStr: 2019-04-01
 category: Linux
