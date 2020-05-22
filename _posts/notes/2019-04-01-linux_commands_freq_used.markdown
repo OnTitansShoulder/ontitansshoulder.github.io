@@ -11,58 +11,76 @@ tags: notes reference check
 
 #### (and their frequently used options)
 
+**alias** define short cuts for long commands
 - `alias [-p] [<name>[=<value>] …]`
-  - without arguments or with the `-p` option, prints a list of aliases
-  - if arguments are supplied, an alias is defined for each name whose value is given
+- without arguments or with the `-p` option, prints a list of aliases
+- if arguments are supplied, an alias is defined for each name whose value is given
+
+**caller** helps debug shell script by displaying line number of execution
 - `caller [<expr>]`
-  - without expr, caller displays the line number and source filename of the current subroutine call; good for debugging and printing stack trace
-  - if a _non-negative integer_ is supplied as expr, caller displays the line number, subroutine name, and source file corresponding to that position in the current execution call stack.
+- without expr, caller displays the line number and source filename of the current subroutine call; good for debugging and printing stack trace
+- if a _non-negative integer_ is supplied as expr, caller displays the line number, subroutine name, and source file corresponding to that position in the current execution call stack.
+
+**cd** move to a different working directory
 - `cd [-L|[-P [-e]] [-@] [directory]` change the current working directory to directory
-  - the value of the HOME shell variable is used if no _directory_ supplied
-  - if _directory_ is `-`, it is converted to _$OLDPWD_ before the directory change is attempted
-  - `-P` will not resolve symbolic links
-  - `-L` will resolve symbolic links when changing directory (default)
+- the value of the HOME shell variable is used if no _directory_ supplied
+- if _directory_ is `-`, it is converted to _$OLDPWD_ before the directory change is attempted
+- `-P` will not resolve symbolic links
+- `-L` will resolve symbolic links when changing directory (default)
+
+**command** runs command with arguments ignoring any shell function named command
 - `command [-pVv] <command> [arguments ...]`
-  - runs command with arguments ignoring any shell function named command
-  - only shell builtin commands or commands found by searching the _PATH_ are executed.
-  - `-p` option means to use a default value for PATH that is guaranteed to find all of the standard utilities
-  - `-v -V` prints description of command
+- only shell builtin commands or commands found by searching the _PATH_ are executed.
+- `-p` option means to use a default value for PATH that is guaranteed to find all of the standard utilities
+- `-v -V` prints description of command
+
+**echo** output the args, separated by spaces, terminated with a newline
 - `echo [-neE] [<arg> ...]`
-  - output the args, separated by spaces, terminated with a newline
-  - `-n` suppress the trailing newline for the print
-  - `-e` enables interpretation of the following backslash-escaped characters
-    - supported escape sequences: `\a \b \c \e \E \f \n \r \t \v \\ \0nnn \xHH \uHHHH \UHHHHHHHH`
-  - `-E` disables interpretation of backslash-escaped characters
+- `-n` suppress the trailing newline for the print
+- `-e` enables interpretation of the following backslash-escaped characters
+  - supported escape sequences: `\a \b \c \e \E \f \n \r \t \v \\ \0nnn \xHH \uHHHH \UHHHHHHHH`
+- `-E` disables interpretation of backslash-escaped characters
+
+**printf** write the formatted arguments to STDOUT under the control of the format
 - `printf [-v <var>] <format> [<arguments>]`
-  - write the formatted arguments to STDOUT under the control of the format
-  - `-v` causes the output to be assigned to the variable _var_ rather than being printed to STDOUT
-  - special extensions in _format_:
-    - `%b` expand backslash escape sequences in the corresponding argument in the same way as `echo -e`
-    - `%q` output the corresponding argument in a format that can be reused as shell input
-    - `%(<datefmt>)T` output the date-time string resulting from using datefmt as a format string for strftime(3)
-      - The corresponding argument is an integer representing the number of seconds since the epoch
-      - Two special argument values may be used: -1 represents the current time, and -2 represents the time the shell was invoked
+- `-v` causes the output to be assigned to the variable _var_ rather than being printed to STDOUT
+- special extensions in _format_:
+  - `%b` expand backslash escape sequences in the corresponding argument in the same way as `echo -e`
+  - `%q` output the corresponding argument in a format that can be reused as shell input
+  - `%(<datefmt>)T` output the date-time string resulting from using datefmt as a format string for strftime(3)
+    - The corresponding argument is an integer representing the number of seconds since the epoch
+    - Two special argument values may be used: -1 represents the current time, and -2 represents the time the shell was invoked
+
+**read** reads input from STDIN
 - `read [-ers] [-a <aname>] [-d <delim>] [-i <text>] [-n <nchars>] [-N <nchars>] [-p <prompt>] [-t <timeou>t] [-u <fd>] [<name> …]`
-  - one line is read from the STDIN, or from the file descriptor fd supplied as an argument to the `-u` option
-  - `-a <aname>` the words are assigned to sequential indices of the _array_ variable aname, starting at 0
-  - `-d <delim>` the **first character** of _delim_ is used to terminate the input line, rather than newline. If delim is the empty string, read will terminate a line when it reads a NUL character.
-  - `-p <prompt>` display _prompt_, without a trailing newline, before attempting to read any input
-  - `-r` backslash does not act as an escape character
-  - `-s` silence mode (good for password prompt). If input is coming from a terminal, characters are not echoed
-  - `-t <timeout>` read to time out and return failure if a complete line of input (or a specified number of characters) is not read within timeout seconds
-  - `-u <fd>` read input from file descriptor fd
+- one line is read from the STDIN, or from the file descriptor fd supplied as an argument to the `-u` option
+- `-a <aname>` the words are assigned to sequential indices of the _array_ variable aname, starting at 0
+- `-d <delim>` the **first character** of _delim_ is used to terminate the input line, rather than newline. If delim is the empty string, read will terminate a line when it reads a NUL character.
+- `-p <prompt>` display _prompt_, without a trailing newline, before attempting to read any input
+- `-r` backslash does not act as an escape character
+- `-s` silence mode (good for password prompt). If input is coming from a terminal, characters are not echoed
+- `-t <timeout>` read to time out and return failure if a complete line of input (or a specified number of characters) is not read within timeout seconds
+- `-u <fd>` read input from file descriptor fd
+
+**source** same as `.`, to run a script or file
 - `source filename` A synonym for `.`
-  - read and execute commands from the filename argument in the current shell context.
+- read and execute commands from the filename argument in the current shell context.
+
+**type** shows how a term is interpreted by shell
 - `type [-afptP] [<name> …]` for each _name_, indicate how it would be interpreted if used as a command name
-  - `-t` type prints a single word which is one of 'alias', 'function', 'builtin', 'file' or 'keyword', if _name_ is an alias, shell function, shell builtin, disk file, or shell reserved word, respectively
-  - `-p` returns the name of the disk file that would be executed, or nothing
-  - `-P` forces a path search for each _name_
-  - `-a` returns all of the places that contain an executable named _file_
+- `-t` type prints a single word which is one of 'alias', 'function', 'builtin', 'file' or 'keyword', if _name_ is an alias, shell function, shell builtin, disk file, or shell reserved word, respectively
+- `-p` returns the name of the disk file that would be executed, or nothing
+- `-P` forces a path search for each _name_
+- `-a` returns all of the places that contain an executable named _file_
+
+**umask** default new file permissions
 - `umask [-p] [-S] [mode]` set the shell process’s file creation mask to _mode_
-  - if mode begins with a digit, it is interpreted as an octal number; if not, it is interpreted as a symbolic mode mask similar to that accepted by the _chmod_ command
+- if mode begins with a digit, it is interpreted as an octal number; if not, it is interpreted as a symbolic mode mask similar to that accepted by the _chmod_ command
+
+**unset** remove some env vars
 - `unset [-fnv] [name]` remove each variable or function _name_
-  - `-f` refers function; `-v` refers variable
-  - `-n` means _name_ will be a nameref attribute; only _name_ is unset, not the variable it references
+- `-f` refers function; `-v` refers variable
+- `-n` means _name_ will be a nameref attribute; only _name_ is unset, not the variable it references
 
 For more info visit https://www.gnu.org/software/bash/manual/html_node/index.html
 
