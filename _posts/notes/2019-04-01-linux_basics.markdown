@@ -1,11 +1,13 @@
 ---
 layout: note_page
-title: Linux Basics
-title_short: linux_basic_concepts
+title: Linux Basics Must-know
+title_short: linux_basics
 dateStr: 2019-04-01
 category: Linux
 tags: notes reference check
 ---
+Big thanks to vbird from linux.vbird.org for this great educational resource. Here are my reading notes taken.
+
 ### System Boot and devices
 
 **Some frequently seen device and names**

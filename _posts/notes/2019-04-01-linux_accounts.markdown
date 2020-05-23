@@ -8,6 +8,39 @@ tags: notes reference check
 ---
 This notes covers users accounts on Linux.
 
+<br/>
+#### login and non-login shell
+
+- **login shell** - need to go through login process each time started
+- **non-login shell** - no need login, i.e. after you login through X window, your bash assignment required no password again, neither when you initiated bash terminal there.
+
+The two shells read different configuration files
+- login shell:
+- `/etc/profile`: overall system settings, don't change
+  - vars like `PATH, MAIL, USER, HOSTNAME, HISTSIZE`
+  - call other config files, like `/etc/inputrc`, `/etc/profile.d/*.sh`, `/etc/sysconfig/i18n`
+  - `~/.bash_profile` or `~/.bash_login` or `~/.profile`: personal settings
+- non-login shell:
+  - `~/.bashrc`
+
+key_press - | - results
+----------- | ---------
+`ctrl-c` | interrupt
+`ctrl-d` | enter EOF
+`ctrl-m` | like enter
+`ctrl-s` | pulse screen output
+`ctrl-q` | continue screen output
+`ctrl-u` | delete a line of command
+`ctrl-z` | pulse current process
+
+<br/>
+**tty**
+use [alt-ctrl-(F1-F6)] to access tty1-6
+- welcome message at login is in `/etc/issue`
+- welcome message at login for telnet is in `/etc/issue.net`
+- message after login is in `/etc/motd`
+
+<br/>
 #### User Identification
 
 **UID and GID**
@@ -56,6 +89,7 @@ When **forgot root password**
 1. reboot and enter single-user maintenance mode, use `passwd` to change it.
 2. boot from CD, mount `/root` and change `/etc/shadow`, delete the password part (next login root requires no password), then login to root use `passwd` to change it.
 
+<br/>
 #### Groups
 
 A line in `/etc/group` looks like `root:x:0:root` parts are:
@@ -80,6 +114,7 @@ A line in `/etc/group` looks like `root:x:0:root` parts are:
 
 This file's purpose is to add group admins for each group, for which group admin can help root add user to a group.
 
+<br/>
 #### User management
 
 **useradd** create a user
@@ -108,6 +143,7 @@ chown -R guest:guest /home/guest
 chmod 700 /home/guest
 ```
 
+<br/>
 #### Group management
 
 **groupadd** add a new group
@@ -128,6 +164,7 @@ chmod 700 /home/guest
 - `-r` remove password
 - `-R` invalidate group password
 
+<br/>
 #### Linux ACL Privilege
 
 ACL stands for Access Control List, applies to individual privileges on top of the traditional owner, group, others access rights.
@@ -135,6 +172,7 @@ ACL stands for Access Control List, applies to individual privileges on top of t
 AcCL supports access for single user for single file rwx setting.
 More on Book P505.
 
+<br/>
 #### sudo
 
 `sudo` is a handy command to become root for only executing a command with root's privilege.
@@ -142,6 +180,7 @@ More on Book P505.
 A user must be added to `/etc/sudoers` to be able to use `sudo`. The command to do so is `visudo`.
 More on P512 on Book
 
+<br/>
 #### Special shell
 
 `/sbin/nologin` use this shell to limit the user account to not able to log onto the system shell.
