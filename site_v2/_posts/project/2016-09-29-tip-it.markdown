@@ -1,9 +1,0 @@
----
-layout: project
-ptitle: Tip-it
-categories: project php
-short: tip-it
-pthumbUrl: 'https://i.imgur.com/fBcAPp6.jpg'
-summary: A tip calculator features splitting and customized percentage, served with php server.
-git-link: https://github.com/OnTitansShoulder/TipCalculator
----
