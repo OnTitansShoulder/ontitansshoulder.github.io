@@ -10,7 +10,7 @@ tags: notes cheatsheet check
 <br/>
 ### Dcoumentation
 
-like shell, starts with a '#'
+like shell, comments starts with a '#'
 
 <br/>
 ### Debug

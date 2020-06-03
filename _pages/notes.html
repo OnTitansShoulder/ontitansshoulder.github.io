@@ -32,7 +32,6 @@ permalink: /notes/
       <table class="table table-striped">
         <thead>
           <tr>
-            <th>#</th>
             <th>Title</th>
             <th>Short</th>
             <th>Category</th>
@@ -45,7 +44,6 @@ permalink: /notes/
           {% if post.path contains 'notes' %}
             {% if post.tags contains "check" %}
           <tr class="note-container">
-            <th scope="row">{{ counter }}</th>
             <td><a href="{{ post.url }}">{{ post.title }}</a></td>
             <td>{{ post.title_short }}</td>
             <td>{{ post.category }}</td>

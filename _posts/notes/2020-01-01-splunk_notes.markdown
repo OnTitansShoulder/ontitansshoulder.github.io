@@ -265,6 +265,10 @@ Some Common Stats Functions:
 - Can save visualizations as a report or a dashboard panel
 
 **Dashboards** is a collection of reports.
+- Use `$variable_name$` to refer to another variable that can be controlled by a dropdown or the drilldown
+- When editing the source, add `depends="$variable_name$"` to an element tag to listen on changes to that variable.
+- For a time picker variable, the earliest and latest time can be accessed through `$variable_name$.earliest` and `$variable_name$.latest`
+- To use a subsearch to limit the main search's time range, let the subsearch output a table with a single row and columns `earliest` and `latest`
 
 <br/>
 ### Module 11 Pivot and Datasets
@@ -336,7 +340,7 @@ Alerts are based on searches that run on scheduled intervals or in real time. It
 - use a webhook
 - run a custom alert, build a custom alert action
 
-
+<br/>
 ## Splunk 7 Fundamentals II (IOD)
 
 This course focuses on _searching_ and _reporting_ commands as well as on the _creation of knowledge objects_.
@@ -746,7 +750,7 @@ Using **CIM** to make sure we map all data to defined method and normalize data 
 - http://docs.splunk.com/Documentation/CIM/latest/User/Howtousethesereferencetables
 - http://docs.splunk.com/Documentation/CIM/latest/User/Overview
 
-
+<br/>
 ## Splunk 7 Fundamentals III (IOD)
 
 This course focuses on additional search commands as well as **advanced use of knowledge objects**. Major topics include **advanced statistics and eval** commands, **advanced lookup** topics, **advanced alert** actions, using **regex and erex to extract fields**, using **spath to work with self-referencing data**, creating **nested macros and macros with event types**, and **accelerating reports and data models**.
