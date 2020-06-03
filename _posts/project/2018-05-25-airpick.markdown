@@ -8,7 +8,7 @@ hasContent: true
 imgUrls: ['https://i.imgur.com/vskP9yu.gif']
 tags: project meanjs
 summary: A webapp that serves as a platform for international students requesting pickup ride or temporary lodging from our volunteers at UF.
-ext-web: http://www.uflcsa.org
+ext-web: http://airpick.uflcsa.org
 ---
 As the IT director of CSA, I am responsible for maintaining CSA's website and organizing a team of our members to provide tech-support for CSA's hosted events. Airpick comes from CSA's desire to help the international students who are new to a foreign country and need help with getting started with new environment.
 
