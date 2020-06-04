@@ -4,7 +4,7 @@ title: Java - Effective Java Reading Notes
 title_short: effective_java
 dateStr: 2015-09-01
 category: Reading-Notes
-tags: notes reading_notes check
+tags: notes reading_notes reference check
 ---
 <br/>
 
