@@ -1,135 +1,474 @@
 ---
 layout: note_page
-title: Docker commands & Dockerfile
-title_short: docker_commands
+title: Docker images build and optimization
+title_short: docker_images_optimize
 dateStr: 2018-08-05
-category: Container
-tags: notes cheetsheet
+category: Tool
+tags: notes reference check
 ---
----------------Docker
+This set of notes is taken from a book _Docker High Performance_ by Allan Espinosa, Russ McKendrick and from the official [Docker documentation](https://docs.docker.com).
 
-**List Docker CLI commands**
-docker
-docker container --help
+<br/>
+#### Optimizing Docker Images
 
-**Display Docker version and info**
-docker --version
-docker version
-docker info
+Eventually the small container and fast build time goes away when a docker image becomes huge in the order of gigabytes. Then it is worth a while to seek ways to optimize the image building process.
 
-**Execute Docker image**
-docker run hello-world
+**Reducing deployment time**
 
-**List Docker images**
-docker image ls
+If deployments happen within your network, consider a local registry.
 
-**Remove dangling images**
-docker rmi $(docker images -f "dangling=true" -q)
+By setting up a local registry, it saves time and bandwidth when distributing Docker images without relying on external hubs.
 
-**List Docker containers** (running, all, all in quiet mode)
-docker container ls
-docker container ls --all
-docker container ls -aq
+```sh
+# will set a local registry running at tcp://dockerhost:5000
+docker run --network=host -d registry:2
+docker tag someimage dockerhost:5000/someimage
+docker push dockerhost:5000/someimage
+docker pull dockerhost:5000/someimage
+```
 
-**See a list of running containers**
-docker ps
+More details on setting up a managed Docker registry https://docs.docker.com/registry/deploying
 
----------------Dockerfile
+**Improving image build time**
 
-**Use an official Python runtime as a parent image**
-FROM python:2.7-slim
+**Using registry mirrors** saves time when fetching upstream images.
 
-**Set the working directory to /app**
+If the `FROM <image>` is quite large, definitely consider using a _local registry mirror_ to speed up the fetch within the _local network_.
+
+In this way, a large image will be fetched only once into the mirror and distributed fast within the local network.
+
+After a managed local registry mirror is set, add the registry mirror host or ip address to the Docker daemon by updating `/etc/docker/daemon.json` and add into `registry-mirrors` and restart the docker service: `systemctl restart docker.service`
+
+```json
+{
+  "registry-mirrors": [
+    "http://127.0.0.1:5000"
+  ]
+}
+```
+
+Read more https://docs.docker.com/registry/recipes/mirror/
+
+**Reusing image layers** helps speed up the image build process, as a Docker image consists of a series of **layers** combined with the _union filesystem_ of a single image, and reused image layers won't need to be build or fetched again.
+
+How Dockerfile instructions are cached https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#leverage-build-cache
+
+Group the tasks of things that won't expect to change often, i.e. dependency installation, and do them early in the Dockerfile will help reuse those layers.
+
+For example, copy a dependency file and run the installation command before copy the source files into the image, since the source files are expected to change much more often.
+
+**Reducing the build context size**
+
+Try to avoid copy unnecessary files into the image.
+
+Use `.dockerignore` file in the same directory as the Dockerfile to omit some kind of directories or files from being copied into the image.
+
+More on `.dockerignore` https://docs.docker.com/reference/builder/#dockerignore-file
+
+**Using caching proxies**
+
+Another common problem that causes long runtimes in building Docker images is instructions that download dependencies, such as fetching packages from `yum` repositories or python modules.
+
+A useful technique to reduce the time for these build instructions is to introduce **proxies** that cache such dependency packages, such as
+- _apt-cacher-ng_: supports caching _Debian_, _RPM_, and other distribution-specific packages
+  - https://www.unix-ag.uni-kl.de/~bloch/acng
+- _Sonatype Nexus_: supports _Maven_, _Ruby Gems_, _PyPI_, and _NuGet_ packages out of the box
+  - http://www.sonatype.org/nexus
+- _Polipo_: a generic caching proxy that is useful for development
+  - http://www.pps.univ-paris-diderot.fr/~jch/software/polipo
+- _Squid_: another popular caching proxy that can work with other types of network traffic
+  - http://www.squid-cache.org/
+
+This technique is useful when we develop **base** Docker images for our team or organization.
+
+> In general, it is recommended that we verify the contents of public Docker images in environments, such as Docker Hub, instead of blindly trusting them.
+
+<br/>
+#### Reducing Docker image size
+
+While the increase of the image size is inevitable as more changes and features added to the program being containerized, there are some good practices to help _reduce the image size_ or _speed up the build_.
+
+**Chaining commands**
+
+Docker images grow big because some instructions are added that are unnecessary to build or run an image.
+
+Packaging **metadata and cache** are the common parts of the code that are usually increased in size. A Docker image's size is basically the _sum of each individual layer image_; this is how **union filesystems** work. That's why installing packages and removing cache in a separate step will not reduce the image size, like following practice:
+
+```sh
+FROM debian:stretch
+
+RUN echo deb http://httpredir.debian.org/debian stretch-backports main \
+    > /etc/apt/sources.list.d/stretch-backports.list
+RUN apt-get update
+RUN apt-get --no-install-recommends install -y openjdk-11-jre-headless
+RUN rm -rfv /var/lib/apt/lists/* # won't reduce the final image size
+```
+
+There is no such thing as _negative layer size_, and so each instruction in a Dockerfile can only keep the image size **constant** or **increase** it. Instead, the **cleaning** steps should be performed in the same image layer as where those changes were introduced.
+
+Docker uses `/bin/sh` to run each instruction given to `RUN`, so can use `&&` to chain commands. Alternatively, (when there are many instructions) put the commands in a shell script, copy the script in and run the script.
+
+```sh
+FROM debian:stretch
+
+RUN echo deb http://httpredir.debian.org/debian stretch-backports main \
+    > /etc/apt/sources.list.d/stretch-backports.list && \
+    apt-get update && \
+    apt-get --no-install-recommends install -y openjdk-11-jre-headless && \
+    rm -rfv /var/lib/apt/lists/*
+```
+
+**Separating build and deployment images**
+
+**Source libraries**, such as compilers and source header files, are only necessary when **building an application** inside a Docker image. After the application is built, only the compiled binary and related shared libraries are needed to run the application.
+
+For example, use an image with `jdk` installed to build **jar** files then use an image with `jvm` to run the jars; use an image with _golang_ installed to build the **binary** from go source and use a small Linux base-image (better, `alpine` or `busybox`) to run the binary.
+
+This build is bad, as the image is used to build the app and also run the app. The go compilers and static libraries for the build are unnecessary when running the app.
+
+```sh
+FROM golang:1.11-stretch
+
+ADD hello.go hello.go
+RUN go build hello.go
+EXPOSE 8080
+ENTRYPOINT ["./hello"]
+```
+
+To fix it:
+
+```sh
+# this base-image serve as a build stage for the final image
+FROM golang:1.11-stretch
+
+ADD hello.go hello.go
+RUN go build hello.go
+
+# Good to have a base image that has some debugging tools
+FROM busybox
+
+COPY --from=0 /go/hello /app/hello
+# The libraries are obtained from running `ldd hello` which prints shared object dependencies on the binary
+COPY --from=0 /lib/x86_64-linux-gnu/libpthread.so.0 \
+                    /lib/x86_64-linux-gnu/libpthread.so.0
+COPY --from=0 /lib/x86_64-linux-gnu/libc.so.6 /lib/x86_64-linux-gnu/libc.so.6
+COPY --from=0 /lib64/ld-linux-x86-64.so.2 /lib64/ld-linux-x86-64.so.2
 WORKDIR /app
-
-**Copy the current directory contents into the container at /app**
-ADD . /app
-
-**Install any needed packages specified in requirements.txt**
-RUN pip install --trusted-host pypi.python.org -r requirements.txt
-
-**Make port 80 available to the world outside this container**
-EXPOSE 80
-
-**Define environment variable**
-ENV NAME World
-
-**Run app.py when the container launches**
-CMD ["python", "app.py"]
-
----------------Basic commands
+EXPOSE 8080
+ENTRYPOINT ["./hello"]
 ```
-docker build -t friendlyhello .  # Create image using this directory's Dockerfile
-docker run -p 4000:80 friendlyhello  # Run "friendlyname" mapping port 4000 to 80
-docker run -d -p 4000:80 friendlyhello         # Same thing, but in detached mode
-docker container ls                                # List all running containers
-docker container ls -a             # List all containers, even those not running
-docker container stop <hash>           # Gracefully stop the specified container
-docker container kill <hash>         # Force shutdown of the specified container
-docker container rm <hash>        # Remove specified container from this machine
-docker container rm $(docker container ls -a -q)         # Remove all containers
-docker image ls -a                             # List all images on this machine
-docker image rm <image id>            # Remove specified image from this machine
-docker image rm $(docker image ls -a -q)   # Remove all images from this machine
-docker login             # Log in this CLI session using your Docker credentials
-docker tag <image> username/repository:tag  # Tag <image> for upload to registry
-docker push username/repository:tag            # Upload tagged image to registry
-docker run username/repository:tag                   # Run image from a registry
-```
--------------------docker-compose.yml
-```
-version: "3"
-services:
-  web:
-    # replace username/repo:tag with your name and image details
-    image: username/repo:tag
-    deploy:
-      replicas: 5
-      resources:
-        limits:
-          cpus: "0.1"
-          memory: 50M
-      restart_policy:
-        condition: on-failure
-    ports:
-      - "4000:80"
-    networks:
-      - webnet
-networks:
-  webnet:
-```
----------------------docker scaling commands
-```
-docker stack ls                                            # List stacks or apps
-docker stack deploy -c <composefile> <appname>  # Run the specified Compose file
-docker service ls                 # List running services associated with an app
-docker service ps <service>                  # List tasks associated with an app
-docker inspect <task or container>                   # Inspect task or container
-docker container ls -q                                      # List container IDs
-docker stack rm <appname>                             # Tear down an application
-docker swarm init 				# Initialize current machine as a swarm manager and enable swarm mode
-docker swarm leave --force      # Take down a single node swarm from the manager
 
-----------------------docker swarm, clusters, and vms
-docker-machine create --driver virtualbox myvm1 # Create a VM (Mac, Win7, Linux)
-docker-machine create -d hyperv --hyperv-virtual-switch "myswitch" myvm1 # Win10
-docker-machine env myvm1                # View basic information about your node
-docker-machine ssh myvm1 "docker node ls"         # List the nodes in your swarm
-docker-machine ssh myvm1 "docker node inspect <node ID>"        # Inspect a node
-docker-machine ssh myvm1 "docker swarm join-token -q worker"   # View join token
-docker-machine ssh myvm1   # Open an SSH session with the VM; type "exit" to end
-docker node ls                # View nodes in swarm (while logged on to manager)
-docker-machine ssh myvm2 "docker swarm leave"  # Make the worker leave the swarm
-docker-machine ssh myvm1 "docker swarm leave -f" # Make master leave, kill swarm
-docker-machine ls # list VMs, asterisk shows which VM this shell is talking to
-docker-machine start myvm1            # Start a VM that is currently not running
-docker-machine env myvm1      # show environment variables and command for myvm1
-eval $(docker-machine env myvm1)         # Mac command to connect shell to myvm1
-& "C:\Program Files\Docker\Docker\Resources\bin\docker-machine.exe" env myvm1 | Invoke-Expression   # Windows command to connect shell to myvm1
-docker stack deploy -c <file> <app>  # Deploy an app; command shell must be set to talk to manager (myvm1), uses local Compose file
-docker-machine scp docker-compose.yml myvm1:~ # Copy file to node's home dir (only required if you use ssh to connect to manager and deploy the app)
-docker-machine ssh myvm1 "docker stack deploy -c <file> <app>"   # Deploy an app using ssh (you must have first copied the Compose file to myvm1)
-eval $(docker-machine env -u)     # Disconnect shell from VMs, use native docker
-docker-machine stop $(docker-machine ls -q)               # Stop all running VMs
-docker-machine rm $(docker-machine ls -q) # Delete all VMs and their disk images
+<br/>
+#### Frequently-used Docker CLI commands reference
+
+```sh
+docker info # prints a summary of current docker environment
+docker help # see a list of docker commands
+docker pull <image> # pull down an image
+docker images # list local cached docker images
+docker run <image> # run a container
+docker ps # see running containers
+docker kill <container_id>.. # stop containers
+docker rm <container_id>.. # remove containers
+docker rmi <image>.. # remove docker images
+docker build -t <image>:<tag> .  # create image using current directory's Dockerfile
+
+# handy operations
+docker rmi $(docker images -f "dangling=true" -q) # remove dangling images
+docker run -p 4000:80 nginx # run a container mapping internal port 4000 to external port 80
+docker run -d helloworld # run a container detached (in background)
+```
+
+<br/>
+#### Dockerfile Reference
+
+**How a Docker image is built**
+
+A `Dockerfile` is a text document that describes how a Docker image is built.
+
+The `docker build` command builds an image from a `Dockerfile` and a **context**.
+
+The build's **context** is the set of files at a specified _location_, _PATH_, or _URL_. The PATH is a directory on your _local filesystem_. The URL is a _Git repository_ location.
+
+The build is run by the **Docker daemon**, not by the `docker` CLI. The first thing a build process does is send the entire context (**recursively**) to the daemon.
+
+It's best to start with an empty directory as context and keep your `Dockerfile` in that directory. Add only the files needed for building the `Dockerfile`. Exclude files and directories by adding a `.dockerignore` file.
+
+By convention a `Dockerfile` is located in the root of the build context. - use the `-f <path>` flag with `docker build` to point to a `Dockerfile` _anywhere_ in your file system.
+- specify a repository and tag at where to save the new image if the build succeeds, with `-t <tag>`
+  - multiple `-t` can be used
+- each instruction is run **independently**, and causes a new image (layer) to be created
+- whenever possible, Docker will re-use the intermediate images (cache) to accelerate the build process
+
+**Build cache** is only used from images that have a **local parent chain**.
+- this means that these images were created by previous builds or the whole chain of images was loaded with `docker load`.
+- images specified with `docker build --cache-from <image>` do not need to have a parent chain and may be pulled from other registries.
+
+Starting with version _18.09_, Docker supports a new backend for executing your builds, the `BuildKit` which can be enabled by setting an environment variable `DOCKER_BUILDKIT=1` before building an image. The BuildKit backend provides many benefits compared to the old implementation.
+
+Learning about [BuildKit](https://github.com/moby/buildkit/blob/master/frontend/dockerfile/docs/experimental.md) for new features
+
+<br/>
+**Dockerfile instructions**
+
+<br/>
+**`FROM`** initializes a new build stage and sets the Base Image for subsequent instructions.
+- can appear multiple times within a single `Dockerfile` to create multiple images or use one build stage as a _dependency_ for another
+- a valid `Dockerfile` must start with a `FROM` instruction
+- `--platform` flag can be used to specify the platform of the image in case `FROM` references a multi-platform image, i.e. `linux/amd64`
+- a name can be given to a new build stage by adding `AS <name>` and used in `COPY --from=<name|index>`
+- `tag` or `digest` values are optional, default use `latest` tag
+- `FROM` instructions support **variables** that are declared by any `ARG` instructions that occur before the _first_ `FROM`
+
+```sh
+FROM [--platform=<platform>] <image> [AS <name>]
+FROM [--platform=<platform>] <image>[:<tag>] [AS <name>]
+FROM [--platform=<platform>] <image>[@<digest>] [AS <name>]
+```
+
+<br/>
+**`ARG`**
+- An `ARG` declared before a `FROM` is outside of a _build stage_, so it can’t be used in any instruction after a FROM. To use the default value of an `ARG` declared before the first `FROM` use an `ARG` instruction without a value inside of a build stage
+
+```sh
+ARG VERSION=latest
+FROM busybox:$VERSION
+ARG VERSION
+RUN echo $VERSION > image_version
+
+FROM extras:${VERSION}
+CMD  /code/run-extras
+```
+
+<br/>
+**`RUN`** instruction will execute any commands in a _new layer_ on top of the current image and commit the results; the committed image will be used for the next step/instruction
+- Docker commits are cheap and containers can be created from any point in an image's history, much like source control.
+- the cache for a `RUN` will be reused during the next build.
+  - the cache can be invalidated by using the `docker build --no-cache` flag
+  - the cache for `RUN` instructions can be invalidated by `ADD` and `COPY` instructions
+- two forms of `RUN` instruction
+  - `RUN <command/script>` is called the _shell form_
+    - implicitly invoking `/bin/sh -c` on the command passed in
+    - can do variable substitution
+  - `RUN ["executable", "param1", "param2"]` is called the _exec form_
+    - pass the _executable_ with full path
+    - does NOT invoke a command shell, NO _variable substitution_, more like to concatenate the array into a string command
+    - must use **double quotes** as it is parsed as JSON array
+    - can run commands using a different shell executable
+    - necessary to escape backslashes
+
+Following both are valid
+
+```sh
+
+RUN /bin/bash -c 'source $HOME/.bashrc; \
+                  echo $HOME'
+RUN ["/bin/bash", "-c", "echo hello"]
+```
+
+<br/>
+**`CMD`** instruction provides defaults for an executing container.
+- there can only be one `CMD` instruction in a `Dockerfile`, otherwise, only the last `CMD` will be used
+- if `CMD` is used to provide default arguments for the `ENTRYPOINT`, then both of them should be specified with the JSON array format
+- three forms of `CMD` instruction
+  - `CMD ["executable", "param1", "param2"]` is called the exec form, preferred form
+    - pass the _executable_ with full path
+    - does NOT invoke a command shell, NO _variable substitution_, more like to concatenate the array into a string command
+    - must use **double quotes** as it is parsed as JSON array
+  - `CMD ["param1","param2"]` provides default parameters to `ENTRYPOINT` which is necessary to be present
+  - `CMD command param1 param2` is called the shell form
+    - implicitly invoking `/bin/sh -c` on the command passed in
+
+```sh
+CMD ["/usr/bin/wc","--help"]
+CMD echo "This is a test." | wc -
+```
+
+<br/>
+**`LABEL`** instruction adds metadata to an image.
+- it is a _key-value pair_, multiple can be specified on the same instruction, separated with spaces
+- key can contain periods and dashes
+- use double quotes to include spaces in the value or a backslash to span string to multiple lines
+- Labels included in base or parent images are inherited
+- use `docker image inspect --format='' <image>` to see just the labels
+
+```sh
+LABEL multi.label1="value1" multi.label2="value2" other="value3"
+```
+
+<br/>
+**`EXPOSE`** instruction informs Docker that the container listens on the specified network ports at runtime.
+- specify whether the port listens on TCP or UDP, default is TCP
+- it does not actually publish the port but to serve as a documentation to tell the user which ports are intended to be published
+- to actually map and publish the port when running the container, use `docker run -p <internal-port>:<external-port> <image>`
+  - this method takes precedence than what is specified in the `Dockerfile`
+- use `docker run -P <image>` to publish all exposed ports and map to high-order ports i.e. `80:80`
+
+```sh
+EXPOSE <port> [<port>/<protocol>...]
+```
+
+<br/>
+**`ENV`**  instruction sets the environment variable `<key>` to the value `<value>`
+- this value will be in the environment for all subsequent instructions in the build stage
+- to set a value for a single command, use `RUN <key>=<value> <command>` (`RUN`'s shell form)
+- environment variables set will persist when a container is run from the resulting image
+- can view the environment variables values using `docker inspect` on an image
+- environment variables can also be set when running `docker run --env <key>=<value>`
+- variable expansion is supported by `ADD COPY ENV EXPOSE FROM LABEL STOPSIGNAL USER VOLUME WORKDIR ONBUILD`
+- two forms:
+  - `ENV <key> <value>` sets a single variable to a value
+    - entire string after the first space will be treated as the value
+  - `ENV <key>=<value> ...` sets multiple variables to be set at one time
+
+```sh
+ENV <key> <value>
+ENV <key>=<value> ...
+ENV myName="John Doe" myDog=Rex\ The\ Dog \
+    myCat=fluffy
+ENV myDog Rex The Dog
+```
+
+<br/>
+**`ADD`**  instruction copies **new files**, **directories** or **remote file URLs** from `<src>` and adds them to the filesystem of the image at the path `<dest>`
+- `--chown` is for building on Linux system only
+  - new files and directories are created with a UID and GID of 0, unless specified otherwise
+  - providing a username without groupname or a UID without GID will use the same numeric UID as the GID
+- source paths are interpreted as relative to the **source of the context** of the build
+- CANNOT use `..` to leave the **context** directory
+- source paths can contain wildcards
+- if source path is a **directory**, the entire CONTENTS of the directory are copied, including filesystem metadata
+- if source path is an `URL` and destination path does NOT end with a _backslash_, then the file is downloaded as the destination path; otherwise, the filename is inferred from the URL and saved in the destination path directory
+- if source path is a local compressed **tarball archive**, it is unpacked as a directory in the destination path; `URL` downloaded archive will NOT be auto decompressed
+- if multiple source paths are specified, the destination path must be a directory and ends with a _backslash_
+- destination path is an **absolute path** or **relative path to `WORKDIR`** inside the image and will be created if not exist
+
+```sh
+ADD [--chown=<user>:<group>] <src>... <dest>
+ADD [--chown=<user>:<group>] ["<src>",... "<dest>"]
+```
+
+You can also pass a compressed archive through STDIN: (`docker build - < archive.tar.gz`), the `Dockerfile` at the _root_ of the archive and the rest of the archive will be used as the **context** of the build.
+
+<br/>
+**`COPY`** instruction copies new **files or directories** from `<src>` and adds them to the filesystem of the container at the path `<dest>`
+- like `ADD` but work only for files and directories
+- optionally accepts a flag `--from=<name|index>` that can be used to set the source location to a previous **build stage** (created with `FROM .. AS <name>`) that will be used instead of a build **context** sent by the user
+- the first encountered `COPY` instruction will invalidate the cache for all following instructions if the CONTENTS of one of its source paths have changed
+
+```sh
+COPY [--chown=<user>:<group>] <src>... <dest>
+COPY [--chown=<user>:<group>] ["<src>",... "<dest>"]
+```
+
+<br/>
+**`ENTRYPOINT`** instruction configures how a container will run as an executable
+- two forms
+  - `ENTRYPOINT ["executable", "param1", "param2"]` is called the exec form
+  - `ENTRYPOINT command param1 param2` is called the shell form
+- _command line arguments_ to `docker run <image>` will be APPENDED after all elements in an _exec form_ `ENTRYPOINT` and will override all elements specified using `CMD`
+- you can override the `ENTRYPOINT` instruction using the `docker run --entrypoint` flag
+- shell form PREVENTS any `CMD` or `docker run` command line arguments from being used
+- shell form will start the command with `/bin/sh -c` and has some disadvantages
+  - executable will not be the container's `PID 1`
+  - executable will NOT receive Unix signals and it will NOT receive `SIGTERM` signal from `docker stop <container>`
+  - to fix the above two issues, make sure to start a command with `exec` which will invoke the command in another shell session, i.e. `ENTRYPOINT exec top -b`
+- only the last `ENTRYPOINT` in the `Dockerfile` will be used, if multiple are provided
+- if `CMD` is defined from the _base image_, setting `ENTRYPOINT` will RESET `CMD` to an empty value.
+
+<br/>
+**`VOLUME`** instruction creates a mount point with the specified name and marks it as holding externally mounted volumes from native host or other containers.
+- if any build steps change the data within the volume after it has been declared, those changes will be discarded
+- the host directory (the _mountpoint_) is declared at container **run-time**
+- for portability, a given host directory can't be guaranteed to be available on all hosts, thus you can’t mount a host directory from within the Dockerfile
+- `VOLUME` does not support specifying a _host-dir_ parameter. You must specify the _mountpoint_ when you **create** or **run** the container
+
+```sh
+VOLUME ["/var/log/"]
+VOLUME /var/log /var/db
+```
+
+More on Docker volumes is [here](https://docs.docker.com/storage/volumes/)
+
+<br/>
+**`USER`** instruction sets the `user` name (or `UID`) and optionally the user `group` (or `GID`) to use when running the image and for any `RUN`, `CMD` and `ENTRYPOINT` instructions follows
+- when specifying a group for the user, the user will have ONLY the specified group membership
+- when the user doesn’t have a primary group then the image (or the next instructions) will be run with the root group
+
+```sh
+USER <user>[:<group>]
+USER <UID>[:<GID>]
+```
+
+<br/>
+**`WORKDIR`**  instruction sets the working directory for any `RUN`, `CMD`, `ENTRYPOINT`, `COPY` and `ADD` instructions follows
+- if the WORKDIR doesn’t exist, it will be created
+- it can be used multiple times `WORKDIR /path/to/workdir`
+- it could be a relative path to previous `WORKDIR`
+- it can interpret variables set with `ENV`
+- without a `WORKDIR` instruction, the work directory in the image is the root
+
+<br/>
+**`ARG`** instruction defines a variable that users can pass at _build-time_ to the builder with the `docker build` command using the `--build-arg <varname>=<value>` flag
+- a default value can be set with `ARG`
+- undefined variable results in empty string
+- do not use it to pass secrets; build-time variables are visible in the image with `docker history` command
+  - use **BuildKit** instead
+- `ARG` instruction goes out of scope at the end of the build stage where it was defined
+  - to use an arg in multiple stages, each stage must include the `ARG` instruction
+- variables defined using the `ENV` instruction always override an `ARG` instruction of the same name
+- some special predefined `ARG` variables can be set and used without an `ARG` instruction: `HTTP_PROXY HTTPS_PROXY FTP_PROXY NO_PROXY` and their lowercase version
+  - they won't be saved in `docker history` neither unless they are included with `ARG`
+- some predefined platform `ARG` variables are set automatically: `TARGETPLATFORM TARGETOS TARGETARCH TARGETVARIANT BUILDPLATFORM BUILDOS BUILDARCH BUILDVARIANT`
+  - they are not automatically included so need to include an `ARG` instruction to make it available
+- if an `ARG` value is different from a previous build, then a "cache miss" occurs upon its first usage, not its definition
+
+```sh
+ARG user1=someuser
+ARG ${user2:-some_user}
+ARG buildno
+```
+
+<br/>
+**`ONBUILD`**  instruction adds to the image a **trigger instruction** to be executed at a later time, when the image is used as the **base** for another build
+- it won't affect current build and can be viewed by `docker inspect <image>`
+- the trigger will be executed in the context of the downstream build; if all triggers succeed, the FROM instruction completes and the build continues
+- any build instruction can be registered as a trigger; an image can have multiple `ONBUILD` instructions
+- it won't be inherited to the downstream build
+
+```sh
+ONBUILD ADD . /app/src
+ONBUILD RUN /usr/local/bin/python-build --dir /app/src
+```
+
+<br/>
+**`STOPSIGNAL`** instruction sets the **system call signal** that will be sent to the container to exit
+- can be a valid unsigned number that matches a position in the kernel's syscall table
+
+<br/>
+**`HEALTHCHECK`** instruction tells Docker how to test a container to check that it is still working
+- when a container has a healthcheck specified, it has a _health status_ in addition to its normal status
+- can only be one `HEALTHCHECK` instruction in a `Dockerfile`
+- `HEALTHCHECK [OPTIONS] CMD command` and options can be:
+  - `--interval=DURATION` default 30s, time between every other check
+  - `--timeout=DURATION` default 30s, fails if a check takes longer than this timeout
+  - `--start-period=DURATION` default 0s, initialization time before starting the check
+  - `--retries=N` default 3
+- command could be a shell command or an exec JSON array
+- any output from the check will be stored in the health status and visible in `docker inspect`
+
+```sh
+HEALTHCHECK --interval=5m --timeout=3s \
+  CMD curl -f http://localhost/ || exit 1
+```
+
+<br/>
+**`SHELL`**  instruction allows the default shell used for the shell form of commands to be overridden
+- default shell on Linux is ["/bin/sh", "-c"]
+- it must be written in exec JSON form
+- it can appear multiple times
+- each `SHELL` instruction overrides all previous `SHELL` instructions, and affects all subsequent `RUN CMD ENTRYPOINT` instructions
+
+```sh
+SHELL ["/bin/bash", "-c"]
 ```
