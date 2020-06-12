@@ -1,10 +1,10 @@
 # this file is *NOT* reloaded automatically
 # Site settings
 # accessed via {{ site.title }}, {{ site.email }}, and so on.
-title: "Protfolio: Zhongkai Liu"
+title: "Ontitansshoulder"
 email: zkliu95@yahoo.com
 description: >- # ignore newlines
-  Zhongkai Liu's personal website, about, projects, past experiences, and resume
+  A place to throw my notes, thoughts, etc.
 url: "https://zkliu.info"
 twitter_username: kevin_liu
 github_username:  ontitansshoulder
@@ -17,7 +17,7 @@ collections:
 sass:
   sass_dir: _sass
 include: ['_pages']
-exclude: ['site_v2']
+exclude: []
 kramdown:
   input: GFM
 
