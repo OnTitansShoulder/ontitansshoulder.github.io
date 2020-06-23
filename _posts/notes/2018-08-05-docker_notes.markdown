@@ -65,6 +65,16 @@ Use `.dockerignore` file in the same directory as the Dockerfile to omit some ki
 
 More on `.dockerignore` https://docs.docker.com/reference/builder/#dockerignore-file
 
+Omitting the build context can be useful in situations where your `Dockerfile` does NOT require files to be copied into the image, and improves the build-speed, as no files are sent to the daemon. It can be done by passing the build context through STDIN
+
+```sh
+docker build -t myimage:latest -<<EOF
+FROM busybox
+RUN echo "hello world"
+EOF
+docker build [OPTIONS] -f- CONTEXT_PATH # read Dockerfile from STDIN
+```
+
 **Using caching proxies**
 
 Another common problem that causes long runtimes in building Docker images is instructions that download dependencies, such as fetching packages from `yum` repositories or python modules.
@@ -88,11 +98,17 @@ This technique is useful when we develop **base** Docker images for our team or 
 
 While the increase of the image size is inevitable as more changes and features added to the program being containerized, there are some good practices to help _reduce the image size_ or _speed up the build_.
 
-**Chaining commands**
+**Don't install unnecessary packages**
+
+Aoid installing extra or unnecessary packages just because they might be “nice to have.”
 
 Docker images grow big because some instructions are added that are unnecessary to build or run an image.
 
-Packaging **metadata and cache** are the common parts of the code that are usually increased in size. A Docker image's size is basically the _sum of each individual layer image_; this is how **union filesystems** work. That's why installing packages and removing cache in a separate step will not reduce the image size, like following practice:
+Limiting each container to one process is a good rule of thumb, but it is not a hard and fast rule. Use your best judgment to keep containers as clean and modular as possible.
+
+**Chaining commands**
+
+Packaging **metadata and cache** are the common parts of the code that are usually increased in size. A Docker image's size is basically the _sum of each individual layer image_ (more specifically, only `RUN COPY ADD` creates layers, other instructions creates temporary intermediate layers that won't add up image size); this is how **union filesystems** work. That's why installing packages and removing cache in a separate step will not reduce the image size, like following practice:
 
 ```sh
 FROM debian:stretch
@@ -107,6 +123,8 @@ RUN rm -rfv /var/lib/apt/lists/* # won't reduce the final image size
 There is no such thing as _negative layer size_, and so each instruction in a Dockerfile can only keep the image size **constant** or **increase** it. Instead, the **cleaning** steps should be performed in the same image layer as where those changes were introduced.
 
 Docker uses `/bin/sh` to run each instruction given to `RUN`, so can use `&&` to chain commands. Alternatively, (when there are many instructions) put the commands in a shell script, copy the script in and run the script.
+
+Whenever possible, ease later changes by _sorting_ multi-line arguments alphanumerically. This helps to avoid duplication of packages and make the list much easier to update.
 
 ```sh
 FROM debian:stretch
@@ -135,7 +153,7 @@ EXPOSE 8080
 ENTRYPOINT ["./hello"]
 ```
 
-To fix it:
+To fix it (also known as **multi-stage** build):
 
 ```sh
 # this base-image serve as a build stage for the final image
@@ -156,6 +174,40 @@ COPY --from=0 /lib64/ld-linux-x86-64.so.2 /lib64/ld-linux-x86-64.so.2
 WORKDIR /app
 EXPOSE 8080
 ENTRYPOINT ["./hello"]
+```
+
+**Multi-stage** builds allow you to drastically reduce the size of your final image, without struggling to reduce the number of intermediate layers and files.
+- the image is built during the final stage of the build process, you can minimize image layers by leveraging build cache
+- order the instructions from the less frequently changed (to ensure the build cache is reusable) to the more frequently changed
+  - install tools for building the app
+  - install or update library dependencies
+  - generate the app
+
+```sh
+FROM golang:1.11-alpine AS build
+
+# Install tools required for project
+# Run `docker build --no-cache .` to update dependencies
+RUN apk add --no-cache git
+RUN go get github.com/golang/dep/cmd/dep
+
+# List project dependencies with Gopkg.toml and Gopkg.lock
+# These layers are only re-built when Gopkg files are updated
+COPY Gopkg.lock Gopkg.toml /go/src/project/
+WORKDIR /go/src/project/
+# Install library dependencies
+RUN dep ensure -vendor-only
+
+# Copy the entire project and build it
+# This layer is rebuilt when a file changes in the project directory
+COPY . /go/src/project/
+RUN go build -o /bin/project
+
+# This results in a single layer image
+FROM scratch
+COPY --from=build /bin/project /bin/project
+ENTRYPOINT ["/bin/project"]
+CMD ["--help"]
 ```
 
 <br/>
@@ -203,6 +255,7 @@ By convention a `Dockerfile` is located in the root of the build context. - use 
 **Build cache** is only used from images that have a **local parent chain**.
 - this means that these images were created by previous builds or the whole chain of images was loaded with `docker load`.
 - images specified with `docker build --cache-from <image>` do not need to have a parent chain and may be pulled from other registries.
+- once a layer is invalidated by the cache, all subsequent instructions generate new layers
 
 Starting with version _18.09_, Docker supports a new backend for executing your builds, the `BuildKit` which can be enabled by setting an environment variable `DOCKER_BUILDKIT=1` before building an image. The BuildKit backend provides many benefits compared to the old implementation.
 
@@ -219,18 +272,16 @@ Learning about [BuildKit](https://github.com/moby/buildkit/blob/master/frontend/
 - a name can be given to a new build stage by adding `AS <name>` and used in `COPY --from=<name|index>`
 - `tag` or `digest` values are optional, default use `latest` tag
 - `FROM` instructions support **variables** that are declared by any `ARG` instructions that occur before the _first_ `FROM`
+  - An `ARG` declared before a `FROM` is outside of a _build stage_, so it can’t be used in any instruction after a `FROM`.
+  - To use the default value of an `ARG` declared before the first `FROM` use an `ARG` instruction without a value inside a build stage
+- **Tip** use `alpine` as the baseimage whenever you can
 
 ```sh
 FROM [--platform=<platform>] <image> [AS <name>]
 FROM [--platform=<platform>] <image>[:<tag>] [AS <name>]
 FROM [--platform=<platform>] <image>[@<digest>] [AS <name>]
-```
 
-<br/>
-**`ARG`**
-- An `ARG` declared before a `FROM` is outside of a _build stage_, so it can’t be used in any instruction after a FROM. To use the default value of an `ARG` declared before the first `FROM` use an `ARG` instruction without a value inside of a build stage
-
-```sh
+# example
 ARG VERSION=latest
 FROM busybox:$VERSION
 ARG VERSION
@@ -256,6 +307,11 @@ CMD  /code/run-extras
     - must use **double quotes** as it is parsed as JSON array
     - can run commands using a different shell executable
     - necessary to escape backslashes
+- **Tip**
+  - split long or complex `RUN` statements on multiple lines separated with `backslashes` to make your `Dockerfile` more readable, understandable, and maintainable. Or better: put them in a script
+  - always combine _update_ and _install_ statements in the same `RUN` instruction, as well as steps to clean up the _installation cache_
+  - Using `RUN apt-get update && apt-get install -y` ensures your `Dockerfile` installs the _latest_ package versions with no further coding or manual intervention. This technique is known as _cache busting_. You can also achieve cache-busting by specifying a package version. This is known as _version pinning_.
+  - if using pipes, prepend `set -o pipefail &&` to ensure that an unexpected error prevents the build from inadvertently succeeding
 
 Following both are valid
 
@@ -320,6 +376,7 @@ EXPOSE <port> [<port>/<protocol>...]
   - `ENV <key> <value>` sets a single variable to a value
     - entire string after the first space will be treated as the value
   - `ENV <key>=<value> ...` sets multiple variables to be set at one time
+- **Tip** if you don't want to have an ENV var persist to the container, use the define, use, unset approach in a single instruction
 
 ```sh
 ENV <key> <value>
@@ -355,6 +412,10 @@ You can also pass a compressed archive through STDIN: (`docker build - < archive
 - like `ADD` but work only for files and directories
 - optionally accepts a flag `--from=<name|index>` that can be used to set the source location to a previous **build stage** (created with `FROM .. AS <name>`) that will be used instead of a build **context** sent by the user
 - the first encountered `COPY` instruction will invalidate the cache for all following instructions if the CONTENTS of one of its source paths have changed
+- **Tip**
+  - prefer `COPY` over `ADD` unless using the convenience provided by `ADD`
+    - use `curl` or `wget` to fetch files allows having the chance to discard unwanted files in the same instruction
+  - if you have multiple `Dockerfile` steps that use different files from your context, `COPY` them **individually**, rather than all at once. This ensures that each step's build cache is only invalidated if the specifically required files change.
 
 ```sh
 COPY [--chown=<user>:<group>] <src>... <dest>
@@ -382,6 +443,8 @@ COPY [--chown=<user>:<group>] ["<src>",... "<dest>"]
 - the host directory (the _mountpoint_) is declared at container **run-time**
 - for portability, a given host directory can't be guaranteed to be available on all hosts, thus you can’t mount a host directory from within the Dockerfile
 - `VOLUME` does not support specifying a _host-dir_ parameter. You must specify the _mountpoint_ when you **create** or **run** the container
+- **Tip** `VOLUME` should be used to expose any database storage area, configuration storage, or files/folders created by your docker container.
+  - You are strongly encouraged to use `VOLUME` for any _mutable_ and/or _user-serviceable_ parts of your image.
 
 ```sh
 VOLUME ["/var/log/"]
@@ -394,6 +457,11 @@ More on Docker volumes is [here](https://docs.docker.com/storage/volumes/)
 **`USER`** instruction sets the `user` name (or `UID`) and optionally the user `group` (or `GID`) to use when running the image and for any `RUN`, `CMD` and `ENTRYPOINT` instructions follows
 - when specifying a group for the user, the user will have ONLY the specified group membership
 - when the user doesn’t have a primary group then the image (or the next instructions) will be run with the root group
+- **Tip**
+  - if a service can run without privileges, use `USER` to change to a **non-root** user
+  - avoid installing or using `sudo` as it has unpredictable TTY and signal-forwarding behavior that can cause problems
+  - if you absolutely need functionality similar to `sudo`, such as initializing the daemon as root but running it as non-root, consider using `gosu`
+  - avoid switching USER back and forth frequently
 
 ```sh
 USER <user>[:<group>]
@@ -402,11 +470,14 @@ USER <UID>[:<GID>]
 
 <br/>
 **`WORKDIR`**  instruction sets the working directory for any `RUN`, `CMD`, `ENTRYPOINT`, `COPY` and `ADD` instructions follows
-- if the WORKDIR doesn’t exist, it will be created
+- if the `WORKDIR` doesn’t exist, it will be **created**
 - it can be used multiple times `WORKDIR /path/to/workdir`
 - it could be a relative path to previous `WORKDIR`
 - it can interpret variables set with `ENV`
 - without a `WORKDIR` instruction, the work directory in the image is the root
+- **Tip**
+  - always use absolute paths for `WORKDIR`
+  - use `WORKDIR` instead of proliferating instructions like `RUN cd … && do-something`, which are hard to read, troubleshoot, and maintain
 
 <br/>
 **`ARG`** instruction defines a variable that users can pass at _build-time_ to the builder with the `docker build` command using the `--build-arg <varname>=<value>` flag
@@ -435,6 +506,7 @@ ARG buildno
 - the trigger will be executed in the context of the downstream build; if all triggers succeed, the FROM instruction completes and the build continues
 - any build instruction can be registered as a trigger; an image can have multiple `ONBUILD` instructions
 - it won't be inherited to the downstream build
+- **Tip** images built with `ONBUILD` should get a separate tag, for example: `ruby:1.9-onbuild`
 
 ```sh
 ONBUILD ADD . /app/src

@@ -1,10 +1,10 @@
 ---
 layout: note_page
-title: Java - Effective Java Reading Notes
+title: Java - Effective Java
 title_short: effective_java
 dateStr: 2015-09-01
 category: Reading-Notes
-tags: notes reading_notes reference check
+tags: notes reference check
 ---
 <br/>
 
