@@ -21,7 +21,7 @@ Go packages that are related and released together are organized within a **modu
 - A module's path serves as an import path prefix for its packages and indicates where the go command should look to download it
 
 A package's **import path** is its module path joined with its subdirectory within the module.
-- i.e. the module `github.com/google/go-cmp` contains a package in the directory `cmp/``. That package's import path is `github.com/google/go-cmp/cmp`
+- i.e. the module `github.com/google/go-cmp` contains a package in the directory `cmp/`. That package's import path is `github.com/google/go-cmp/cmp`
 
 <br/>
 ### Go command

@@ -11,7 +11,7 @@ This set of notes is taking from [golang.org](https://golang.org/doc/effective_g
 Thinking about the problems from a Go's _perspective_ could produce a successful but quite different program. To write Go well, it's important to understand its properties and idioms, to know its conventions for programming.
 
 <br/>
-### Formatting
+### Formatting and Styles
 
 Formatting issues are the most contentious but the least consequential. In Go we can let the machine to take care of most formatting issues, by using `gofmt` program.
 - `gofmt` is also available as command `go fmt`
@@ -35,6 +35,10 @@ type T struct {
     value   int    // its value
 }
 ```
+
+[github.com/uber-go](https://github.com/uber-go/guide/blob/master/style.md) offers a good style guide.
+
+Install some useful [IDE plugins](https://github.com/golang/go/wiki/IDEsAndTextEditorPlugins) to help lint styles and errors quicker and sooner. 
 
 <br/>
 ### Commentary
