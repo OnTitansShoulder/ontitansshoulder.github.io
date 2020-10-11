@@ -1,0 +1,39 @@
+site_name: Ontitansshoulder Notes
+site_author: Zhongkai Liu
+site_description: >-
+  A collection of notes I took during my learning...
+
+# theme config
+theme:
+  name: material
+  palette:
+    scheme: default
+    primary: indigo
+    accent: indigo
+  font:
+    text: Roboto
+    code: Roboto Mono
+  favicon: assets/favicon.ico
+
+plugins:
+  - search
+  - minify:
+      minify_html: true
+
+# Customization
+#extra:
+  #something
+
+# Extensions
+markdown_extensions:
+  - abbr
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.highlight
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - toc:
+      baselevel: 1
+      permalink: true
+ 
