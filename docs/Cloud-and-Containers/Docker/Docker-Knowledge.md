@@ -11,11 +11,11 @@ This set of notes is taken from a book _Docker High Performance_ by Allan Espino
 
 <br/>
 
-### Optimizing Docker Images
+## Optimizing Docker Images
 
 Eventually the small container and fast build time goes away when a docker image becomes huge in the order of gigabytes. Then it is worth a while to seek ways to optimize the image building process.
 
-**Reducing deployment time**
+### Reducing deployment time 
 
 If deployments happen within your network, consider a local registry.
 
@@ -31,7 +31,7 @@ docker pull dockerhost:5000/someimage
 
 More details on setting up a managed Docker registry https://docs.docker.com/registry/deploying
 
-**Improving image build time**
+### Improving image build time 
 
 **Using registry mirrors** saves time when fetching upstream images.
 
@@ -59,7 +59,7 @@ Group the tasks of things that won't expect to change often, i.e. dependency ins
 
 For example, copy a dependency file and run the installation command before copy the source files into the image, since the source files are expected to change much more often.
 
-**Reducing the build context size**
+### Reducing the build context size 
 
 Try to avoid copy unnecessary files into the image.
 
@@ -77,7 +77,7 @@ EOF
 docker build [OPTIONS] -f- CONTEXT_PATH # read Dockerfile from STDIN
 ```
 
-**Using caching proxies**
+### Using caching proxies 
 
 Another common problem that causes long runtimes in building Docker images is instructions that download dependencies, such as fetching packages from `yum` repositories or python modules.
 
@@ -97,7 +97,7 @@ This technique is useful when we develop **base** Docker images for our team or 
 
 <br/>
 
-### Reducing Docker image size
+## Reducing Docker image size
 
 While the increase of the image size is inevitable as more changes and features added to the program being containerized, there are some good practices to help _reduce the image size_ or _speed up the build_.
 
@@ -109,7 +109,7 @@ Docker images grow big because some instructions are added that are unnecessary 
 
 Limiting each container to one process is a good rule of thumb, but it is not a hard and fast rule. Use your best judgment to keep containers as clean and modular as possible.
 
-**Chaining commands**
+### Chaining commands 
 
 Packaging **metadata and cache** are the common parts of the code that are usually increased in size. A Docker image's size is basically the _sum of each individual layer image_ (more specifically, only `RUN COPY ADD` creates layers, other instructions creates temporary intermediate layers that won't add up image size); this is how **union filesystems** work. That's why installing packages and removing cache in a separate step will not reduce the image size, like following practice:
 
@@ -139,7 +139,7 @@ RUN echo deb http://httpredir.debian.org/debian stretch-backports main \
     rm -rfv /var/lib/apt/lists/*
 ```
 
-**Separating build and deployment images**
+### Separating build and deployment images 
 
 **Source libraries**, such as compilers and source header files, are only necessary when **building an application** inside a Docker image. After the application is built, only the compiled binary and related shared libraries are needed to run the application.
 
@@ -215,7 +215,7 @@ CMD ["--help"]
 
 <br/>
 
-### Frequently-used Docker CLI commands reference
+## Frequently-used Docker CLI commands reference
 
 ```sh
 docker info # prints a summary of current docker environment
@@ -237,9 +237,9 @@ docker run -d helloworld # run a container detached (in background)
 
 <br/>
 
-### Dockerfile Reference
+## Dockerfile Reference
 
-**How a Docker image is built**
+### How a Docker image is built 
 
 A `Dockerfile` is a text document that describes how a Docker image is built.
 
@@ -268,7 +268,7 @@ Learning about [BuildKit](https://github.com/moby/buildkit/blob/master/frontend/
 
 <br/>
 
-**Dockerfile instructions**
+### Dockerfile instructions 
 
 <br/>
 

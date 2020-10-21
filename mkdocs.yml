@@ -1,4 +1,4 @@
-site_name: Ontitansshoulder Notes
+site_name: Ontitansshoulder's Blog
 site_author: Zhongkai Liu
 site_description: >-
   A collection of notes I took during my learning...
@@ -14,6 +14,9 @@ theme:
     text: Roboto
     code: Roboto Mono
   favicon: assets/favicon.ico
+  features:
+    - navigation.tabs
+    - navigation.expand
 
 plugins:
   - search
@@ -36,4 +39,47 @@ markdown_extensions:
   - toc:
       baselevel: 1
       permalink: true
- 
+
+nav:
+  - Notes:
+    - Welcome: "index.md"
+    - Cloud and Containers:
+      - Docker:
+        - "Cloud-and-Containers/Docker/Docker-Knowledge.md"
+    - Dev Tools Reference:
+      - Splunk:
+        - "Dev-Tools-Reference/Splunk/I-Fundamentals.md"
+        - "Dev-Tools-Reference/Splunk/II-Fundamentals.md"
+        - "Dev-Tools-Reference/Splunk/III-Fundamentals.md"
+        - "Dev-Tools-Reference/Splunk/IV-Advanced.md"
+    - Linux:
+      - Concepts:
+        - Linux Basics Must-know: "Linux/Concepts/Basics.md"
+        - Linux Advanced Must-know: "Linux/Concepts/Adv_Concepts.md"
+        - Linux Network Concepts: "Linux/Concepts/Networking-Concepts.md"
+        - Basic Linux Server Concepts: "Linux/Concepts/Server-Basics.md"
+      - Commands:
+        - Freq Used Shell Cmds: "Linux/Commands/Freq-Used-Shell-Cmds.md"
+        - Freq Used Network Cmds: "Linux/Commands/Networking-Shell-Cmds.md"
+        - Text Manipulating Cmds: "Linux/Commands/Text-Manipulating-Cmds.md"
+      - Manage Accounts & Groups: "Linux/Account-Administration.md"
+      - Freq Linux Tasks: "Linux/Freq-Tasks.md"
+      - Shell Scripting: "Linux/Shell-Scripting.md"
+      - Linux Terminal Tricks: "Linux/Terminal-Tricks.md"
+      - Vim Tricks: "Linux/Vim-Tricks.md"
+    - Programming Lang Reference:
+      - Golang:
+        - Golang Language Reference: "Programming-Lang-Reference/Golang/Golang-Specs.markdown"
+        - Effective Go: "Programming-Lang-Reference/Golang/Best-Practices.md"
+        - Go libraries and examples: "Programming-Lang-Reference/Golang/Freq-Used-Libs.md"
+      - Java:
+        - Effective Java: "Programming-Lang-Reference/Java/Best-Practices.md"
+        - Java Design Patterns: "Programming-Lang-Reference/Java/Design-Patterns.md"
+      - Perl:
+        - Perl Language Reference: "Programming-Lang-Reference/Perl/Perl-Lang-Specs.md"
+      - Github Markdown Guide: "Programming-Lang-Reference/Github-Markdown.md"
+      - Regex Cheatsheet: "Programming-Lang-Reference/Regex-Specs.md"
+    - Other Reading Notes:
+      - How Netflix Works: "Reading-Notes/How-Netflix-Works.md"
+      - System Design Guide: "Reading-Notes/System-Design-Concepts.md"
+      - Why Latency Matters: "Reading-Notes/Why-Latency-Matters.md"

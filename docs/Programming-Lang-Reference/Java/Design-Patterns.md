@@ -6,12 +6,20 @@ dateStr: 2020-09-01
 category: Reading-Notes
 tags: notes check
 ---
+
 Notes taken from the book _Head First Design Patterns_. Examples and source code http://www.headfirstlabs.com/books/hfdp/
-<br/>
 
 Design patterns don’t go directly into your code, they fi rst go into your BRAIN. Once you’ve loaded your brain with a good working knowledge of patterns, you can then start to apply them to your new designs, and rework your old code when you fi nd it’s degrading into an infl exible mess of jungle spaghetti code.
 
 One of the advantages of knowing design patterns is recognizing and quickly understanding the design movitation in your favorite libraries.
+
+A design pattern is really just a solution (that functions pretty well) to a type of problem in a certain context.
+
+Meanwhile, patterns are not meant to be laws or rules; they are guidelines that you can alter to fit your needs. WHen you do adopt patterns with changes to fit your need, be sure to document the changes which can help other developers to understand the differences between your pattern and the classic pattern.
+
+Center your thinking on design, not on patterns (that you feel obligated to have to use some sort of patterns to solve a problem). Use patterns when there is a natural need for them. Stick with simpler solutions when possible.
+
+There are more patterns for other domains such as concurrent systems and enterprise systems are not covered in this notes.
 
 <br/>
 
@@ -340,6 +348,22 @@ This pattern is in fact pattern of patterns. A compound pattern is a set of a fe
 
 The Model-View-Controller pattern is actually a compound pattern.
 
+## Model-View-Controller (MVC) Pattern
+
+1. User interact with the view
+2. The controller asks the model to change the state, or ask the view to change
+3. The model notifies the view when its state changed
+4. The view asks the model for state, and changes accordingly to the state
+
+The model uses Observer to keep the views and controllers updated on the latest state changes. The view and the controller, on the other hand, implement the Strategy Pattern. The Adaptor Pattern is also often used with the MVC Pattern. 
+
+These patterns work together to decouple the three players in the MVC model, which keeps designs clear and flexible.
+
+The controller implements behavior for the view. It is the smarts that translates the actions from the view to actions on the model. The model takes those actions and implements the application logic to decide what to do in response to those actions. The controller might have to do a little work to determine what method calls to make on the model, but that’s not considered the “application logic.” The application logic is the code that manages and manipulates your data and it lives in your model.
+
+It wasn’t long after the Web was spun that developers started adapting the MVC to fit the browser/server model. The prevailing adaptation is known simply as “Model 2” and uses a combination of servlet and JSP technology to achieve the same separation of model, view and controller that we see in conventional GUIs.
+
+
 <br/>
 
 ## Collection of all wisdoms
@@ -378,3 +402,9 @@ OO Patterns
 - **The Composite Pattern** allows you to compose objects into tree structures to represent part-whole hierarchies. Composite lets clients treat individual objects and compositions of objects uniformly
 - **The State Pattern** allows an object to alter its behavior when its internal state changes. The object will appear to change its class.
 - **The Proxy Pattern** provides a surrogate or placeholder for another object to control access to it.
+
+## Other Resources
+
+[The Portland Patterns Repository](http://c2.com/ppr/index.html)
+
+[The Hillside Group](https://hillside.net/patterns/patterns-catalog)

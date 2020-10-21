@@ -7,7 +7,7 @@ category: index
 tags: index
 ---
 
-This site is a collection of my notes taken while reading and learning various of things.
+This section is a collection of my notes taken while reading and learning various of things.
 
 In such age of information boom, we are taking in lots of information everyday. And being a software engineer make it worse since you also have to keep learning loads of new stuff everyday in order to do a better job for the work assigned to you. Sometimes you learn something new but the learning curve forces you to drop it when you not use it regularly.
 

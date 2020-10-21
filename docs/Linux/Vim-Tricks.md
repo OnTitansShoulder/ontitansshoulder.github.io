@@ -148,6 +148,7 @@ Key Pressing - | - Function
 `y` | **copy selected area**
 `d` | **delete selected area**
 **Tip** | for multiple indenting, add a `numb N` before pressing `>` or `<`
+**Tip** | under block mode while selecting multiple lines, repeat edits to all the lines by pressing `I` first, make the edits, then press `Esc`
 
 <br/>
 
