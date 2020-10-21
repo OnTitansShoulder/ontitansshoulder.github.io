@@ -16,7 +16,7 @@ theme:
   favicon: assets/favicon.ico
   features:
     - navigation.tabs
-    - navigation.expand
+    - navigation.instant
 
 plugins:
   - search
@@ -24,12 +24,14 @@ plugins:
       minify_html: true
 
 # Customization
-#extra:
-  #something
+extra_css:
+  - css/extra.css
 
 # Extensions
 markdown_extensions:
   - abbr
+  - admonition
+  - pymdownx.details
   - pymdownx.emoji:
       emoji_index: !!python/name:materialx.emoji.twemoji
       emoji_generator: !!python/name:materialx.emoji.to_svg
