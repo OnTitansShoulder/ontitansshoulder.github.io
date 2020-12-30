@@ -323,6 +323,9 @@ iface eth0 inet static
 sudo dphys-swapfile swapoff && \
 sudo dphys-swapfile uninstall && \
 sudo update-rc.d dphys-swapfile remove
+
+# verify empty means disabled
+sudo swapon --summary
 ```
 
 <br/>
@@ -353,11 +356,21 @@ find ~ -mmin -3 -ls # give files changed in ~ in last 3 minutes
 
 <br/>
 
-### Find_Apt_Package_To_Install
+### Find_Packages_To_Install
 
 ```sh
-apt-cache search KEYWORD
-apt-get install KEYWORD
+# debian linux
+sudo apt-get update && sudo apt-get upgrade
+sudo apt-cache search <pkg>
+sudo apt-get install <pkg>
+
+# downgrade a package
+sudo apt-cache showpkg <pkg> # list pkg versions
+sudo aptitude install <pkg>=<version>
+
+# pin a package version
+sudo apt-mark hold <pkg>
+
 # to install .deb file
 sudo dpkg -i /path/to/deb/file
 # alternatively
