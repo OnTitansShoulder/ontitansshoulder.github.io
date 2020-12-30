@@ -8,14 +8,17 @@ tags: notes reference
 ---
 
 <br/>
+
 ### Dcoumentation
 
 
 <br/>
+
 ### Debug
 
 
 <br/>
+
 ### Type of Data
 
 **Constants**
@@ -38,6 +41,7 @@ tags: notes reference
 
 
 <br/>
+
 ### I/O
 
 **Printing**
@@ -48,6 +52,7 @@ tags: notes reference
 
 
 <br/>
+
 ### Conditions
 
 **Boolean evaluations**
@@ -56,10 +61,12 @@ tags: notes reference
 
 
 <br/>
+
 ### Loops
 
 
 <br/>
+
 ### Regex
 
 **Pattern**
@@ -69,10 +76,12 @@ tags: notes reference
 
 
 <br/>
+
 ### Transliteration
 
 
 <br/>
+
 ### Reference
 
 
@@ -80,6 +89,7 @@ tags: notes reference
 
 
 <br/>
+
 ### Subroutines (user-defined functions)
 
 **Subroutine Prototype**
@@ -88,10 +98,12 @@ tags: notes reference
 
 
 <br/>
+
 ### Recursion
 
 
 <br/>
+
 ### Modules
 
 **Change \@INC**
@@ -100,4 +112,5 @@ tags: notes reference
 
 
 <br/>
+
 ### command in shell

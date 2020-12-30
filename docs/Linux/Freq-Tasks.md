@@ -48,7 +48,14 @@ sync # flush out write cache so the drive is okay to unmount
 sudo hostnamectl --transient set-hostname $hostname
 sudo hostnamectl --static set-hostname $hostname
 sudo hostnamectl --pretty set-hostname $hostname
-sudo sed -i s/raspberrypi/$hostname/g /etc/hosts
+sudo sed -i s/<old-hostname>/$hostname/g /etc/hosts
+```
+
+### Change_RaspberryPi_OS_Keyboard
+
+```sh
+sudo nano /etc/default/keyboard
+# update 'XKBLAYOUT' to 'us'
 ```
 
 <br/>
@@ -295,12 +302,18 @@ fusermount -u /media/remote/fs/mountpoint
 ### Enable_static_ip_on_Linux_machine
 
 ```sh
+ip=<desired_static_ip>
+dns=<router_dns_address>
+ns=<name_server_address|8.8.8.8>
+  # here router dns is usually the router admin portal address with 0 as the last of the four numbers, i.e. 192.168.1.0
 sudo cat <<EOT >> /etc/dhcpcd.conf
 interface eth0
 static ip_address=$ip/24
 static routers=$dns
 static domain_name_servers=$dns
 EOT
+sudo reboot
+
 # alternatively
 route add default gw {ROUTER-IP-ADDRESS} {INTERFACE-NAME}
 sudo ifconfig eth0 192.168.1.30 netmask 255.255.255.0
@@ -323,6 +336,23 @@ iface eth0 inet static
 sudo dphys-swapfile swapoff && \
 sudo dphys-swapfile uninstall && \
 sudo update-rc.d dphys-swapfile remove
+
+# verify empty means disabled
+sudo swapon --summary
+```
+
+<br/>
+
+### Find_USB_Cam
+
+```sh
+sudo apt-get install v4l-utils
+v4l2-ctl --list-devices
+# view more info about this device
+sudo v4l2-ctl --device=/dev/video0 --all
+v4l2-ctl --list-formats-ext # show available resolution settings
+ffmpeg -f v4l2 -list_formats all -i /dev/video0 # show supported resolutions
+ffprobe <file> # check video resolution
 ```
 
 <br/>
@@ -353,15 +383,48 @@ find ~ -mmin -3 -ls # give files changed in ~ in last 3 minutes
 
 <br/>
 
-### Find_Apt_Package_To_Install
+### Find_Packages_To_Install
 
 ```sh
-apt-cache search KEYWORD
-apt-get install KEYWORD
+# debian linux
+sudo apt-get update && sudo apt-get upgrade
+sudo apt-cache search <pkg>
+sudo apt-get install <pkg>
+
+# downgrade a package
+sudo apt-cache showpkg <pkg> # list pkg versions
+sudo aptitude install <pkg>=<version>
+
+# pin a package version
+sudo apt-mark hold <pkg>
+
 # to install .deb file
 sudo dpkg -i /path/to/deb/file
 # alternatively
 sudo apt install /path/to/deb/file
+```
+
+<br/>
+
+### Find_My_IP_Address
+
+```sh
+# give private IP address
+ifconfig # look for ethX or enX, physical connections
+ip addr
+hostname -I
+
+# give public IP address via an echo server
+curl https://checkip.amazonaws.com
+curl https://icanhazip.com
+```
+
+<br/>
+
+### Find_Other_Machines_On_Local_Network
+
+```sh
+sudo nmap -sA 192.168.1.0/24
 ```
 
 <br/>
@@ -424,6 +487,7 @@ Network logs can be found in `/var/run/syslog`
 
 ```sh
 # RaspberryPi Configs (terminal and ssh friendly)
+## default password is also changed this way instead of the passwd command
 sudo raspi-config
 ```
 

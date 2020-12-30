@@ -100,10 +100,9 @@ If you need to change multiple parts of the prompt to use different styles, then
 
 ### Useful aliases
 
-**Colorize/prettify some commands output**
-
 ```sh
-alias diff='colordiff' # need to install
+# colorize/prettify some commands output
+alias diff='colordiff' # (need to install colordiff)
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias grep='grep --color=auto'
@@ -111,22 +110,36 @@ alias ls='ls --color=auto'
 alias ct='column -t'
 alias dfc='df -hPT | column -t'
 alias mountc='mount | column -t'
-```
 
-**Quick cd**
-
-```sh
+# quick cd
 alias ..='cd ..'
 alias 2..='cd ../../'
 alias 3..='cd ../../../'
 alias 4..='cd ../../../../'
-```
+alias ...='cd ../../../'
+alias ....='cd ../../../../'
 
-**Datetime**
+# quick clipboard (need to install xclip)
+alias setclip="xclip -selection c"
+alias getclip="xclip -selection c -o"
 
-```sh
+# datetime
 alias d='date +%F'
 alias t='date +%T'
 alias dt='date +"%F %T"'
 alias now='date +"[%F %T]"'
+
+# k8s alias
+alias kv='kubectl version'
+alias kgetcontexts='kubectl config get-contexts'
+alias kusecontext='kubectl config use-context'
+alias ksetnamespace='kubectl config set-context --current --namespace='
+alias kgetpo='kubectl get pods'
+alias kgetdep='kubectl get deployments'
+alias kgetsvc='kubectl get services'
+alias kgetrs='kubectl get replicasets'
+alias kexecit='kubectl exec -it'
+alias kdespo='kubectl describe pod'
+alias kdesdep='kubectl describe deployment'
+alias klogs='kubectl logs'
 ```
