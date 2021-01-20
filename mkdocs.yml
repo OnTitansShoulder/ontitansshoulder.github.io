@@ -40,7 +40,6 @@ markdown_extensions:
   - pymdownx.snippets
   - pymdownx.superfences
   - toc:
-      baselevel: 1
       permalink: true
 
 nav:
