@@ -128,7 +128,7 @@ The general web UI for clusters allow **manage and troubleshoot applications** r
 
 Records generic time-series **metrics about containers**.
 
-#### CLuster-level logging
+#### Cluster-level logging
 
 Saving **container logs** to a central log store with search/browsing interface.
 
@@ -379,7 +379,34 @@ A Pod is not a process, but an **environment for running container(s)**. A Pod p
 
 Within a Pod, containers **share an IP address and port space**, and can find each other via localhost. The containers in a Pod can also communicate with each other using **standard inter-process communications** like SystemV semaphores or POSIX shared memory. Containers that want to interact with a container running in a different Pod can use IP networking to communicate.
 
+#### YAML Reference
+
+???+ note "Pod Example"
+    ```yaml
+    apiVersion: v1
+    kind: Pod
+    metadata:
+      name: pod-example
+    spec:
+      containers:
+      - name: ubuntu
+        image: ubuntu:trusty
+        command: ["echo"]
+        args: ["Hello World"]
+    ```
+
+???+ note "Frequently used commands"
+    ```sh
+    kubectl get pods
+    kubectl get pods --show-labels
+    kubectl describe pod/<pod>
+    kubectl exec -it pod/<pod> -c <container> <command>
+    kubectl logs pod/<pod> -c <container>
+    ```
+
 `Static Pods` are managed directly by the **kubelet daemon** on a specific node, without the API server observing them. The main use for static Pods is to run a **self-hosted control plane** (or manage its components).
+
+#### Pod lifecycle
 
 **Pod lifecycle**: starting in the Pending phase, moving through Running if at least one of its primary containers starts OK, and then through either the Succeeded or Failed phases depending on whether any container in the Pod terminated in failure.
 
@@ -404,6 +431,8 @@ A Pod has `PodStatus`, which contains an array of PodConditions which the Pod ha
 - **Initialized** - all init containers have started successfully
 - **Ready** - the Pod is able to serve requests and should be added to the load balancing pools of all matching Services
 
+#### Probe
+
 A `Probe` is a diagnostic performed periodically by the kubelet on a container. To perform a diagnostic, the kubelet calls a Handler implemented by the container. There are three types of handlers:
 
 - **ExecAction** - Executes a specified command or script inside the container and expects it exits with 0
@@ -420,6 +449,8 @@ Pods represent processes running on nodes in the cluster, it is important to all
 
 If the **order** of shutting down the containers within a Pod matters, consider using the preStop hook to **synchronize**.
 
+#### initContainers
+
 `initContainers` can contain utilities or setup scripts not present in an app image, which are run before the app containers are started. They always **run to completion** and must complete **sequentially** and successfully before next one starts. If one fails, the kubelet repeatedly restarts that init container until it succeeds unless the restartPolicy is Never, then the Pod fails to start and pending deletion.
 
 Init containers offer a mechanism to block or **delay app container startup** until a set of preconditions are met, and can securely run utilities or custom code that would otherwise make an app container image less secure, as they access to Secrets that app containers cannot access.
@@ -429,6 +460,8 @@ You can use `topology spread constraints` to control how Pods are spread across 
 Directives related to "Affinity" control how Pods are scheduled - more packed or more scattered.
 
 `PodPresets` are API resource objects for injecting additional runtime information such as secrets, volumes, volume mounts, and environment variables, into pods at creation time. Pod template authors to not have to explicitly provide all information for every pod.
+
+#### Pod Disruptions
 
 Pods do not disappear until someone (a person or a controller) destroys them, or there is an unavoidable hardware or system software error.
 
@@ -464,5 +497,494 @@ As a cluster admin to perform a disruptive action on all the nodes in your clust
 - write disruption-rolerant applications and use PDBs, can be tricky on the application effort
 
 Ephemeral containers are intended to help troubleshoot a hard-to-reproduce bug through running within a Pod and inspect its state and run arbitrary commands. It is a way to run containers with many limitations and has to be added to a Pod through k8s API.
+
+### Deployments
+
+A `Deployment` provides declarative updates for `Pods` and `ReplicaSets`.
+
+Creating a new Deployment creates a ReplicaSet, which in turn creates Pods per the `PodTemplateSpec` of the Deployment. With a Deployment:
+
+- Scale up/down the Deployment
+- Rollback the Deployment and apply an earlier ReplicaSet
+- Make changes to PodTemplateSpec and rollout new a RelicaSet
+
+#### YAML Reference
+
+???+ note "Deployment Template"
+    ```yaml
+    apiVersion: apps/v1         # required
+    kind: Deployment            # required
+    metadata:                   # required
+      name: nginx-deployment
+      labels:                   # must match spec.template.metadata.labels
+        app: nginx
+    spec:                       # required
+      minReadySeconds: 0            # default 0, time that newly created Pod should be
+                                    #   ready without any of its containers crashing
+                                    #   for it to be considered available 
+      progressDeadlineSeconds: 600  # default 600, time to wait for your Deployment to
+                                    #   progress before the system reports back that
+                                    #   the Deployment has failed progressing
+                                    #   must > minReadySeconds
+      paused: false             # default false, for pausing and resuming a Deployment
+      replicas: 3               # default 1
+      revisionHistoryLimit: 10  # default 10, number of old ReplicaSets kept for rollback
+      selector:                 # required
+        matchLabels:            # must match spec.template.metadata.labels
+          app: nginx
+      strategy:                 # strategy used to replace old Pods by new ones
+        type: RollingUpdate     # default RollingUpdate, also possible: Recreate
+        rollingUpdate:
+          maxUnavailable: 25%   # default 25%, max number of Pods over desired replicas
+                                #   that can be unavailable during the update process
+                                #   can be an absolute number or percentage (rounding down)
+          maxSurge: 25%         # default 25%, max number of Pods that can be created
+                                #   over desired replicas
+                                #   can be an absolute number or percentage (rounding up)
+      template:                 # required, aka Pod template, 
+                                #   same schema as Pod, apiVersion and kind excluded
+        metadata:               # required
+          labels:
+            app: nginx
+        spec:                   # required
+          containers:           # required
+          - name: nginx
+            image: nginx:1.14.2
+            ports:
+            - containerPort: 80
+          restartPolicy: Always # default Always, also available: Never, OnFailure
+    ```
+
+A Deployment may **terminate** Pods whose labels match the selector if their template is different from `.spec.template` or if the total number of such Pods exceeds `.spec.replicas`. For labels, make sure not to overlap with other controllers, otherwise the controllers won't behave correctly 
+
+???+ note "Frequently used commands"
+    ```sh
+    kubectl apply -f <.yaml>
+    kubectl get deployment
+    kubectl describe deployment/<deployment_name>
+    kubectl scale deployment/<deployment_name> --replicas=10
+    kubectl autoscale deployment/<deployment_name> --min=10 --max=15 --cpu-percent=80
+    kubectl rollout status deployment/<deployment_name>
+    kubectl rollout history deployment/<deployment_name>
+    kubectl rollout undo deployment/<deployment_name> --to-revision=2
+    kubectl rollout pause/resume deployment/<deployment_name>
+    kubectl edit deployment/<deployment_name>
+    kubectl get rs
+    ```
+
+#### RollingUpdate vs. Recreate
+
+A Deployment's `revision` is created when a Deployment's rollout is triggered. New revision is created each time the PodTemplate (.spec.templates) is changed. Set `.spec.revisionHistoryLimit` field (default 10) to specify how many old ReplicaSets for this Deployment you want to retain.
+
+During a **RollingUpdate**, `Deployment controller` creates new Pods per the new ReplicaSet and termiantes existing replicas in the active ReplicaSets, in a controlled rate in order to mitigate risk.
+
+With `propertional scaling`, Deployment controller decide where to add new replicas instead of adding all blindly to the new ReplicaSet. Parameters affecting this are `maxSurge` and `maxUnavailable`
+
+When setting `.spec.strategy.type` to **Recreate**, existing Pods are killed before new ones are created, which guarantee Pod termination previous to creation for upgrades. Successful removal is awaited before any Pod of the new revision is created.
+
+#### Deployment statuses
+
+A Deployment can have various states during its lifecycle: progressing, complete, fail to progress
+
+**Progressing** state:
+
+- creating a new ReplicaSet
+- scaling up newest ReplicaSet
+- scaling down older ReplicaSet(s)
+- wait new Pods to become Ready
+
+**Complete** state:
+
+- all replicas updated to latest version per the PodTemplateSpec and Ready
+- no old replicas present
+
+**Failed** state:
+
+- progressing got stuck for a while and cannot complete by the `.spec.progressDeadlineSeconds` configured
+  - Possible causes:
+    - insufficient quota
+    - readiness probe fails
+    - image pull errors
+    - insufficient permissions
+    - application runtime misconfiguration causing container exits
+- Kubernetes takes **NO action** on a stalled Deployment other than to report a status condition `.status.conditions`:
+  - "Type=Progressing"
+  - "Status=False"
+  - "Reason=ProgressDeadlineExceeded"
+- Higher level orchestrators can take advantage of it and act accordingly, such as rollback to previous version
+
+### ReplicaSet
+
+A **ReplicaSet** maintains a stable set of replica Pods running at any given time. When a ReplicaSet needs to create new Pods, it uses its `Pod template`.
+
+#### ReplicaSet and its Links with Pods
+
+A ReplicaSet is **linked** to its Pods via the Pods' `metadata.ownerReferences` field, which specifies what resource the current object is owned by. A ReplicaSet identifies new Pods to **acquire** by using its selector on Pods missing `metadata.ownerReferences` or the reference is an invalid controller, for which the reference is established.
+
+While you can create `bare Pods`, it is important to make sure they DO NOT have labels which match the selector of one of exiting ReplicaSets, otherwise they can be acquired by the ReplicaSets and got deleted (because exceeding the desired number of replica).
+
+You can remove Pods from a ReplicaSet (`orphan Pods`) by changing their labels so they do not match any ReplicaSet's selector. This technique may be used to remove Pods from service for **debugging, data recovery, etc**.
+
+`Deployment` is a higher-level resource that manages ReplicaSets, and you may never need to manipulate ReplicaSet objects directly. Use a Deployment instead, and define your application in the `spec` section.
+
+#### YAML Reference
+
+???+ note "ReplicaSet Example"
+    ```yaml
+    apiVersion: apps/v1
+    kind: ReplicaSet
+    metadata:
+      name: frontend
+      labels:
+        app: guestbook
+        tier: frontend
+    spec:
+      replicas: 3
+      selector:
+        matchLabels:
+          tier: frontend
+      template:
+        metadata:
+          labels:
+            tier: frontend
+        spec:
+          containers:
+          - name: php-redis
+            image: gcr.io/google_samples/gb-frontend:v3
+    ```
+
+???+ note "Frequently used commands"
+    ```sh
+    kubectl get rs
+    kubectl delete rs/<rs_name>
+    kubectl delete replicaset/<rs_name>
+    kubectl delete replicaset/<rs_name> --cascade=orphan # keep the Pods managed by this ReplicaSet
+    ```
+
+#### ReplicaSet as a Horizontal Pod Autoscaler (HPA) Target
+
+ReplicaSet can be auto-scaled by an HPA according to settings such as CPU usage, cron expression, etc.
+
+???+ note "HPA Example"
+    ```yaml
+    apiVersion: autoscaling/v1
+    kind: HorizontalPodAutoscaler
+    metadata:
+      name: frontend-scaler
+    spec:
+      scaleTargetRef:
+        kind: ReplicaSet
+        name: frontend
+      minReplicas: 3
+      maxReplicas: 10
+      targetCPUUtilizationPercentage: 50
+    ```
+
+???+ note "Frequently used commands"
+    ```sh
+    kubectl autoscale rs frontend --max=10 --min=3 --cpu-percent=50
+    ```
+
+### StatefulSets
+
+**StatefulSets** are like Deployments that manages the deployment and scaling of a set of Pods, while providing guarantees about the **ordering** and **uniqueness** of these Pods. Pods created are not interchangeable and each has a **persistent identifier** that it maintains across any rescheduling.
+
+StatefulSets are valuable for applications that require one or more of:
+
+- Stable, unique network identifiers.
+- Stable, persistent storage.
+- Ordered, graceful deployment and scaling.
+- Ordered, automated rolling updates.
+
+#### Limitations/Behaviors
+
+- Storage for a Pod must be provisioned by a `PersistentVolumeProvisioner` based on the `storage class`, or pre-provisioned by an admin
+- Deleting/scaling down StatefulSet will NOT delete the volumes to ensure data safety
+- A Headless Service is required for the network identity of the Pods
+- Deletion of the Pods when a StatefulSet is deleted, is not guaranteed.
+  - try scale down the StatefulSet to 0 prior its deletion
+- RollingUpdates with default `podManagementPolicy` as `OrderedReady` can run into a broken state that requires [manual intervention](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#forced-rollback){target=_blank}
+
+#### YAML Reference
+
+???+ note "StatefulSet Example"
+    ```yaml
+    apiVersion: apps/v1                       # required
+    kind: StatefulSet                         # required
+    metadata:                                 # required
+      name: web
+    spec:                                     # required
+      podManagementPolicy: OrderedReady       # default OrderedReady, also possible: Parallel
+      replicas: 3                             # default 1
+      selector:                               # required
+        matchLabels:                          # must match spec.template.metadata.labels
+          app: nginx
+      serviceName: "nginx"                    # must match the Service name
+      template:                               # required
+        metadata:                             # required
+          labels:
+            app: nginx
+        spec:
+          terminationGracePeriodSeconds: 10   # should be non-0
+          containers:                         # required
+          - name: nginx
+            image: k8s.gcr.io/nginx-slim:0.8
+            ports:
+            - containerPort: 80
+              name: web
+            volumeMounts:
+            - name: www
+              mountPath: /usr/share/nginx/html
+      updateStrategy:
+        type: RollingUpdate                   # default RollingUpdate, also possible: OnDelete, Partitions
+      volumeClaimTemplates:                   # provide stable storage using PersistentVolumes
+      - metadata:
+          name: www
+        spec:
+          accessModes: [ "ReadWriteOnce" ]
+          storageClassName: "my-storage-class"
+          resources:
+            requests:
+              storage: 1Gi
+    ---
+    # Headless Service
+    apiVersion: v1
+    kind: Service
+    metadata:
+      name: nginx
+      labels:
+        app: nginx
+    spec:
+      ports:
+      - port: 80
+        name: web
+      clusterIP: None
+      selector:
+        app: nginx
+    ```
+
+#### StatefulSet Pods
+
+StatefulSet Pods have a unique identity that is comprised of an **ordinal**: each Pod assigned an integer ordinal from `0` up through `N-1`, for N replicas.
+
+Pod will be named `$(statefulset name)-$(ordinal)` and getting a matching DNS subdomain `$(podname).$(governing service domain)`.
+
+The domain managed by the Headless Service has form `$(service name).$(namespace).svc.$(cluster_domain)`. cluster_domain will be `cluster.local` unless [configured](https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/){target=_blank}.
+
+Pod will also be added a label `statefulset.kubernetes.io/pod-name` with it name, for attaching a Service to specific Pods.
+
+#### Scaling
+
+StatefulSet being deployed will do updates to the Pods sequentially in the order from **{0..N-1}**; and Pod N must wait ALL Pods N-1 and below to have started and available, before being created and replaced.
+
+Upon StatefulSet deletion, the Pods will be terminatated sequentially in the order from **{N-1..0}**; and Pod N must wait ALL Pods N+1 and above to have completed terminated and deleted, before going into termination.
+
+#### Parallel Pod Management
+
+Specifying `.spec.podManagementPolicy` with `Parallel` will launch or terminate all Pods in parallel regardless the ordering.
+
+#### Update Strategies
+
+StatefulSet's `.spec.updateStrategy` field allows you to **configure and disable** automated rolling updates for containers, labels, resource request/limits, and annotations for the Pods in a StatefulSet.
+
+##### OnDelete
+
+**OnDelete** tells StatefulSet controller to not automatically update Pods; users must manually delete Pods to cause new Pods being created to reflect changes to `.spec.template`.
+
+##### RollingUpdate
+
+**RollingUpdate** strategy implements automated, rolling update for the Pods in a StatefulSet.
+
+##### Partitions
+
+**Partitions** is a setting under RollingUpdate, by specifying a `.spec.updateStrategy.rollingUpdate.partition` number. All Pods with an ordinal **>= partition number** will be updated when the StatefulSet's `.spec.template` is updated; the rest won't ever be updated even on deletion (recreated at previous version)
+
+### DaemonSet
+
+**DaemonSet** ensures that all (or some) Nodes run a **copy** of a Pod. As nodes are added to the cluster, Pods are added to them, and vice-versa.
+
+Deleting a DaemonSet will clean up the Pods it created.
+
+Typical use of DaemonSet:
+
+- running a cluster storage daemon on every node
+- running a logs collection daemon on every node
+- running a node monitoring daemon on every node
+
+#### YAML Reference
+
+???+ note "DaemonSet Template"
+    ```yaml
+    apiVersion: apps/v1                       # required
+    kind: DaemonSet                           # required
+    metadata:                                 # required
+      name: fluentd-elasticsearch
+      namespace: kube-system
+      labels:
+        k8s-app: fluentd-logging
+    spec:                                     # required
+      selector:                               # required, if both types of matchers specified, ANDed
+        matchLabels:                          # must match spec.template.metadata.labels
+          name: fluentd-elasticsearch
+        matchExpressions: ...                 # allows more sophisticated selectors by key or list values
+      template:                               # required
+        metadata:
+          labels:
+            name: fluentd-elasticsearch
+        spec:
+          containers:
+          - name: fluentd-elasticsearch
+            image: quay.io/fluentd_elasticsearch/fluentd:v2.5.2
+            resources:
+              limits:
+                memory: 200Mi
+              requests:
+                cpu: 100m
+                memory: 200Mi
+            volumeMounts:
+            - name: varlog
+              mountPath: /var/log
+            - name: varlibdockercontainers
+              mountPath: /var/lib/docker/containers
+              readOnly: true
+          affinity:                             # default unset, decide what nodes to schedule Pods
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchFields:
+                  - key: metadata.name
+                    operator: In
+                    values:
+                    - target-host-name
+          nodeName: ...                         # default unset (schedule on all nodes)
+          restartPolicy: Always                 # default Always, must be Always
+          terminationGracePeriodSeconds: 30
+          tolerations:                          # have the daemonset runnable on master nodes
+                                                # remove if your masters can't run pods
+          - key: node-role.kubernetes.io/master
+            effect: NoSchedule
+          volumes:
+          - name: varlog
+            hostPath:
+              path: /var/log
+          - name: varlibdockercontainers
+            hostPath:
+              path: /var/lib/docker/containers
+    ```
+
+Once a DaemonSet is created, do not edit its `.spec.selector` as it creates orphaned Pods. Instead, delete the old DaemonSet and deploy a new one if it is necessary to update the selector.
+
+Normally, the node that a Pod runs on is selected by the Kubernetes scheduler. DaemonSet pods are created and scheduled by the **DaemonSet controller**. By adding the NodeAffinity term to the DaemonSet pods, `ScheduleDaemonSetPods` allows you to schedule DaemonSets using the default scheduler instead of the DaemonSet controller.
+
+### Jobs
+
+A **Job** creates one or more Pods and will continue to **retry execution** of the Pods until a specified number of them successfully terminate. Deleting a Job cleans up the Pods created.
+
+Job is used to run some task to completion, and run multiple tasks in parallel from multiple Pods. Parallel Jobs are good for processing of a set of independent but related work items.
+
+#### Parallel executions
+
+1. Non-parallel **default** Jobs
+  - only one Pod started, Job completes as soon as the Pod terminates successfully
+2. Parallel Jobs with a **fixed completion** count
+  - Multiple Pods started, each successful Pod termination get completion count increment by 1
+  - Job completes when there is one successful Pod for each value in the range 1 to `.spec.completions`
+  - you may specify `.spec.parallelism` to speed up Job completion
+    - actual number of pods running in parallel will not exceed the number of remaining completions
+3. Parallel Jobs with a **work queue**
+  - specify `.spec.parallelism`, leave `.spec.completions` unset
+  - Multiple Pods started, Job completes only when at least one Pod terminates successfully and all Pods are terminated
+    - requires Pods coordinate amongst themselves or an external service to determine what each should work on
+    - requires each Pod independently capable of determining whether or not all its peers are done
+  - No new Pods scheduled once one of the Pods terminates successfully
+
+When running a Job in parallel, the Pods should be tolerant to concurrency.
+
+#### YAML Reference
+
+???+ note "Job example"
+    ```yaml
+    apiVersion: batch/v1            # required
+    kind: Job                       # required
+    metadata:                       # required
+      name: pi
+    spec:                           # required
+      activeDeadlineSeconds: 100    # default unset, Job must complete within this period
+      ttlSecondsAfterFinished: 100  # default unset, time to delete Job after its completion
+                                    #   currently an Alpha feature, needs feature gate
+      backoffLimit: 6               # default 6, fail a Job after some amount of retries
+                                    #   with an exponential back-off delay
+      completions: 3                # default 1, run parallel jobs for fixed completion count
+      parallelism: 3                # default 1, run parallel jobs with work queue
+      manualSelector: false         # only when manually specifying the selector
+                                    #   optional and best to omit
+      selector: ...
+      template:                     # required
+        spec:
+          containers:
+          - name: pi
+            image: perl
+            command: ["perl",  "-Mbignum=bpi", "-wle", "print bpi(2000)"]
+          restartPolicy: Never      # only Never or OnFailure allowed
+    ```
+
+???+ note "Frequently used commands"
+    ```sh
+    kubectl get jobs
+    kubectl get pods --selector=job-name=pi --output=jsonpath='{.items[*].metadata.name}'
+    ```
+
+#### Job termination
+
+When a Job completes, no more Pods are created, and the terminated Pods are around for viewing the logs and diagnostics. The job object also **remains** after it is completed. It must be manually cleaned up or set `ttlSecondsAfterFinished` for auto cleanup. Or switch to a `CronJob` instead.
+
+If `.spec.activeDeadlineSeconds` is set, the Job must complete within the period and will fail otherwise and terminate all its running Pods.
+
+### CronJob
+
+A **CronJob** creates Jobs on a repeating schedule. One CronJob object is like one line of a `crontab` (cron table) file.
+
+All CronJob `schedule:` times are based on the **timezone** of the `kube-controller-manager`.
+
+CronJob name must be **<= 52 chars** because 11 chars are usually generated and the max length for name is 63 chars.
+
+A cron job creates a job object about **once per execution time** of its schedule. CronJobs scheduled should be idempotent since in rare circumstances it might be that 2 jobs are created or none created.
+
+#### YAML Reference
+
+???+ note "CronJob Example"
+    ```yaml
+    apiVersion: batch/v1beta1                   # required
+    kind: CronJob                               # required
+    metadata:                                   # required
+      name: hello
+    spec:                                       # required
+      schedule: "*/1 * * * *"                   # required: minute[0-59], hour[0-23], day of the month[1-31], month[1-12], day of week[0-6](Sunday to Saturday)
+                                                #   consult tool at https://crontab.guru/
+      concurrencyPolicy: Allow                  # default Forbid
+      startingDeadlineSeconds: 200              # default unset
+      jobTemplate:                              # required
+        spec:
+          template:
+            spec:
+              containers:
+              - name: hello
+                image: busybox
+                imagePullPolicy: IfNotPresent
+                args:
+                - /bin/sh
+                - -c
+                - date; echo Hello from the Kubernetes cluster
+              restartPolicy: OnFailure
+    ```
+
+#### CronJob limitations
+
+- A CronJob is counted as **missed** if it has **failed to create** Job at its scheduled time.
+  - If concurrencyPolicy is set to Forbid and a CronJob was attempted to be scheduled when there was a previous schedule still running, then it would count as missed.
+- CronJob Controller checks how many schedules it missed in the duration from its last scheduled time until now.
+  - If there are more than **100 missed** schedules, then it does not start the job and logs an error.
+  - If the `startingDeadlineSeconds` field is set, controller counts how many missed jobs occurred from this value rather than from the last scheduled time until now.
+  - If `startingDeadlineSeconds` is set to a large value or left unset (the default) and if `concurrencyPolicy` is set to Allow, the jobs will always run **at least once**.
 
 --8<-- "includes/abbreviations.md"
