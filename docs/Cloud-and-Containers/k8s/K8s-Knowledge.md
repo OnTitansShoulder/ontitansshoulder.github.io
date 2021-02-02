@@ -379,7 +379,7 @@ A Pod is not a process, but an **environment for running container(s)**. A Pod p
 
 Within a Pod, containers **share an IP address and port space**, and can find each other via localhost. The containers in a Pod can also communicate with each other using **standard inter-process communications** like SystemV semaphores or POSIX shared memory. Containers that want to interact with a container running in a different Pod can use IP networking to communicate.
 
-#### YAML Reference
+#### Schema Reference
 
 ???+ note "Pod Example"
     ```yaml
@@ -508,7 +508,7 @@ Creating a new Deployment creates a ReplicaSet, which in turn creates Pods per t
 - Rollback the Deployment and apply an earlier ReplicaSet
 - Make changes to PodTemplateSpec and rollout new a RelicaSet
 
-#### YAML Reference
+#### Schema Reference
 
 ???+ note "Deployment Template"
     ```yaml
@@ -627,7 +627,7 @@ You can remove Pods from a ReplicaSet (`orphan Pods`) by changing their labels s
 
 `Deployment` is a higher-level resource that manages ReplicaSets, and you may never need to manipulate ReplicaSet objects directly. Use a Deployment instead, and define your application in the `spec` section.
 
-#### YAML Reference
+#### Schema Reference
 
 ???+ note "ReplicaSet Example"
     ```yaml
@@ -705,7 +705,7 @@ StatefulSets are valuable for applications that require one or more of:
   - try scale down the StatefulSet to 0 prior its deletion
 - RollingUpdates with default `podManagementPolicy` as `OrderedReady` can run into a broken state that requires [manual intervention](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#forced-rollback){target=_blank}
 
-#### YAML Reference
+#### Schema Reference
 
 ???+ note "StatefulSet Example"
     ```yaml
@@ -811,7 +811,7 @@ Typical use of DaemonSet:
 - running a logs collection daemon on every node
 - running a node monitoring daemon on every node
 
-#### YAML Reference
+#### Schema Reference
 
 ???+ note "DaemonSet Template"
     ```yaml
@@ -900,7 +900,7 @@ Job is used to run some task to completion, and run multiple tasks in parallel f
 
 When running a Job in parallel, the Pods should be tolerant to concurrency.
 
-#### YAML Reference
+#### Schema Reference
 
 ???+ note "Job example"
     ```yaml
@@ -950,7 +950,7 @@ CronJob name must be **<= 52 chars** because 11 chars are usually generated and 
 
 A cron job creates a job object about **once per execution time** of its schedule. CronJobs scheduled should be idempotent since in rare circumstances it might be that 2 jobs are created or none created.
 
-#### YAML Reference
+#### Schema Reference
 
 ???+ note "CronJob Example"
     ```yaml
@@ -986,5 +986,122 @@ A cron job creates a job object about **once per execution time** of its schedul
   - If there are more than **100 missed** schedules, then it does not start the job and logs an error.
   - If the `startingDeadlineSeconds` field is set, controller counts how many missed jobs occurred from this value rather than from the last scheduled time until now.
   - If `startingDeadlineSeconds` is set to a large value or left unset (the default) and if `concurrencyPolicy` is set to Allow, the jobs will always run **at least once**.
+
+### ReplicationController
+
+**ReplicationController** ensures that a specified number of pod replicas are running and available **at any time**. Extra Pods are terminated to match the desired number of Pods and vice-versa.
+
+ReplicationController supervises multiple pods across **multiple nodes**. The ReplicationController is **designed** to facilitate simple rolling updates to a service by replacing pods **one-by-one**, and does NOT perform readiness nor liveness probes. 
+
+ReplicationController is intended to be managed by external auto-scaler and not he HPA and used as a composable building-block primitive.
+
+#### Schema Reference
+
+???+ note "ReplicationController example"
+    ```yaml
+    apiVersion: v1                  # required
+    kind: ReplicationController     # required
+    metadata:                       # required
+      name: nginx
+    spec:                           # required
+      replicas: 3                   # default 1
+      selector:                     # required
+        app: nginx                  # default spec.template.metadata.labels and must match
+      template:                     # required
+        metadata:
+          name: nginx
+          labels:
+            app: nginx
+        spec:
+          containers:
+          - name: nginx
+            image: nginx
+            ports:
+            - containerPort: 80
+          restartPolicy: Always     # default Always and must be Always
+    ```
+
+### Garbage Collector
+
+Kubernetes **garbage collector** (GC) deletes certain objects that **no longer** have an **owner**.
+
+The k8s GC does NOT delete bare Pods or orphan Pods since they are not the case of losing the ownership.
+
+#### Ownership
+
+Objects can **own** other objects within the same namespace. Owned objects are **dependents** of the owner object and must have a `metadata.ownerReferences` field point to its owner.
+
+The `metadata.ownerReferences` is automatically set for objects created or adopted by ReplicationController, ReplicaSet, StatefulSet, DaemonSet, Deployment, Job, and CronJob. It can also be manually set on objects to establish ownership.
+
+#### Schema Reference
+
+???+ note "Ownership Example"
+    ```yaml
+    apiVersion: v1
+    kind: Pod
+    metadata:
+      ...
+      ownerReferences:
+      - apiVersion: apps/v1
+        controller: true
+        blockOwnerDeletion: true
+        kind: ReplicaSet
+        name: my-repset
+        uid: d9607e19-f88f-11e6-a518-42010a800195
+      ...
+    ```
+
+#### Cascading Deletion
+
+When you delete an object, the object's **dependents** are also deleted automatically if **Cascading Deletion** is enabled, otherwise the dependents are **orphaned**.
+
+##### Foreground
+
+In foreground cascading deletion, root object enters a "deletion in progress" state:
+
+- object still **visible** in API
+- object `deletionTimestamp` is set
+- object `metadata.finalizers` contains "**foregroundDeletion**"
+- next, GC deletes root object's **dependents**
+- once ALL dependents are deleted, GC deletes the root object
+  - only blocked by dependents with `ownerReference.blockOwnerDeletion=true`
+
+##### Background
+
+In background cascading deletion, Kubernetes deletes the owner object **immediately** and the garbage collector then deletes the dependents in the **background**.
+
+#### Schema Reference
+
+The json example is for when calling k8s API to delete an object while setting the deletion options.
+
+???+ note "DeleteOptions example"
+    ```json
+    {
+        "kind": "DeleteOptions",
+        "apiVersion": "v1",
+        "propagationPolicy": "Orphan" // also possible: Foreground, Background
+    }
+    ```
+
+???+ note "Frequently used commands"
+    ```sh
+    # call k8s API
+    kubectl proxy --port=8080
+    curl -X DELETE localhost:8080/apis/apps/v1/namespaces/default/replicasets/my-repset \
+      -d '{"kind":"DeleteOptions","apiVersion":"v1","propagationPolicy":"Foreground"}' \
+      -H "Content-Type: application/json"
+
+    # directly use kubectl delete
+    kubectl delete replicaset my-repset --cascade=orphan
+    ```
+
+### TTL Controller
+
+**TTL controller** provides a TTL (**time to live**) mechanism to limit the lifetime of resource objects that have **finished execution**. It only handles Jobs for now, specified with `.spec.ttlSecondsAfterFinished`, and it is currently an alpha feature.
+
+The `.spec.ttlSecondsAfterFinished` of a Job can be modified after the resource is created or has finished. The Job's existance will NOT be guaranteed after its TTL (if set) expires.
+
+TTL controller will assume that a resource is eligible to be cleaned up when its TTL has expired, and will delete it cascadingly.
+
 
 --8<-- "includes/abbreviations.md"
