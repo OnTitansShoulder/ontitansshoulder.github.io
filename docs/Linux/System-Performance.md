@@ -55,23 +55,23 @@ It is a capital mistake to theorize before one has data. Insensibly one begins t
 - Response time - time for an operation to complete, include idle time and service time
 - Latency - time an operation spend waiting to be serviced
 - Utilization - how busy a resource is. i.e. memory utilization
-  - Resource Utilization = Time Busy / Duration
-  - Resource Utilization = Capacity Busy / Total Capacity
+    - Resource Utilization = Time Busy / Duration
+    - Resource Utilization = Capacity Busy / Total Capacity
 - Saturation - how much work has queued on a resource
-  - start occur at 100% utilization (capacity-based)
+    - start occur at 100% utilization (capacity-based)
 - Bottleneck - the resource that limits the performance of the system
 - Workload - input/load applied to the system
 - Profiling - build a picture of a target that can be studied and understood
 - Cache - fast storage to buffer a limited amount of data
-  - runtime = (hit rate x hit latency) + (miss rate x miss latency)
-  - Cache management algorithms
-    - Most recently used (MRU)
-    - Least recently used (LRU)
-    - Most frequently used (MFU)
-    - Least frequently used (LFU)
+    - runtime = (hit rate x hit latency) + (miss rate x miss latency)
+    - Cache management algorithms
+        - Most recently used (MRU)
+        - Least recently used (LRU)
+        - Most frequently used (MFU)
+        - Least frequently used (LFU)
 - System under Test - perturbations (interference) can affect performance test results
-  - i.e. scheduled system activity, other users of the system, other workloads, other operations on the physical host
-  - perturbations are hard to determine and may come from many components
+    - i.e. scheduled system activity, other users of the system, other workloads, other operations on the physical host
+    - perturbations are hard to determine and may come from many components
 
 ### Perspectives
 
@@ -79,17 +79,17 @@ Resource analysis
 
 - Analyzes the system resources: CPU, memory, disks, network interfaces, busses, and interconnects
 - Usually done by system administrators
-  - Performance issue investigations
-  - Capacity planning
+    - Performance issue investigations
+    - Capacity planning
 - Best suited for: IOPS, Throughput, Utilization, Saturation
 - tools: vmstat(1), iostat(1), mpstat(1)
 
 Workload analysis
 - Examines the performance of the applications, apply workload and see how application responds
 - Usually done by developers and support staff
-  - Requests, send in traffic
-  - Latency, measure response time of application
-  - Completion, measure error rate
+    - Requests, send in traffic
+    - Latency, measure response time of application
+    - Completion, measure error rate
 - Best suited for: Throughput, Latency
 
 ### Methodologies

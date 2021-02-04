@@ -61,10 +61,10 @@ use `env` to see a list of all environment vars
 use `set` to see a list of user defined vars
 
 - `$PS1` is the command character as well as anything before it! It can be customized to display more info at the beginning of each line of command in terminal.
-  - see _Linux Terminal Tricks_ notes
+    - see _Linux Terminal Tricks_ notes
 - `$$` itself is a variable showing current shell's PID.
-  - sub-program of bash can only **inherit** the parent's environment vars, not regular vars
-  - export normal vars as env vars if necessary
+    - sub-program of bash can only **inherit** the parent's environment vars, not regular vars
+    - export normal vars as env vars if necessary
 
 `read` command allows user to enter something and store it as a variable. Useful for script requires user input.
 
@@ -166,9 +166,9 @@ expansion is when your command typed-in expanded into something else before shel
 **Tilde Expansion**
 
 - `~` char has special meanings:
-  - at beginning of a word, it expands to the name of the home directory of the named user.
-  - at the end of a filename, it means this file is a temporary backup
-  - if used alone it refers to the home directory of current user
+    - at beginning of a word, it expands to the name of the home directory of the named user.
+    - at the end of a filename, it means this file is a temporary backup
+    - if used alone it refers to the home directory of current user
 
 **Arithmetic Expansion**: the use of `$((expression))` allows arithmetic evaluation inside the `$()` syntax
 
@@ -178,10 +178,10 @@ expansion is when your command typed-in expanded into something else before shel
 **Brace Expansion**
 
 - create multiple text strings from a pattern containing braces
-  - i.e. `echo Front-{A,B,C}-Back`
-  - i.e. `echo Front-{1..5}-Back`
+    - i.e. `echo Front-{A,B,C}-Back`
+    - i.e. `echo Front-{1..5}-Back`
 - Common good application is to make lists of files or directories to be created
-  - i.e. `mkdir {2007..2009}-0{1..9} {2007..2009}-{10..12}`
+    - i.e. `mkdir {2007..2009}-0{1..9} {2007..2009}-{10..12}`
 
 **Parameter Expansion**
 
@@ -213,9 +213,9 @@ use backslash also to start a new line for a single line of command. Like this:
 
 ```sh
 ls -l \
-  --reverse \
-  --human-readable \
-  --full-time
+    --reverse \
+    --human-readable \
+    --full-time
 ```
 
 Sometimes use the long version of the options help you read and know its purpose instantly.
@@ -227,17 +227,17 @@ Sometimes use the long version of the options help you read and know its purpose
 Linux is a multitasking and multi-user system.
 
 - chmod - modify file access rights
-  - rwx = 111, rw- = 110, r-x = 101, r-- 4, ...
-  - `chmod 600 some_file` makes the file only read/writable for the user, strips the rights for group and global
-  - for directory, x allows directory to be entered. r/w is for its contents to be listed/modified
+    - rwx = 111, rw- = 110, r-x = 101, r-- 4, ...
+    - `chmod 600 some_file` makes the file only read/writable for the user, strips the rights for group and global
+    - for directory, x allows directory to be entered. r/w is for its contents to be listed/modified
 - su - temporarily become the superuser
 - sudo - temporarily become the superuser
 - chown - change file ownership
-  - `chown new_owner_username file`
-  - superuser or owner can do this
+    - `chown new_owner_username file`
+    - superuser or owner can do this
 - chgrp - change a file's group ownership
-  - `chgrp new_group_name file`
-  - only owner can do this
+    - `chgrp new_group_name file`
+    - only owner can do this
 
 **Frequently used file permission settings**
 
@@ -548,8 +548,8 @@ command 0< file
 **Duplicating File Descriptors**
 
 - i.e. `command 1> file 2>&1` to achieve sending both STDOUT and STDERR to the _file_
-  - first redirects STDOUT to 1, which is to the _file_
-  - then redirects STDERR to 1 (the _file_)
+    - first redirects STDOUT to 1, which is to the _file_
+    - then redirects STDERR to 1 (the _file_)
 
 **Create additional File Descriptors**
 
@@ -583,8 +583,8 @@ exec 3>&- # Close file descriptor 3
 - `$?` contains the exit status of last executed command/script
 - `$#` contains the number of items on the command line in addition to the name of the command `$0`
 - `shift` is a shell built-in that operates on the positional parameters.
-  - Each time calling `shift`, the arguments `$2` becomes `$1`, `$3` becomes `$2`, so on.
-  - `shift` can follow a number, `shift 3` means move and discard 3 arguments
+    - Each time calling `shift`, the arguments `$2` becomes `$1`, `$3` becomes `$2`, so on.
+    - `shift` can follow a number, `shift 3` means move and discard 3 arguments
 
 ```sh
 while [ "$1" -ne "" ]; do
@@ -653,9 +653,9 @@ Errors are not the only way a script can terminate unexpectedly. Signals can do 
 - `<arg>` is a command or function to execute when one of the signals is received.
 - i.e. `trap "rm $TEMP_FILE; exit" SIGHUP SIGINT SIGTERM`
 - The signals can be specified by number as well.
-  - signal `9 (SIGKILL)` however, cannot be handled.
-  - many programs create **lock files** to prevent multiple copies of the program running at the same time.
-  - A program killed by `SIGKILL` doesn't get the chance to remove the lock file, which has to be manually removed for restarting the program
+    - signal `9 (SIGKILL)` however, cannot be handled.
+    - many programs create **lock files** to prevent multiple copies of the program running at the same time.
+    - A program killed by `SIGKILL` doesn't get the chance to remove the lock file, which has to be manually removed for restarting the program
 - it is better to write a function that does the clean up, and pass it to `trap`: `trap clean_up SIGHUP SIGINT SIGTERM`
 
 A best practice in shell scripting is to use **absolute path** instead of **relative path** to ensure the correctness!

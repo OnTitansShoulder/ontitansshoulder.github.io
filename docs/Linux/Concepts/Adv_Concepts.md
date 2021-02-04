@@ -16,9 +16,9 @@ Big thanks to vbird from linux.vbird.org for this great educational resource. He
 - **program**: usually binary program, stored within physical media like hard-drives
 - **process**: when a program is executed, executor's access and program data being loaded into the memory and OS gets assigned a _PID_
 - `fork` and `exec`
-  - system fork a parent process as temporary process to execute the child program
-  - a PID is assigned and PPID is the parent's PID
-  - temporary process exec the child program and becomes the child process
+    - system fork a parent process as temporary process to execute the child program
+    - a PID is assigned and PPID is the parent's PID
+    - temporary process exec the child program and becomes the child process
 
 **system service programs**
 
@@ -28,33 +28,33 @@ these type of programs' processes are called **daemon**s; they started listening
 
 - **foreground jobs**: the jobs actively prompting in the terminal and is interact-able
 - **background jobs**: the jobs running in the background without interaction with the user
-  - appending `&` to commands will be thrown to the background
+    - appending `&` to commands will be thrown to the background
 - switching jobs: in the middle of running a command, press `ctrl-z` to pause it and throw it to the background
 - use **`jobs`** command to check running/stopped jobs
-  - lists process recently put into the background, with (+) means next retrieving job using `fg` and (-) means the second latest job put into hte background
-  - `jobs [-lrs]`
-  - `-l`: show PID
-  - `-r`: show running only
-  - `-s`: show stopped only
+    - lists process recently put into the background, with (+) means next retrieving job using `fg` and (-) means the second latest job put into hte background
+    - `jobs [-lrs]`
+    - `-l`: show PID
+    - `-r`: show running only
+    - `-s`: show stopped only
 - **`fg`** to bring back a job suspended.
-  - `fg %<jobnumber>` use it without _jobnumber_ will bring back the one with (+)
-  - can also `fg -` to bring back the one with (-)
+    - `fg %<jobnumber>` use it without _jobnumber_ will bring back the one with (+)
+    - can also `fg -` to bring back the one with (-)
 - **`bg`** can make a stopped job running in the background again
-  - `bg %<jobnumber>` will also append `&` to the job command
+    - `bg %<jobnumber>` will also append `&` to the job command
 - **`kill`** can remove jobs or restart jobs
-  - `kill -<signal> %<jobnumber>` the `<signal>` can be a number or text:
-  - `-l`: list all kill signals
-  - `-1`: reload configuration files
-  - `-2`: like entering ctrl-c to interrupt a process
-  - `-9`: forced stop
-  - `-15`: normal termination
-  - `-17`: like entering ctrl-z to stop a process
-  - `kill -<signal> PID` also works
+    - `kill -<signal> %<jobnumber>` the `<signal>` can be a number or text:
+    - `-l`: list all kill signals
+    - `-1`: reload configuration files
+    - `-2`: like entering ctrl-c to interrupt a process
+    - `-9`: forced stop
+    - `-15`: normal termination
+    - `-17`: like entering ctrl-z to stop a process
+    - `kill -<signal> PID` also works
 - `killall` can work on all running processes of a command, useful if you don't want bother to lookup its PID
-  - `killall [-iIe] [-signal] [command_name]`
-  - `-i`: interactive
-  - `-e`: exact, means the command_name must match
-  - `-I`: command_name ignore cases
+    - `killall [-iIe] [-signal] [command_name]`
+    - `-i`: interactive
+    - `-e`: exact, means the command_name must match
+    - `-I`: command_name ignore cases
 
 **offline jobs**
 
@@ -84,14 +84,14 @@ While `at` works for this case, `nohup` can also work!
 `ps -l` shows only your process related to this bash. Some columns explained:
 
 - `F` represents process flags, means this process's access
-  - 4 means root
-  - 1 means forked but not exec
+    - 4 means root
+    - 1 means forked but not exec
 - `S` represents Status
-  - R: running
-  - S: sleep, idle, can be signaled to wakeup
-  - D: usually doing I/O, cannot be wakeup
-  - T: stop, might be under job control
-  - Z: zombie, process terminated but cannot be moved out of memory
+    - R: running
+    - S: sleep, idle, can be signaled to wakeup
+    - D: usually doing I/O, cannot be wakeup
+    - T: stop, might be under job control
+    - Z: zombie, process terminated but cannot be moved out of memory
 - `C` represents CUP usage percentage
 - `PRI/NI` is short for priority/nice, means the priority for CPU to execute it. Smaller number means higher priority
 - `ADDR/SZ/WCHAN` related to memory, ADDR is a kernel function showing which part of memory; SZ means size; WCHAN means whether it is running ('-' means running)
@@ -131,14 +131,14 @@ While `at` works for this case, `nohup` can also work!
 - `-n`: used with -b, number of times *top* outputs
 - `-p`: specify some PID for monitoring
 - commands in `top`:
-  - `?`: shows available commands
-  - `P`: arrange by CPU usage
-  - `M`: arrange by Memory usage
-  - `N`: arrange by PID
-  - `T`: arrange by CPU time
-  - `k`: send one PID a signal
-  - `r`: send one PID new nice value
-  - `q`: quit
+    - `?`: shows available commands
+    - `P`: arrange by CPU usage
+    - `M`: arrange by Memory usage
+    - `N`: arrange by PID
+    - `T`: arrange by CPU time
+    - `k`: send one PID a signal
+    - `r`: send one PID new nice value
+    - `q`: quit
 
 `top` displays two sections, **system resource** and **process info**:
 
@@ -209,28 +209,28 @@ Each process has a priority value, the smaller the higher priority, means it wil
 - `-p <partition>` show a partition read/write stats
 - categories shown: procs, memory, swap, io, system, cpu
 - `procs`: the more of r and b, the busier the system
-  - r: process waiting to run
-  - b: un-wakeable processes
+    - r: process waiting to run
+    - b: un-wakeable processes
 - `memory`: like shown by `free`
-  - swpd: virtual memory usage
-  - free: unused mem
-  - buff: buffer storage
-  - cache: high-speed cache
+    - swpd: virtual memory usage
+    - free: unused mem
+    - buff: buffer storage
+    - cache: high-speed cache
 - `swap`: when si and so get larger, system is short of memory
-  - si: amount taken from disk
-  - so: amount written into swap
+    - si: amount taken from disk
+    - so: amount written into swap
 - `io`: when bi and bo get larger, system is doing lots of I/O
-  - bi: blocks read from disk
-  - bo: blocks written into disk
+    - bi: blocks read from disk
+    - bo: blocks written into disk
 - `system`: when in and cs get larger, system communicates with external devices quite often
-  - in: processes interrupted per second
-  - cs: context-switch times per second
+    - in: processes interrupted per second
+    - cs: context-switch times per second
 - `cpu`:
-  - us: non-core usage of CPU
-  - sy: core usage of CPU
-  - id: idle status
-  - wa: wait I/O CPU waste
-  - st: virtual machine CPU usage.
+    - us: non-core usage of CPU
+    - sy: core usage of CPU
+    - id: idle status
+    - wa: wait I/O CPU waste
+    - st: virtual machine CPU usage.
 
 all processes are stored in memory, and what is in memory is stored into `/proc/` , more on Book P628
 
@@ -244,13 +244,13 @@ all processes are stored in memory, and what is in memory is stored into `/proc/
 - `-i`: use with -k, ask for decision before kill the process
 - `-<signal>`: send a signal code
 - What will be shown is `USER PID ACCESS COMMAND`
-  - the _ACCESS_ represents:
-  - `c`: the process is under current directory
-  - `e`: can be executed
-  - `f`: is an opened file
-  - `r`: is the root directory
-  - `F`: the file is opened but pending complete
-  - `m`: sharable dynamical library
+    - the _ACCESS_ represents:
+    - `c`: the process is under current directory
+    - `e`: can be executed
+    - `f`: is an opened file
+    - `r`: is the root directory
+    - `F`: the file is opened but pending complete
+    - `m`: sharable dynamical library
 
 **`lsof`** lists which process is using which files, from the point of the program.
 
@@ -279,8 +279,8 @@ SELinux introduced Mandatory Access Control (MAC), which made **program** contro
 - **Subject**: can be seen as process
 - **Object**: can be seen as filesystem
 - **Policy**:
-  - targeted: limits more on the network service than the machine
-  - strict: total limit on the machine and network
+    - targeted: limits more on the network service than the machine
+    - strict: total limit on the machine and network
 
 The Subject ask SELinux to provide access to Object, where SELinux analyze the Policies and compare to the Security Context to determine whether to grant access.
 
@@ -433,14 +433,14 @@ $@ # means current target
 - patch files are created using `diff`, like `diff -Naur f1 f2`
 - then on the first line of the patch file, the command that created this patch file will be shown.
 - `patch` is likely used as `patch [-pNUMB] < patch_file`
-  - where the NUMB is for how many directories to strip from the first level. (P793)
+    - where the NUMB is for how many directories to strip from the first level. (P793)
 
 `*.a` are static library files, `*.so` are dynamic library files.
 
 - **static library** file compiles the library code into the binary, so it is executable independently
-  - updates to this kind of libraries requires recompilation from the source.
+    - updates to this kind of libraries requires recompilation from the source.
 - **dynamic library** uses pointer to the actual library, and therefore need the library installed to run
-  - updates to this kind of libraries do not require recompilation from the source
+    - updates to this kind of libraries do not require recompilation from the source
 
 `ldconfig` and `/etc/ld.so.conf`: use these two to load library files into highspeed cache
 
@@ -466,14 +466,14 @@ $@ # means current target
 - there is **yum** for online update. (P824)
 - files are like `*.rpm`
 - naming convention:
-  - software_name-software_version_number-number_of_compilation-hardware-extension
-  - i.e. `rp-pppoe-3.1-5-.i386-.rpm`
+    - software_name-software_version_number-number_of_compilation-hardware-extension
+    - i.e. `rp-pppoe-3.1-5-.i386-.rpm`
 - install an rpm
 - `rpm -ivh package_name`
 - `-i`: install
 - `-v`: verbose, show more printed details
 - `-h`: show progress
-  - more options see man or Book P808
+    - more options see man or Book P808
 
 **srpm**
 

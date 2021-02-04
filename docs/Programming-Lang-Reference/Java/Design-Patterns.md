@@ -125,12 +125,12 @@ An Abstract Factory gives us an interface for creating a family of products. By 
 The differences between the two:
 
 - how product object is created
-  - Factory Method Pattern do it through inheritance
-  - Abstract Factory Pattern do it through object composition
+    - Factory Method Pattern do it through inheritance
+    - Abstract Factory Pattern do it through object composition
 - the Factory Method Pattern is good for creating one product, while Abstract Factory Pattern is good for creating a family of products.
 - how factory is created
-  - Factory Method Pattern do it through implementing the abstract creator method that makes use of the concrete types the subclasses create
-  - Abstract Factory Pattern do it through implementing factory methods
+    - Factory Method Pattern do it through implementing the abstract creator method that makes use of the concrete types the subclasses create
+    - Abstract Factory Pattern do it through implementing factory methods
 
 Use Factory Method Pattern if the number of concrete classes is foreseeably finite, or you don't know ahead of time all the concrete classes going to need.
 
@@ -306,17 +306,17 @@ RMI Nomenclature: in RMI, the client helper is a ‘stub’ and the service help
 To do this, we need:
 
 - remote interface - defines methods that a client can call remotely and both the Stub and actual service will implement this
-  - extend `java.rmi.Remote` and declare all methods to throw a `RemoteException`
-  - if the methods in an interface declare exceptions, any code calling methods on a reference of that type (the interface type) must handle or declare the exceptions
+    - extend `java.rmi.Remote` and declare all methods to throw a `RemoteException`
+    - if the methods in an interface declare exceptions, any code calling methods on a reference of that type (the interface type) must handle or declare the exceptions
 - remote implementation - the object that client wants to remotely call methods on
-  - extend `java.rmi.server.UnicastRemoteObject` and inherit useful methods from that class
-  - the methods will handle the remote calls
-  - other RemoteObject classes exist
-  - register your service using the static `rebind()` method of the `java.rmi.Naming` class
+    - extend `java.rmi.server.UnicastRemoteObject` and inherit useful methods from that class
+    - the methods will handle the remote calls
+    - other RemoteObject classes exist
+    - register your service using the static `rebind()` method of the `java.rmi.Naming` class
 - RMI registry - where the client gets the proxy object (stub/helper object)
-  - start `rmiregistry` in the class directory
+    - start `rmiregistry` in the class directory
 - start remote service - registers the service with the RMI registry and available for clients
-  - start the service
+    - start the service
 
 When making remote method calls, the arguments and return types must be serializable.
 
@@ -327,9 +327,9 @@ Use the Proxy Pattern to create a representative object that controls access to 
 The Proxy Pattern has many forms. What they all have in common is that they intercept a method invocation that the client is making on the subject. Some of them are:
 
 - A remote proxy controls access to a remote object.
-  - the proxy acts as a local representative for an object that lives in a different JVM
+    - the proxy acts as a local representative for an object that lives in a different JVM
 - A virtual proxy controls access to a resource that is expensive to create.
-  - defers the creation of the object until it is needed and acts as a surrogate for the object before and while it is being created
+    - defers the creation of the object until it is needed and acts as a surrogate for the object before and while it is being created
 - A protection proxy controls access to a resource based on access rights.
 
 Java’s got its own proxy support right in the java.lang.reflect package. With this package, Java lets you create a proxy class on the fly that implements one or more interfaces and forwards method invocations to a class that you specify. This is called the **dynamic proxy**.

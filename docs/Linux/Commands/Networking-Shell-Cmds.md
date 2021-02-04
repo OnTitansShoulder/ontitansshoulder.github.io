@@ -20,7 +20,7 @@ Network Interface Card are named like modules in Linux, like `eth0` for the firs
 - Use *dmesg* to view specific device info. Like `dmesg | grep -in eth`
 - Use *lsmod* to view whether the device is loaded by kernel. Like `lsmod | grep 1000`
 - Use *modinfo* to view details about this device, passing in the device number, like `e1000`
-  - the filename portion is the NIC driver for current Kernel version.
+    - the filename portion is the NIC driver for current Kernel version.
 - Use *ifconfig* to lookup the NIC number for a device.
 - write driver for your NIC, see Book2 P113
 
@@ -85,10 +85,10 @@ Each AP has a SSID or ESSID for the client to identify the right AP.
 *ifconfig* can directly change IP config for a NIC device.
 
 - `ifconfig [interface] [up|down|options]`
-  - up, down: like the commands below
-  - mtu: change mtu value
-  - netmask: set subnet mask
-  - broadcast: set broadcast address
+    - up, down: like the commands below
+    - mtu: change mtu value
+    - netmask: set subnet mask
+    - broadcast: set broadcast address
 
 *ifup*, *ifdown* can only turn on/off of the device, not changing its parameters
 
@@ -106,25 +106,25 @@ The command *ip* is like a combination of *ifconfig* and *route*
 *ping*
 
 - `ping [options and parameters] IP`
-  - -c numb: execute ping numb times
-  - -n: don't lookup hostname, use IP directly
-  - -s numb: the ICMP packet size is numb bytes
-  - -t numb: TTL's limit is numb
-  - -W numb: numb seconds to wait for respond
-  - -M [do|dont]: to test MTU size, do means send a DF(Don't Fragment) flag packet
+    - -c numb: execute ping numb times
+    - -n: don't lookup hostname, use IP directly
+    - -s numb: the ICMP packet size is numb bytes
+    - -t numb: TTL's limit is numb
+    - -W numb: numb seconds to wait for respond
+    - -M [do|dont]: to test MTU size, do means send a DF(Don't Fragment) flag packet
 
 **analyze nodes b/w host to host**
 
 *traceroute*
 
 - `traceroute [options and parameters] IP`
-  - -n: don't lookup hostname, use IP directly
-  - -U: use UDP port 33434 to test
-  - -I: use ICMP to test
-  - -T: use TCP port 80 to test
-  - -w numb: numb seconds to wait for respond
-  - -p port: use other port to test
-  - -i: only used when need to specify which AP to use
+    - -n: don't lookup hostname, use IP directly
+    - -U: use UDP port 33434 to test
+    - -I: use ICMP to test
+    - -T: use TCP port 80 to test
+    - -w numb: numb seconds to wait for respond
+    - -p port: use other port to test
+    - -i: only used when need to specify which AP to use
 
 **view current machine's network stats**
 
@@ -132,14 +132,14 @@ The command *ip* is like a combination of *ifconfig* and *route*
 
 - `netstat -[rn]` related to router
 - `netstat -[antulpc]` related to network ports
-  - -r: show route table
-  - -n: don't lookup hostname, use IP directly
-  - -a: show all, including tcp/udp/unix socket
-  - -t show only TCP connections
-  - -u: show only UDP connections
-  - -l: show only listening services
-  - -p: show PID and Program filename
-  - -c: update after N seconds
+    - -r: show route table
+    - -n: don't lookup hostname, use IP directly
+    - -a: show all, including tcp/udp/unix socket
+    - -t show only TCP connections
+    - -u: show only UDP connections
+    - -l: show only listening services
+    - -p: show PID and Program filename
+    - -c: update after N seconds
 
 **hostname, hostname lookup**
 
@@ -170,14 +170,14 @@ use *lftp* to call scripts and speed up the process of logging in. Book2 P173
 there is no css styling nor img showing
 
 - some freq-used shortcut:
- - h: history of viewing
- - g: goto URL
- - d: download a URL link's target
- - q: quit
- - o: option, set preferences
- - up/down arrow: move to next anchor
- - left/right arrow: move back/forward in pages
- - ENTER: like right-click
+  - h: history of viewing
+  - g: goto URL
+  - d: download a URL link's target
+  - q: quit
+  - o: option, set preferences
+  - up/down arrow: move to next anchor
+  - left/right arrow: move back/forward in pages
+  - ENTER: like right-click
 
 can use `links -dump url > index.html` to download an entire page
 
@@ -186,9 +186,9 @@ can use `links -dump url > index.html` to download an entire page
 *wget* is used to fetch data from web servers. `wget [option] URL`
 
 - options:
-  - --http-user=username
-  - --http-password=password
-  - --quiet
+    - --http-user=username
+    - --http-password=password
+    - --quiet
 
 can also set proxy at /etc/wgetrc
 

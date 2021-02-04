@@ -41,7 +41,7 @@ tags: notes reference check
 - `echo [-neE] [<arg> ...]`
 - `-n` suppress the trailing newline for the print
 - `-e` enables interpretation of the following backslash-escaped characters
-  - supported escape sequences: `\a \b \c \e \E \f \n \r \t \v \\ \0nnn \xHH \uHHHH \UHHHHHHHH`
+    - supported escape sequences: `\a \b \c \e \E \f \n \r \t \v \\ \0nnn \xHH \uHHHH \UHHHHHHHH`
 - `-E` disables interpretation of backslash-escaped characters
 
 **printf** write the formatted arguments to STDOUT under the control of the format
@@ -49,11 +49,11 @@ tags: notes reference check
 - `printf [-v <var>] <format> [<arguments>]`
 - `-v` causes the output to be assigned to the variable _var_ rather than being printed to STDOUT
 - special extensions in _format_:
-  - `%b` expand backslash escape sequences in the corresponding argument in the same way as `echo -e`
-  - `%q` output the corresponding argument in a format that can be reused as shell input
-  - `%(<datefmt>)T` output the date-time string resulting from using datefmt as a format string for strftime(3)
-    - The corresponding argument is an integer representing the number of seconds since the epoch
-    - Two special argument values may be used: -1 represents the current time, and -2 represents the time the shell was invoked
+    - `%b` expand backslash escape sequences in the corresponding argument in the same way as `echo -e`
+    - `%q` output the corresponding argument in a format that can be reused as shell input
+    - `%(<datefmt>)T` output the date-time string resulting from using datefmt as a format string for strftime(3)
+        - The corresponding argument is an integer representing the number of seconds since the epoch
+        - Two special argument values may be used: -1 represents the current time, and -2 represents the time the shell was invoked
 
 **read** reads input from STDIN
 
@@ -127,8 +127,8 @@ For more info visit https://www.gnu.org/software/bash/manual/html_node/index.htm
 - `chmod [OPTION]... MODE... FILE...`
 - `-R`: change files and dirs recursively
 - MODE is of the form:
-  - `[ugoa]*([-+=]([rwxXst]*|[ugo]))+|[-+=][0-7]+`
-  - `chmod a+x file` or `chmod 755 file`
+    - `[ugoa]*([-+=]([rwxXst]*|[ugo]))+|[-+=][0-7]+`
+    - `chmod a+x file` or `chmod 755 file`
 
 **cp** copy files/directories
 
@@ -184,8 +184,8 @@ For more info visit https://www.gnu.org/software/bash/manual/html_node/index.htm
 - `ls [OPTION]... [FILE]...`
 - `-a`: show hidden(implied) files (starting with .)
 - `-c`: sort by ctime newest first
-  - with `-lt`: sort by and show ctime (last modif.)
-  - with `-l`: show ctime and sort by name
+    - with `-lt`: sort by and show ctime (last modif.)
+    - with `-l`: show ctime and sort by name
 - `-h`: with -l or -s: print human readable sizes
 - `-r`: reverse order while sorting
 - `-R`: list subdirs recursively
@@ -235,12 +235,12 @@ For more info visit https://www.gnu.org/software/bash/manual/html_node/index.htm
 - `-i`: edit files in place
 - `-r`: use extended regular expressions in the script
 - _sed_ commands:
-  - `=` print the current line number
-  - `a` TEXT append text
-  - `i` TEXT insert text
-  - `c` TEXT replace selected lines with text
-  - `d` delete pattern space
-  - `/regexp/` match lines using this regexp
+    - `=` print the current line number
+    - `a` TEXT append text
+    - `i` TEXT insert text
+    - `c` TEXT replace selected lines with text
+    - `d` delete pattern space
+    - `/regexp/` match lines using this regexp
 
 **tar** work with tarballs archive file, ex. .tar .tar.gz .tar.bz2
 
@@ -272,7 +272,7 @@ For more info visit https://www.gnu.org/software/bash/manual/html_node/index.htm
 
 - `uname [OPTION]...`
 - `-a`: print all info, in following order:
-  - kernel name, network node hostname, kernel release, kernel version, machine hardware name, processor type, hardware platform, OS
+    - kernel name, network node hostname, kernel release, kernel version, machine hardware name, processor type, hardware platform, OS
 
 **zip/unzip** compress/decompress zip files
 

@@ -57,21 +57,21 @@ MAC packets size can vary from 64 bytes to 1500 bytes.
 - Versions: this IP packet version, like IPv4
 - IHL (Internet Header Length): tells the length of this IP header
 - Type of Service: [PPPDTRUU]
-  - PPP: shows priority of this IP packet
-  - D: if 0 means normal latency, 1 means low latency
-  - T: if 0 means normal throughput, 1 means high throughput
-  - R: if 0 means normal reliability, 1 means high reliability
-  - UU: unused
-  - by setting this part, Gigabit Ethernet can make this packet high-speed and low-latency
+    - PPP: shows priority of this IP packet
+    - D: if 0 means normal latency, 1 means low latency
+    - T: if 0 means normal throughput, 1 means high throughput
+    - R: if 0 means normal reliability, 1 means high reliability
+    - UU: unused
+    - by setting this part, Gigabit Ethernet can make this packet high-speed and low-latency
 - Total Length: shows the total length of this packet, including header and data portions. Max 65535 bytes
 - Identification: since MAC frame max size is 1500 bytes, larger packet need to be broken down into smaller pieces, and each will have this Id for reassemble
 - Flags: [0DM]
-  - D: if 0 means can be fragmented, 1 means cannot be fragmented
-  - M: if 0 means this IP is the last fragment, 1 means it is not the last fragment
+    - D: if 0 means can be fragmented, 1 means cannot be fragmented
+    - M: if 0 means this IP is the last fragment, 1 means it is not the last fragment
 - Fragment Offset: means this IP fragment's position in the original IP packet. Like an ordering number
 - Time To Live (TTL): [0-255], shows how many routers to pass before this packet being discarded
 - Protocol Number: this number represents a specific protocol.
-  - 6 is TCP; 17 is UDP; 4 is IP; 1 is ICMP (Internet Control Message Protocol) ...
+    - 6 is TCP; 17 is UDP; 4 is IP; 1 is ICMP (Internet Control Message Protocol) ...
 - Header Checksum: to check the integrity of this packet's content
 - Source Address: source IP address
 - Destination Address: destination IP address
@@ -91,23 +91,23 @@ Here 192.168.0 is the Net_ID, 0 ~ 255 is the Host_ID
 IP has five classifications:
 
 - Class A: Net_ID starts with 0
-  - 0xxxxxxx.xxxxxxxx.xxxxxxxx.xxxxxxxx
-  - |--net--|-----------host----------|
-  - 0.xx.xx.xx ~ 127.xx.xx.xx
+    - 0xxxxxxx.xxxxxxxx.xxxxxxxx.xxxxxxxx
+    - |--net--|-----------host----------|
+    - 0.xx.xx.xx ~ 127.xx.xx.xx
 - Class B: Net_ID starts with 10
-  - 10xxxxxx.xxxxxxxx.xxxxxxxx.xxxxxxxx
-  - |--net-----------|----------host--|
-  - 128.xx.xx.xx ~ 191.xx.xx.xx
+    - 10xxxxxx.xxxxxxxx.xxxxxxxx.xxxxxxxx
+    - |--net-----------|----------host--|
+    - 128.xx.xx.xx ~ 191.xx.xx.xx
 - Class C: Net_ID starts with 110
-  - 110xxxxx.xxxxxxxx.xxxxxxxx.xxxxxxxx
-  - |--net--------------------|-host--|
-  - 192.xx.xx.xx ~ 223.xx.xx.xx
+    - 110xxxxx.xxxxxxxx.xxxxxxxx.xxxxxxxx
+    - |--net--------------------|-host--|
+    - 192.xx.xx.xx ~ 223.xx.xx.xx
 - Class D: Net_ID starts with 1110. For the purpose of multicast
-  - 1110xxxx.xxxxxxxx.xxxxxxxx.xxxxxxxx
-  - 224.xx.xx.xx ~ 239.xx.xx.xx
+    - 1110xxxx.xxxxxxxx.xxxxxxxx.xxxxxxxx
+    - 224.xx.xx.xx ~ 239.xx.xx.xx
 - Class E: Net_ID starts with 1111. Reserved and unused.
-  - 1111xxxx.xxxxxxxx.xxxxxxxx.xxxxxxxx
-  - 240.xx.xx.xx ~ 255.xx.xx.xx
+    - 1111xxxx.xxxxxxxx.xxxxxxxx.xxxxxxxx
+    - 240.xx.xx.xx ~ 255.xx.xx.xx
 
 **Netmask (Subnet mask)**
 
@@ -152,12 +152,12 @@ There are two types of IP for IPv4:
 
 - public IP: planned by INTERNIC, required to get on Internet
 - private IP: cannot be used to get on Internet, used for LAN computers.
-  - private IP reserved some IP at A B C classifications of IP:
-  - Class A: 10.0.0.0 ~ 10.255.255.255
-  - Class B: 172.16.0.0 ~ 172.31.255.255
-  - CLass C: 192.168.0.0 ~ 192.168.255.255
-  - these IPs are used for communication within a private LAN
-  - packets from private IP cannot be sent onto Internet
+    - private IP reserved some IP at A B C classifications of IP:
+    - Class A: 10.0.0.0 ~ 10.255.255.255
+    - Class B: 172.16.0.0 ~ 172.31.255.255
+    - CLass C: 192.168.0.0 ~ 192.168.255.255
+    - these IPs are used for communication within a private LAN
+    - packets from private IP cannot be sent onto Internet
 
 **CIDR (Classless Interdomain Routing)**
 

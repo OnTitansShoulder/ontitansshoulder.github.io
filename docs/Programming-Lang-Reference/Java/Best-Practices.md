@@ -18,10 +18,10 @@ A static factory method is not the same as the Factory Method pattern from Desig
 
 - can use well-chosen name to make code easier to read
 - not required to create a new object each time invoked
-  - save resource on expensive-to-create objects
+    - save resource on expensive-to-create objects
 - can return an object of any subtype of their return type
-  -  requires the client to refer to the returned object by interface rather than implementation class
-  - an API can return objects without making their classes public, hiding implementation classes
+    -  requires the client to refer to the returned object by interface rather than implementation class
+    - an API can return objects without making their classes public, hiding implementation classes
 - the class of the returned object can vary from call to call as a function of the input parameters
 - the class of the returned object need not exist when the class containing the method is written
 
@@ -29,7 +29,7 @@ A static factory method is not the same as the Factory Method pattern from Desig
 
 - classes without public or protected constructors cannot be subclassed
 - static factory methods are hard for programmers to find
-  - do not stand out in API documentation
+    - do not stand out in API documentation
 
 ### Side note about service provider framework
 
@@ -703,7 +703,7 @@ Here is why:
 - Existing classes can easily be retrofitted to implement a new interface.
 - Interfaces are ideal for defining mixins. A mixin is a type that a class can implement in addition to its "primary type," to declare that it provides some optional behavior. It is called a mixin because it allows the optional functionality to be "mixed in" to the type’s primary functionality.
 - Interfaces allow for the construction of nonhierarchical type frameworks. Type hierarchies are great for organizing some things, but other things don’t fall neatly into a rigid hierarchy.
-  - i.e. class Singer and class SongWriter. A singer can also be a songwriter. A class can implement both Singer and SongWriter, but not extending both if they are abstract classes.
+    - i.e. class Singer and class SongWriter. A singer can also be a songwriter. A class can implement both Singer and SongWriter, but not extending both if they are abstract classes.
 - Interfaces enable safe, powerful functionality enhancements via the wrapper class idiom
 
 An interface is generally the best way to define a type that permits multiple implementations. If you export a nontrivial interface, you should strongly consider providing a skeletal implementation to go with it. To the extent possible, you should provide the skeletal implementation via default method.
@@ -2129,7 +2129,7 @@ A final technique to minimize the scope of local variables is to keep methods sm
 
 Unfortunately, there are three common situations where you can’t use for-each:
 -  Destructive filtering—If you need to traverse a collection removing selected elements, then you need to use an explicit iterator so that you can call its remove method.
-  - You can often avoid explicit traversal by using Collection’s removeIf method, added in Java 8.
+    - You can often avoid explicit traversal by using Collection’s removeIf method, added in Java 8.
 -  Transforming—If you need to traverse a list or array and replace some or all of the values of its elements, then you need the list iterator or array index in order to replace the value of an element.
 - Parallel iteration—If you need to traverse multiple collections in parallel, then you need explicit control over the iterator or index variable so that all iterators or index variables can be advanced in lockstep.
 

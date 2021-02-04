@@ -6,15 +6,15 @@
 - The default separation char is space or [tab]
 - `awk 'condition1{action1} condition2{action2} ...' filename`
 - can use _$numb_ to access which part, starting from 1:
-  - `last -n 5 | awk '{print $1 "\t" $3}'`
-  - $0 represents the entire line
+    - `last -n 5 | awk '{print $1 "\t" $3}'`
+    - $0 represents the entire line
 - additionally, *awk* has internal variables accessible:
-  - `NF` how many parts on this line
-  - `NR` which line is current line
-  - `FS` current separation char
-  - `cat /etc/passwd | awk 'BEGIN {FS=":"} $3 < 10 {print $1 "\t " $3}'`
+    - `NF` how many parts on this line
+    - `NR` which line is current line
+    - `FS` current separation char
+    - `cat /etc/passwd | awk 'BEGIN {FS=":"} $3 < 10 {print $1 "\t " $3}'`
 - using conditions for different outputs
-  - i.e. `awk 'NR==1{printf "%10s %10s %10s %10s %10s\n",$1,$2,$3,$4,"Total" } NR>=2{total = $2 + $3 + $4; printf "%10s %10d %10d %10d %10.2f\n", $1, $2, $3, $4, total}'`
+    - i.e. `awk 'NR==1{printf "%10s %10s %10s %10s %10s\n",$1,$2,$3,$4,"Total" } NR>=2{total = $2 + $3 + $4; printf "%10s %10d %10d %10d %10.2f\n", $1, $2, $3, $4, total}'`
 
 **col** for simple process of a text file, like converting [tab] with spaces, etc.
 
@@ -40,13 +40,13 @@
 - `-n`: show line-number
 - `-v`: reverse the condition
 - *Extended regex*
-  - '|' means OR i.e: `grep -v '^$' file | grep -v '^#'` gives the same result as `grep -v -E '^$|^#' file`, to show lines without empty lines and commented lines
-  - grouping '()', `egrep -n 'g(la|oo)d' file` finds 'good' or 'glad' lines
+    - '|' means OR i.e: `grep -v '^$' file | grep -v '^#'` gives the same result as `grep -v -E '^$|^#' file`, to show lines without empty lines and commented lines
+    - grouping '()', `egrep -n 'g(la|oo)d' file` finds 'good' or 'glad' lines
 
 **join, paste, expand**
 
 - *join* merge two files by comparing them and only put together similar parts/lines.
-  - Files should be sorted before doing join.
+    - Files should be sorted before doing join.
 - *paste* is simpler, just connected two lines together with a [tab]
 - *expand* converts [tab] as a number of spaces
 
@@ -70,13 +70,13 @@
 - `-r`: let sed work with extended regex
 - `-i`: direct modify the file instead of output results
 - `[action]`:
-  - in the form of `[n1[,n2]]function`; function has:
-  - `a`: insert a line after i.e. `nl /etc/passwd | sed '2a drink tea'`
-  - `c`: replace lines b/w n1,n2
-  - `d`: delete matched line i.e. `nl /etc/passwd | sed '2,5d'`
-  - `i`: insert a line before
-  - `p`: print (stdout) selected lines of data/text i.e. `nl /etc/passwd | sed -n '5,7p'` is same as `ln file | head -n 7 | tail -n 3`
-  - `s`: find and replace inline! `1,20s/old_phrase/new_phrase/g` here the phrase part supports regex!
+    - in the form of `[n1[,n2]]function`; function has:
+    - `a`: insert a line after i.e. `nl /etc/passwd | sed '2a drink tea'`
+    - `c`: replace lines b/w n1,n2
+    - `d`: delete matched line i.e. `nl /etc/passwd | sed '2,5d'`
+    - `i`: insert a line before
+    - `p`: print (stdout) selected lines of data/text i.e. `nl /etc/passwd | sed -n '5,7p'` is same as `ln file | head -n 7 | tail -n 3`
+    - `s`: find and replace inline! `1,20s/old_phrase/new_phrase/g` here the phrase part supports regex!
 
 **sort** arranges text lines in the order we want.
 

@@ -23,9 +23,9 @@ In Go we can let the machine to take care of most formatting issues, by using `g
 - operates at the _package level_ rather than source file level
 - reads a Go program and emits the source in a standard style of _indentation_ and _vertical alignment_ while retaining and _reformatting comments_ if necessary
 - a few formatting details
-  - use tabs for indentation
-  - if a line feels too long, wrap it and indent with an extra tab
-  - use fewer parentheses; mathematic expression can be concise and clear without parentheses i.e. `x<<8 + y<<16`
+    - use tabs for indentation
+    - if a line feels too long, wrap it and indent with an extra tab
+    - use fewer parentheses; mathematic expression can be concise and clear without parentheses i.e. `x<<8 + y<<16`
 
 Therefore, don't spend time on formatting the comments, let Go do it by running `gofmt`
 
@@ -54,11 +54,11 @@ Go provides C-style `/* */` _block comments_ and C++-style `//` _line comments_.
 `godoc` is a program (and web server) that processes Go source files to extract documentation about the contents of the package.
 
 - Comments that appear immediately before _top-level declarations_, with NO intervening newlines, are extracted along with the declaration to serve as _explanatory text_ or _doc comment_ for the declaration.
-  - every **exported** (capitalized) name in a program should have a _doc comment_
-  - doc comments work best as complete sentences
-  - first sentence should be a one-sentence summary that starts with the _name_ being declared
-    - will allow docs search results to be more intuitive
-    - you can search docs to find a desired function by a command like `go doc -all regexp | grep -i parse`
+    - every **exported** (capitalized) name in a program should have a _doc comment_
+    - doc comments work best as complete sentences
+    - first sentence should be a one-sentence summary that starts with the _name_ being declared
+        - will allow docs search results to be more intuitive
+        - you can search docs to find a desired function by a command like `go doc -all regexp | grep -i parse`
 - `godoc` displays _indented text_ in a fixed-width font, suitable for **program snippets**
 
 ```go
@@ -120,14 +120,14 @@ When a package is imported, the _package name_ becomes an **accessor** for the c
 - when `import "bytes"`, can access `bytes.Buffer`
 - packages should be given _lower case_, _single-word_ names and no need for _underscores_ or _mixedCaps_
 - package name is only the _default name_ for imports; it need not be unique across all source code
-  - when there is a collision, a package can be given an alias for use locally
+    - when there is a collision, a package can be given an alias for use locally
 - package name should be the _base name_ of its **source directory**
-  - the package in `src/encoding/base64` is imported as `"encoding/base64"` but has name `base64`, NOT `encoding_base64` and NOT `encodingBase64`
+    - the package in `src/encoding/base64` is imported as `"encoding/base64"` but has name `base64`, NOT `encoding_base64` and NOT `encodingBase64`
 - don't use the `import .` notation
 - importer of a package will use the name to refer to its contents
-  - give clear and concise names for things within a package
-  - i.e. `bufio.Reader`, so no need to name the `Reader` as `BufReader`
-  - i.e. `ring.New`, not need to name the constructor as `NewRing`
+    - give clear and concise names for things within a package
+    - i.e. `bufio.Reader`, so no need to name the `Reader` as `BufReader`
+    - i.e. `ring.New`, not need to name the constructor as `NewRing`
 - long names don't automatically make things more readable. A helpful doc comment can often be more valuable than an extra long name
 
 Go doesn't provide automatic **Getters** or **Setters**, but when writing ones on your own, it is best to omit the "Get" part, say `obj.Owner()` should be concise and straight-forward.
@@ -159,21 +159,21 @@ Control structures of Go are related to those of C but differ in important ways:
 - there is no `do` or `while` loop, only a slightly generalized `for`
 - `switch` is more flexible
 - `if` and `switch` accept an optional **initialization statement** like that of `for`
-  - mandatory braces encourage writing simple `if` statements on multiple lines
-  - when an `if` statement doesn't flow into the next statement—that is, the body ends in `break, continue, goto, or return`, the unnecessary `else` is omitted
+    - mandatory braces encourage writing simple `if` statements on multiple lines
+    - when an `if` statement doesn't flow into the next statement—that is, the body ends in `break, continue, goto, or return`, the unnecessary `else` is omitted
 - `break` and `continue` statements take an optional **label** to identify what to break or continue
 - there are new control structures including a `type switch` and a multi-way communications multiplexer, `select`
-  - there are no parentheses and the bodies must always be brace-delimited
+    - there are no parentheses and the bodies must always be brace-delimited
 
 Three forms of **`for`** loops
 
 - `for init; condition; post {}`
 - `for condition {}` is like a while loop
-  - a `range` clause can manage the loop, i.e. `for key, value := range oldMap {}`
-  - `for _, value := range array {}` use `_` (aka the **blank identifier**) to discard UNWANTED return values
+    - a `range` clause can manage the loop, i.e. `for key, value := range oldMap {}`
+    - `for _, value := range array {}` use `_` (aka the **blank identifier**) to discard UNWANTED return values
 - `for {}` is like a while-true loop
 - Go has NO `comma operator` and `++` and `--` are **statements**, NOT **expressions**
-  - `for i, j := 0, len(a)-1; i < j; i, j = i+1, j-1 {}`
+    - `for i, j := 0, len(a)-1; i < j; i, j = i+1, j-1 {}`
 
 Go's **`switch`** evaluates the cases _top to bottom_ UNTIL a match is found
 
@@ -181,10 +181,10 @@ Go's **`switch`** evaluates the cases _top to bottom_ UNTIL a match is found
 - it is idiomatic to write an _if-else-if-else_ chain as a `switch`
 - there is NO automatic **fall through**, but cases can be presented in **comma-separated lists**
 - `break` statements can be used to **terminate** a switch early
-  - when trying to break out of a _surrounding loop_, not the `switch`, use a `label` on the loop and "breaking" to that `label`
-  - `continue` with `label` is specific to loops only
+    - when trying to break out of a _surrounding loop_, not the `switch`, use a `label` on the loop and "breaking" to that `label`
+    - `continue` with `label` is specific to loops only
 - a **type switch** can also be used to discover the **dynamic type** of an `interface` variable
-  - such a `type switch` uses the syntax of a _type assertion_ with the keyword `type` inside the parentheses
+    - such a `type switch` uses the syntax of a _type assertion_ with the keyword `type` inside the parentheses
 
 ```go
 var t interface{}
@@ -206,8 +206,8 @@ case *int:
 In a **`:=` declaration** a variable `v` may appear even if it has ALREADY been declared, when
 
 - this declaration is in the same scope as the existing declaration of `v`
-  - if `v` is already declared in an outer scope, the declaration will create a NEW variable
-  - in Go the _scope_ of **function parameters** and **return values** is the same as the **function body**
+    - if `v` is already declared in an outer scope, the declaration will create a NEW variable
+    - in Go the _scope_ of **function parameters** and **return values** is the same as the **function body**
 - the corresponding value in the initialization is assignable to v
 - there is at least one other variable that is created by the declaration
 
@@ -245,12 +245,12 @@ The return or **result parameters** of a Go function can be given _names_ and us
 Go's `defer` statement schedules a function call to be run immediately before the function returns
 
 - it is effective for closing or releasing resources
-  - it guarantees that you will never forget to close the file
-  - the `close` sits near the `open`, which is much clearer than placing it at the end of the function
+    - it guarantees that you will never forget to close the file
+    - the `close` sits near the `open`, which is much clearer than placing it at the end of the function
 - the arguments to the deferred function (including the receiver if it is a method) are evaluated when the defer executes
-  - if it is a variable, that variable value can change within the function body before the defer function is executed
+    - if it is a variable, that variable value can change within the function body before the defer function is executed
 - a function can defer _multiple_ function executions
-  - deferred functions are executed in **LIFO** order
+    - deferred functions are executed in **LIFO** order
 
 ```go
 // simple ways to add function traces for debugging
@@ -293,9 +293,9 @@ Sometimes it is easier to use a **composite literal**, which is an expression th
 
 - taking the address of a composite literal allocates a _fresh instance_ each time it is evaluated
 - fields of a _composite literal_ are laid out **in order** and MUST ALL be present
-  - by labeling the elements explicitly as field:value pairs, the initializers can appear in any order and the missing ones left as their zero values
+    - by labeling the elements explicitly as field:value pairs, the initializers can appear in any order and the missing ones left as their zero values
 - if a composite literal contains no fields at all, it creates a zero value for the type
-  - in other words, the expressions `new(File)` and `&File{}` are equivalent
+    - in other words, the expressions `new(File)` and `&File{}` are equivalent
 - composite literals can also be created for `arrays, slices, and maps`, with the field labels being indices or map keys as appropriate
 
 ```go
@@ -322,13 +322,13 @@ func NewFile(fd int, name string) *File {
 built-in function **`make(T, args)`** creates `slices, maps, and channels` only, and it returns an _initialized_ (not zeroed) value of type `T` (not *T)
 
 - these three types represent, under the covers, references to data structures that MUST be initialized before use
-  - i.e. `make([]int, 10, 100)` allocates an array of 100 ints and then creates a slice structure with length 10 and a capacity of 100 pointing at the first 10 elements of the array
-  - `new([]int)` returns a pointer to a newly allocated, zeroed slice structure, that is, a pointer to a nil slice value
+    - i.e. `make([]int, 10, 100)` allocates an array of 100 ints and then creates a slice structure with length 10 and a capacity of 100 pointing at the first 10 elements of the array
+    - `new([]int)` returns a pointer to a newly allocated, zeroed slice structure, that is, a pointer to a nil slice value
 
 **Arrays** are useful when planning the detailed layout of memory
 - arrays are values and building block for slices
 - assigning one array to another _copies_ ALL the elements
-  - when passing an array to a function, it will receive a copy of the array
+    - when passing an array to a function, it will receive a copy of the array
 - size of an array is part of its type
 - you can pass a pointer of an array
 - use slices whenever you can
@@ -350,8 +350,8 @@ x := Sum(&array)
 - slices hold _references_ to an underlying array
 - if you assign one slice to another, both refer to the same array
 - `length` within the slice sets an UPPER LIMIT of how much data to read
-  - length of a slice may be changed as long as it still fits within the limits of the underlying array
-  - do this by assigning it to a slice of itself
+    - length of a slice may be changed as long as it still fits within the limits of the underlying array
+    - do this by assigning it to a slice of itself
 - `capacity` of a slice, accessible by the built-in function `cap`, reports the maximum length the slice may assume
 
 ```go
@@ -380,7 +380,7 @@ type LinesOfText [][]byte     // A slice of byte slices.
 The built-in data structure `map` associate values of one type (the key) with values of another type (the element or value)
 
 - key can be of any type for which the `equality` operator is defined
-  - integers, floating point and complex numbers, strings, pointers, interfaces (as long as the dynamic type supports equality), structs and arrays
+    - integers, floating point and complex numbers, strings, pointers, interfaces (as long as the dynamic type supports equality), structs and arrays
 - maps hold **references** to an underlying data structure
 - maps can be constructed using `composite literal` syntax with colon-separated key-value pairs
 - attempt to fetch a map value with a key that is not present in the map will return the zero value for the type of the entries in the map
@@ -464,7 +464,7 @@ fmt.Fprintf(&b, "This hour has %d days\n", 7) // because we implemented the Writ
 **Interfaces** in Go provide a way to specify the behavior of an object: _if something can do this, then it can be used here_.
 
 - a type can implement multiple interfaces
-  - a collection can be sorted by the routines in package `sort` if it implements `sort.Interface`, which contains `Len(), Less(i, j int) bool, and Swap(i, j int)`, and it could also have a `custom formatter`
+    - a collection can be sorted by the routines in package `sort` if it implements `sort.Interface`, which contains `Len(), Less(i, j int) bool, and Swap(i, j int)`, and it could also have a `custom formatter`
 - Interfaces with only one or two methods are common in Go code, and are usually given a name derived from the method
 
 ```go
@@ -530,9 +530,9 @@ A **type assertion** takes an interface value and extracts from it a value of th
 
 - that _type_ must either be the concrete type held by the interface, or a second interface type that the value can be converted to.
 - i.e. `str := value.(string)`
-  - if the value does not contain a string, the program will crash with a run-time error.
-  - can guard against it with a "comma, ok" idiom to test
-  - if assertion fails, `str` will still be a string with its zero value
+    - if the value does not contain a string, the program will crash with a run-time error.
+    - can guard against it with a "comma, ok" idiom to test
+    - if assertion fails, `str` will still be a string with its zero value
 
 ```go
 str, ok := value.(string)
@@ -546,7 +546,7 @@ if ok {
 If a type exists only to implement an interface and will never have exported methods beyond that interface, there is no need to export the type itself
 
 - its constructor should return an interface value rather than the implementing type
-  - in this way, similar types that implements the same interfaces can be easily replaced for one another by changing the constructor call and the rest of the code is unaffected
+    - in this way, similar types that implements the same interfaces can be easily replaced for one another by changing the constructor call and the rest of the code is unaffected
 
 Almost anything can have methods attached, almost anything can satisfy an interface. A simple http handler:
 
@@ -669,13 +669,13 @@ for try := 0; try < 2; try++ {
 If an error is unrecoverable, it will be better to use `panic` to create a run-time error that will stop the program
 
 - `panic` takes a single argument of arbitrary type (often a string) to be printed as the program dies
-  - when `panic` is called, it immediately stops execution of the current function and begins unwinding the stack of the goroutine, running any deferred functions along the way.
-  - if that unwinding reaches the top of the goroutine's stack, the program dies
-  - it is possible to use the built-in function `recover` to regain control of the goroutine and resume normal execution
+    - when `panic` is called, it immediately stops execution of the current function and begins unwinding the stack of the goroutine, running any deferred functions along the way.
+    - if that unwinding reaches the top of the goroutine's stack, the program dies
+    - it is possible to use the built-in function `recover` to regain control of the goroutine and resume normal execution
 - it's also a way to indicate that something impossible has happened
 - real library functions should avoid using `panic`
-  - it's always better to let things continue to run rather than taking down the whole program
-  - one exception is during initialization, if the library truly cannot set itself up, it might be reasonable to panic without further damage
+    - it's always better to let things continue to run rather than taking down the whole program
+    - one exception is during initialization, if the library truly cannot set itself up, it might be reasonable to panic without further damage
 
 A call to recover stops the unwinding and returns the argument passed to panic
 

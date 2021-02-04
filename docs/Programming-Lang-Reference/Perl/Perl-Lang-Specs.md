@@ -43,10 +43,10 @@ Integers
 - no processing: 'simple raw string' string evaluated as-is
 - with interpolation: "Hello world\n"
 - Alternative Delimiters
-  - Instead of bounding strings with ' or ", can define you own delimiters for strings
-  - use `qq` followed by an arbitrary non-alphanumeric character:
-  - `print qq/'"Hi," said Jack. "Have you read Slashdot today?"'\n/;`
-  - use `q//` works too
+    - Instead of bounding strings with ' or ", can define you own delimiters for strings
+    - use `qq` followed by an arbitrary non-alphanumeric character:
+    - `print qq/'"Hi," said Jack. "Have you read Slashdot today?"'\n/;`
+    - use `q//` works too
 - Here-Documents, another way to specify a string, start with `<<` and then a `label`.
 
 ```perl
@@ -59,10 +59,10 @@ EOF
 
 **Numbers<->Strings**
 - perl converts between strings, integers, and floating-point numbers behind the scenes automatically if necessary.
-  - `"12" > "30"` yields false
+    - `"12" > "30"` yields false
 - string contains no digit will be evaluated as 0 in Integer, if evaluated in an arithmetic expression
 - Special function can be used on converting binary, octal, or Hexadecimal string into Integers:
-  - hex("0x30"), oct("030"), oct("0b11010"), oct("0x35AB")
+    - hex("0x30"), oct("030"), oct("0b11010"), oct("0x35AB")
 
 **Operators**
 
@@ -82,29 +82,29 @@ EOF
 
 - _Scalars_ `$name`, holds Numbers, Strings, limited by the size of your computer's memory
 - _Lists_ `@list`, holds Numbers, Strings, variables
-  - `(42, 39) ("cheese", "cake") (42, 1.5, "lalala", $test)`
-  - `qw/one two three four/` will yield `('one', 'two', 'three', 'four')`
-    - '/' can be replaced with other special chars; spaces can be replaced with tabs, new lines, or any number of white spaces
-  - Note that lists inside lists will be flattened to level one list
-  - list element can be accessed with [N]; negative index rewinds from the end of the list
-    - nit: use `$a = $array[0]` instead of `$a = (@array)[0]`
-    - prime rule is this: the prefix represents what you want to get, not what you've got.
-    - [N] N can be a list, or a range of numbers to access corresponding elements
-    - Swap elements in-place: `@months[3,4] = @months[4,3]` which isn't far from swapping variables using list assignment `($mone, $mtwo) = ($mtwo, $mone)`
-  - list slicing: [(index1, index2)] will return a new list containing elements in those indexes from the old list
-  - Ranges: `(1 .. 6)` will yield a list of 1-6 `('a' .. 'z')` will yield a list of a-z
-  - array functions
-    - change elements: push pop shift(taken from index 0) unshift(adding to index 0)
-    - other: reverse sort
-      - sort is based on alphabetic orders by default. If sorting numbers or others things where special rule is required, can pass a compareTo func:
-      - `my @string_sorted = sort { $a cmp $b } @unsorted;`
-      - `my @number_sorted = sort { $a <=> $b } @unsorted;`
-  - special variable: `$#array` gives the highest element index in `@array`
-    - this made it okay to use `for (0..$#array)` for traversal using `$_` as index
-    - note that this value is 1 less than the value from `salar @array`, which gives the size of the array
+    - `(42, 39) ("cheese", "cake") (42, 1.5, "lalala", $test)`
+    - `qw/one two three four/` will yield `('one', 'two', 'three', 'four')`
+        - '/' can be replaced with other special chars; spaces can be replaced with tabs, new lines, or any number of white spaces
+    - Note that lists inside lists will be flattened to level one list
+    - list element can be accessed with [N]; negative index rewinds from the end of the list
+        - nit: use `$a = $array[0]` instead of `$a = (@array)[0]`
+        - prime rule is this: the prefix represents what you want to get, not what you've got.
+        - [N] N can be a list, or a range of numbers to access corresponding elements
+        - Swap elements in-place: `@months[3,4] = @months[4,3]` which isn't far from swapping variables using list assignment `($mone, $mtwo) = ($mtwo, $mone)`
+    - list slicing: [(index1, index2)] will return a new list containing elements in those indexes from the old list
+    - Ranges: `(1 .. 6)` will yield a list of 1-6 `('a' .. 'z')` will yield a list of a-z
+    - array functions
+        - change elements: push pop shift(taken from index 0) unshift(adding to index 0)
+        - other: reverse sort
+            - sort is based on alphabetic orders by default. If sorting numbers or others things where special rule is required, can pass a compareTo func:
+            - `my @string_sorted = sort { $a cmp $b } @unsorted;`
+            - `my @number_sorted = sort { $a <=> $b } @unsorted;`
+    - special variable: `$#array` gives the highest element index in `@array`
+        - this made it okay to use `for (0..$#array)` for traversal using `$_` as index
+        - note that this value is 1 less than the value from `salar @array`, which gives the size of the array
 - _Hashes_ `%hash`
 - can be created by:
-  - List with key value pairs separated by commas.
+    - List with key value pairs separated by commas.
 
 ```perl
 %where = (
@@ -166,7 +166,7 @@ With `use strict;` set, have to declare global variable with `our $global_var`
 - `$!` a way of getting various things Perl want to give, like error message
 - `<>` an abbreviation for `<ARGV>`
 - `$/` defines your own line separator for I/O purposes
-  - note that the `$/` being set as `""` will make reading chunk as paragraph instead of lines
+    - note that the `$/` being set as `""` will make reading chunk as paragraph instead of lines
 - `@_` stores arguments passed into a subroutine
 
 **Variable interpolation**
@@ -331,19 +331,19 @@ OUTER: while (<STDIN>) {
 - patterns support interpolation, so variable can be put inside '/'s like this `/$pattern/`
 - 'i' tells that pattern is "case insensitive", like this `/regex/i`
 - special chars that need to be escaped: `. * ? + [ ] ( ) { } ^ $ | \`
-  - alternatively, use `\Q` and `\E` to set range that these chars are matched as is
-  - `/\Q$pattern\E/` variable interpolation still in effect
-  - `s/regex/regex_replace/` will do in-place replacement of matched string, once
-  - `s/regex/regex_replace/g` will do it as many times (global)
+    - alternatively, use `\Q` and `\E` to set range that these chars are matched as is
+    - `/\Q$pattern\E/` variable interpolation still in effect
+    - `s/regex/regex_replace/` will do in-place replacement of matched string, once
+    - `s/regex/regex_replace/g` will do it as many times (global)
 - change delimiters
-  - `s#/usr/local/share/#/usr/share/#g;`
+    - `s#/usr/local/share/#/usr/share/#g;`
 - other modifiers
-  - /m – treat the string as multiple lines. Normally, ^ and $ match the very start and very end of the string. If the /m modifier is in play, then they will match the starts and ends of individual lines (separated by \n). For example, given the string: "one\ntwo", the pattern `/^two$/` will not match, but `/^two$/m` will.
-  - /s – treat the string as a single line. Normally, . does not match a new line character; when /s is given, then it will.
-  - /x – allow the use of whitespace and comments inside a match.
+    - /m – treat the string as multiple lines. Normally, ^ and $ match the very start and very end of the string. If the /m modifier is in play, then they will match the starts and ends of individual lines (separated by \n). For example, given the string: "one\ntwo", the pattern `/^two$/` will not match, but `/^two$/m` will.
+    - /s – treat the string as a single line. Normally, . does not match a new line character; when /s is given, then it will.
+    - /x – allow the use of whitespace and comments inside a match.
 - look ahead/behind
-  - `/fish(?= cake)/` will match only if fish is followed by cake
-  - `/fish(?! cake)/` does the opposite
+    - `/fish(?= cake)/` will match only if fish is followed by cake
+    - `/fish(?! cake)/` does the opposite
 
 **Other functions that uses regex**
 

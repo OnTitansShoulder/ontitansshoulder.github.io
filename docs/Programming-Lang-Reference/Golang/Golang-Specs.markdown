@@ -71,8 +71,8 @@ When building **Executable** binaries, its starting point must always use packag
 The install directory is controlled by the `$GOPATH` and `$GOBIN` environment variables.
 
 - If `$GOBIN` is set, binaries are installed to that directory
-  - use `go env -w GOBIN=/somewhere/else/bin` to dynamically change its value
-  - use `go env -u GOBIN` to unset it
+    - use `go env -w GOBIN=/somewhere/else/bin` to dynamically change its value
+    - use `go env -u GOBIN` to unset it
 - If `$GOPATH` is set, binaries are installed to the bin subdirectory of the first directory in the `$GOPATH` list.
 - Otherwise, binaries are installed to the bin subdirectory of the default `$GOPATH` (`$HOME/go`)
 
@@ -157,7 +157,7 @@ go test -v
 A **variable** is a storage location for holding a value. The set of permissible values is determined by the variable's type.
 
 - Go can infer the type of initialized variables so a type is optional
-  - `var a = "initial"` same as `var a string = "string value"`
+    - `var a = "initial"` same as `var a string = "string value"`
 - declare multiple variables in one line: `var b, c int = 1, 2`
 - shorthand for declaring and assigning value to a variable: `f := "apple"`
 
@@ -300,12 +300,12 @@ for k, v := range m { // use range on map
 
 - useful for grouping data together to form records.
 - A field declaration may be followed by an optional string literal **tag**, which becomes an **attribute** for all the fields in the corresponding field declaration.
-  - An empty tag string is equivalent to an absent tag.
-  - The tags are made visible through a reflection interface and take part in type identity for structs but are otherwise ignored.
+    - An empty tag string is equivalent to an absent tag.
+    - The tags are made visible through a reflection interface and take part in type identity for structs but are otherwise ignored.
 - Go supports methods defined on struct types.
 - An embedded field must be specified as a type name T or as a pointer to a non-interface type name *T, and T itself may not be a pointer type.
-  - The unqualified type name acts as the field name.
-  - field names must be unique in a struct type, so cannot have more than one embedded field of the same type
+    - The unqualified type name acts as the field name.
+    - field names must be unique in a struct type, so cannot have more than one embedded field of the same type
 
 ```go
 type person struct {
@@ -417,7 +417,7 @@ A few things special in golang's **functions**:
 - A function can be assigned to a variable or invoked directly.
 - A function can return another function
 - A function can accept a variable number of arguments of the same type and saved as an array variable in the function body.
-  - it has to be the last argument type in the function signature
+    - it has to be the last argument type in the function signature
 - There can be **multiple return values** from a function
 - If no return values expected, can omit the return type
 
@@ -510,13 +510,13 @@ func main() {
 
 - The receiver is specified via an **extra** parameter section preceding the method name.
 - receiver type can be a single defined type that is either **pointer** or **value** and non-variadic parameter type
-  - must be defined in the same package as the method
-  - the method is said to be **bound** to its **receiver base type** and the method name is **visible** only within selectors for type T or *T.
-  - the non-blank identifier (receiver name) must be unique in the method signature (against other arguments)
+    - must be defined in the same package as the method
+    - the method is said to be **bound** to its **receiver base type** and the method name is **visible** only within selectors for type T or *T.
+    - the non-blank identifier (receiver name) must be unique in the method signature (against other arguments)
 - method can still take in arguments like a function does
 - Go automatically handles **conversion between values and pointers** for method calls
 - The type of a method is the type of a function with the receiver as first argument
-  - i.e. `func(r *rect)`
+    - i.e. `func(r *rect)`
 
 ```go
 func (r *rect) area() int { // prefered for most cases
@@ -534,10 +534,10 @@ A type may have a method set associated with it.
 
 - In a method set, each method must have a unique non-blank method name.
 - The method set of a type determines the interfaces that the type implements and the methods that can be called using a receiver of that type.
-  - The method set of an interface type is its interface.
-  - The method set of any other type T consists of all methods declared with receiver type T.
-  - The method set of the corresponding pointer type *T is the set of all methods declared with receiver *T or T
-  - Any other type has an empty method set.
+    - The method set of an interface type is its interface.
+    - The method set of any other type T consists of all methods declared with receiver type T.
+    - The method set of the corresponding pointer type *T is the set of all methods declared with receiver *T or T
+    - Any other type has an empty method set.
 
 <br/>
 

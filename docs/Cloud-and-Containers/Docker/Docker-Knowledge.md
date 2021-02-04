@@ -84,13 +84,13 @@ Another common problem that causes long runtimes in building Docker images is **
 A useful technique to reduce the time for these build instructions is to introduce **proxies** that cache such dependency packages, such as
 
 - _apt-cacher-ng_: supports caching _Debian_, _RPM_, and other distribution-specific packages
-  - https://www.unix-ag.uni-kl.de/~bloch/acng
+    - https://www.unix-ag.uni-kl.de/~bloch/acng
 - _Sonatype Nexus_: supports _Maven_, _Ruby Gems_, _PyPI_, and _NuGet_ packages out of the box
-  - http://www.sonatype.org/nexus
+    - http://www.sonatype.org/nexus
 - _Polipo_: a generic caching proxy that is useful for development
-  - http://www.pps.univ-paris-diderot.fr/~jch/software/polipo
+    - http://www.pps.univ-paris-diderot.fr/~jch/software/polipo
 - _Squid_: another popular caching proxy that can work with other types of network traffic
-  - http://www.squid-cache.org/
+    - http://www.squid-cache.org/
 
 This technique is useful when we develop **base** Docker images for our team or organization.
 
@@ -184,9 +184,9 @@ ENTRYPOINT ["./hello"]
 
 - the image is built during the final stage of the build process, you can minimize image layers by leveraging **build cache**
 - **order the instructions** from the less frequently changed to the more frequently changed to ensure the build cache is reusable
-  - install tools for building the app
-  - install or update library dependencies
-  - generate the app
+    - install tools for building the app
+    - install or update library dependencies
+    - generate the app
 
 ```sh
 FROM golang:1.11-alpine AS build
@@ -259,7 +259,7 @@ By convention a `Dockerfile` is located in the root of the build context.
 
 - use the `-f <path>` flag with `docker build` to point to a `Dockerfile` _anywhere_ in your file system.
 - specify a repository and tag at where to save the new image if the build succeeds, with `-t <tag>`
-  - multiple `-t` can be used
+    - multiple `-t` can be used
 - each instruction is run **independently**, and causes a new image (layer) to be created
 - whenever possible, Docker will re-use the intermediate images (cache) to accelerate the build process
 
@@ -301,8 +301,8 @@ Learning about [BuildKit](https://github.com/moby/buildkit/blob/master/frontend/
 - a name can be given to a new build stage by adding `AS <name>` and used in `COPY --from=<name|index>`
 - `tag` or `digest` values are optional, default use `latest` tag
 - `FROM` instructions support **variables** that are declared by any `ARG` instructions that occur before the _first_ `FROM`
-  - An `ARG` declared before a `FROM` is outside of a _build stage_, so it can’t be used in any instruction after a `FROM`.
-  - To use the default value of an `ARG` declared before the first `FROM` use an `ARG` instruction without a value inside a build stage
+    - An `ARG` declared before a `FROM` is outside of a _build stage_, so it can’t be used in any instruction after a `FROM`.
+    - To use the default value of an `ARG` declared before the first `FROM` use an `ARG` instruction without a value inside a build stage
 - **Tip** use `alpine` as the baseimage whenever you can
 
 #### RUN
@@ -319,23 +319,23 @@ Learning about [BuildKit](https://github.com/moby/buildkit/blob/master/frontend/
 
 - Docker commits are cheap and containers can be created from any point in an image's history, much like source control.
 - the cache for a `RUN` will be reused during the next build.
-  - the cache can be invalidated by using the `docker build --no-cache` flag
-  - the cache for `RUN` instructions can be invalidated by `ADD` and `COPY` instructions
+    - the cache can be invalidated by using the `docker build --no-cache` flag
+    - the cache for `RUN` instructions can be invalidated by `ADD` and `COPY` instructions
 - two forms of `RUN` instruction
-  - `RUN <command/script>` is called the _shell form_
-    - implicitly invoking `/bin/sh -c` on the command passed in
-    - can do variable substitution
-  - `RUN ["executable", "param1", "param2"]` is called the _exec form_
-    - pass the _executable_ with full path
-    - does NOT invoke a command shell, NO _variable substitution_, more like to concatenate the array into a string command
-    - must use **double quotes** as it is parsed as JSON array
-    - can run commands using a different shell executable
-    - necessary to escape backslashes
+    - `RUN <command/script>` is called the _shell form_
+        - implicitly invoking `/bin/sh -c` on the command passed in
+        - can do variable substitution
+    - `RUN ["executable", "param1", "param2"]` is called the _exec form_
+        - pass the _executable_ with full path
+        - does NOT invoke a command shell, NO _variable substitution_, more like to concatenate the array into a string command
+        - must use **double quotes** as it is parsed as JSON array
+        - can run commands using a different shell executable
+        - necessary to escape backslashes
 - **Tip**
-  - split long or complex `RUN` statements on multiple lines separated with `backslashes` to make your `Dockerfile` more readable, understandable, and maintainable. Or better: put them in a script
-  - always combine _update_ and _install_ statements in the same `RUN` instruction, as well as steps to clean up the _installation cache_
-  - Using `RUN apt-get update && apt-get install -y` ensures your `Dockerfile` installs the _latest_ package versions with no further coding or manual intervention. This technique is known as _cache busting_. You can also achieve cache-busting by specifying a package version. This is known as _version pinning_.
-  - if using pipes, prepend `set -o pipefail &&` to ensure that an unexpected error prevents the build from inadvertently succeeding
+    - split long or complex `RUN` statements on multiple lines separated with `backslashes` to make your `Dockerfile` more readable, understandable, and maintainable. Or better: put them in a script
+    - always combine _update_ and _install_ statements in the same `RUN` instruction, as well as steps to clean up the _installation cache_
+    - Using `RUN apt-get update && apt-get install -y` ensures your `Dockerfile` installs the _latest_ package versions with no further coding or manual intervention. This technique is known as _cache busting_. You can also achieve cache-busting by specifying a package version. This is known as _version pinning_.
+    - if using pipes, prepend `set -o pipefail &&` to ensure that an unexpected error prevents the build from inadvertently succeeding
 
 #### CMD
 
@@ -350,13 +350,13 @@ Learning about [BuildKit](https://github.com/moby/buildkit/blob/master/frontend/
 - there can only be one `CMD` instruction in a `Dockerfile`, otherwise, only the last `CMD` will be used
 - if `CMD` is used to provide default arguments for the `ENTRYPOINT`, then both of them should be specified with the JSON array format
 - three forms of `CMD` instruction
-  - `CMD ["executable", "param1", "param2"]` is called the **exec form**, and is preferred form
-    - pass the _executable_ with full path
-    - does NOT invoke a command shell, NO _variable substitution_, more like to concatenate the array into a string command
-    - must use **double quotes** as it is parsed as JSON array
-  - `CMD ["param1","param2"]` provides default parameters to `ENTRYPOINT` which is necessary to be present
-  - `CMD command param1 param2` is called the **shell form**
-    - implicitly invoking `/bin/sh -c` on the command passed in
+    - `CMD ["executable", "param1", "param2"]` is called the **exec form**, and is preferred form
+        - pass the _executable_ with full path
+        - does NOT invoke a command shell, NO _variable substitution_, more like to concatenate the array into a string command
+        - must use **double quotes** as it is parsed as JSON array
+    - `CMD ["param1","param2"]` provides default parameters to `ENTRYPOINT` which is necessary to be present
+    - `CMD command param1 param2` is called the **shell form**
+        - implicitly invoking `/bin/sh -c` on the command passed in
 
 #### LABEL
 
@@ -385,7 +385,7 @@ Learning about [BuildKit](https://github.com/moby/buildkit/blob/master/frontend/
 - specify whether the port listens on TCP or UDP, default is TCP
 - it does not actually publish the port but to serve as a **documentation** to tell the user which ports are intended to be published
 - to actually map and publish the port when running the container, use `docker run -p <internal-port>:<external-port> <image>`
-  - this method takes precedence than what is specified in the `Dockerfile`
+    - this method takes precedence than what is specified in the `Dockerfile`
 - use `docker run -P <image>` to publish all exposed ports and map to high-order ports i.e. `80:80`
 
 #### ENV
@@ -408,9 +408,9 @@ Learning about [BuildKit](https://github.com/moby/buildkit/blob/master/frontend/
 - environment variables can also be set when running `docker run --env <key>=<value>`
 - **variable expansion** is supported by `ADD COPY ENV EXPOSE FROM LABEL STOPSIGNAL USER VOLUME WORKDIR ONBUILD`
 - two forms:
-  - `ENV <key> <value>` sets a single variable to a value
-    - entire string after the first space will be treated as the value
-  - `ENV <key>=<value> ...` sets multiple variables to be set at one time
+    - `ENV <key> <value>` sets a single variable to a value
+        - entire string after the first space will be treated as the value
+    - `ENV <key>=<value> ...` sets multiple variables to be set at one time
 - **Tip** if you don't want to have an ENV var persist to the container, use the **define, use, unset** approach in a single instruction
 
 #### ADD
@@ -424,8 +424,8 @@ Learning about [BuildKit](https://github.com/moby/buildkit/blob/master/frontend/
 **`ADD`**  instruction copies **new files**, **directories** or **remote file URLs** from `<src>` and adds them to the filesystem of the image at the path `<dest>`
 
 - `--chown` is for building on Linux system only
-  - new files and directories are created with a `UID and GID of 0`, unless specified otherwise
-  - providing a username without groupname or a UID without GID will use the _same_ numeric UID as the GID
+    - new files and directories are created with a `UID and GID of 0`, unless specified otherwise
+    - providing a username without groupname or a UID without GID will use the _same_ numeric UID as the GID
 - source paths are interpreted as **relative** to the **source of the context** of the build
 - CANNOT use `..` to leave the context directory
 - source paths can contain **wildcards**
@@ -451,9 +451,9 @@ You can also pass a compressed archive through STDIN: (`docker build - < archive
 - optionally accepts a flag `--from=<name|index>` that can be used to set the **source location** to a previous **build stage** (created with `FROM .. AS <name>`) that will be used instead of a build **context** sent by the user
 - the first encountered `COPY` instruction will **invalidate the cache** for all following instructions if the CONTENTS of one of its source paths have changed
 - **Tip**
-  - prefer `COPY` over `ADD` unless using the convenience provided by `ADD`
-    - use `curl` or `wget` to fetch files allows having the chance to discard unwanted files in the same instruction
-  - if you have multiple `Dockerfile` steps that use different files from your context, `COPY` them **individually**, rather than all at once. This ensures that each step's build cache is only invalidated if the specifically required files change.
+    - prefer `COPY` over `ADD` unless using the convenience provided by `ADD`
+        - use `curl` or `wget` to fetch files allows having the chance to discard unwanted files in the same instruction
+    - if you have multiple `Dockerfile` steps that use different files from your context, `COPY` them **individually**, rather than all at once. This ensures that each step's build cache is only invalidated if the specifically required files change.
 
 #### ENTRYPOINT
 
@@ -465,15 +465,15 @@ You can also pass a compressed archive through STDIN: (`docker build - < archive
 **`ENTRYPOINT`** instruction configures how a container will run as an executable
 
 - two forms
-  - `ENTRYPOINT ["executable", "param1", "param2"]` is called the **exec form**
-  - `ENTRYPOINT command param1 param2` is called the **shell form**
+    - `ENTRYPOINT ["executable", "param1", "param2"]` is called the **exec form**
+    - `ENTRYPOINT command param1 param2` is called the **shell form**
 - _command line arguments_ to `docker run <image>` will be APPENDED after all elements in an _exec form_ `ENTRYPOINT` and will **override** all elements specified using `CMD`
 - you can override the `ENTRYPOINT` instruction using the `docker run --entrypoint` flag
 - shell form **PREVENTS** any `CMD` or `docker run` command line arguments from being used
 - shell form will start the command with `/bin/sh -c` and has some disadvantages
-  - executable will **NOT** be the container's `PID 1`
-  - executable will **NOT** receive Unix signals and it will **NOT** receive `SIGTERM` signal from `docker stop <container>`
-  - to fix the above two issues, make sure to start a command with `exec` which will invoke the command in another shell session, i.e. `ENTRYPOINT exec top -b`
+    - executable will **NOT** be the container's `PID 1`
+    - executable will **NOT** receive Unix signals and it will **NOT** receive `SIGTERM` signal from `docker stop <container>`
+    - to fix the above two issues, make sure to start a command with `exec` which will invoke the command in another shell session, i.e. `ENTRYPOINT exec top -b`
 - only the last `ENTRYPOINT` in the `Dockerfile` will be used, if multiple are provided
 - if `CMD` is defined from the _base image_, setting `ENTRYPOINT` will RESET `CMD` to an empty value.
 
@@ -492,7 +492,7 @@ You can also pass a compressed archive through STDIN: (`docker build - < archive
 - for portability, a given host directory can't be guaranteed to be available on all hosts, thus you can’t mount a host directory from within the Dockerfile
 - `VOLUME` does not support specifying a _host-dir_ parameter. You must specify the _mountpoint_ when you **create** or **run** the container
 - **Tip** `VOLUME` should be used to expose any database storage area, configuration storage, or files/folders created by your docker container.
-  - You are strongly encouraged to use `VOLUME` for any _mutable_ and/or _user-serviceable_ parts of your image.
+    - You are strongly encouraged to use `VOLUME` for any _mutable_ and/or _user-serviceable_ parts of your image.
 
 More on Docker volumes is [here](https://docs.docker.com/storage/volumes/)
 
@@ -509,10 +509,10 @@ More on Docker volumes is [here](https://docs.docker.com/storage/volumes/)
 - when specifying a group for the user, the user will have ONLY the specified group membership
 - when the user doesn’t have a primary group then the image (or the next instructions) will be run with the root group
 - **Tip**
-  - if a service can run without privileges, use `USER` to change to a **non-root** user
-  - avoid installing or using `sudo` as it has unpredictable TTY and signal-forwarding behavior that can cause problems
-  - if you absolutely need functionality similar to `sudo`, such as initializing the daemon as root but running it as non-root, consider using `gosu`
-  - avoid switching USER back and forth frequently
+    - if a service can run without privileges, use `USER` to change to a **non-root** user
+    - avoid installing or using `sudo` as it has unpredictable TTY and signal-forwarding behavior that can cause problems
+    - if you absolutely need functionality similar to `sudo`, such as initializing the daemon as root but running it as non-root, consider using `gosu`
+    - avoid switching USER back and forth frequently
 
 #### WORKDIR
 
@@ -524,8 +524,8 @@ More on Docker volumes is [here](https://docs.docker.com/storage/volumes/)
 - it can interpret variables set with `ENV`
 - without a `WORKDIR` instruction, the work directory in the image is the root
 - **Tip**
-  - always use absolute paths for `WORKDIR`
-  - use `WORKDIR` instead of proliferating instructions like `RUN cd … && do-something`, which are hard to read, troubleshoot, and maintain
+    - always use absolute paths for `WORKDIR`
+    - use `WORKDIR` instead of proliferating instructions like `RUN cd … && do-something`, which are hard to read, troubleshoot, and maintain
 
 #### ARG
 
@@ -541,14 +541,14 @@ More on Docker volumes is [here](https://docs.docker.com/storage/volumes/)
 - a default value can be set with `ARG`
 - undefined variable results in empty string
 - do not use it to pass secrets; build-time variables are visible in the image with `docker history` command
-  - use **BuildKit** instead
+    - use **BuildKit** instead
 - `ARG` instruction goes out of scope at the end of the build stage where it was defined
-  - to use an arg in multiple stages, each stage must include the `ARG` instruction
+    - to use an arg in multiple stages, each stage must include the `ARG` instruction
 - variables defined using the `ENV` instruction always override an `ARG` instruction of the same name
 - some special predefined `ARG` variables can be set and used without an `ARG` instruction: `HTTP_PROXY HTTPS_PROXY FTP_PROXY NO_PROXY` and their lowercase version
-  - they won't be saved in `docker history` neither unless they are included with `ARG`
+    - they won't be saved in `docker history` neither unless they are included with `ARG`
 - some predefined platform `ARG` variables are set automatically: `TARGETPLATFORM TARGETOS TARGETARCH TARGETVARIANT BUILDPLATFORM BUILDOS BUILDARCH BUILDVARIANT`
-  - they are not automatically included so need to include an `ARG` instruction to make it available
+    - they are not automatically included so need to include an `ARG` instruction to make it available
 - if an `ARG` value is different from a previous build, then a "cache miss" occurs upon its first usage, not its definition
 
 #### ONBUILD
@@ -586,10 +586,10 @@ More on Docker volumes is [here](https://docs.docker.com/storage/volumes/)
 - when a container has a healthcheck specified, it has a _health status_ in addition to its normal status
 - can only be one `HEALTHCHECK` instruction in a `Dockerfile`
 - `HEALTHCHECK [OPTIONS] CMD command` and _OPTIONS_ can be:
-  - `--interval=DURATION` default 30s, time between every other check
-  - `--timeout=DURATION` default 30s, fails if a check takes longer than this timeout
-  - `--start-period=DURATION` default 0s, initialization time before starting the check
-  - `--retries=N` default 3
+    - `--interval=DURATION` default 30s, time between every other check
+    - `--timeout=DURATION` default 30s, fails if a check takes longer than this timeout
+    - `--start-period=DURATION` default 0s, initialization time before starting the check
+    - `--retries=N` default 3
 - command could be a shell command or an exec JSON array
 - any output from the check will be stored in the health status and visible in `docker inspect`
 

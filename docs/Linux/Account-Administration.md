@@ -19,11 +19,11 @@ The two shells read different configuration files
 
 - login shell:
 - `/etc/profile`: overall system settings, don't change
-  - vars like `PATH, MAIL, USER, HOSTNAME, HISTSIZE`
-  - call other config files, like `/etc/inputrc`, `/etc/profile.d/*.sh`, `/etc/sysconfig/i18n`
-  - `~/.bash_profile` or `~/.bash_login` or `~/.profile`: personal settings
+    - vars like `PATH, MAIL, USER, HOSTNAME, HISTSIZE`
+    - call other config files, like `/etc/inputrc`, `/etc/profile.d/*.sh`, `/etc/sysconfig/i18n`
+    - `~/.bash_profile` or `~/.bash_login` or `~/.profile`: personal settings
 - non-login shell:
-  - `~/.bashrc`
+    - `~/.bashrc`
 
 key_press - | - results
 ----------- | ---------
@@ -118,8 +118,8 @@ A line in `/etc/group` looks like `root:x:0:root` parts are:
 - **initial group**: the group access given upon successful login. 4th column in /etc/passwd
 - **effective group**: the group that is under effect now. It can be the group current user belongs to, user can own the group access of the file
 - `groups` shows the groups this user belongs to
-  - the first group output is the effective group
-  - use `newgrp` to switch to other group as effective group (starts a new shell. Need to exit if wish to go back to previous shell)
+    - the first group output is the effective group
+    - use `newgrp` to switch to other group as effective group (starts a new shell. Need to exit if wish to go back to previous shell)
 - root can add a user into a group using `usermod`. It can also be done by the group admin using `gpasswd`
 
 **A line in /etc/gshadow** looks like `root:::root` parts are:

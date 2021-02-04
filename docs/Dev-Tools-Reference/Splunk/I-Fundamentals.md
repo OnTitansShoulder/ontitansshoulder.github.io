@@ -46,15 +46,15 @@ Index Data -> Search & Investigate -> Add Knowledge -> Monitor & Alert -> Report
 **Splunk Modules**:
 
 - Indexer - Process incoming data and string results in indexes as _events_
-  - Create files organized in sets of directories by age
-  - When searching, Splunk only open the dirs that match the time frame of the search
+    - Create files organized in sets of directories by age
+    - When searching, Splunk only open the dirs that match the time frame of the search
 - Search Heads - all users to search the data using Splunk Search Language
-  - Takes the search and distribute the request to indexers, and aggregate the results back
-  - Include tools like dashboards, alerts, reports
+    - Takes the search and distribute the request to indexers, and aggregate the results back
+    - Include tools like dashboards, alerts, reports
 - Forwarders - Splunk Enterprise component that consumes data and forward it to the indexers for processing
-  - Requires minimal resources, has little impact on performance
-  - Usually resides on the machines where the data origins
-  - Primary way data is supplied for indexing
+    - Requires minimal resources, has little impact on performance
+    - Usually resides on the machines where the data origins
+    - Primary way data is supplied for indexing
 
 Splunk can **scale** to be a single instance or a full-distributed infrastructure.
 
@@ -89,17 +89,17 @@ Splunk Enterprise comes with the Home App and Search & Reporting App
 Ways to get data in:
 
 - Through the Splunk web UI (as an Admin)
-  - Upload a file, indexed once; good for data that never gets updated
-  - There are pre-defined file source type which Splunk uses to index the file
+    - Upload a file, indexed once; good for data that never gets updated
+    - There are pre-defined file source type which Splunk uses to index the file
 - Monitor some files
-  - Event Logs
-  - File System Changes
-  - Active Directory
-  - Network Info
+    - Event Logs
+    - File System Changes
+    - Active Directory
+    - Network Info
 - Forwarder
-  - Receive data from external Forwarders
-  - Main source of data input
-  - https://docs.splunk.com/Documentation/Splunk/latest/Data/Usingforwardingagents
+    - Receive data from external Forwarders
+    - Main source of data input
+    - https://docs.splunk.com/Documentation/Splunk/latest/Data/Usingforwardingagents
 
 Having different and specialized indexes helps make Splunk searches more efficient.
 
@@ -282,21 +282,21 @@ The **Stats Command**, produces statistics of our search results. Need to use fu
 Some Common Stats Functions:
 
 - _count_, returns the number of events matching search criteria
-  - `index=sales sourcetype=vendor_sales | stats count as "Total Sells By Vendors" by product_name, categoryid`
-  - shows vendor sells total by game title
-  - can add any number of fields to split the count by
-  - `| stats count(field)` get a count of the number of events where the field is present
-  - `index=web sourcetype=access_combined | stats count(action) as "Action Events", count as "Total Events"`
+    - `index=sales sourcetype=vendor_sales | stats count as "Total Sells By Vendors" by product_name, categoryid`
+    - shows vendor sells total by game title
+    - can add any number of fields to split the count by
+    - `| stats count(field)` get a count of the number of events where the field is present
+    - `index=web sourcetype=access_combined | stats count(action) as "Action Events", count as "Total Events"`
 - _distinct_count_ or _dc_, returns a count of unique values for a field. The same clauses that works with _count_ will work with _distinct_count_.
 - _sum_, returns the sum of numerical values
-  - `index=sales sourcetype=vendor_sales | stats count as "Unit Sold", sum(price) as "Gross Sales" by product_name`
-  - here the 'by' clause works on both _count_ and _sum_
-  - it has to be the same pipe; after this command, the information needed will no longer be available:
-  - `index=sales sourcetype=vendor_sales | stats count as "Unit Sold" | stats sum(price) as "Gross Sales" by product_name` will yield no results
+    - `index=sales sourcetype=vendor_sales | stats count as "Unit Sold", sum(price) as "Gross Sales" by product_name`
+    - here the 'by' clause works on both _count_ and _sum_
+    - it has to be the same pipe; after this command, the information needed will no longer be available:
+    - `index=sales sourcetype=vendor_sales | stats count as "Unit Sold" | stats sum(price) as "Gross Sales" by product_name` will yield no results
 - _average_ or _avg_, _min_, _max_, returns an average/min/max of numerical values for a field
-  - Any field values that are missing or formatted incorrectly will not be added into calculation
+    - Any field values that are missing or formatted incorrectly will not be added into calculation
 - _list_, returns all values of a field
-  - `index=bcgassets sourcetype=asset_list | stats list(Asset) as "company assets" by Employee`
+    - `index=bcgassets sourcetype=asset_list | stats list(Asset) as "company assets" by Employee`
 - _values_, returns unique values of a field
 
 <br/>

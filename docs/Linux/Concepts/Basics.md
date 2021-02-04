@@ -300,8 +300,8 @@ Hidden attributes on a file are useful for security reasons.
 
 - `lsattr` allows you to view the hidden attributes of a file
 - `chattr` allows you to change the hidden attributes of a file
-  - `-i` means let a file be unchangable
-  - `-a` allows adding but not changing/deleting old portion of the file
+    - `-i` means let a file be unchangable
+    - `-a` allows adding but not changing/deleting old portion of the file
 
 **File special access**
 
@@ -334,8 +334,8 @@ Differently, SGID can be used on directories
 - when a user has `wx` in a directory
 - when this user creates file under this directory, only _this user_ or _root_ can delete that file
 - How to set it:
-  - `SUID: 4, SGID: 2, SBIT: 1`
-  - `chmod 4755 file_name`
+    - `SUID: 4, SGID: 2, SBIT: 1`
+    - `chmod 4755 file_name`
 
 `file` command gives information on what kind of file it is
 
@@ -347,10 +347,10 @@ Differently, SGID can be used on directories
 
 - `find [PATH] [option] [action]`
 - some freq used options
-  - `-mtime n`: n is a number, means day. It makes a huge difference between adding `[+]` or `[-]` before the number: + means older than n days, - means within past n days, and neither, means exact n days ago.
-  - `-newer`: `find /dir1 -newer /dir1/file` finds files newer than /dir1/file
-  - `-atime`, `-ctime` similar as `-mtime`
-  - `-perm`: find files with/above/below certain access rights
+    - `-mtime n`: n is a number, means day. It makes a huge difference between adding `[+]` or `[-]` before the number: + means older than n days, - means within past n days, and neither, means exact n days ago.
+    - `-newer`: `find /dir1 -newer /dir1/file` finds files newer than /dir1/file
+    - `-atime`, `-ctime` similar as `-mtime`
+    - `-perm`: find files with/above/below certain access rights
 
 <br/>
 
@@ -407,9 +407,9 @@ use `dirname` on a file to get the full path to this file's belonging directory
 
 - **superblock**: records this filesystem's information, including number of inode/block, used amount, remaining amount, filesystem format, etc.
 - **inode**: records file-specific properties and records the block number of this record
-  - each record use one inode
-  - each 128 bytes
-  - for a large file, its inode records one block number for which that block records twelve additional direct block numbers, one redirect block number, and one triple-redirect block number. P247 Book.
+    - each record use one inode
+    - each 128 bytes
+    - for a large file, its inode records one block number for which that block records twelve additional direct block numbers, one redirect block number, and one triple-redirect block number. P247 Book.
 - **block**: records the actual content of the file, may span to multiple blocks for larger files
 - knowing an inode can know its block number.
 - this way, data saved onto multiple continuous blocks can be read in sequence within a short amount of time, this is called **localization**
@@ -451,13 +451,13 @@ This is available in ex3 filesystem on Linux. It can help servers recover faster
 - use `ln` to make hard links
 - use `ln -s` to make hard links
 - hardlink to a file shares the original's inode
-  - hardlink has the same access rights of the original
-  - original inode exists as long as there is pointer to this inode
-  - content not lost if original file is deleted
+    - hardlink has the same access rights of the original
+    - original inode exists as long as there is pointer to this inode
+    - content not lost if original file is deleted
 - softlink is just a pointer to another file.
-  - can span to different filesystem
-  - can work on directory
-  - if original file deleted, content is lost and softlink become invalid
+    - can span to different filesystem
+    - can work on directory
+    - if original file deleted, content is lost and softlink become invalid
 
 <br/>
 
@@ -472,47 +472,47 @@ This is available in ex3 filesystem on Linux. It can help servers recover faster
 **Format**
 
 - `mkfs` - to format and make a filesystem
-  - use `mkfs [-t filesystem_format] device_name`
-  - do `mkfs[tab][tab]` will give you a list of supported filesystem format
+    - use `mkfs [-t filesystem_format] device_name`
+    - do `mkfs[tab][tab]` will give you a list of supported filesystem format
 - `mke2fs` - a very detailed and sophisticated command
-  - can set filesystem label, block size, inode per N bytes, journal system configuration
-  - i.e. `mke2fs -j -L "vbird_logical" -b 2048 -i 8192 /dev/hdc6`
+    - can set filesystem label, block size, inode per N bytes, journal system configuration
+    - i.e. `mke2fs -j -L "vbird_logical" -b 2048 -i 8192 /dev/hdc6`
 
 **disk check**
 
 - `fsck` is a serious command to use when filesystem has problems
-  - actually calling `e2fsck`
-  - must be used when the partition inspected was unmounted
+    - actually calling `e2fsck`
+    - must be used when the partition inspected was unmounted
 - `badblocks` can check whether the drive has broken sectors
-  - `badblocks -[svw] device_name`
+    - `badblocks -[svw] device_name`
 
 **mount/unmount**
 
 - Things to ensure before mounting
-  - single filesystem should not be mounted to different mounting points
-  - single directory should not be mounting multiple filesystems
-  - directories mouting filesystems should be originally empty
+    - single filesystem should not be mounted to different mounting points
+    - single directory should not be mounting multiple filesystems
+    - directories mouting filesystems should be originally empty
 - `mount`
-  - `mount -l` shows mounted info
-  - `mount -a` mounts all unmounted filesystems
-  - `mount [-t filesystem] [-L Label_name] [-o otheroptions] device_name mounting_point` typical use of command
-  - `mount -o remount,rw,auto /` when root became read-only, use this to remount and make it writable again (saves a reboot)
+    - `mount -l` shows mounted info
+    - `mount -a` mounts all unmounted filesystems
+    - `mount [-t filesystem] [-L Label_name] [-o otheroptions] device_name mounting_point` typical use of command
+    - `mount -o remount,rw,auto /` when root became read-only, use this to remount and make it writable again (saves a reboot)
 - `unmount`
-  - `unmount [-fn] device_name[or]mounting_point`
+    - `unmount [-fn] device_name[or]mounting_point`
 
 **Infrequently used commands** `mknod, e2label, tune2fs, hdparm` P282 Book for details
 
 **Mount at boot time**
 
 - Some limitations:
-  - root '/' must be the first to mount
-  - other mount point must be existing directory
-  - all mount points can be used only once
-  - all partition can be mounted only once
+    - root '/' must be the first to mount
+    - other mount point must be existing directory
+    - all mount points can be used only once
+    - all partition can be mounted only once
 - `/etc/fstab` file
-  - contents listed in order:
-  - Device_label Mount_point filesystem parameters dump fsck
-  - device_label can be checked using `dumpe2fs`
+    - contents listed in order:
+    - Device_label Mount_point filesystem parameters dump fsck
+    - device_label can be checked using `dumpe2fs`
 
 **Mount .iso image using loop**
 
