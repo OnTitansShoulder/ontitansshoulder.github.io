@@ -1282,6 +1282,140 @@ For those that do not define selectors, no Endpoints created. However, the DNS s
 
 ### Service Topology
 
+**Service Topology** enables a service to route traffic based upon the **Node topology** of the **cluster**. A service can specify that traffic be preferentially routed to endpoints that are on the same **Node** as the client, or in the same **availability zone**.
+
+Service creator can define a policy for routing traffic based upon the **Node labels** for the **originating and destination** Nodes. You can control Service traffic routing by specifying the `.spec.topologyKeys` field on the Service object, which should be a **preference-ordered** list of Node labels to be used to sort endpoints when accessing the Service. If no match to any of the Node labels is found, the traffic will be **rejected**.
+
+The special value `*` may be used to mean "any topology" and only makes sense as the **last value** in the list, if used. If `.spec.topologyKeys` is not specified or empty, NO topology constraints will be applied.
+
+Consider a cluster with Nodes that are labeled with their `hostname, zone name, and region name`. Then you can set the topologyKeys values of a service to direct traffic:
+
+- Only to endpoints on the same node, failing if no endpoint exists on the node: `["kubernetes.io/hostname"]`
+- Preferentially to endpoints on the same node, falling back to endpoints in the same zone, followed by the same region, and failing otherwise: `["kubernetes.io/hostname", "topology.kubernetes.io/zone", "topology.kubernetes.io/region"]`
+- Preferentially to the same zone, fallback on any available endpoint otherwise: `["topology.kubernetes.io/zone", "*"]`
+
+**Valid topology** keys are **currently** limited to `kubernetes.io/hostname`, `topology.kubernetes.io/zone`, and `topology.kubernetes.io/region`
+
+#### YAML Reference
+
+???+ node "Service Topology example"
+    ```yaml
+    apiVersion: v1
+    kind: Service
+    metadata:
+      name: my-service
+    spec:
+      selector:
+        app: my-app
+      ports:
+        - protocol: TCP
+          port: 80
+          targetPort: 9376
+      topologyKeys:
+        - "kubernetes.io/hostname"
+        - "*"
+    ```
+
+### Kubernetes DNS
+
+**Kubernetes DNS** schedules a **DNS Pod and Service** on the cluster, and configures the kubelets to tell individual containers to use the DNS Service's IP to resolve DNS names.
+
+Every Service defined in the cluster (including the DNS server itself) is assigned a **DNS name**. By default, a client Pod's DNS search list will include the **Pod's own namespace** and the cluster's **default domain**.
+
+#### for Services
+
+Normal Services are assigned a **DNS A or AAAA record**, depending on the IP family of the service, in the form of `svc-name.namespace.svc.cluster-domain.example`, which resolves to the **cluster IP** of the Service. A Headless Service gets the same record, except that it resolves to the set of **IPs of the pods** selected by the Service. 
+
+##### SRV records
+
+**SRV Records** are created for **named ports** that are part of normal or Headless Services, in the form of `_port-name._port-protocol.svc-name.namespace.svc.cluster-domain.example`.
+
+For a normal Service, it resolves to the domain name and the port number, `svc-name.namespace.svc.cluster-domain.example:port`. For a Headless Service, it resolves to multiple answers, one domain and port for each pod that is backing the service, `auto-generated-name.svc-name.namespace.svc.cluster-domain.example:port`.
+
+#### for Pods
+
+##### A/AAAA records
+
+A normal Pod gets DNS resolution in the form of `pod-ip-address.namespace.pod.cluster-domain.example`.
+
+Any pods created by a **Deployment** or **DaemonSet** exposed by a Service have the DNS resolution in the form of `pod-ip-address.deployment-name.namespace.svc.cluster-domain.example`.
+
+##### hostnmae and subdomain
+
+When a Pod is created, its **hostname** is the Pod's `metadata.name` value. There is also `.spec.hostname` to be used to specify the Pod's hostname, which takes **precedence** over the Pod's name.
+
+The Pod also has an optional subdomain field `.spec.subdomain` which can be used to specify its **subdomain**. Then its fully qualified domain name (**FQDN**) becomes `hostname.subdomain.namespace.svc.cluster-domain.example`
+
+Pod needs to become READY in order to have a record unless `publishNotReadyAddresses=True` is set on the Service.
+
+##### setHostnameAsFQDN
+
+When a Pod is configured to have FQDN, its `hostname` command returns the short hostname set on the Pod, and the `hostname --fqdn` command returns the FQDN.
+
+When you set `.spec.setHostnameAsFQDN=true` on the Pod, both `hostname` and `hostname --fqdn` return the Pod's FQDN.
+
+!!! warn "Note"
+    In Linux, the hostname field of the kernel (the nodename field of struct utsname) is limited to **64 characters**. If a Pod enables `.spec.setHostnameAsFQDN` and its FQDN is longer than 64 character, it will stuck in Pending(ContainerCreating) status.
+    
+    One way to solve this issue is to create an [admission webhook controller](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/#admission-webhooks){target=_blank} to control FQDN size when users create top level objects ike Deployments.
+
+##### DNS Policy
+
+DNS policies can be set on a per-pod basis via `.spec.dnsPolicy`:
+
+- **Default** - Pod inherits the DNS name resolution configuration **from the node** that the pods run on
+- **ClusterFirst** (default policy) - Any DNS query that does NOT match the configured **cluster domain suffix**, such as "www.kubernetes.io", is **forwarded** to the **upstream DNS nameserver** inherited from the node
+    - Cluster administrators may have extra stub-domain and upstream DNS servers configured
+- **ClusterFirstWithHostNet** - only for Pods running with **hostNetwork**
+- **None** - allows Pod to **ignore** DNS settings from the Kubernetes environment
+    - All DNS settings are expected to be provided using the `.spec.dnsConfig` field in the Pod Spec
+
+##### DNS Config
+
+Pod's DNS Config is optional but it allows users more control on the DNS settings for a Pod. It will be required if `.spec.dnsPolicy=None`. Some properties:
+
+- `nameservers` - a list of DNS servers' IP addresses
+    - at most 3 can be provided
+    - optional unless `.spec.dnsPolicy=None`
+    - the list will be combined to the base nameservers generated from the DNS Policy
+- `searches` - a list of DNS search domains for hostname lookup in the Pod.
+    - at most 6 can be provided
+    - optional
+    - the list will be combined to the base search domains generated from the DNS Policy
+- `options` - a list of objects where each object may have a name property (required) and a value property (optional)
+    - optional
+    - the list will be combined to the base options generated from the DNS Policy
+
+???+ note "DNS Config Example"
+    ```yaml
+    apiVersion: v1
+    kind: Pod
+    metadata:
+      namespace: default
+      name: dns-example
+    spec:
+      containers:
+        - name: test
+          image: nginx
+      dnsPolicy: "None"
+      dnsConfig:
+        nameservers:
+          - 1.2.3.4
+        searches:
+          - ns1.svc.cluster-domain.example
+          - my.dns.search.suffix
+        options:
+          - name: ndots
+            value: "2"
+          - name: edns0
+    ```
+    Will generate `/etc/resolv.conf`:
+    ```
+    nameserver 1.2.3.4
+    search ns1.svc.cluster-domain.example my.dns.search.suffix
+    options ndots:2 edns0
+    ```
+
 ### EndpointSlices
 
 **EndpointSlices** allow for **distributing** network endpoints across **multiple resources**. Each slice can hold upto 100 endpoints.
