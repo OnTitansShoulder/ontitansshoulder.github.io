@@ -52,10 +52,7 @@ nav:
         - "Cloud-and-Containers/k8s/K8s-Knowledge.md"
     - Dev Tools Reference:
       - Splunk:
-        - "Dev-Tools-Reference/Splunk/I-Fundamentals.md"
-        - "Dev-Tools-Reference/Splunk/II-Fundamentals.md"
-        - "Dev-Tools-Reference/Splunk/III-Fundamentals.md"
-        - "Dev-Tools-Reference/Splunk/IV-Advanced.md"
+        - "Dev-Tools-Reference/Splunk/Splunk-References.md"
     - Linux:
       - Concepts:
         - Linux Basics Must-know: "Linux/Concepts/Basics.md"
@@ -79,6 +76,7 @@ nav:
       - Java:
         - Effective Java: "Programming-Lang-Reference/Java/Best-Practices.md"
         - Java Design Patterns: "Programming-Lang-Reference/Java/Design-Patterns.md"
+        - Testing Design Patterns: "Programming-Lang-Reference/Java/Testing-Design-Patterns.md"
       - Perl:
         - Perl Language Reference: "Programming-Lang-Reference/Perl/Perl-Lang-Specs.md"
       - Github Markdown Guide: "Programming-Lang-Reference/Github-Markdown.md"
