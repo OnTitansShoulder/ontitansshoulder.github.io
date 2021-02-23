@@ -78,7 +78,13 @@ Three fields ALWAYS available are `hosts`, `source`, and `sourcetype`. **Interes
 
 From the extracted fields, `a` denotes a String value, `#` denotes a numeral value
 
-In the search, `= !=` can be used on numeral and String values; `> >= < <=` can be used on numeral values only
+In the search, `= !=` can be used on numeral and String values; `> >= < <=` can be used on numeral values only.
+
+### Knowledge Objects
+
+**Knowledge Objects** are like some tools to help **discover and analyze data**, which include data interpretation, classification, enrichment, normalization, and search-time-mapping of knowledge (Data Models).
+
+Saved Searches, Reports, Alerts, and Dashboards are all Knowledge Objects.
 
 ## Splunk Search Language (SPL)
 
@@ -111,6 +117,24 @@ Search Terms, Command names, Function names are **NOT case-sensitive**, with the
 
 #### Non-Transforming Commands
 
+##### addtotals
+
+Compute the SUM of ALL **numeric fields** for **each event** (table row) and creates a `total` column (default behavior).
+
+You can override the default behavior and let it calculate a sum for a **column**, see the example.
+
+??? note "Example"
+    ```sh
+    # adds a column to calculate the totals of all numeric fields per row
+    index=web sourcetype=access_combined
+    | chart sum(bytes) over host by file
+    | addtotals fieldname="Total by host"
+    # adds a row to calculate the totals of one column
+    index=web sourcetype=access_combined
+    | chart sum(bytes) as sum over host
+    | addtotals col=true label="Total" labelfield=sum
+    ```
+
 ##### dedup
 
 **Remove duplicated** events from results that share common values from the fields specified.
@@ -122,13 +146,49 @@ Search Terms, Command names, Function names are **NOT case-sensitive**, with the
     | table Username First_Name Last_Name
     ```
 
+##### eval
+
+**Calculate** and **manipulate** field values in many powerful ways and also works with **multi-value** fields. Results can create new fields (case-sensitive) or override existing fields.
+
+Multiple field expressions can be calculated on the same eval command, and one is created/altered after another so the **order** of these expressions matters.
+
+Besides the many Functions it supports, `eval` supports **operators** include arithmetic, concatenation (using `.`), and boolean.
+
+??? note "Example"
+    ```sh
+    index=network sourcetype=cisco_wsa_squid
+    | stats sum(sc_bytes) as Bytes by usage
+    | eval bandwidth = round(Bytes/1024/1024, 2)
+    # eval with if conditions and cases
+    | eval VendorTerritory=if(VendorId<4000, "North America", "Other")
+    | eval httpCategory=case(status>=200 AND status<300, "Success", status>=300 AND status<400, "Redirect", status>=400 AND status<500, "Client Error", status>=500, "Server Error", true(), "default catch all other cases")
+    # eval can be used as a Function with stats command to apply conditions
+    index=web sourcetype=access_combined
+    | stats count(eval(status<300)) as "Success", ...
+    ```
+
+Supported Functions see [docs page](https://docs.splunk.com/Documentation/Splunk/8.1.2/SearchReference/CommonEvalFunctions){target=_blank}
+
+##### fieldformat
+
+**Format** values WITHOUT changing characteristics of underlying values. In other words, only a format is specified when the value is displayed as outputs and the same field can **still participate calculations** as if their values are not changed.
+
+??? note "Example"
+    ```sh
+    index=web sourcetype=access_combined product_name=* action=purchase
+    | stats sum(price) as total_list_price, sum(sale_price) as total_sale_price by product_name
+    | fieldformat total_list_price = "$" + tostring(total_list_price)
+    ```
+
+Supported Functions see [docs page](https://docs.splunk.com/Documentation/Splunk/8.1.2/SearchReference/CommonEvalFunctions){target=_blank}. Specifically look for Conversion Functions and Text Functions.
+
 ##### fields
 
 **Include or exclude** fields from search results to limit the fields to display and also make search run faster.
 
-Field extraction is one of the most **costly** parts of searching in Splunk. Eliminate unnecessary fields will improve search speed since field inclusion occurs BEFORE field extraction, while field exclusion happens AFTER field extraction.
+**Field extraction** is one of the most **costly** parts of searching in Splunk. Eliminate unnecessary fields will improve search speed since field inclusion occurs BEFORE field extraction, while field exclusion happens AFTER field extraction.
 
-Internal fields like raw and time will always be extracted, but can also be removed from the search results.
+Internal fields like _raw_ and _\_time_ will ALWAYS be extracted, but can also be removed from the search results using `fields`.
 
 ??? note "Example"
     ```sh
@@ -136,6 +196,17 @@ Internal fields like raw and time will always be extracted, but can also be remo
     | fields status clientip # only include fields status and clientip
     index=web sourcetype=access_combined
     | fields - status clientip # to exclude fields status and clientip
+    ```
+
+##### fillnull
+
+Replaces any null values in your events. It by default fills NULL with `0` and it can be set with `value="something else"`
+
+??? note "Example"
+    ```sh
+    index=sales sourcetype=vendor_sales
+    | chart sum(price) over product_name by VendorCountry
+    | fillnull
     ```
 
 ##### rename
@@ -149,6 +220,17 @@ Internal fields like raw and time will always be extracted, but can also be remo
     | rename JESSIONID as "User Session Id",
             product_name as "Purchased Game",
             price as "Purchase Price"
+    ```
+
+##### search
+
+Add search terms further **down the pipeline**. In fact, the part before the first `|` is itself a `search` command.
+
+??? note "Example"
+    ```sh
+    index=network sourcetype=cisco_wsa_squid usage=Violation
+    | stats count(usage) as Visits by cs_username
+    | search Visits > 1
     ```
 
 ##### sort
@@ -176,6 +258,37 @@ Specify fields kept in the results and retains the data in a **tabular** format.
     index=web sourcetype=access_combined
     | table status clientip
     ```
+
+##### transaction
+
+**Transaction** is any group of **related events** for a **time span** which can come from multiple applications or hosts.
+
+`transaction` command takes in one or multiple fields to make transactions, and creates two fields in the raw event: _duration_ (time between the first and last event) and _eventcount_ (number of events)
+
+`transaction` limits 1000 events per transaction by default and is an expensive command. Use it only when it has greater value than what you can do with `stats` command.
+
+??? note "Example"
+    ```sh
+    index=web sourcetype=access_combined
+    | transaction clientip startswith=action="addtocart" endswith=action="purchase" maxspan=1h maxpause=30m
+    # startswith and endswith should be valid search strings
+    ```
+
+##### where
+
+Filter events to ONLY keep the results that **evaluate as true**.
+
+Try use `search` whenever you can rather than `where` as it is more efficient this way.
+
+??? note "Example"
+    ```sh
+    index=network sourcetype=cisco_wsa_squid usage=Violation
+    | stats count(eval(usage="Personal")) as Personal, count(eval(usage="Business")) as Business by username
+    | where Personal > Business AND username!="lsagers"
+    | sort -Personal
+    ```
+
+Supported Functions see [docs page](https://docs.splunk.com/Documentation/Splunk/8.1.2/SearchReference/CommonEvalFunctions){target=_blank}. `where` shared many of the `eval` Functions.
 
 #### Transforming Commands
 
@@ -214,10 +327,15 @@ Shows the **least common** values of a field set. It is the opposite of `top` Co
 
 Produce **statistics** of our search results and need to use functions to produce stats.
 
+The `eval` Function is handy to apply quick and concise **conditional filtering** to limit the statistics calculated from desired data.
+
 ??? note "Example"
     ```sh
     index=sales sourcetype=vendor_sales
     | stats count as "Total Sells By Vendors" by product_name, categoryid
+    # apply conditions using eval Function
+    index=web sourcetype=access_combined
+    | stats count(eval(status<300)) as "Success", ...
     ```
 
 Supported Functions see [docs page](https://docs.splunk.com/Documentation/Splunk/8.1.2/SearchReference/CommonStatsFunctions){target=_blank}
@@ -270,6 +388,17 @@ Top Command Clauses: limit=int countfield=string percentfield=string showcount=T
 
 Splunk has commands to extract **geographical info** from data and display them in a good format.
 
+##### gauge
+
+Show a field value in a gauge.
+
+??? note "Example"
+    ```sh
+    index=sales sourcetype=vendor_sales
+    | stats sum(sale) as total
+    | gauge total 0 3000 6000 7000
+    ```
+
 ##### geom
 
 Adds fields with geographical data structures matching polygons on a **choropleth map visulization**.
@@ -300,6 +429,25 @@ Lookup **IP address** and add **location information** to events. Data like `cit
     ```sh
     index=web sourcetype=access_combined action=purchase status=200
     | iplocation clientip
+    ```
+
+##### trendline
+
+Compute **moving averages** of field values, gives a good understanding of how the data is **trending over time**.
+
+Three trendtypes (used as Functions by `trendline` command):
+
+- **simple moving average** (`sma`): compute the sum of data points over a period of time
+- **expoential moving average** (`ema`): assigns a heavier weighting to more current data points
+- **weighted moving average** (`wma`): assigns a heavier weighting to more current data points
+
+??? note "Example"
+    ```sh
+    index=web sourcetype=access_combined
+    | timechart sum(price) as sales
+    | trendline wma2(sales) as trend ema10(bars)
+    # '2' here means do calculation per 2 events
+    # this number can be between 2 and 10000
     ```
 
 #### SPL Best Practices
@@ -396,6 +544,14 @@ Uses **colored shadings** to show **differences in numbers over geographical loc
 Splunk ships with two KMZ files, geo_us_states for US, and geo_countries for the countries of the world. Other KMZ files can be provided and used.
 
 `geom` is the command to use to show choropleth map. See [geom command](#geom).
+
+##### Single Value
+
+Displays a **single number** with formatting options to add **caption, color, unit**, etc. You can use the `timechart` command to add a **trend** and a sparkline for that value.
+
+It can also display as **gauges** which can take forms of radial, filler, or marker. There are options to format ranges and color.
+
+`gauge` is the command to use to enable and pass in ranges. See [gauge command](#gauge).
 
 #### Dashboards
 
