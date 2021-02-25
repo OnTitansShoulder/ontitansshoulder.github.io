@@ -70,7 +70,7 @@ From the web UI, use `Search & Reporting` -> `Search History` to quickly view re
 
 Also from the web UI, use `Activity` -> `Jobs` to view recent search jobs (with data). Then further use `Job -> inspect job` to view the query performance.
 
-### Search Fields
+#### Search Fields
 
 **Search fields** are `key=value` string in the search query and will be **automatically extracted** and available for use by commands for creating insights. The key is **case-sensitive** but the value is not.
 
@@ -80,11 +80,129 @@ From the extracted fields, `a` denotes a String value, `#` denotes a numeral val
 
 In the search, `= !=` can be used on numeral and String values; `> >= < <=` can be used on numeral values only.
 
+#### Tags
+
+**Tags** are Knowledge Objects allow you to designate **descriptive names** for `key-value` pairs.
+
+It is useful when you have logs that multiple fields may have the same value(s) you want to filter with. Then you can tag those fields with the same tag name and in future searches do filter with the tag name.
+
+Tags are **value-specific** and are case-sensitive. When you tag a key-value pair you are associating a tag with that pair. When the field appears with another value then it is not tagged with this tag name.
+
+Do NOT tag a field having **infinite possible values**.
+
+Steps: in a Splunk search, click on an event and see the list of key=vlaue pairs and in actions dropdown select `Edit Tags` to add new tags (comma separated).
+
+To search with tags, enter `tag=<tag_name>`. For example, `index=security tag=SF` matches all fields that are tagged with that value. To limit a tag to a field do `tag::<field>=<tag_name>`
+
+Read more about tags in [doc page](https://docs.splunk.com/Documentation/Splunk/8.1.2/Knowledge/TagandaliasfieldvaluesinSplunkWeb){target=_blank}
+
+#### Event Type
+
+**Event Type** allows saving a search's **definition** and use the definition in another search to **highlight** matching events. It is good for **categorizing events** based on search terms. The priority settings affects the display order of returned results.
+
+Steps: after a search, save as "Event Type" and use it in another search with `eventtype`. For example, `index=web sourcetype=access_combined eventtype=purchase_strategy`
+
 ### Knowledge Objects
 
 **Knowledge Objects** are like some tools to help **discover and analyze data**, which include data interpretation, classification, enrichment, normalization, and search-time-mapping of knowledge (Data Models).
 
 Saved Searches, Reports, Alerts, and Dashboards are all Knowledge Objects.
+
+#### Field Extractor
+
+The **Field Extractor** allows to use a GUI to extract fields that **persist as Knowledge Objects** and make them reusable in searches.
+
+It is useful if the information from events are **badly structured** (not in some `key=value` fashion), such as simple statements in a natural language but contains useful information in a specific **pattern**.
+
+Fields extracted are **specific** to a `host, source, or sourcetype` and are **persistent**. Two different ways a field extractor can use: **regex** and **delimiters**:
+
+- **regex**: using regular expression, work well when having unstructured data and events to extract fields from
+- **delimiters**: a delimiter such as comma, space, or any char. Use it for things like CSV files
+
+Three ways to access a field extractor:
+    - Settings -> Fields
+    - The field sidebar during a search
+    - From an event's actions menu (easiest)
+
+Read more from the [docs page](http://docs.splunk.com/Documentation/Splunk/latest/Knowledge/AboutSplunkregularexpressions){target=_blank} for Splunk regex.
+
+#### Field Aliases
+
+**Field Aliases** give you a way to **normalize data** over **multiple sources**.
+
+For example, when aggregating results from multiple sources or indexes, but the data logged may have fields with different names such as url, uurl, dest_url, service_url, etc. which all refers to the same thing. Then this tool is handy.
+
+You can create one or more aliases to any **extracted field** and can apply them to [lookup](#lookups).
+
+- Steps: Settings -> Fields -> Field aliases (add new)
+    - set destination app
+    - name (choose a meaningful name for the new field)
+    - apply to (sourcetype, source, or host) and its matching value
+    - Map fieldName=newFieldName
+    - Map multiple fields by adding another field
+
+#### Calculated Field
+
+**Calculated Field** saves **frequently** used calculation you would do in searches with complex _eval_ statements and it is like a shorthand for a function made of SPL commands on **extracted fields**.
+
+For example, you might want to save something to do conversion between bytes to megabytes, or encoding some field to sha256, etc.
+
+- Steps: Settings -> Fields -> Calculated fields (add new)
+
+#### Search Macros
+
+**Macros** are **reusable** search strings or portions of search strings. It is useful for frequent searches with complicated search syntax and can store **entire search strings**.
+
+You can pass arguments (fields or constants) to the search.
+
+Steps: Settings -> Advanced Search -> Search macros (add new)
+
+Then use it in the search by surrounding the macro name with backticks. For example: `index=sales sourcetype=vendor_sales | stats sum(sale_price) as total_sales by Vendor | ``convertUSD`` `
+
+Within a search, use `ctrl-shift-E` or `cmd-shift-E` to **preview and expand** the macro used without running it.
+
+#### Datasets
+
+**Datasets** are small **subsets of data** for specific purposes, defined like tables with fields names as columns and fields values as cells.
+
+##### Lookups
+
+Lookups are in fact datasets that allow you to add useful values to your events not included in the indexed data.
+
+Field values from a Lookup are case sensitive by default
+
+Set it up in Splunk UI -> Settings -> Lookups -> Define a lookup table
+
+Use `| inputlookup <lookup_definition_name>` to verify lookup is setup correctly. 
+
+Additionally, you can populate lookup table with search results or from external script or linux executable. Read more about [external lookups](https://docs.splunk.com/Documentation/Splunk/latest/Knowledge/Configureexternallookups){target=_blank} and [KVstore lookups](https://docs.splunk.com/Documentation/Splunk/latest/Knowledge/ConfigureKVstorelookups){target=_blank}
+
+Some tips for using lookups:
+
+- in lookup table, keep the key field the first column
+- put lookups at the end of the search
+- if a lookup usage is very common in search, make it automatic
+- use KV store or gzip CSVs for large lookup table
+- only put data being used in lookup table
+- the `outputlookup` can output results of search to a static lookup table
+
+#### Pivot
+
+**Pivot** allows users to get knowledge from the data without learning SPL in deep; a UI-based tool can help the users with creating useful searches. It is like a tool created by knowledgable Splunk users to serve the users don't know much about Splunk.
+
+#### Data Models
+
+**Data Models** are made of Datasets and are knowledge objects that provide the data structure that drives Pivots. It can also be used to significantly **speed up** searches, reports, and dashboard.
+
+Data Models must be created by **Admins and Power Users** and are **hierarchically strucutred** datasets. Starting from a Root Object (a search with index and sourcetype), then add Child Objects (a filter or constraint).
+
+Data Models are good for **accelerating searches**. Doing searches on data models are like searching on some cached events that gets updated regularly.
+
+Steps: Settings -> Data Models -> New Data Model
+
+Then search the datamodel with `| datamodel keywords`
+
+Read more from the [doc page](http://docs.splunk.com/Documentation/Splunk/latest/Knowledge/Acceleratedatamodels){target=_blank}
 
 ## Splunk Search Language (SPL)
 
@@ -117,6 +235,26 @@ Search Terms, Command names, Function names are **NOT case-sensitive**, with the
 
 #### Non-Transforming Commands
 
+##### appendpipe
+
+**Append** subpipeline search data as events to your search results. Appended search is NOT run until the command is **reached**.
+
+`appendpipe` is NOT an additional search, but merely a pipeline for the previous results. It acts on the data received and appended back **new events** while **keeping** the data before the pipe. It is useful to add summary to some results.
+
+??? note "Example"
+    ```sh
+    index=network sourcetype=cisco_wsa_squid (usage=Borderline OR usage=Violation) 
+    | stats count by usage, cs_username
+    | appendpipe 
+        [stats sum(count) as count by usage
+        | eval cs_username= "TOTAL: ".usage]
+    | appendpipe 
+        [search cs_username=Total*
+        | stats sum(count) as count
+        | eval cs_username = "GRAND TOTAL"]
+    | sort usage, count
+    ```
+
 ##### addtotals
 
 Compute the SUM of ALL **numeric fields** for **each event** (table row) and creates a `total` column (default behavior).
@@ -146,6 +284,17 @@ You can override the default behavior and let it calculate a sum for a **column*
     | table Username First_Name Last_Name
     ```
 
+##### erex
+
+Like an auto field extractor, but had the same shortcomings as the regex [field extractor](#field-extractor) through Splunk UI: only look for matches based on the samples provided. Better use [`rex`](#rex) command.
+
+??? note "Example"
+    ```sh
+    index=security sourcetype=linux_secure "port"
+    | erex ipaddress examples="74.125.19.106, 88.12.32.208"
+    | table ipaddress, src_port
+    ```
+
 ##### eval
 
 **Calculate** and **manipulate** field values in many powerful ways and also works with **multi-value** fields. Results can create new fields (case-sensitive) or override existing fields.
@@ -168,6 +317,24 @@ Besides the many Functions it supports, `eval` supports **operators** include ar
     ```
 
 Supported Functions see [docs page](https://docs.splunk.com/Documentation/Splunk/8.1.2/SearchReference/CommonEvalFunctions){target=_blank}
+
+##### eventstats
+
+Generates **statistics** for fields in searched events and save them as **new fields** in the results. Each event will have the SAME value for the statistics calculated.
+
+??? note "Example"
+    ```sh
+    index=web sourcetype=access_combined action=remove
+    | chart sum(price) as lostSales by product_name
+    | eventstats avg(lostSales) as averageLoss
+    | where lostSales > averageLoss
+    | fields - averageLoss
+    | sort -lostSales
+    ```
+
+Supported Functions see [docs page](https://docs.splunk.com/Documentation/Splunk/8.1.2/SearchReference/CommonStatsFunctions){target=_blank}
+
+See also [`streamstats`](#streamstats) command.
 
 ##### fieldformat
 
@@ -209,9 +376,49 @@ Replaces any null values in your events. It by default fills NULL with `0` and i
     | fillnull
     ```
 
+##### lookup
+
+Invoke field value lookups.
+
+!!! note "Example"
+    ```sh
+    # http_status is the name of the lookup definition
+    # code is one of the columns in the csv, and we have status in our event
+    # defualt all fields in lookup table are returned except the input fields
+    #   specify OUTPUT to choose the fields added from the lookup
+    index=web sourcetype=access_combined NOT status=200
+    | lookup http_status code as status,
+        OUTPUT code as "HTTP Code",
+            description as "HTTP Description"
+    ```
+
+##### multikv
+
+**Extract** field values from data formatted as large and single events of **tabular data**. Each row becomes an event, header becomes the field names, and tabular data becomes values of the fields.
+
+Example of some data event suitable:
+
+```
+Name     Age   Occupation
+Josh     42    SoftwareEngineer
+Francine 35    CEO
+Samantha 22    ProjectManager
+```
+
+??? note "Example"
+    ```sh
+    index=main sourcetype=netstat
+    | multikv fields LocalAddress State filter LISTEN
+    | rex field=LocalAddress ":(?P<Listening_Port>\d+)$"
+    | dedup Listening_Port
+    | table Listening_Port
+    ```
+
 ##### rename
 
 **Rename** one or more fields. After the rename, subsequent commands must use the new names otherwise operation won't have any effects.
+
+Note that after `rename` if a field name contains **spaces**, you need to use **single quotes** on the field name to refer to it in subsequent commands.
 
 ??? note "Example"
     ```sh
@@ -221,6 +428,23 @@ Replaces any null values in your events. It by default fills NULL with `0` and i
             product_name as "Purchased Game",
             price as "Purchase Price"
     ```
+
+##### rex
+
+Allow use regex capture groups to extract values at search time. By default, it uses `field=_raw` if not provided a field name to read from.
+
+??? note "Example"
+    ```sh
+    index=security sourcetype=linux_secure "port"
+    | rex "(?i) from (?P<ipaddress>[^ ]+)"
+    | table ipaddress, src_port
+
+    index=network sourcetype=cisco_esa
+    | where isnotnull(mailfrom)
+    | rex field=mailfrom "@(?P<mail_domain>\S+)"
+    ```
+
+Better examples can be found at [doc page](https://docs.splunk.com/Documentation/Splunk/8.1.2/SearchReference/Rex#Examples){target=_blank}
 
 ##### search
 
@@ -247,6 +471,47 @@ Organize the results **sorted** by some fields.
     # sort-decending will only affect sale_price while Vendor is sorted ascending
     | sort -sale_price Vendor limit=20
     # will also limit the results for the first twenty in sorted order.
+    ```
+
+##### spath
+
+Extracts info from **semi-structured data** (such as xml, json) and store in fields. It by default uses `input=_raw`, if not provided a field name to read from.
+
+??? note "Example"
+    ```sh
+    index=systems sourcetype=system_info_xml
+    | spath path=event.systeminfo.cpu.percent output=CPU
+
+    # working with json, values in array specified with {}
+    index=systems sourcetype=system_info_json
+    | spath path=CPU_CORES{}.idle output=CPU_IDLE
+    | stats avg(CPU_IDLE) by SYSTEM
+
+    # spath Function
+    index=hr sourcetype=HR_DB
+    | eval RFID=spath(Access, "rfid.chip"), Location=spath(Access, "rfid.location") 
+    | table Name, Access, RFID, Location
+    ```
+
+Better examples see [doc page](https://docs.splunk.com/Documentation/Splunk/8.1.2/SearchReference/Spath){target=_blank}
+
+##### streamstats
+
+Aggregates statistics to your searched events as Splunk sees the events in **time** in a **streaming** manner. In other words, it calculates statistics for each event **cumulatively** at the time the event is seen.
+
+Three important arguments to know:
+
+- **current** - setting to 'f' tells Splunk to only use the field values from previous events when performing statistical function
+- **window** - setting to N tells Splunk to only calculate previous N events at a time; default 0 means uses all previous events
+- **time_window** - setting to a time span to only calculate events happen in every that time span; with this function, events must be sorted by time
+
+??? note "Example"
+    ```sh
+    index=web sourcetype=access_combined action=purchase status=200
+    | stats sum(price) as orderAmount by JESSIONID
+    | sort _time
+    | streamstats avg(orderAmount) as averageOrder current=f window=20
+    # for each event, calculate the average from the previous 20 events' orderAmount field
     ```
 
 ##### table
@@ -312,6 +577,14 @@ Use `limit=5` to control the **max number of columns** to display, or `limit=0` 
     ```
 
 Supported Functions see [docs page](https://docs.splunk.com/Documentation/Splunk/8.1.2/SearchReference/CommonStatsFunctions){target=_blank}
+
+##### fieldsummary
+
+Calculate summary statistics for fields in your events.
+
+For example, given a search `index=web | fieldsummary` it gives insights of the "count, distinct_count, is_exact, min/max/mean/stdev, numberic_count, values" for each field.
+
+If field names are provided, then only do summary for those fields provided.
 
 ##### rare
 
@@ -382,6 +655,40 @@ Top Command Clauses: limit=int countfield=string percentfield=string showcount=T
     # top command also supports results grouping by fields
     index=sales sourcetype=vendor_sales
     | top product_name by Vendor limit=3 countfield="Number of Sales" showperc=False
+    ```
+
+#### Generating Commands
+
+Commands that generates events.
+
+##### inputlookup
+
+Return values from a lookup table.
+
+Useful to use it in a **subsearch** to narrow down the set of events to search based on the values in the lookup table.
+
+??? note "Example"
+    ```sh
+    index=sales sourcetype=vendor_sales
+        [| inputlookup API_Tokens
+        | table VendorID ]
+        # only take one column to use as filter; its values will be OR-ed together
+        # can add 'NOT before the subsearch to exclude those vendor ids
+    | top Vendor product_name limit=5
+    ```
+
+##### makeresults
+
+Creates a defined number of search results, good for creating sample data for testing searches or building values to be used in searches.
+
+??? note "Example"
+    ```sh
+    # must starts search with pipe
+    | makeresults
+    | eval tomorrow=relative_time(now(), "+1d"),
+        tomorrow=strftime(tomorrow, "%A"),
+        result=if(tomorrow="Saturday" OR tomorrow="Sunday", "Huzzah!", "Boo!"), 
+        msg=printf("Tomorrow is %s, %s", tomorrow, result)
     ```
 
 #### Special Commands
@@ -504,6 +811,53 @@ Three trendtypes (used as Functions by `trendline` command):
 !!! note "let subsearch limit main search's time range"
     Let the subsearch output a table with a single row and columns `earliest` and `latest`
 
+!!! note "use Functions count and list in conjunction make readable results"
+    `list` returns a list of values of a field as a multi-value result (will be put in one cell in the result table), by default up to 100 values
+
+    ```sh
+    index=web sourcetype=access_combined action=purchase status=200
+    | stats count by host, product_name
+    | sort -count
+    | stats list(product_name) as "Product Name", list(count) as Count, sum(count) as total by host
+    | sort -total
+    | fields - total
+    ```
+
+!!! note "use Functions strftime, strptime, relative_time to extract/convert time"
+    ```sh
+    # convert a time value into its timestamp representation
+    index=manufacture sourcetype=3dPrinterData
+    | eval boot_ts=strptime(boot_time, "%b/%d/%y %H:%M:%S"), days_since_boot=round((now()-boot_ts)/86400)
+    | stats values(days_since_boot) as "uptime_days" by printer_name
+
+    # extract parts from the time field
+    sourcetype=foo
+    | eval date_hour=strftime(_time, "%H")
+    | eval date_wday=strftime(_time, "%w")
+    | search date_hour>=9 date_hour<=18 date_wday>=1 date_wday<=5
+
+    # push time forward or backwards from a timestamp
+    index=manufacture sourcetype=3dPrinterData
+    | eval boot_ts=strptime(boot_time, "%b/%d/%y %H:%M:%S"), rt=relative_time(boot_ts, "+30d"), reboot=strftime(rt, "%x")
+    | stats values(reboot) as "day_to_reboot" by printer_name
+    ```
+
+    A list of time format codes can be found [here](https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes){target=_blank}
+
+!!! note "use Functions lower/upper, substr, replace, len, for text manipulation"
+    ```sh
+    index=hr
+    | eval Organization=lower(Organization), Is_In_Marketing=if(Organization=="marketing", "Yes", "No")
+    | table Name, Organization, Is_In_Marketing
+
+    index=hr
+    | eval Group=substr(Employee_ID, 1, 2), Location=substr(Employee_ID, -2)
+    | table Name, Group, Location
+
+    index=hr
+    | eval Employee_Details=replace(Employee_ID, "^([A-Z]+)_(\d+)_([A-Z]+)", "Employee #\2 is a \1 in \3")
+    ```
+
 ### Reports and Dashboards
 
 #### Reports
@@ -565,46 +919,20 @@ It can also display as **gauges** which can take forms of radial, filler, or mar
 !!! note "'earliest' and 'latest' from time picker"
     For a time picker variable, the earliest and latest time can be accessed through `$variable_name$.earliest` and `$variable_name$.latest`
 
-### Datasets, Pivots, Data Models
+#### Report Acceleration
 
-#### Datasets
+Splunk allows creation of **summary** of event data, as **smaller segments** of event data that only include those info needed to fullfill the search.
 
-**Datasets** are small **subsets of data** for specific purposes, defined like tables with fields names as columns and fields values as cells.
+Three data summary creation methods:
+- **Report acceleration** - uses automatically created summaries, accelerates individual reports
+    - acceleration summary basically are **stored results** populated **every 10 minutes**
+        - searches must be in Fast/Smart mode
+        - must include a transforming command, and having streaming command before it and non-streaming commands after
+    - also stored as **file chunks** alongside indexes buckets
+    - must re-build when associated knowledge objects change
+- **Summary indexing** - uses **manually** created summaries, indexes **separated** from deployment
+    - must use 'si'-prefixed commands such as `sichart`, `sistats`
+    - search a Summary Index by using `index=<summary_index_group_name> | report=<summary_index_name>`
+    - need to pay attention to avoid creating gaps and overlaps in the data
+- **Data model acceleration** - accelerates **all fields** in a data model, easiest and most efficient option
 
-##### Lookups
-
-Lookups are in fact datasets that allow you to add useful values to your events not included in the indexed data.
-
-Field values from a Lookup are case sensitive by default
-
-Set it up in Splunk UI -> Settings -> Lookups -> Define a lookup table
-
-Use `| inputlookup <lookup_definition_name>` to verify lookup is setup correctly. 
-
-Additionally, you can populate lookup table with search results or from external script or linux executable. Read more about [external lookups](https://docs.splunk.com/Documentation/Splunk/latest/Knowledge/Configureexternallookups){target=_blank} and [KVstore lookups](https://docs.splunk.com/Documentation/Splunk/latest/Knowledge/ConfigureKVstorelookups){target=_blank}
-
-##### lookup command
-
-!!! note "Example"
-    ```sh
-    index=web sourcetype=access_combined NOT status=200
-    | lookup http_status code as status
-    # http_status is the name of the lookup definition
-    # code is one of the columns in the csv, won't show in the results
-    # defualt all fields in lookup table are returned except the input fields
-    # can choose what is shown by specifying them
-    index=web sourcetype=access_combined NOT status=200
-    | lookup http_status code as status,
-            OUTPUT code as "HTTP Code",
-            description as "HTTP Description"
-    ```
-
-#### Pivot
-
-**Pivot** allows users to get knowledge from the data without learning SPL in deep; a UI-based tool can help the users with creating useful searches. It is like a tool created by knowledgable Splunk users to serve the users don't know much about Splunk.
-
-#### Data Models
-
-**Data Models** are made of Datasets and are knowledge objects that provide the data structure that drives Pivots. It can also be used to significantly **speed up** searches, reports, and dashboard.
-
-Data Models must be created by **Admins and Power Users**.
