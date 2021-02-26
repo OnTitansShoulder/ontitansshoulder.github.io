@@ -50,6 +50,75 @@ Read More: https://splunkbase.splunk.com/ and http://dev.splunk.com/
 - (Main) Receive data from external Forwarders
     - Read more: https://docs.splunk.com/Documentation/Splunk/latest/Data/Usingforwardingagents
 
+#### How Data is stored
+
+Splunk store data in **indexes** which held data in groups of **data buckets**.
+
+##### Bucketing
+
+Data are stored in **Hot** buckets as they **arrive**, then **Warm** buckets and time elapses and finally **Cold** buckets. Eventually they go to **Frozen** buckets for **deletion or archiving**.
+
+Each bucket contains:
+
+- a **journal.gz** file, where Splunk stores **raw event data**, composed of many smaller and compressed **slices** (each about 128 kb)
+- **time-series index** (.tsidx) files, serves as **index keys** to the journal file
+    - Splunk uses this to know which slice to open up and search for events
+    - created from raw events, where each line is tokenized with the token words written out to a **lexicon** which exists inside each tsidx file
+    - and each lexicon has a **posting array** which has the location of the events in the journal file
+
+##### Bloom Filters
+
+**Bloom Filters** is created based on tsidx files when a bucket roll over from Hot to Warm
+
+- it is a data structure for quick **elimination** of data that doesn't match a search
+    - allows Splunk to AVOID accessing **disk** unless really necessary
+- when creating a Bloom Filter, each term inside a bucket's tsidx files' lexicon is run through a **hashing algorithm**
+    - resulting hash sets the **bits** in the Bloom filter to 0/1
+    - When a search is run, it **generates** its own Bloom filter based on the **search terms** and compared with the buckets' Bloom Filters, resulting a fast filter on unrelevant buckets
+
+##### Segmentation
+
+The process of **tokenizing** search terms at search-time. Two stages:
+
+- splitting events up by finding major/minor breaker characters
+    - major breakers are used to **isolate** words, phrases, terms, and numerical data
+        - example major breakers: `space \n \r \t [] ! ,`
+    - minor breakers go through results in the **first pass** and break them up **further** in the second pass
+        - example minor breakers: `/ : . - $`
+- The tokens become part of tsidx files lexicons at index-time and used to build bloom filters
+
+Read more from [doc page](https://docs.splunk.com/Documentation/Splunk/latest/Data/Abouteventsegmentation){target=_blank}
+
+##### Inside a Search
+
+Take this search as an example:
+
+```sh
+index=security failed user=root
+| timechart count span=1h
+| stats avg(count) as HourlyAverage
+```
+
+- Splunk extracts 'failed' and 'root' and creates a Bloom Filter from them
+- Splunk then identify buckets in `security` index for the past 24h
+- Splunk compares the search Bloom Filter with those from the buckets
+- Splunk rules out tsidx files that don't have matches
+- Splunk checks the tsidx files from the selected buckets for extracted terms
+- Splunk uses the terms to go through each posting list to obtain seek address in journal file for raw events
+- Splunk extracts search-time fields from the raw events
+- Splunk filters the events that contains our search terms 'failed' and 'root'
+- The remaining events are search results
+
+##### Inspect a Search
+
+Within the Job Inspector:
+
+- `command.search.index` gives the time to get location info from **tsidx** files
+- `command.search.rawdata` tells the time to extract event data from the **gzip** journal files
+- `command.search.kv` tells the time took to perform search-time field **extractions**
+- `command.search.filter` shows the time took to filter out **non-matching** events
+- `command.search.log` look for phrase "base lispy" that contains the **Lispy Expression** created from the query and is used to build Bloom Filter and locate terms in tsidx files
+
 ## Search and Report App
 
 The **Search & Report** app allows you to search and analyze data through creating knowledge objects, reports, dashboards and more.
@@ -231,15 +300,102 @@ Search Terms, Command names, Function names are **NOT case-sensitive**, with the
 - **Wildcards**, used in keywords and fields to match any chars; inefficient if used at the beginning of a word
 - **Comparisons**, = != < <= > >=
 
+### Subsearch
+
+**Subsearch** is a search enclosed in **brackets** that passes its results to its outer search as **search terms**.
+
+The `return` command can be used in subsearch to **limit** the first few number of values to return, i.e. `| return src_ip`. The field name is included by default; to omit returning values with the field name, use `$`, i.e. `| return 5 $src_ip`
+
+??? note "Example"
+    ```sh
+    index=security sourcetype=linux_secure "accepted"
+        [search index=security sourcetype=linux_secure "failed password" src_ip!=10.0.0.0/8
+        | stats count by src_ip
+        | where count > 10
+        | fields src_ip]
+        # when subsearch returns, Splunk implicitly adds "OR" between each two results
+        # then whole results is combined with the outter search with an implicit "AND" operator
+    | dedup src_ip, user
+    | table src_ip, user
+
+    # subsearch with 'return' command
+    index=sales sourcetype=vendor_sales
+        [ search index=sales sourcetype=vendor_sales VendorID<=2000 product_name=Mediocre*
+        | top limit=5 Vendor
+        | return 5 Vendor ]
+    | rare limit=1 product_name by Vendor
+    | fields - percent, count
+    ```
+
+Some limitations of subsearches:
+
+- default time limit of **60 seconds** to execute
+    - right after time limit, result is finalized and returned to outer search
+- default returns up to **10000 results**
+- if the outter search is executed **real-time**, its subsearch is executed for **all-time**
+    - best to use `earliest` and `latest` time modifiers in subsearch
+
 ### SPL Commands
 
-#### Non-Transforming Commands
+**Transforming vs. Streaming Commands**
+
+- transforming commands operate on the **entire result set** of data
+    - executes on the **Search Head** and waits for full set of results
+    - change event data into results once its complete
+    - example commands `stats timechart chart top rare`
+- streaming commands has two types
+    - centralized (aka "Stateful Streaming Commands")
+        - executes on the Search Head
+        - apply transformations to each event returned by a search
+        - results order depends on the order when data came in
+        - example commands `transaction streamstats`
+    - distributable
+        - executes on Search head or Indexers
+        - order of events does not matter
+        - when **preceded** by commands that have to run on a Search Head, ALL will run on a Search Head
+        - example commands `rename eval fields regex`
+
+Read more from [doc page](http://docs.splunk.com/Documentation/Splunk/latest/SearchReference/Commandsbytype){target=_blank}
+
+#### Streaming Commands
+
+##### append
+
+Add results by **appending subsearch results** to the end of the main search results as **additional rows**. Does NOT work with read-time searches.
+
+It is useful to draw data on the same visualization by **combining results** from two searches. However, rows are NOT combined based on the **values** in some of the fields.
+
+??? note "Example"
+    ```sh
+    index=security sourcetype=linux_secure "failed password" NOT "invalid user"
+    | timechart count as known_users
+    | append
+        [search index=security sourcetype=linux_secure "failed password" "invalid user"
+        | timechart count as unknown_users]
+    # Final result data may look awkward as rows are NOT combined based on the values in some of the fields.
+    # Fix it with the `first` Function - return the first value of a field by the order it appears in the results.
+    | timechart first(*) as * # apply first Function on all fields and keep their original name
+    ```
+
+##### appendcols
+
+Add results of a subsearch to the right of the main search's results. It also attempts to match rows by some common field values, but it is not always possible.
+
+??? note "Example"
+    ```sh
+    index=security sourcetype=linux_secure "failed password" NOT "invalid user"
+    | timechart count as known_users
+    | appendcols
+        [search index=security sourcetype=linux_secure "failed password" "invalid user"
+        | timechart count as unknown_users]
+    # "unknown_users" is added as a new column to the outter search's results and matches the _time field
+    ```
 
 ##### appendpipe
 
 **Append** subpipeline search data as events to your search results. Appended search is NOT run until the command is **reached**.
 
-`appendpipe` is NOT an additional search, but merely a pipeline for the previous results. It acts on the data received and appended back **new events** while **keeping** the data before the pipe. It is useful to add summary to some results.
+`appendpipe` is **NOT an additional search**, but merely a pipeline for the previous results. It acts on the data received and appended back **new events** while **keeping** the data before the pipe. It is useful to add summary to some results.
 
 ??? note "Example"
     ```sh
@@ -271,6 +427,21 @@ You can override the default behavior and let it calculate a sum for a **column*
     index=web sourcetype=access_combined
     | chart sum(bytes) as sum over host
     | addtotals col=true label="Total" labelfield=sum
+    ```
+
+##### bin
+
+Adjust and **group** numerical values into **discrete sets** (bins) so that all the items in a bin **share** the same value.
+
+`bin` overrides the field value on the field provided. Use a copied field if need the original values in subsequent pipes.
+
+??? note "Example"
+    ```sh
+    index=sales sourcetype=vendor_sales
+    | stats sum(price) as totalSales by product_name
+    | bin totalSales span=10 # span is the bin size to group on
+    | stats list(product_name) by totalSales
+    | eval totalSales = "$".totalSales
     ```
 
 ##### dedup
@@ -376,6 +547,44 @@ Replaces any null values in your events. It by default fills NULL with `0` and i
     | fillnull
     ```
 
+##### foreach
+
+Run **templated subsearches** for each field in a specified list, and each row goes through the foreach command and subsearch calculation.
+
+??? note "Example"
+    ```sh
+    index=web sourcetype=access_combined
+    | timechart span=1h sum(bytes) as totalBytes by host
+    | foreach www* [eval '<<FIELD>>' = round('<<FIELD>>'/(1024*1024),2)]
+    # '<<FIELD>>' refers to the value of the column_name
+    # assume 'host' gives values www1 www2 www3
+    ```
+
+
+##### join
+
+**Combine** results of subsearch with outter search using **common fields**. It requires both searches to share **at least one** field in common.
+
+Two types of join:
+
+- **inner join** (default) - only return results from outter search that have matches in the subsearch
+- **outer/left join** - returns all results from the outter search and those have matches in the subsearch; can be specified with argument
+
+??? note "Example"
+    ```sh
+    index="security" sourcetype=linux_secure src_ip=10.0.0.0/8 "Failed"
+    | join src_ip
+        [search index=security sourcetype=winauthentication_security bcg_ip=*
+        | dedup bcg_workstation
+        | rename bcg_ip as src_ip
+        | fields src_ip, bcg_workstation]
+    | stats count as access_attempts by user, dest, bcg_workstation
+    | where access_attempts > 40
+    | sort - access_attempts
+    ```
+
+See also [union](#union)
+
 ##### lookup
 
 Invoke field value lookups.
@@ -390,6 +599,22 @@ Invoke field value lookups.
     | lookup http_status code as status,
         OUTPUT code as "HTTP Code",
             description as "HTTP Description"
+    ```
+
+##### makemv
+
+Create a **multi-value** field from an **existing** field and replace that field. It splits its values using some **delimiter or regex**.
+
+!!! note "Example"
+    ```sh
+    index=sales sourcetype=vendor_sales
+    | eval account_codes=productId
+    | makemv delim="-", account_codes
+    | dedup product_name
+    | table product_name, productId, account_codes
+
+    # same results can be achieved by using regex and specifying capture groups
+    | makemv tokenizer="([A-Z]{2}|[A-Z]{1}[0-9]{2})", account_codes
     ```
 
 ##### multikv
@@ -412,6 +637,20 @@ Samantha 22    ProjectManager
     | rex field=LocalAddress ":(?P<Listening_Port>\d+)$"
     | dedup Listening_Port
     | table Listening_Port
+    ```
+
+##### mvexpand
+
+Create **separate event** for **each value** contained in a multi-value field. It reates new events count as of the number of values in a multi-valued field and copy all other values to the new evnets.
+
+Best to remove unused fields before the `mvexpand` command.
+
+??? note "Example"
+    ```sh
+    index=systems sourcetype=system_info
+    | mvexpand ROOT_USERS
+    | dedup SYSTE ROOT_USERS
+    | stats list(SYSTEM) by ROOT_USERS
     ```
 
 ##### rename
@@ -526,17 +765,70 @@ Specify fields kept in the results and retains the data in a **tabular** format.
 
 ##### transaction
 
-**Transaction** is any group of **related events** for a **time span** which can come from multiple applications or hosts.
+**Transaction** is any group of **related events** for a **time span** which can come from multiple applications or hosts. Events should be in a reversed chronological order before running this command.
 
-`transaction` command takes in one or multiple fields to make transactions, and creates two fields in the raw event: _duration_ (time between the first and last event) and _eventcount_ (number of events)
+`transaction` command takes in one or multiple fields to make transactions, and creates two fields in the raw event: `duration` (time between the first and last event) and `eventcount` (number of events)
 
 `transaction` limits 1000 events per transaction by default and is an expensive command. Use it only when it has greater value than what you can do with `stats` command.
+
+Use `keepevicted=true` argument to keep incomplete transactions in results and `closed_txn` field will be added to indicate transactions incomplete.
 
 ??? note "Example"
     ```sh
     index=web sourcetype=access_combined
     | transaction clientip startswith=action="addtocart" endswith=action="purchase" maxspan=1h maxpause=30m
     # startswith and endswith should be valid search strings
+
+    # compare the two searches
+    # using transaction
+    index=web sourcetype=access_combined
+    | transaction JESSIONID
+    | where duration > 0
+    | stats avg(duration) as avgd, avg(eventcount) as avgc
+    | eval "Average Time On Site"=round(avgd, 0), "Average Page Views"=round(avgc, 0)
+    | table "Average Time On Site", "Average Page Views"
+    # using stats
+    index=web sourcetype=access_combined
+    | fields JESSIONID
+    | stats range(_time) as duration, count as eventcount by JESSIONID
+    | where duration > 0
+    | stats avg(duration) as avgd, avg(eventcount) as avgc
+    | eval "Average Time On Site"=round(avgd, 0), "Average Page Views"=round(avgc, 0)
+    | table "Average Time On Site", "Average Page Views"
+    ```
+
+`transaction` is a very expensive operation. To build a transaction, all events data is searched and required, and is done on the Search Head. Some use cases can also be achieved by `stats` command.
+
+##### union
+
+**Combine** search results from two or more **datasets** into one. Datasets can be: saved searches, inputlookups, data models, subsearches.
+
+??? note "Example"
+    ```sh
+    | union 
+        datamoel:Buttercup_Games_Online_Sales.successful_purchase,
+        [search index=sales sourcetype=vendor_sales]
+    | table sourcetype, product_name
+    ```
+
+See also [join](#join)
+
+##### untable
+
+Does the opposite of [`xyseries`](#xyseries), for which it takes chartable and tabular data then format it similar to stats output.
+
+Good when need to further extract from, and manipulate values after using commands that result in tabular data.
+
+Syntax `| untable row-field, label-field, data-field` produces 3-column results
+
+??? note "Example"
+    ```sh
+    index=sales sourcetype=vendor_sales (VendorID >= 9000)
+    | chart count as prod_count by product_name, VendorCountry limit=5 useother=f 
+    | untable product_name, VendorCountry, prod_count
+    | eventstats max(prod_count) as max by VendorCountry
+    | where prod_count=max
+    | stats list(product_name), list(prod_count) by VendorCountry
     ```
 
 ##### where
@@ -554,6 +846,36 @@ Try use `search` whenever you can rather than `where` as it is more efficient th
     ```
 
 Supported Functions see [docs page](https://docs.splunk.com/Documentation/Splunk/8.1.2/SearchReference/CommonEvalFunctions){target=_blank}. `where` shared many of the `eval` Functions.
+
+##### xyseries
+
+Convert **statistical results** into a **tabular** format suitable for visualizations. Useful for additional process after initial statistical data is returned.
+
+Syntax `| xyseries row-field, column-field, data-field` produces n+1 column result, where n is number of distinct values in column-field.
+
+??? note "Example"
+    ```sh
+    index=web sourcetype=access_combined
+    | bin _time span=1h
+    | stats sum(bytes) as totalBytes by _time, host
+    | eval MB = round(totalBytes/(1024*1024),2)
+    | xyseries _time, host, MB
+
+    # transforms 
+    _time|host|MB
+    -----|----|--
+    12:00|www1|12
+    12:00|www2|11
+    12:00|www3|7
+    ...|...|...
+    # into
+    _time|www1|www2|www3
+    -----|----|----|----
+    12:00|12|11|7
+    ...|...|...|...
+    ```
+
+See also [`untable`](#untable) command.
 
 #### Transforming Commands
 
@@ -661,6 +983,18 @@ Top Command Clauses: limit=int countfield=string percentfield=string showcount=T
 
 Commands that generates events.
 
+##### datamodel
+
+Display the structure of data models and **search** against them.
+
+It accepts first argument as datamodel name and the second argument as the object name under than model. Add `search` to enable search on the data model data.
+
+??? note "Example"
+    ```sh
+    | datamodel Buttercup_Games_Online_Sales http_request search
+    | search http_request.action=purchase
+    ```
+
 ##### inputlookup
 
 Return values from a lookup table.
@@ -689,6 +1023,19 @@ Creates a defined number of search results, good for creating sample data for te
         tomorrow=strftime(tomorrow, "%A"),
         result=if(tomorrow="Saturday" OR tomorrow="Sunday", "Huzzah!", "Boo!"), 
         msg=printf("Tomorrow is %s, %s", tomorrow, result)
+    ```
+
+##### tstats
+
+Get statistical info from **tsidx files**.
+
+Splunk will do full search if the search ran is outside of the summary range of the accelerated data model. Limit search to summary range with `summariesonly` argument.
+
+??? note "Example"
+    ```sh
+    | tstats count as "count" from datamodel=linux_server_access where web_server_access.src_ip=10.* web_server_access.action=failure by web_server_access.src_ip, web_server_access.user summariesonly=t span=1d
+    | where count > 300
+    | sort -count
     ```
 
 #### Special Commands
@@ -806,6 +1153,24 @@ Three trendtypes (used as Functions by `trendline` command):
 !!! note "consult Job Inspector to know the performance of the searches"
     It tells you which phase of the search **took the most time**. Any search that has not expired can be inspected by this tool. Read more about [Job Inspector](https://docs.splunk.com/Documentation/Splunk/latest/Search/ViewsearchjobpropertieswiththeJobInspector){target=_blank}
 
+!!! note "avoid using subsearches when possible"
+    Compare the follow two queries, which returns the same results but the second one is significantly faster:
+
+    ```sh
+    index=security sourcetype=winauthentication_security (EventCode=4624 OR EventCode=540) NOT
+        [search sourcetype=history_access
+        | rename Username as User
+        | fields User]
+    | stats count by User
+    | table User
+
+    index=security (sourcetype=winauthentication_security (EventCode=4624 OR EventCode=540)) OR (sourcetype=history_access)
+    | eval badge_access=if(sourcetype="history_access", 1, 0)
+    | stats max(badge_access) as badged_in by Username
+    | where badged_in=0
+    | fields Username
+    ```
+
 #### SPL Tricks
 
 !!! note "let subsearch limit main search's time range"
@@ -856,6 +1221,55 @@ Three trendtypes (used as Functions by `trendline` command):
 
     index=hr
     | eval Employee_Details=replace(Employee_ID, "^([A-Z]+)_(\d+)_([A-Z]+)", "Employee #\2 is a \1 in \3")
+    ```
+
+!!! note "create empty column to help display data compared in bar chart"
+    ```sh
+    index=security sourcetype=linux_secure "fail*" earliest=-31d@d latest=-1d@d
+    | timechart count as daily_total
+    | stats avg(daily_total) as DailyAvg
+    | appendcols
+        [search index=security sourcetype=linux_secure "fail*" earliest=-1d@d latest=@d
+        | stats count as Yesterday]
+    | eval Averages=""
+    | stats list(DailyAvg) as DailyAvg, list(Yesterday) as Yesterday by Averages
+    ```
+
+!!! note "swap row and column fields using untable and xyseries Commands"
+    ```sh
+    index=web sourcetype=access_combined action=purchase
+    | chart sum(price) by product_name, clientip limit=0
+    | addtotals
+    | sort 5 Total
+    | fields - Total
+    | untable product_name, clientip, count
+    | xyseries clientip, product_name, count # it took these commands to swap row and column fields!
+    | addtotals
+    | sort 3 -Total
+    | fields - Total
+    ```
+
+!!! note "aggregate for two different time ranges and compare on the same visualization"
+    ```sh
+    index=security sourcetype=linux_secure "failed password" earliest=-30d@d latest=@h
+    | eval Previous24h=relative_time(now(), "-24h@h"), Series=if(_time>=Previous24h, "last24h", "prior")
+    | timechart count span=1h by Series
+    | eval Hour=strftime(_time, "%H"), currentHour=strftime(now(), "%H"), offset=case(Hour<=currentHour, Hour-currentHour, Hour>currentHour, (Hour-24)-currentHour)
+    | stats avg(prior) as "30 Day Average for Hour", sum(last24) as "Last 24 Hours" by Hour, offset
+    | sort offset
+    | fields - offset
+    | rename Hour as "Hour of Day"
+    ```
+
+!!! note "aggregate for certain time window each day"
+    You can do this with `stats` with more control and achieve what `timechart` provides and more!
+    
+    ```sh
+    index=web sourcetype=access_combined action=purchase earliest=-3d@d latest=@d date_hour>=0 AND date_hour<6
+    | bin span=1h _time
+    | stats sum(price) as hourlySales by _time
+    | eval Hour=strftime(_time, "%b %d, %I %p"), "Hourly Sales"="$".tostring(hourlySales)
+    | table Hour, "Hourly Sales"
     ```
 
 ### Reports and Dashboards
@@ -919,20 +1333,46 @@ It can also display as **gauges** which can take forms of radial, filler, or mar
 !!! note "'earliest' and 'latest' from time picker"
     For a time picker variable, the earliest and latest time can be accessed through `$variable_name$.earliest` and `$variable_name$.latest`
 
-#### Report Acceleration
+#### Accelerations
 
 Splunk allows creation of **summary** of event data, as **smaller segments** of event data that only include those info needed to fullfill the search.
 
-Three data summary creation methods:
-- **Report acceleration** - uses automatically created summaries, accelerates individual reports
-    - acceleration summary basically are **stored results** populated **every 10 minutes**
-        - searches must be in Fast/Smart mode
-        - must include a transforming command, and having streaming command before it and non-streaming commands after
-    - also stored as **file chunks** alongside indexes buckets
-    - must re-build when associated knowledge objects change
-- **Summary indexing** - uses **manually** created summaries, indexes **separated** from deployment
-    - must use 'si'-prefixed commands such as `sichart`, `sistats`
-    - search a Summary Index by using `index=<summary_index_group_name> | report=<summary_index_name>`
-    - need to pay attention to avoid creating gaps and overlaps in the data
-- **Data model acceleration** - accelerates **all fields** in a data model, easiest and most efficient option
+##### Report acceleration
 
+Uses automatically created summaries, accelerates individual reports.
+
+- acceleration summary basically are **stored results** populated **every 10 minutes**
+    - searches must be in Fast/Smart mode
+    - must include a transforming command, and having streaming command before it and non-streaming commands after
+- also stored as **file chunks** alongside indexes buckets
+- must re-build when associated knowledge objects change
+
+##### Summary indexing
+
+Uses **manually** created summaries, indexes **separated** from deployment.
+
+- must use 'si'-prefixed commands such as `sichart`, `sistats`
+- search a Summary Index by using `index=<summary_index_group_name> | report=<summary_index_name>`
+- need to pay attention to avoid creating gaps and overlaps in the data
+
+##### Data model acceleration
+
+Accelerates **all fields** in a data model, easiest and most efficient option.
+
+- **adhoc acceleration** - summary-creation happens automatically on data models that have not been accelerated; summary files created stays on the search head for the period that user is actively using the **Pivot tool**
+- **persistent acceleration** - summary files created are stored alongside the data buckets and exits as long as the data model exists
+    - data models will become read-only after the acceleration
+    - requires searches use only streaming commands
+
+[`datamodel`](#datamodel) command allows display the structure of data models and search against them.
+
+**Time-Series Index Files** (tsidx files) are files created for data model acceleration.
+
+- tsidx components:
+    - **lexicon** - an alphanumerically ordered list of terms found in data at index-time
+        - fields extracted at **index-time** showup as `key-value` pair in lexicon
+        - Splunk **searches lexicon first** and only open and read **raw event** data matching the terms using the pointers
+    - **posting list** - array of pointers that match each term to events in the raw data files
+- building of tsidx files ALSO happen when a data model is **accelerated**
+    - for persistent acceleration, updated tsidx **every 5 min** and remove-outdated after 30 min
+- [`tstats`](#tstats) command is for getting statistical info from tsidx files
