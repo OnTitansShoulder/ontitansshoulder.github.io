@@ -483,6 +483,24 @@ Network logs can be found in `/var/run/syslog`
 
 <br/>
 
+### Open_A_Port_To_LAN
+
+```sh
+# use ufw on ubuntu
+sudo ufw allow 3306
+# to delete/remove the rule
+sudo ufw delete allow 3306
+
+# use iptables on other Linux flavors
+sudo iptables -A INPUT -p tcp --dport 3306 -j ACCEPT
+sudo iptables -A INPUT -p tcp --sport 3306 -j ACCEPT
+# to delete/remove the rule
+sudo iptables -D INPUT -p tcp --dport 3306 -j ACCEPT
+sudo iptables -D INPUT -p tcp --sport 3306 -j ACCEPT
+```
+
+<br/>
+
 ### RaspberryPi
 
 ```sh

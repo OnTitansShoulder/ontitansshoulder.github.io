@@ -50,6 +50,7 @@ nav:
         - "Cloud-and-Containers/Docker/Docker-Knowledge.md"
       - k8s:
         - "Cloud-and-Containers/k8s/K8s-Knowledge.md"
+        - "Cloud-and-Containers/k8s/service_mesh.md"
     - Dev Tools Reference:
       - Splunk:
         - "Dev-Tools-Reference/Splunk/Splunk-References.md"

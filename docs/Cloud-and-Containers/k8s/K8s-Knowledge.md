@@ -1167,6 +1167,8 @@ If you created a Service **without a selector**, you need to manually map the Se
 
     Endpoint IP addresses CANNOT be the **cluster IP**s of other Kubernetes Services, because kube-proxy does NOT support virtual IPs as a destination.
 
+    kubectl port-forward --address 0.0.0.0 <resource> 8080:8080
+
 #### ServiceType
 
 Service's `ServiceTypes` allow you to specify what kind of Service you want. The default is ClusterIP.
