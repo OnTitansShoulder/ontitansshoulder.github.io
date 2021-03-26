@@ -56,6 +56,7 @@ nav:
         - "Dev-Tools-Reference/Splunk/Splunk-References.md"
     - Linux:
       - Concepts:
+        - Linux Foundation: "Linux/Concepts/Linux_Foundation.md"
         - Linux Basics Must-know: "Linux/Concepts/Basics.md"
         - Linux Advanced Must-know: "Linux/Concepts/Adv_Concepts.md"
         - Linux Network Concepts: "Linux/Concepts/Networking-Concepts.md"

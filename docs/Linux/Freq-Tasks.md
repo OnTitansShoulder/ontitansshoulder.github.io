@@ -129,6 +129,11 @@ startx # can still get back into user-interface in the tty
 # Newer systems 15.01 and newer
 sudo systemctl set-default multi-user.target # this disables UI
 sudo systemctl set-default graphical.target # this enables UI
+
+# other methods
+sudo systemctl stop gdm
+sudo systemctl stop lightdm
+sudo telinit 3 # use 5 to bring it back
 ```
 
 <br/>
@@ -378,7 +383,15 @@ dmesg | egrep -i --color 'cdrom|dvd|cd/rw|writer'
 ### Find_Search_Files
 
 ```sh
-find ~ -mmin -3 -ls # give files changed in ~ in last 3 minutes
+locate file # uses database search to find file names that match a given pattern
+
+find /home/pi -mmin -3 -ls # give files changed in /home/pi in last 3 minutes
+find /home/pi -name "*.bak" -exec rm {} ';' # find and remove files named like xxx.bak in /home/pi
+find /home/pi -name "*.bak" -ok rm {} ';' # ask for permission before executing the rm command for each file
+find / -ctime -3 # find files whose inode metadata (ownership, permissions) changed within last 3 days
+find / -atime +3 # find files accessed earlier than 3 days before
+find / -mtime 3 # find files modified/written exactly 3 days before
+find / -size +10M # find files greater than 10 MB in size
 ```
 
 <br/>

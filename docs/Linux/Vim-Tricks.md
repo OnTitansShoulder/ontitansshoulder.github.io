@@ -10,6 +10,8 @@ tags: notes cheatsheet check
 All Unix-like system have *vi*, but not necessarily other editors
 *vim* is an advanced version of vi, which supports syntax highlighting and helping software development.
 
+`vimtutor` launches a short but comprehensive tutorial for new learners.
+
 ### use vi/vim
 
 *vi* has three modes:
@@ -79,7 +81,8 @@ Key Pressing - | - Function
 `d1G` | delete all lines from cursor to the beginning of the file
 `dG` | delete all lines from cursor to the end of the file
 `d$` | **delete all chars from cursor to end of the line**
-`d0, D` | **delete all chars from cursor to start of the line**
+`d0` | **delete all chars from cursor to start of the line**
+`D` | **delete all chars for the rest of current line**
 `yy` | **copy the line at the cursor**
 `nyy` | **copy n lines after cursor**
 `y1G` | copy all lines from cursor to the beginning of the file
@@ -91,6 +94,7 @@ Key Pressing - | - Function
 `u` | **undo previous action**
 `ctrl-r` | **redo previous action**
 `.` | **repeat last action**
+`r <file>` | read in file and insert at current position
 
 <br/>
 
@@ -103,6 +107,8 @@ Key Pressing - | - Function
 `o, O` | **enter insert mode, o is insert a new line after cursor, O is insert a new line before cursor**
 `r, R` | enter replace mode, r is replacing cursor char once, R is to keep replacing cursor char until ESC pressed
 `Esc` | leave current mode
+`sh command` | **opens an external command shell** and resume after exiting the shell
+`! command %` | **execute a command** from within vi; `%` means the current file
 
 <br/>
 
