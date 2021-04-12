@@ -782,3 +782,138 @@ Some other networking tools:
 **Secure Shell** (SSH) is a **cryptographic network protocol** used for secure data communication (using `ssh`) and remote services and other secure services between two devices on the network.
 
 Move files securely using Secure Copy (`scp`) between two networked hosts. scp uses the SSH protocol for transferring data.
+
+### Linux Security
+
+#### User Accounts
+
+The Linux kernel allows properly **authenticated users** to access files and applications. Each user is identified by a unique integer (**UID**) and a separate database associates a username with each UID. Related tools are `useradd userdel` for creating and removing accounts.
+
+Upon account creation, new user information is added to the user database and the user's home directory must be created and populated with some essential files. For each user, the following seven fields are maintained in the /etc/passwd file:
+
+| Field Name | Details | Remarks |
+| ---------- | ------- | ------- |
+|Username|User login name|Should be between 1 and 32 characters long|
+|Password|User password (or the character `x` if the password is stored in the `/etc/shadow` file) in **encrypted** format|Is never shown in Linux when it is being typed; this stops prying eyes|
+|User ID (UID)|Every user must have a user id (UID)|UID 0 is reserved for **root** user; UID's ranging from 1-99 are reserved for other **predefined** accounts; UID's ranging from 100-999 are reserved for **system accounts** and groups; **Normal users** have UID's of 1000 or greater|
+|Group ID (GID)|The primary Group ID (GID); Group Identification Number stored in the `/etc/group` file|Is covered in detail in the chapter on Processes|
+|User Info|This field is optional and allows insertion of extra information about the user such as their name|For example: `Rufus T. Firefly`|
+|Home Directory|The absolute path location of user's home directory|For example: `/home/rtfirefly`|
+|Shell|The absolute location of a user's default shell|For example: `/bin/ba`|
+
+For a safe working environment, it is advised to grant the **minimum privileges** possible and necessary to accounts, and remove inactive accounts. The `last` utility can be used to identify potential inactive users.
+
+**root** is the most privileged account on a Linux/UNIX system. This account has the ability to carry out ALL facets of system administration, and utmost care must be taken when using this account. root privilege is required for performing administration tasks such as restarting most services, manually installing packages and managing parts of the filesystem that are outside the normal user’s directories.
+
+**SUID** (**Set owner User ID upon execution** - similar to the Windows "run as" feature) is a special kind of file permission given to a file. Use of SUID provides **temporary permissions** to a user to run a program with the permissions of the **file owner** (which may be root) instead of the permissions held by the user.
+
+##### sudo
+
+In Linux you can use either `su` (requires root password, can be root for as long as needed, limited logging trails) or `sudo` (requires the user's password, temporary access, more logging trails) to **temporarily** grant root access to a normal user.
+
+sudo has the ability to keep track of **unsuccessful attempts** at gaining root access (usually logged in `/var/log/secure`). Users' authorization for using sudo is based on configuration information stored in the `/etc/sudoers` file and in the `/etc/sudoers.d` directory, which should be edited with command `visudo` for proper validations.
+
+sudo commands and any failures are logged in `/var/log/auth.log` under the **Debian** distribution family, and in `/var/log/messages` and/or `/var/log/secure` on other systems. A typical entry of the message for sudo contains: caller's username, terminal info, working dir, user account invoked, command & args.
+
+sudo inherits the PATH of the user, not the full root user. So the directories ``/sbin` and `/usr/sbin` are not searched when a user executes a command with sudo. It is best to add these two dirs to the user's `.bashrc`.
+
+##### passwords
+
+On modern systems, passwords are actually stored in an **encrypted** format in a secondary file named `/etc/shadow`. Only those with **root** access can **read or modify** this file.
+
+Most Linux distributions rely on a modern password encryption algorithm called **SHA-512 (Secure Hashing Algorithm 512 bits)**, developed by the U.S. National Security Agency (NSA) to encrypt passwords. SHA-512 is widely used by security applications and protocols such as `TLS, SSL, PHP, SSH, S/MIME and IPSec` and is one of the most tested hashing algorithms. Its CLI tool is `sha512sum`.
+
+`chage` can be used to configure the password expiry for users. **Pluggable Authentication Modules (PAM)** can be configured to automatically verify that a password created or modified using the `passwd` utility is sufficiently **strong**.
+
+You can secure the **boot process** with a secure password to prevent someone from bypassing the user authentication step (such as editing the bootloader configuration during boot). This can work in conjunction with password protection for the **BIOS** (such as botting from an alternative boot media and mount the harddrives and view the contents).
+
+You should NEVER edit `/boot/grub/grub.cfg` **directly**; instead, you can modify the configuration files in `/etc/grub.d` and `/etc/defaults/grub`, and then run `update-grub`, or `grub2-mkconfig` and save the new configuration file.
+
+##### Physical Hardware Vulnerability
+
+Physical access to a system makes it possible for attackers to easily leverage several attack vectors, in a way that makes all operating system level recommendations irrelevant. Some possible attacks:
+
+- Key logging
+    - Recording the real time activity of a computer user including the keys they press. The captured data can either be stored locally or transmitted to remote machines.
+- Network sniffing
+    - Capturing and viewing the network packet level data on your network.
+- Booting with a live or rescue disk
+- Remounting and modifying disk content.
+
+The guidelines of enhancing security are:
+
+- Lock down workstations and servers.
+- Protect your network links such that it cannot be accessed by people you do not trust.
+- Protect your keyboards where passwords are entered to ensure the keyboards cannot be tampered with.
+- Ensure a password protects the BIOS in such a way that the system cannot be booted with a live or rescue DVD or USB key.
+
+#### Process Isolation
+
+Linux is considered to be more secure than many other operating systems because **processes** are naturally **isolated** from each other. One process normally cannot access the resources of another process, even when that process is running with the same user privileges.
+
+More recent additional security mechanisms that limit risks even further include:
+
+- **Control Groups (cgroups)** - Allows system administrators to **group processes** and associate finite resources to each cgroup.
+- **Containers** - Makes it possible to run multiple **isolated Linux systems** (containers) on a single system by relying on **cgroups**.
+- **Virtualization** - Hardware is **emulated** in such a way that not only processes can be isolated, but **entire systems** are run simultaneously as isolated and insulated guests (**virtual machines**) on one physical host.
+
+#### Hardware Device Access
+
+Linux limits user access to **non-networking hardware devices** in a manner that is extremely similar to regular **file access**.
+
+Applications interact with devices by engaging the **filesystem** layer, which opens a **device special file** (aka device node) under `/dev` that corresponds to the device being accessed. Each device special file has standard **owner, group and world permission** fields. Security is naturally enforced just as it is when standard files are accessed.
+
+### Other Misc. Linux Utilities
+
+#### Printing
+
+Printing itself requires software that converts information from the application you are using to a language your printer can understand. The Linux standard for printing software is the **Common UNIX Printing System (CUPS)**.
+
+CUPS uses a modular printing system which accommodates a wide variety of printers and also processes various data formats. It acts as a print server for both local and network printers. CUPS can be managed with the `systemctl` utility. The CUPS web interface is available on your browser at: http://localhost:631.
+
+##### How CUPS works
+
+The print **scheduler** reads server settings from several **configuration files**, commonly `/etc/cups/cupsd.conf` (system-wide settings, mostly related to network security, allow-listed devices), and `/etc/cups/printers.conf` (printer-specific settings).
+
+CUPS stores print **requests** as files under the `/var/spool/cups` directory and accessible before a doc is sent to a printer. Data files are prefixed with the letter d while control files are prefixed with the letter c. Data files are removed after a printer handles a job successfully.
+
+**Log** files are placed in `/var/log/cups` and are used by the scheduler to record activities that have taken place.
+
+CUPS uses **filters** to convert job file formats to **printable formats**. **Printer drivers** contain descriptions for currently connected and configured printers, and are usually stored under `/etc/cups/ppd/`. The print data is then sent to the printer through a filter, and via a **backend** that helps to locate devices connected to the system.
+
+##### Print from CLI
+
+CUPS provides two command-line interfaces `lp` (System V, actually a front-end to `lpr`) or `lpr` (BSD), useful in cases where printing operations must be **automated**. Some `lp` commands
+
+| Command | Usage |
+| ------- | ----- |
+|`lp <filename>`|To print the file to default printer|
+|`lp -d printer <filename>`|To print to a specific printer (useful if multiple printers are available)|
+|`program | lp` or `echo string | lp`|To print the output of a program|
+|`lp -n number <filename>`|To print multiple copies|
+|`lpoptions -d printer`|To set the default printer|
+|`lpq -a`|To show the queue status|
+|`lpadmin`|To configure printer queues|
+|`lpstat -p -d`|To get a list of available printers, along with their status|
+|`lpstat -a`|To check the status of all connected printers, including job numbers
+|`cancel job-id` OR `lprm job-id`|To cancel a print job|
+|`lpmove job-id newprinter`|To move a print job to new printer|
+
+##### Print formats
+
+**PostScript** is a standard **page description language**. It effectively manages scaling of fonts and vector graphics to provide quality printouts. It is purely a text format that contains the data fed to a PostScript interpreter. The format itself is a language that was developed by Adobe in the early 1980s to enable the transfer of data to printers. `enscript` is a tool that is used to convert a text file to PostScript and other formats.
+
+Postscript has been for the most part superseded by the **PDF** format (Portable Document Format). It can be converted from one to another format with tools like `pdf2ps pdftops convert`. Some other operations such as:
+
+- Merging/splitting/rotating PDF documents
+- Repairing corrupted PDF pages
+- Pulling single pages from a file
+- Encrypting and decrypting PDF files
+- Adding, updating, and exporting a PDF’s metadata
+- Exporting bookmarks to a text file
+- Filling out PDF forms
+
+can be done with tools like `qpdf pdftk gs(ghostscript)`. Some additional tools `pdfinfo flpsed pdfmod` provides basic information-fetching/editing capabilities.
+
+
+

@@ -11,6 +11,17 @@ Not a place to explain things, but for some quick reference to do things in Linu
 
 <br/>
 
+### Add_User_To_Sudoers
+
+```sh
+# first add user to group sudo
+usermod -aG sudo <user>
+# makesure this line is in /etc/sudoers
+%sudo ALL=(ALL) ALL
+```
+
+<br/>
+
 ### Benchmarking_Flash_Drive
 
 ```sh
@@ -134,6 +145,10 @@ sudo systemctl set-default graphical.target # this enables UI
 sudo systemctl stop gdm
 sudo systemctl stop lightdm
 sudo telinit 3 # use 5 to bring it back
+
+## On CentOS where systemctl is not supported
+# edit /etc/inittab
+id:3:initdefault:
 ```
 
 <br/>
@@ -307,6 +322,52 @@ fusermount -u /media/remote/fs/mountpoint
 ### Enable_static_ip_on_Linux_machine
 
 ```sh
+# for Debian
+route add default gw {ROUTER-IP-ADDRESS} {INTERFACE-NAME}
+sudo ifconfig eth0 192.168.1.30 netmask 255.255.255.0
+# add set this in /etc/network/interfaces file
+# auto eth0 static ip on start up
+iface eth0 inet static
+    address 192.168.1.30
+    network 192.168.1.0
+    netmask 255.255.255.0
+    broadcast 192.168.1.255
+    gateway 192.168.1.1
+    dns-nameservers 192.168.1.1
+
+# for CentOS
+# use a CLI GUI
+nmtui edit eth0
+
+# OR Do it yourself
+# update /etc/sysconfig/network-scripts/ifcfg-eth0
+# and make sure these fields are updated as follows
+DEVICE=eth0
+BOOTPROTO=none
+ONBOOT=yes
+PREFIX=24
+IPADDR=192.168.100.5 # desired static IP
+# EOF
+# IF DOES NOT EXIST, here is a template
+TYPE=Ethernet
+BOOTPROTO=none
+IPADDR=192.168.100.5 # Desired static server IP #
+PREFIX=24 # Subnet #
+GATEWAY=192.168.1.1 # Set default gateway IP #
+DNS1=192.168.1.1 # Set dns servers #
+DNS2=8.8.8.8
+DNS3=8.8.4.4
+DEFROUTE=yes
+IPV4_FAILURE_FATAL=no
+IPV6INIT=no # Disable ipv6 #
+NAME=eth0
+UUID=41171a6f-bce1-44de-8a6e-cf5e782f8bd6 # created using 'uuidgen eth0' command #
+DEVICE=eth0
+ONBOOT=yes
+# EOF
+systemctl restart network # then do this
+
+# alternatively, if above method didn't work
 ip=<desired_static_ip>
 dns=<router_dns_address>
 ns=<name_server_address|8.8.8.8>
@@ -318,19 +379,6 @@ static routers=$dns
 static domain_name_servers=$dns
 EOT
 sudo reboot
-
-# alternatively
-route add default gw {ROUTER-IP-ADDRESS} {INTERFACE-NAME}
-sudo ifconfig eth0 192.168.1.30 netmask 255.255.255.0
-# add set this in /etc/network/interfaces file
-auto eth0
-iface eth0 inet static
-    address 192.168.1.30
-    network 192.168.1.0
-    netmask 255.255.255.0
-    broadcast 192.168.1.255
-    gateway 192.168.1.1
-    dns-nameservers 192.168.1.1
 ```
 
 <br/>
@@ -344,6 +392,37 @@ sudo update-rc.d dphys-swapfile remove
 
 # verify empty means disabled
 sudo swapon --summary
+```
+
+### Entering_Rescue_Mode
+
+```sh
+# reboot the machine and at the grub boot menu, choose the correct Distro and press 'e'
+# find the line 'linux' and add this at the end of the line
+systemd.unit=rescue.target
+# press Ctrl-X to write (emacs command)
+```
+
+### Entering_Grub_Rescue
+
+```sh
+# after updating the partition that touches the root filesystem, very likely
+# you will stuck in Grub rescue mode
+# do follow steps
+ls
+ls (hd0,msdosx) # or something like this from the above command
+# until one shows something not 'Device Not Found'
+set prefix=(hd0,msdos6)/boot/grub
+insmod normal
+normal
+
+# after boot into the os successfully
+sudo update-grub # which is the same as running 'grub-mkconfig -o /boot/grub/grub.cfg'
+sudo grub-install /dev/sda # If the drive is hd0 the equivalent is sda, if it's hd1 then use sdb
+# might need to replace the disk uuid with the newer one
+
+# install grub 2
+# http://ftp.gnu.org/gnu/grub/
 ```
 
 <br/>
@@ -440,6 +519,15 @@ curl https://icanhazip.com
 sudo nmap -sA 192.168.1.0/24
 ```
 
+### Fix_Slow_Mouse_Over_Bluetooth
+
+```sh
+# a common problem on Raspberry pi
+# add this to the end of the single line in /boot/cmdline.txt (or update it if exists)
+# the number can be 0-8, the lower the more frequently the mouse is polled
+usbhid.mousepoll=0
+```
+
 <br/>
 
 ### Get_Date_Time_Formatted
@@ -472,6 +560,16 @@ hostname -I | awk '{print $1}'
 ip route get 1.2.3.4 | awk '{print $7}'
 (Fedora) Wifi-Settings→ click the setting icon next to the Wifi name that you are connected to → Ipv4 and Ipv6 both can be seen
 nmcli -p device show
+```
+
+<br/>
+
+### Install_Multi_Distro_Linux_On_A_Machine
+
+```sh
+# a good article explains all this, not going to put the steps here
+# see https://www.garron.me/en/linux/dual-boot-two-linux-distributions-distros.html
+# see reduce root fs size https://www.thegeekdiary.com/how-to-shrink-root-filesystem-on-centos-rhel-6/
 ```
 
 <br/>
@@ -545,6 +643,22 @@ cancel -u zhongkai
 
 ```sh
 fdisk -l # shows current partitions
+fdisk <dev> # edit a drive's partitions
+# use 'p' to see current partitions
+# if the root is the last partition then follows the free space, then it is very easy
+# use 'd' to delete the root partition, take note its start sector
+# use 'n' to create the new partition, put in the start sector and leave the end sector as default
+# use 'p' to make sure it looks right
+# use 'w' to write out and reboot
+resize2fs <dev-subpartition-name>
+
+# might want to double check the soft links under /dev/disks/by-uuid
+# if you messed with the dev labels by re-partitioning
+
+# after performing re-partition it is likely to get stuck in grub recovery mode
+# try the advice on the #Entering_Grub_Rescue section on this page
+# or try the recovery steps from this post
+# https://askubuntu.com/questions/119597/grub-rescue-error-unknown-filesystem
 ```
 
 <br/>

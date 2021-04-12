@@ -98,6 +98,8 @@ If you need to change multiple parts of the prompt to use different styles, then
 
 <br/>
 
+Rename file without typing the full path twice: `mv /path/to/file{,.bak}` the special syntax `{,.bak}` tells shell to repeat the full string with two substrings, one is empty and the other is `.bak`, which is the same as doing `mv /path/to/file /path/to/file.bak`
+
 ### Useful aliases
 
 ```sh
