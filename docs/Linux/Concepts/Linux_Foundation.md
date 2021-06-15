@@ -6,6 +6,8 @@ dateStr: 2021-03-01
 category: Linux
 tags: notes check
 ---
+This set of notes were taken from the Linux Foundation Course:
+[Introduction to Linux (LFS101x)](https://training.linuxfoundation.org/training/introduction-to-linux/){target=_blank}
 
 ## About Linux
 
