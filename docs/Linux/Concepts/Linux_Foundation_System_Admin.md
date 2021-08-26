@@ -1831,3 +1831,624 @@ To change hostname only once before next reboot, just execute `sudo hostname <ne
 Hostname configuration is stored under `/etc/`. On Red Hat-based systems this was `/etc/sysconfig/network`, on Debian-based systems this was `/etc/hostname` and on SUSE-based systems it was `/etc/HOSTNAME`.
 
 For DNS purposes, hostnames are appended with a period (dot) and a domain name, so that a machine with a hostname of antje could have a fully qualified domain name (FQDN) of antje.linuxfoundation.org.
+
+## Network Devices and Configs
+
+### network devices
+
+Unlike block and character devices, network devices are not associated with special device files (aka device nodes). Network devices are known by their names, which usually consist of a type identifier followed by a number:
+
+- `eth0, eth1, eno1, eno2, etc.`, for ethernet devices.
+- `wlan0, wlan1, wlan2, wlp3s0, wlp3s2, etc.`, for wireless devices.
+- `br0, br1, br2, etc.`, for bridge interfaces.
+- `vmnet0, vmnet1, vmnet2, etc.`, for virtual devices for communicating with virtual clients
+
+Historically, multiple virtual devices could be associated with single physical devices; these were named with colons and numbers; so, eth0:0 would be the first alias on the eth0 device. This was done to support multiple IP addresses on one network card, but deprecated today. It is also not compatible with IPv6.
+
+### ip
+
+`ip` is the command line utility used to configure, control and query interface parameters and control devices, routing, etc. It is more efficient and versatile than `ifconfig` because it uses netlink sockets, rather than ioctl system calls.
+
+`ip` basic syntax is `ip [ OPTIONS ] OBJECT { COMMAND | help }`. It can also be used with `ip [ -force ] -batch filename` to process commands from a file. The `OBJECT` argument describes what kind of action is going to be performed; the `COMMANDS` depends on the OBJECT selected:
+
+OBJECT | Function
+------ | --------
+address|IPv4 or IPv6 protocol device address
+link|Network Devices
+maddress|Multicast Address
+monitor|Watch for netlink messages
+route|Routing table entry
+rule|Rule in the routing policy database
+tunnel|Tunnel over IP
+
+Some examples of using `ip`:
+
+- `$ ip link show` - Show information for all network interfaces
+- `$ ip -s link show eth0` - Show information for the eth0 network interface, including statistics
+- `$ sudo ip addr add 192.168.1.7 dev eth0` - Set the IP address for eth0
+- `$ sudo ip link set eth0 down` - Bring interface eth0 down
+- `$ sudo ip link set eth0 mtu 1480` - Set MTU to 1480 bytes for interface eth0
+- `$ sudo ip route add 172.16.1.0/24 via 192.168.1.5` - Set route to network
+
+### ifconfig
+
+`ifconfig` is a system administration utility long found in UNIX-like operating systems used to configure, control, and query network interface parameters from either the command line or from system configuration scripts.
+
+Some examples of using `ifconfig`:
+
+- `$ ifconfig` - Display information about all interfaces
+- `$ ifconfig eth0` - Display information about only eth0
+- `$ sudo ifconfig eth0 192.168.1.50` - Set the IP address to 192.168.1.50 on interface eth0
+- `$ sudo ifconfig eth0 netmask 255.255.255.0` - Set the netmask to 24-bit
+- `$ sudo ifconfig eth0 up` - Bring interface eth0 up
+- `$ sudo ifconfig eth0 down` - Bring interface eth0 down
+- `$ sudo ifconfig eth0 mtu 1480` - Set the MTU (Maximum Transfer Unit) to 1480 bytes for interface eth0
+
+### PNIDN
+
+The Predictable Network Interface Device Names (PNIDN) is strongly correlated with the use of udev and integration with systemd. There are now 5 types of names that devices can be given:
+
+- Incorporating Firmware or BIOS provided index numbers for on-board devices
+    - Example: eno1
+- Incorporating Firmware or BIOS provided PCI Express hotplug slot index numbers
+    - Example: ens1
+- Incorporating physical and/or geographical location of the hardware connection
+    - Example: enp2s0
+    - These names are correlated with the physical locations of the hardware on the PCI system: `$ lspci | grep Ethernet`
+- Incorporating the MAC address
+    - Example: enx7837d1ea46da
+- Using the old classic method
+    - Example: eth0
+
+It is easy to turn off the new scheme and go back to the classic names.
+
+### NIC Config Files
+
+Each distribution has its own set of files and/or directories, and they may be slightly different, depending on your distribution version.
+
+- Red Hat
+    - /etc/sysconfig/network
+    - /etc/sysconfig/network-scripts/ifcfg-ethX
+    - /etc/sysconfig/network-scripts/ifcfg-ethX:Y
+    - /etc/sysconfig/network-scripts/route-ethX
+- Debian
+    - /etc/network/interfaces
+- SUSE
+    - /etc/sysconfig/network
+
+### Network Manager
+
+As a system was booted, it consulted the network configuration files in the `/etc` directory subtree in order to establish the interface properties such as static or dynamic (DCHP) address configuration, whether the device should be started at boot, etc. If there were multiple network devices, policies had to be established as to what order they would be brought up, which networks they would connect to, what they would be called, etc.
+
+Modern systems often have dynamic configurations:
+
+- Networks may change as a device is moved from place to place.
+- Wireless devices may have a large choice of networks to hook into.
+- Devices may change as hardware such as wireless devices, are plugged in or turned on and off.
+
+Use of a GUI tool, `nmtui` or `nmcli` (for scripting) are the common ways to manage networks. Examples of `nmcli` can be found at [Networking/CLI Fedora wiki webpage](https://fedoraproject.org/wiki/Networking/CLI){target=_blank} or with `man nmcli-examples`
+
+### Routing
+
+Routing is the process of selecting paths in a network along which to send network traffic. The routing table is a list of routes to other networks managed by the system. It defines paths to all networks and hosts, sending remote traffic to routers.
+
+To see the current routing table, you can use `route -n` or `ip route`.
+
+The default route is the way packets are sent when there is no other match in the routing table for reaching the specified network, which can be obtained dynamically using DHCP or manually configured (static). You can set the default gateway at runtime with: `sudo route add default gw 192.168.1.10 enp2s0`
+
+To make persistent change, do:
+
+- add `GATEWAY=x.x.x.x` to `/etc/sysconfig/network` for Red Hat systems
+    - or `/etc/sysconfig/network-scripts/ifcfg-ethX` for device-specific change
+- add `gateway=x.x.x.x` to `/etc/network/interfaces` for Debian systems
+
+#### Static Routes
+
+Static routes are used to control packet flow when there is more than one router or route. They are defined for each interface and can be either persistent or non-persistent. When the system can access more than one router, or perhaps there are multiple interfaces, it is useful to selectively control which packets go to which router.
+
+To make static route at run time, do `ip route add 10.5.0.0/16 via 192.168.1.100`
+
+To make persistent change, do:
+
+- add `10.5.0.0/16 via 172.17.9.1` to `/etc/sysconfig/network-scripts/route-ethX` for Red Hat system
+- add following to `/etc/network/interfaces` for Debian systems:
+
+```
+iface eth1 inet dhcp
+post-up route add -host 10.1.2.51 eth1
+post-up route add -host 10.1.2.52 eth1
+```
+
+- for SUSE systems add following to files such as `/etc/sysconfig/network/ifroute-eth0`:
+
+```
+# Destination Gateway Netmask Interface [Type] [Options]
+# where each field is separated by tabs
+192.168.1.150 192.168.1.1 255.255.255.255 eth0
+10.1.1.150 192.168.233.1.1 eth0
+10.1.1.0/24 192.168.1.1 - eth0
+```
+
+### Name Resolution
+
+Name resolution is the act of translating hostnames to the IP addresses of their hosts. There are two facilities for doing this translation:
+
+- Static name resolution (using `/etc/hosts`).
+- Dynamic name resolution (using DNS servers).
+
+Commands used to resolve the IP address of a hostname: `[dig | host | nslookup] linuxfoundation.org`
+
+#### /etc/hosts
+
+`/etc/hosts` holds a local database of hostnames and IP addresses. It contains a set of records (each taking one line) which map IP addresses with corresponding hostnames and aliases.
+
+Such static name resolution is primarily used for local, small, isolated networks. It is generally checked before DNS is attempted to resolve an address; however, this priority can be controlled by `/etc/nsswitch.conf` (not often used today).
+
+The other host-related files in `/etc` are `/etc/hosts.deny` and `/etc/hosts.allow`. The allow file is searched first and the deny file is only searched if the query is not found there. `/etc/host.conf` contains general configuration information; it is rarely used.
+
+#### DNS
+
+If name resolution cannot be done locally using /etc/hosts, then the system will query a DNS (Domain Name Server) server.
+
+DNS is dynamic and consists of a network of servers which a client uses to look up names. The service is distributed; any one DNS server has only information about its zone of authority; however, all of them together can cooperate to resolve any name.
+
+The machine's usage of DNS is configured in /etc/resolv.conf, which historically has looked like:
+
+```
+search example.com aps.org
+nameserver 192.168.1.1
+nameserver 8.8.8.8
+```
+
+which:
+
+- Can specify particular domains to search
+- Defines a strict order of nameservers to query
+- May be manually configured or updated from a service such as DHCP (Dynamic Host Configuration Protocol)
+
+Most modern systems will have an `/etc/hosts.resolv` file generated automatically which was generated by NetworkManager invoking DHCP on the primary network interface.
+
+### Network Diagnostics
+
+Some utilities that helps diagnosis network:
+
+- ping - Sends 64-byte test packets to designated network hosts and tries to report back on the time required to reach it, any lost packets, and some other parameters. You can see whether the network is working and the host is reachable.
+- traceroute - Displays a network path to a destination. It shows the routers packets flow through to get to a host, as well as the time it takes for each hop.
+- mtr - It combines the functionality of `ping` and `traceroute`, and creates a continuously updated display.
+- dig - It is useful for testing DNS functionality. Note that one can also use `host` or `nslookup`, older programs that also try to return DNS information about a host.
+
+## Firewall
+
+A firewall is a network security system that monitors and controls all network traffic. It applies rules on both incoming and outgoing network connections and packets and builds flexible barriers depending on the level of trust and network topography (or topology) of a given connection.
+
+Firewalls can be hardware or software based. They are found both in network routers, as well as in individual computers, or network nodes. Many firewalls also have routing capabilities.
+
+Information is transmitted​ across networks in the form of packets, and each one of these packets has: Header, Payload, Footer. The header and footer contain information about destination and source addresses, what kind of packet it is, and which protocol it obeys, various flags, which packet number this is in a stream, and ​all sorts of other metadata about transmissions. The actual data is in the payload.
+
+Almost all firewalls are based on Packet Filtering. ​Packet filtering intercepts packets at one or more stages in the network transmission, including application, transport, network, and datalink. A firewall establishes a set of rules by which each packet may be:
+
+- Accepted or rejected based on content, address, etc.​
+- Mangled in some way
+- Redirected to another address
+- Inspected for security reasons, etc.
+
+The next generation of firewalls were based on stateful filters, which also examine the connection state of the packet, to see if it is a new connection, ​part of an already existing one, or part of none. Denial of service attacks can bombard this kind of firewall to try and overwhelm it.
+
+The third generation of firewalls is called Application Layer Firewalls, and are aware of the kind of application and protocol the connection is using. They can block anything which should not be part of the normal flow.​
+
+### Firewall Configurations
+
+Configuring the firewall with low-level cli tools such as `iptables, firewall-cmd, ufw`, or GUI tools such as `system-config-firewall, firewall-config, gufw, yast`.
+
+#### firewalld
+
+`firewalld` is the Dynamic Firewall Manager. It utilizes network/firewall zones which have defined levels of trust for network interfaces or connections. It supports both IPv4 and IPv6 protocols. Additionally, it separates runtime and permanent (persistent) changes to configuration, and also includes interfaces for services or applications to add firewall rules. Configuration files are kept in `/etc/firewalld` (primary) and `/usr/lib/firewalld`
+
+As a service, firewalld replaces the older iptables. It is an error to run both services, firewalld and iptables, at the same time. The command line tool to manage `firewalld` is `firewall-cmd`.
+
+Note that if you have more than one network interface when using IPv4, you have to turn on ip forwarding, with:
+
+```sh
+sudo sysctl net.ipv4.ip_forward=1
+echo 1 | sudo tee /proc/sys/net/ipv4/ip_forward
+sudo sysctl -p
+```
+
+#### zones
+
+`firewalld` works with zones, each of which has a defined level of trust and a certain known behavior for incoming and outgoing packets. Each interface belongs to a particular zone (normally, it is NetworkManager which informs firewalld which zone is applicable) which can be changed with `fireweall-cmd`.
+
+Types of zones and their effects:
+
+- drop - All incoming packets are dropped with no reply. Only outgoing connections are permitted.
+- block - All incoming network connections are rejected. The only permitted connections are those from within the system.
+- public - Do not trust any computers on the network; only certain consciously selected incoming connections are permitted.
+- external - Used when masquerading is being used, such as in routers. Trust levels are the same as in public.
+- dmz (Demilitarized Zone) - Used when access to some (but not all) services are to be allowed to the public. Only particular incoming connections are allowed.
+- work - Trust (but not completely) connected nodes to be not harmful. Only certain incoming connections are allowed.
+- home - You mostly trust the other network nodes, but still select which incoming connections are allowed.
+- internal - Similar to the work zone.
+- trusted - All network connections are allowed.
+
+On system installation, most, if not all Linux distributions, will select the public zone as default for all interfaces.
+
+Any zone can be bound not just to a network interface, but also to particular network addresses. A packet is associated with a zone if:
+
+- It comes from a source address already bound to the zone; or if not,
+- It comes from an interface bound to the zone.
+
+Any packet not fitting the above criteria is assigned to the default zone (i.e, usually public).
+
+```sh
+# example commands for adding rules for setting zones on the level of interface, IP addresses, service, port and protocal
+sudo firewall-cmd --permanent --zone=internal --change-interface=eno1
+sudo firewall-cmd --permanent --zone=trusted --add-source=192.168.1.0/24
+sudo firewall-cmd --permanent --zone=home --add-service=dhcp
+sudo firewall-cmd --zone=home --add-port=21/tcp
+```
+
+## System Startup and Shutdown
+
+The boot sequence basic steps are:
+
+- The BIOS/UEFI locates and executes the boot program, or boot loader.
+    - POST (Power On Self Test) is run to check the memory and hardware and then search a specific location or device for a boot program
+    - boot program is found in MBR or using UEFI. It is usually GRUB.
+- The boot loader loads the kernel.
+    - kernel need to be decompressed, then performs hardware checks, gains access to important peripheral hardware
+- The kernel starts the init process (pid=1).
+- init manages system initialization, using systemd or the older Upstart and SysVinit startup scripts.
+
+### GRUB
+
+Virtually, all (non-embedded) modern Linux distributions use GRUB (GRand Unified Boot Loader). efibootmgr is not actually a boot loader, but is a boot manager, used in conjunction with GRUB on multi-boot EFI systems.
+
+Some important features of GRUB are:
+
+- Alternative operating systems can be chosen at boot time.
+- Alternative kernels and/or initial ramdisks can be chosen at boot time for a given operating system.
+- Boot parameters can be easily changed at boot time without having to edit configuration files, etc., in advance.
+
+At boot, a basic configuration file is read, `/boot/grub/grub.cfg`, or `/boot/grub2/grub.cfg`, or `/boot/efi/EFI/redhat/grub.cfg`. This file is auto-generated by `update-grub` (or `grub-mkconfig` or `grub2-mkconfig`) based on configuration files in the `/etc/grub.d` directory and on `/etc/default/grub` and should not be edited by hand.
+
+Upon system boot, after the initial POST and BIOS stages, GRUB will be entered and display a menu containing a list of bootable images either from one or more Linux distributions or operating systems, with submenus. After selecting an entry, you can type e for edit and then enter into an interactive shell to edit the particular boot option.
+
+If there are serious problems, like not being able to find a configuration file, GRUB reverts back to a pure shell mode and you may be able to rescue the system without resorting to rescue media.
+
+In both GRUB versions, the first hard drive is denoted as hd0, the second is hd1, etc. However, in Version 1, partitions start counting from 0, and in Version 2 from 1. For example: sda1 is (hd0,1) in GRUB 2, but (hd0,0) in GRUB 1.
+
+On systems configured with Boot Loader Specification Configuration (BLSCFG), one still uses the usual grub commands when installing or updating kernels, but detailed information and options for each kernel are found in `/boot/loader/entries`. This new scheme can be turned on/off with `grub2-switch-to-blscfg` or altering the variable `GRUB_ENABLE_BLSCFGS=[true|false]` in `/etc/default/grub`.
+
+### Configuration Files in `/etc`
+
+For historical reasons, Linux distributions evolved their own rules about exactly where to place some information in /etc. For example, all Red Hat-derived systems make extensive use of /etc/sysconfig, while Debian-based systems have used /etc/default. Interestingly, RHEL and SUSE use both.​
+
+There should be only text files found under /etc, no binary formats or data.
+
+#### /etc/sysconfig
+
+Files in this directory and its subdirectories are used by many system utilities services, often consulted when the system starts and stops services or queries their status.
+
+#### /etc/default
+
+The files are used to provide extra options when starting a service and typically contain code to set environment variables.
+
+### shutdown
+
+`shutdown` is used to bring the system down in a secure fashion, notifying all users that the system is going down and then stopping it in a graceful and non-destructive way. After it is shut down, the system is either halted or rebooted. There are also the legacy commands `reboot`, `halt`, and `poweroff`
+
+### /sbin/init
+
+`/sbin/init` (usually just called init) is the first user-level process (or task) run on the system and continues to run until the system is shutdown. Traditionally, it has been considered the parent of all user processes, although technically that is not true, as some processes are started directly by the kernel.
+
+init coordinates the later stages of the boot process, configures all aspects of the environment, and starts the processes needed for logging into the system. init also works closely with the kernel in cleaning up after processes when they terminate.
+
+Traditionally, nearly all distributions based the init process on UNIX's venerable SysVinit' software. However, this scheme was developed decades ago under rather different circumstances:
+
+- The target was multi-user mainframe systems (and not personal computers, laptops, and other devices)
+- The target was a single processor system
+    - startup was viewed as a serial process, divided into a series of sequential stages (run levels).
+- Startup (and shutdown) time was seen rare and not an important matter; it was far less important than getting things right.
+
+Modern systems have required newer methods with enhanced capabilities.
+
+### systemd
+
+The `systemd` system and session manager for Linux is now dominant in all major distributions. Features include the following:
+
+- Boots faster than previous init systems
+- Provides aggressive parallelization capabilities
+- Uses socket and D-Bus activation for starting services
+- Replaces shell scripts with programs
+- Offers on-demand starting of daemons
+- Keeps track of processes using cgroups
+- Maintains mount and automount points
+- Implements an elaborate transactional dependency-based service control logic
+- Can work as a drop-in replacement for SysVinit and is compatible with SysVinit scripts.
+
+`systemd` is backward compatible with SysVinit and the concept of runlevels is supported via runlevel targets. The telinit program is emulated to work with runlevels. `systemd` prefers to use a set of standardized configuration files, it can also use distribution-dependent legacy configuration files as a fall-back.
+
+#### systemctl
+
+systemctl is the main utility for managing services. Its basic syntax is: `systemctl [options] command [name]`. Some examples:
+
+- `systemctl` - To show the status of everything that systemd controls
+- `systemctl list-units -t service --all` - To show all available services
+- `systemctl list-units -t service` - To show only active services
+- `sudo systemctl start/stop foo.service` -  To start (activate) or stop (deactivate) one or more units (a service or a socket)
+- `sudo systemctl enable/disable sshd.service` - To enable/disable a service
+
+For most commands, you can omit the `.service` attached to the service name. 
+
+Also worth read [SysVinit to Systemd Cheetsheet](https://fedoraproject.org/wiki/SysVinit_to_Systemd_Cheatsheet){target=_blank}.
+
+## Backup and Recovery
+
+Obviously, files essential to your organization require backup. Configuration files may change frequently, and along with individual user's files, require backup as well.
+
+Logging files can be important and worth to backup if you have to investigate your system's history, which can be particularly important for detecting intrusions and other security violations.
+
+The simplest backup scheme is to do a full backup of everything once, and then perform incremental backups of everything that subsequently changes. While full backups can take a lot of time, restoring from incremental backups can be more difficult and time consuming. Thus, you can use a mix of both to optimize time and effort.
+
+An example of one useful strategy involving tapes (you can easily substitute other media in the description):
+
+- Use tape 1 for a full backup on Friday.
+- Use tapes 2-5 for incremental backups on Monday-Thursday.
+- Use tape 6 for full backup on second Friday.
+- Use tapes 2-5 for incremental backups on second Monday-Thursday.
+- Do not overwrite tape 1 until completion of full backup on tape 6.
+- After full backup to tape 6, move tape 1 to external location for disaster recovery.
+- For next full backup (next Friday) get tape 1 and exchange for tape 6.
+
+A good rule of thumb is to have at least two weeks of backups available.
+
+### Backup utilities
+
+- `cpio` and `tar` - create and extract archives of files.
+- `gzip, bzip2, xz` - create archive files to be written to disk, magnetic tape, or any other device which can hold files. Archives are very useful for transferring files from one filesystem or machine to another.
+- `dd` - transfer raw data between media. It can copy entire partitions or entire disks.
+- `rsync` - synchronize directory subtrees or entire filesystems across a network, or between different filesystem locations on a local machine.
+- `dump` and `restore` - old but designed specifically for backups. They read from the filesystem directly (which is more efficient). However, they must be restored only on the same filesystem type that they came from. There are newer alternatives.
+- `mt` - useful for querying and positioning tapes before performing backups and restores.
+
+#### dd
+
+`dd` is a common UNIX-based program whose primary purpose is the low-level copying and conversion of raw data. It is used to copy a specified number of bytes or blocks, performing on-the-fly byte order conversions, as well as being able to convert data from one form to another. It can also be used to copy regions of raw device files, for example backing up the boot sector of a hard disk, or to read fixed amounts of data from special files like /dev/zero or /dev/random. The basic syntax is: `dd if=input-file of=output-file options`
+
+#### rsync
+
+`rsync` (remote synchronize) is used to transfer files across a network (or between different locations on the same machine). The basic syntax is: `rsync [options] sourcefile destinationfile`
+
+The source and destination can take the form of `target:path`, where target can be in the form of `[user@]host`. The `user@` part is optional and used if the remote user is different from the local user.
+
+You have to be very careful with rsync about exact location specifications (especially if you use the `--delete` option), so it is highly recommended to use the `--dry-run` option first, and then repeat if the projected action looks correct.
+
+`rsync` is very clever; it checks local files against remote files in small chunks, and it is very efficient in that when copying one directory to a similar directory, only the differences are copied over the network. This synchronizes the second directory with the first directory. You may often use the -r option, which causes rsync to recursively walk down the directory tree copying all files and directories below the one listed as the sourcefile. Thus, a very useful way to back up a project directory might be similar to: `rsync -r project-X archive-machine:archives/project-X`
+
+A simple (and very effective and very fast) backup strategy is to simply duplicate directories or partitions across a network with rsync commands and to do so frequently.
+
+#### cpio
+
+`cpio` (copy in and out) is a general file archiver utility that has been around since the earliest days of UNIX and was originally designed for tape backups. It is light weight than `tar`.
+
+The `-o` or `--create` option tells cpio to copy files out to an archive, which reads a list of file names (one per line) from standard input and writes the archive to standard output. The `-i` or `--extract` option tells cpio to copy files from an archive, reading the archive from standard input. The `-t` or `--list` option tells cpio to list the archive contents.
+
+#### Backup programs
+
+- Amanda - (Advanced Maryland Automatic Network Disk Archiver) uses native utilities (including tar and dump) but is far more robust and controllable. Amanda is generally available on Enterprise Linux systems through the usual repositories.
+- Bacula - designed for automatic backup on heterogenous networks. It can be rather complicated to use and is recommended (by its authors) only to experienced administrators. Bacula is generally available on Enterprise Linux systems through the usual repositories.
+- Clonezilla - a very robust disk cloning program, which can make images of disks and deploy them, either to restore a backup, or to be used for ghosting, to provide an image that can be used to install many machines.
+
+## Linux Security Modules
+
+Linux Security Modules (LSM) emphasis the idea of implementing mandatory access controls over the variety of requests made to the kernel in a way that:
+
+- Minimizes changes to the kernel
+- Minimizes overhead on the kernel
+- Permits flexibility and choice between different implementations, each of which is presented as a self-contained LSM (Linux Security Module)
+
+The basic idea is to hook system calls and insert code whenever an application requests a transition to kernel (system) mode. This code makes sure permissions are valid, malicious intent is protected against, by invoking security-related functional steps before and/or after a system call is fulfilled by the kernel.
+
+The current LSM implementations: SELinux, AppArmor, Smack, Tomoyo.
+
+### SELinux
+
+SELinux was originally developed by the United States NSA (National Security Administration) and has been brought into a large usage base.
+
+Operationally, SELinux is a set of security rules that are used to determine which processes can access which files, directories, ports, and other items on the system.
+
+It works with three conceptual quantities:
+
+- Contexts - Context are labels to files, processes and ports. Examples of contexts are SELinux user, role, type, level.
+- Rules - Rules describe access control in terms of contexts, processes, files, ports, users, etc.
+- Policies - Policies are a set of rules that describe what system-wide access control decisions should be made by SELinux.
+
+SELinux modes are selected (and explained) in `/etc/sysconfig/selinux` (CentOS and openSUSE) or `/etc/selinux/config` (Ubuntu). The `sestatus` utility can display the current mode and policy. The list of SELinux modes:
+
+- Enforcing - All SELinux code is operative and access is denied according to policy. All violations are audited and logged. 
+- Permissive - Enables SELinux code, but only audits and warns about operations that would be denied in enforcing mode.
+- Disabled - Completely disables SELinux kernel and application code, leaving the system without any of its protections.
+
+#### getenforce, setenforce
+
+`getenforce` can be used to get the current SELinux mode. `setenforce` can be used to switch between enforcing and permissive modes on the fly while the system is in operation, but it does not allow you to enable/disable SELinux completely.
+
+Disable SELinux is done through either:
+
+- Edit the SELinux configuration file and set `SELINUX=disabled`
+- Add selinux=0 to the kernel parameter list when rebooting
+
+Note that disabling SELinux on systems in which SELinux will be re-enabled is not recommended. It is preferable to use the permissive mode instead of disabling SELinux, so as to avoid relabeling the entire filesystem, which can be time-consuming.
+
+#### Policies
+
+SELinux configuration file also sets the SELinux policy. Multiple policies are allowed, but only one can be active at a time.
+
+Changing the policy may require a reboot of the system and a time-consuming re-labeling of filesystem contents. Each policy has files which must be installed under `/etc/selinux/[SELINUXTYPE]`. Some common SELinux policies:
+
+- targeted - The default policy in which SELinux is more restricted to targeted processes. User processes and init processes are not targeted, while network service processes are targeted. SELinux enforces memory restrictions for all processes, which reduces the vulnerability to buffer overflow attacks.
+- minimum - A modification of the targeted policy where only selected processes are protected.
+- MLS - The Multi-Level Security policy is much more restrictive; all processes are placed in fine-grained security domains with particular policies.
+
+SELinux policy behavior can be configured at runtime without rewriting the policy. This is accomplished by configuring SELinux Booleans, which are policy parameters that can be enabled and disabled:
+
+- `getsebool` - to see booleans
+- `setsebool` - to set booleans
+    - default the change is not persistent. Make it persistent with option `-P`
+- `semanage boolean -l` - to see persistent boolean settings
+
+
+#### Contexts
+
+There are four SELinux contexts: User, Role, Type, Level.
+
+Use `-Z` with utilities such as `ls`, `ps`, `cp`, `mv`, and `mkdir`. To see the context associated witha file/process. Type is the most commonly utilized context, and its label should end with `_t`, as in `kernel_t`.
+
+You can use `chcon` to change a file's context, as in `chcon -t etc_t somefile`.
+
+Note that newly created files inherit the context from their parent directory, but when moving files, it is the context of the source directory which may be preserved. In that event, use `restorecon` which resets file contexts, based on parent directory settings. i.e. `restorecon -Rv /home/jimih` on a directory will correct the context recursively for files under.
+
+To configure the default context for a newly created directory, use `semanage fcontext` (from `policycoreutils-python` package). After the change, a call to `restorecon` is still required.
+
+#### Monitoring Access
+
+SELinux comes with a set of tools that collect issues at run time, log these issues and propose solutions to prevent same issues from happening again, via `setroubleshoot-server` package.
+
+### AppArmor
+
+AppArmor is an LSM alternative to SELinux, used by SUSE, Ubuntu and other distributions. It:
+
+- Provides Mandatory Access Control (MAC)
+- Allows administrators to associate a security profile to a program which restricts its capabilities
+- Is considered easier (by some but not all) to use than SELinux
+- Is considered filesystem-neutral (no security labels required)
+
+In addition to manually specifying profiles, AppArmor includes a learning mode, in which violations of the profile are logged, but not prevented. This log can then be turned into a profile, based on the program's typical behavior.
+
+To view its status, do `sudo apparmor_status`.
+
+AppArmor Modes:
+
+- Enforce Mode - Applications are prevented from acting in ways which are restricted. Attempted violations are reported to the system logging files. This is the default mode. A profile can be set to this mode with aa-enforce.
+- Complain Mode - Policies are not enforced, but attempted policy violations are reported. This is also called the learning mode. A profile can be set to this mode with aa-complain.
+
+Profiles restrict how executable programs that have pathnames on the system can be used. Linux distributions come with​ pre-packaged profiles or installed with an AppArmor package (`apparmor-profiles`), included in `/etc/apparmor.d`.
+
+Some common AppArmor utilities:
+
+Program | Use
+------- | ---
+apparmor_status|Show status of all profiles and processes with profiles
+apparmor_notify|Show a summary for AppArmor log messages
+complain|Set a specified profile to complain mode
+enforce|Set a specified profile to enforce mode
+disable|Unload a specified profile from the current kernel and prevent from being loaded on system startup
+logprof|Scan log files, and, if AppArmor events that are not covered by existing profiles have been recorded, suggest how to take into account, and, if approved, modify and reload
+easyprof|Help set up a basic AppArmor profile for a program
+
+## Local System Security
+
+Security can be defined in terms of the system's ability to regularly do what it is supposed to do, integrity and correctness of the system, and ensuring that the system is only available to those authorized to use it.
+
+The biggest problem with security is to find that appropriate mix of security and productivity; if security restrictions are tight, opaque, and difficult, especially with ineffective measures, users will circumvent procedures.
+
+It is important to create and publicize to your organization a clear security policy that is descriptive, easy to understand, and constantly updated. Policies should be generic and specify enforcement actions and response to breach.
+
+Essential aspects to cover:
+
+- Confidentiality
+- Data Integrity
+- Availability
+- Consistency
+- Control
+- Audit
+
+You should make sure that the data is correct and the system behaves as it is expected to do. There should be processes in effect to determine who is given access to your system.
+
+### Risk Analysis
+
+Risk analysis is based on the following three questions:
+
+- What do I want to protect (identify assets)?
+- What am I protecting it against (identify threats)?
+- How much time, personnel, and money is needed to provide adequate protection?
+
+Two basic philosophies found in use in most computing environments:
+
+- Anything not expressly permitted is denied.​
+- Anything not expressly forbidden is permitted.
+
+The first choice is tighter: a user is allowed to do only what is clearly and explicitly specified as permissible without privilege. This is the most commonly used philosophy.
+
+The second choice builds a more liberal environment where users are allowed to do anything except what is expressly forbidden. It implies a high degree of assumed trust and is less often deployed for obvious reasons.
+
+### Patch system updates
+
+Most attacks exploit known security holes and are deployed in the time period between revelation of a problem and patches being applied. It is critical to pay attention to your Linux distributor's updates and upgrades and apply them as soon as possible.
+
+### Hardware Accessibility
+
+Any time hardware is physically accessible security can be compromised by:
+
+- Key logging: Recording the real time activity of a computer user including the keys they press. The captured data can either be stored locally or transmitted to remote machines.
+- Network sniffing: Capturing and viewing the network packet level data on your network.
+- Booting with a live or rescue disk.
+- Remounting and modifying disk content.
+
+Physical access to a system makes it possible for attackers to easily leverage several attack vectors, in a way that makes all operating system level recommendations irrelevant. Thus, security policy should start with requirements on how to properly secure physical access to servers and workstations.
+
+Necessary protective steps include:
+
+- Locking down workstations and servers
+- Protecting your network links against access by people you do not trust
+- Protecting your keyboards where passwords are entered to ensure the keyboards cannot be tampered with
+- Configuring password protection of the BIOS in such a way that the system cannot be booted with a live or rescue CD/DVD or USB key
+
+Setting a BIOS password protects against unauthorized persons changing the boot options to gain access to your system. You can secure the boot process further with a secure bootloader password to prevent someone from bypassing the user authentication step.
+
+### Secure Mount Filesystem
+
+When a filesystem is mounted, either at the command line with a mount command, or automatically by inclusion in /etc/fstab, various options can be specified to enhance security:
+
+- nodev - Do not interpret character or block special devices on the filesystem.
+- nosuid - The set-user-identifier or set-group-identifier bits are not to take effect.​
+- noexec - Restrict direct execution of any binaries on the mounted filesystem.
+- ro - Mount the filesystem in read-only mode as in: `mount -o ro,noexec,nodev /dev/sda2 /edsel`
+
+By setting the `setuid` (set user ID) flag on an executable file, you modify this normal behavior by giving the program the access rights of the owner rather than the user of the program. Similar rule apply for `setgid` bit for giving runtime group access rights.
+
+By default, when a file is created in a directory, it is owned by the user and group of the user that created it. Using the setgid setting on the directory changes this so that files created in the directory are group owned by the group owner of the directory. This allows you to create a shared directory in which a group of users can share files.
+
+Set the setuid bit with `chmod u+s somefile`, and setgid bit with `chmod g+s somefile`
+
+## Troubleshooting
+
+Troubleshooting involves taking a number of steps which need to be repeated iteratively until solutions are found. A basic recipe might be:
+
+- Characterize the problem
+- Reproduce the problem
+- Always try the easy things first
+- Eliminate possible causes one at a time
+- Change only one thing at a time; if that doesn't fix the problem, change it back
+- Check the system logs (/var/log/messages, /var/log/secure, etc.) for further information
+
+### System Rescue
+
+Sooner or later a system is likely to undergo a significant failure. System Rescue media in the form of optical disks or portable USB drives can be used to fix the situation. Booting into either emergency or single user mode can enable using the full suite of Linux tools to repair the system back to normal function.
+
+The rescue image can be mounted and use `chroot` to change into that environment. You may install software packages from inside the chroot-ed environment. You may also be able to install them from outside the chroot-ed environment. i.e. `sudo rpm -ivh --force --root=/mnt/sysimage /mnt/source/Packages/vsftpd-2*.rpm`.
+
+Emergency boot media are useful when your system won't boot due to some issue such as missing, misconfigured, or corrupted files or a misconfigured service.
+
+In emergency mode you are booted into the most minimal environment possible. The root filesystem is mounted read-only, no init scripts are run and almost nothing is set up. To enter emergency mode, you need to select an entry from the GRUB boot menu and then hit e for edit. Then add the word emergency to the kernel command line before telling the system to boot.
+
+If your system boots, but does not allow you to log in when it has completed booting, try single user mode:
+
+- init is started
+- Services are not started
+- Network is not activated
+- All possible filesystems are mounted
+- root access is granted without a password
+- A system maintenance command line shell is launched
+
+In this mode, your system boots to runlevel 1 (in SysVinit language). To enter single user mode, you need to select an entry from the GRUB boot menu and then hit e for edit. Then add the word single to the kernel command line before telling the system to boot.
