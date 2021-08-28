@@ -55,6 +55,7 @@ nav:
     - Dev Tools Reference:
       - Splunk:
         - "Dev-Tools-Reference/Splunk/Splunk-References.md"
+        - "Dev-Tools-Reference/Splunk/Splunk-Dashboarding.md"
     - Linux:
       - Concepts:
         - Linux Foundation: "Linux/Concepts/Linux_Foundation.md"

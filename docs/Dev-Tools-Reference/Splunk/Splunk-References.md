@@ -7,7 +7,7 @@ category: Tool
 tags: notes reference check
 ---
 
-This note page serves as a quick reference for Splunk Search commands and tricks.
+Notes taken from Splunk official trainings. It serves as a quick reference for Splunk Search commands and tricks.
 
 ## Splunk Brief 
 
