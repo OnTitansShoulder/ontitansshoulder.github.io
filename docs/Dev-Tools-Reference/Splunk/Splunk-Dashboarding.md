@@ -270,7 +270,7 @@ Four types of drilldowns: Event, Visualization, Dynamic, Contextual.
     - `$click.value$` token is predefined for multiple visualization types
     - when clicked, the visualization x-axis value is populated into `$click.value$` token, and the y-axis value is populated to the `$click.value2$` token
 
-<img src="../img/show result count in the panel title">
+<img src="../img/predefined_tokens.PNG">
 
 - Link to Dashboard allows further see other dashboards with more details for a specific category
     - you can pass parameters to the downstream dashboard that depends on a token
