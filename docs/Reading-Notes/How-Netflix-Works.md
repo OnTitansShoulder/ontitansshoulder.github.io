@@ -11,11 +11,9 @@ This notes it taken from an article on [High Scalability](http://highscalability
 
 It's far more complicated and interesting than you might imagine, when you press play on a Netflix video (or _press start on a Netflix title_).
 
-Netflix made so much more information about their architecture available to the public than other companies, and it is fascinating.
-
 <br/>
 
-### Control the entire stack
+## Control the entire stack
 
 The three parts of Netflix: _client_, _backend_, _content delivery network (CDN)_; Netflix controls all of the three and achieved vertical integration and scaling and ensures the users get the contents reliably.
 - The _client_ is the user interface on any device used to browse and play Netflix videos.
@@ -24,7 +22,7 @@ The three parts of Netflix: _client_, _backend_, _content delivery network (CDN)
 
 <br/>
 
-### Focus on what they do the best
+## Focus on what they do the best
 
 Netflix started online-streaming service with building their own data centers and failed and experienced all the problems that can happen when building data centers. It just doesn't work when you are growing rapidly.
 
@@ -34,17 +32,17 @@ Netflix then move to AWS for taking away the headache of building reliable infra
 
 <br/>
 
-### Ensure the service can be always served
+## Ensure the service can be always served
 
 Netflix operates out of _three_ AWS regions: one in North Virginia, one in Portland Oregon, and one in Dublin Ireland. Having three regions, you get reliable service that when any one region fails, the other regions will step in handle all the service traffic in the failed region. Plus, serving traffic from the region closest to where the user is provides faster content delivery.
 
-This is referred as business continuity plan (BCP) for some companies. And Netflix calls this their _global services model_. Any customer can be served out of any region. And it doesn't happen automatically; Netflix did their work to guarantee the automatic fail-over happens. Netflix even intentionally takes down one of their regions every month to ensure the system work reliably; they calls it the chaos testing.
+This is referred as **business continuity plan** (BCP) for some companies. And Netflix calls this their _global services model_. Any customer can be served out of any region. And it doesn't happen automatically; Netflix did their work to guarantee the automatic fail-over happens. Netflix even intentionally takes down one of their regions every month to ensure the system work reliably; they calls it the **chaos testing**.
 
 <br/>
 
-### Netflix's server-side heavy lifting
+## Netflix's server-side heavy lifting
 
-Netflix takes advantage of the _elasticity_ of the cloud service that AWS offered. Rather than have a lot of extra computers hanging around doing nothing and wait for the peak load, Netflix only had to pay for _what_ was needed, _when_ it was needed, by _scaling_ up and down for their service instances.
+Netflix takes advantage of the _elasticity_ of the cloud service that AWS offered. Rather than have a lot of extra computers hanging around doing nothing and wait for the peak load, Netflix only had to **pay for _what_ was needed, _when_ it was needed**, by _scaling_ up and down for their service instances.
 
 Plus, anything that doesn't involve serving video is handled in AWS. This includes scalable computing, scalable storage, business logic, scalable distributed databases, big data processing and analytics, recommendations, transcoding, and hundreds of other functions.
 
@@ -58,7 +56,7 @@ Netflix is known for being a data-driven company. One interesting fact is that a
 
 <br/>
 
-### The work done to prepare the contents
+## The work done to prepare the contents
 
 Netflix gets its contents from the production houses and studios, aka the source media. The videos produced come in a high definition format that's many terabytes in size and need to go through a process of _source media -> video validation -> accept/reject -> media pipeline -> validation -> encoded files_
 
@@ -72,7 +70,7 @@ Netflix also creates files optimized for different network speeds. There are als
 
 <br/>
 
-### The strategies for serving the contents
+## The strategies for serving the contents
 
 Netflix uses CDN to put video as close as possible to users by spreading computers throughout the world. The biggest benefits of a CDN are _speed_ and _reliability_.
 
@@ -84,7 +82,7 @@ Netflix has tried three different video streaming strategies: its own small CDN;
 
 Netflix delivers huge amounts of video traffic from thousands of servers in more than 1,000 locations around the world. Unlike Netflix, YouTube and Amazon built their own backbone network to deliver video around the globe, which is very complicated and expensive. So Netflix borrowed the major internet service providers' (ISPs) network by asking them to put OCAs in their datacenters, or put OCAs close to internet exchange locations (IXPs).
 
-This is a brilliant idea and big deal. First, Netflix placed their content very _close to their users_; so when a user ask for a video, the stream traffic never left their ISP's network and therefore is the fastest and the most reliable than any 3rd-party CDNs. Second, it is because the streaming traffics are (for most of the cases) _within leave the ISP's network_, the ISPs don't need to add more infrastructure to handle the massive video streaming traffic on the Internet. It is a win-win.
+This is a brilliant idea and big deal. First, Netflix placed their content very _close to their users_; so when a user ask for a video, the stream traffic never left their ISP's network and therefore is the fastest and the most reliable than any 3rd-party CDNs. Second, it is because the streaming traffics are (for most of the cases) _within the ISP's network_, the ISPs don't need to add more infrastructure to handle the massive video streaming traffic on the Internet. It is a win-win.
 
 Netflix has all this video sitting in S3, and Netflix uses a process called _proactive caching_ to efficiently copy videos to OCAs. It basically means they cache the videos on each OCA based on the data prediction of the most likely watched videos around that location. This list at each OCA is refreshed every night and so is the video cache. The more popular a video, the more OCAs it will be copied to.
 
@@ -98,7 +96,7 @@ Open Connect is a very reliable and resilient system.
 
 <br/>
 
-### Netflix controls the client
+## Netflix controls the client
 
 Netflix handles failures gracefully because it _controls the client_ on every device running Netflix. They do so from the apps they developed and through the SDK they offered to consume their services. From there, Netflix can adapt consistently and transparently to slow networks, failed OCAs, and any other problems that might arise.
 

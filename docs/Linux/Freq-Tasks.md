@@ -35,6 +35,25 @@ dd if=path/to/input_file of=/path/to/output_file bs=block_size count=number_of_b
 # alternatively, use Ubuntu's disk software for benchmark
 ```
 
+### Boot_into_another_OS_of_Different_GRUB_Version
+
+```sh
+# https://howtoubuntu.org/how-to-repair-restore-reinstall-grub-2-with-a-ubuntu-live-cd
+lsblk # find out which disk to boot into
+sudo mount -t ext4 /dev/sdXY /mnt
+sudo mount --bind /dev /mnt/dev &&
+sudo mount --bind /dev/pts /mnt/dev/pts &&
+sudo mount --bind /proc /mnt/proc &&
+sudo mount --bind /sys /mnt/sys
+sudo chroot /mnt
+grub-install /dev/sdX
+grub-install --recheck /dev/sdX
+update-grub
+exit &&
+sudo umount /mnt/sys /mnt/proc /mnt/dev/pts /mnt/dev &&
+sudo umount /mnt
+```
+
 <br/>
 
 ### Burn_Image_To_Flash_Drive
@@ -279,13 +298,8 @@ LSBInitScripts: https://wiki.debian.org/LSBInitScripts
 ### Enable_ssh_on_new_Linux_machine
 
 ```sh
-mkdir /media/user/dir
-mount /dev/sdX /media/user/dir # the partition being mounted should be mbr
-touch /media/user/dir/ssh
-# how to ssh
-ssh username@hostname
-# view ssh session opened/closed
-cat /var/log/auth.log | grep -v "CRON" | grep "session opened" | less
+# install ssh
+sudo apt-get install openssh-server
 ```
 
 <br/>
@@ -591,6 +605,7 @@ ffmpeg -f concat -safe 0 -i out%01d.mp4 -c copy combined.mp4
 Usually stored in `/etc/NetworkManager/system-connections/NETGEAR-VPN.nmconnection` for Ubuntu
 Might need root access to view
 Network logs can be found in `/var/run/syslog`
+service network restart
 
 <br/>
 

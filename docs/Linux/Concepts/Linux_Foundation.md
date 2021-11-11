@@ -7,7 +7,7 @@ category: Linux
 tags: notes check
 ---
 This set of notes were taken from the Linux Foundation Course:
-[Introduction to Linux (LFS101x)](https://training.linuxfoundation.org/training/introduction-to-linux/){target=_blank}
+[Introduction to Linux (LFS101x)](https://training.linuxfoundation.org/training/introduction-to-linux/){target=_blank} as well as some enrichments from linux.vbird.org
 
 ## About Linux
 
@@ -160,7 +160,7 @@ Most distributions start six text terminals and one graphics terminal, and swith
 
 When the **kernel** is loaded in RAM, it immediately **initializes and configures** the computer’s **memory** and all the **hardware** attached to the system, and loads some necessary user space applications.
 
-`/sbin/init` is only ran after kernel set up all hardware and mounted the root filesystem. It is the origin of all non-kernel processes and is responsible for **keeping the system running** and for **clean shuttdowns**.
+`/sbin/init` is only ran after kernel set up all hardware and mounted the root filesystem. It is the origin of all non-kernel processes and is responsible for **keeping the system running** and for **clean shutdowns**.
 
 ##### SysVinit
 
@@ -235,6 +235,13 @@ sudo mount <server_hostname/IP>:/projects /mnt/nfs/projects
 |**/proc** (a type of pseudo-filesystem)|no permanent presence on the disk, contains virtual files (in memory) for constantly changing runtime system information|system memory, devices mounted, hardware configs|
 |**/dev**|contains device nodes, pseudo-file that is used by most hardware and software devices|sda1 (first partition on the first hard disk), lp1 (second printer), random (source of rangom numbers), null (special file to safely dump unwanted data)|
 |**/var**|contains files that are expected to change in size and content as the system is running|log (system log files), lib (packages and database files), spool (print queue), tmp (temporary files), ftp (FTP service), www (HTTP web service)|
+|/var/cache | program execution generated temp cache file
+|/var/lib | data file when program executes
+|/var/lock | lock files for programs to prevent simultaneous modification of files
+|/var/log | log files, including the login record for who used this system
+|/var/mail | personal mail
+|/var/run | storing PIDs after process started
+|/var/spool | stores some queue data, that is something queued up for process to use in order. Often deleted after use.
 |**/etc**|home for system configuration files or scripts, only for the superuser|passwd, shadow, group (for managing user accounts), resolv.conf (DNS settings)|
 |**/boot**|essential files needed to boot the system|vmlinuz (compressed Linux kernel), initramfs/initrd (initial RAM filesystem), config (kernel config file), System.map (kernel symbol table), grub.conf (boot loader config)|
 |**/lib** and **/lib64** (might link to /usr/lib)|contains kernel modules and common code shared by applications and needed for them to run, mostly known as dynamically loaded libraries (aka Shared Objects)|libncurses.so.5.9|
@@ -243,15 +250,95 @@ sudo mount <server_hostname/IP>:/projects /mnt/nfs/projects
 |/sys|virtual pseudo-filesystem giving information about the system and the hardware||
 |/srv|site-specific data served up by the system ||
 |**/tmp**|temporary files; on some distributions erased across a reboot and/or may actually be a ramdisk in memory||
-|**/usr**|multi-user|applications, utilities and data||
+|**/usr**|stands for Unix Software Resource, for sharing in the Linux's multi-user setup|applications, utilities and data, mostly static files|
+|/usr/bin|This is the primary directory of executable commands on the system|
 |/usr/include|Header files used to compile applications|
 |/usr/lib|Libraries for programs in /usr/bin and /usr/sbin|
 |/usr/lib64|64-bit libraries for 64-bit programs in /usr/bin and /usr/sbin|
+|/usr/local|Data and programs specific to the local machine. Subdirectories include bin, sbin, lib, share, include, etc.|
 |/usr/sbin|Non-essential system binaries, such as system daemons|
 |/usr/share|Shared data used by applications, generally architecture-independent|
 |/usr/src|Source code, usually for the Linux kernel|
-|/usr/local|Data and programs specific to the local machine. Subdirectories include bin, sbin, lib, share, include, etc.|
-|/usr/bin|This is the primary directory of executable commands on the system|
+
+Some directories to consider for larger space allocation via partitioning:
+
+- /
+- /usr
+- /home
+- /var
+- /tmp
+- Swap
+
+Use `basename` on a file to get the file's name; use `dirname` on a file to get the full path to this file's belonging directory
+
+#### inode and block
+
+
+- **superblock**: records this filesystem's information, including number of inode/block, used amount, remaining amount, filesystem format, etc.
+- **inode**: records file-specific properties and records the block number of this record
+    - each record use one inode
+    - each 128 bytes
+    - for a large file, its inode records one block number for which that block records twelve additional direct block numbers, one redirect block number, and one triple-redirect block number. P247 Book.
+- **block**: records the actual content of the file, may span to multiple blocks for larger files
+- knowing an inode can know its block number.
+- this way, data saved onto multiple continuous blocks can be read in sequence within a short amount of time, this is called **localization**
+- to compensate possible large file system's performance, **block group** is used to divide the storage into block groups, for each having a separate inode/block/superblock system.
+
+**data block** stores file and data. block size: 1K, 2K or 4K
+
+- small block size may cause larger file use more block and inodes
+- large block size may create many blocks not fully utilized
+
+**inode/block bitmaps** records and track used and unused blocks and inodes which gives fast lookup and fast search for unused block/inode
+
+i.e. the process of reading a file at `/etc/passwd`:
+
+1. filesystem find `/` inode
+2. filesystem locate `/` block and look for `etc` inode
+3. find `etc` inode and check whether current user has `rx` access
+4. find `etc` block and look for `passwd` inode
+5. find `passwd` inode and check whether current user has `r` access
+6. read `passwd` block content
+
+**Journaling filesystem**: during sudden power outage during writing to the disk, disk data and real data can be inconsistent.
+
+To deal with this and prevent a whole scan of the filesystem, a journaling filesystem helps by:
+
+- record each write to the filesystem in a log.
+- preparation, writing, and completion are supposed to be recorded for each write.
+- if anything happens, can quickly check the journal to find which file is wrong.
+
+This is available in ex3 filesystem on Linux. It can help servers recover faster from power outage.
+
+#### Commonly seen devices
+
+Device | name in Linux
+------ | -------------
+`IDE` | `/dev/hd[a-d]`
+`SCSI/SATA/USB` | `/dev/sd[a-p]`
+`ROM` | `/dev/fd[0-1]`
+`printer` | `/dev/lp[0-2]` or `/dev/usb/lp[0-15]`
+`mouse` | `/dev/usb/mouse[0-15]` or `/dev/psaux`
+`CDROM/DVDROM` | `/dev/cdrom`
+`current mouse` | `/dev/mouse`
+`tape` | `/dev/ht0 (IDE)` or `/dev/st0 (SCSI)`
+
+#### Searching commands
+
+`file` command gives information on what kind of file it is
+
+`which` command gives exact path location of the command inspected
+
+`whereis` and `locate` can be used to find files. These two commands use database mapping to lookup and is therefore faster
+
+`find` can search files physically in the harddrive, can be slow and expensive
+
+- `find [PATH] [option] [action]`
+- some freq used options
+    - `-mtime n`: n is a number, means day. It makes a huge difference between adding `[+]` or `[-]` before the number: + means older than n days, - means within past n days, and neither, means exact n days ago.
+    - `-newer`: `find /dir1 -newer /dir1/file` finds files newer than /dir1/file
+    - `-atime`, `-ctime` similar as `-mtime`
+    - `-perm`: find files with/above/below certain access rights
 
 #### Comparing Files
 
@@ -371,6 +458,64 @@ It is common to have multiple pages across multiple chapters with the **same nam
 
 The `man` program searches, formats, and displays the information contained in the man page system. To list all pages on the topic, use `-f` option (same result as `whatis`). To list all pages that discuss a specified topic, use the `–k` option (same result as `apropos`).
 
+##### Man page number
+
+Numb | Meaning
+---- | -------
+1 | shell executables or commands (**important**)
+2 | functions for kernels
+3 | library or libc functions
+4 | device manuals, often under /dev
+5 | setting file or format (**important**)
+6 | games
+7 | protocols
+8 | system administrator's commands (**important**)
+9 | kernel files
+
+##### navigation (`less`)
+
+Keys | Functions
+---- | ---------
+`[Space]` | next page
+`[PageDown]` | next page
+`[PageUp]` | next page
+`[Home]` | first page
+`[End]` | last page
+`/string` | search string after current position
+`?string` | search string before current position
+`n, N` | when searching, find next matching entry
+`q` | quit
+
+##### search man pages
+
+- To search for a specific man page, use `man -f command_name`
+- To find any man page related to a term, use `man -k searching_term`, which will return all man-pages contain this phrase
+
+#### Info Page
+
+Info Page is a Linux specific feature that displays help doc like small paragraphs(pages), like a web-page. Use `info command`
+
+There are lots of information about the page displayed, including the progress of viewing the entire doc.
+
+Keys | Functions
+---- | ---------
+`[Space]` | next page
+`[PageDown]` | next page
+`[PageUp]` | next page
+`[Home]` | first page
+`[End]` | last page
+`[b]` | move cursor to the first node in current screen
+`[e]` | move cursor to the last node in current screen
+`[n]` | next node
+`[p]` | previous node
+`[u]` | upper layer
+`[s]` or `[/]` | search in current info page
+`[h]` | show help
+`[?]` | view commands
+`[q]` | exit
+
+Additionally, `/usr/share/doc/` usually contains many documentation docs
+
 #### GNU Info System
 
 This is the **GNU** project's **standard documentation format**, which it prefers as an **alternative** to `man`. The Info System is free-form, and its topics are connected using **links**.
@@ -386,6 +531,13 @@ Most commands have an available short description which can be viewed using the 
 ### Process
 
 A **process** is simply an instance of one or more related tasks (**threads**) executing on your computer. A single command may start several processes simultaneously. Some processes are **independent** of each other and others are **related**.
+
+- **program**: usually binary program, stored within physical media like hard-drives
+- **process**: when a program is executed, executor's access and program data being loaded into the memory and OS gets assigned a _PID_
+- `fork` and `exec`
+    - system fork a parent process as temporary process to execute the child program
+    - a PID is assigned and PPID is the parent's PID
+    - temporary process exec the child program and becomes the child process
 
 Processes use many system resources, such as memory, CPU cycles, and peripheral devices, such as network cards, hard drives, printers and displays. The OS (especially the kernel) is responsible for allocating a proper share of these resources to each process and ensuring overall optimized system utilization.
 
@@ -421,13 +573,15 @@ The OS identifies the user who starts a process by the Real User ID (**RUID**) a
 
 Users can be categorized into various groups. Each group is identified by the Real Group ID (**RGID**). The access rights of the group are determined by the Effective Group ID (**EGID**).
 
-#### Priorities
+#### Priority and NICE
 
-The priority for a process can be set by specifying a **nice value**, aka **niceness**. **The lower** the nice value, **the higher** the priority. Higher priority processes grep preferential access to the CPU, therefore more CPU time.
+The priority (PRI) for a process can be set by specifying a **nice value**, aka **niceness** (NI). **The lower** the nice value, **the higher** the priority. Higher priority processes grep preferential access to the CPU, therefore more CPU time.
 
 In Linux, a nice value of **-20** represents the highest priority and **+19** represents the lowest. This convention was adopted from UNIX.
 
 You can view the nice values using `ps -lf` and use `renice +5/-5 <pid>` to set the nice value. Parent process's nice value change also affects its child process's nice value.
+
+_root_ can change all process `NI`, while a normal user can only adjust **owning process** `NI` within `[0, 19]` and can only adjust `NI` to a **higher value**, with command `nice [-n numb] command` or adjust existing process with `renice [numb] PID`. `NI` adjustments will be passed from parent process to child
 
 The load average is displayed using three numbers (i.e. 0.45, 0.17, and 0.12) with command `w`, interpreted as CPU utilization within last minute, 5 minutes before, and 15 minutes before.
 
@@ -435,15 +589,56 @@ The load average is displayed using three numbers (i.e. 0.45, 0.17, and 0.12) wi
 
 You can put a job in the background by suffixing & to the command, i.e. `updatedb &`. Use `CTRL-Z` to suspend a foreground job and `bg` to put it running in the background. Use `fg` to bring a process back to foreground, and `jobs` to see a list of background jobs (`-l` option for showing PIDs).
 
-##### ps command
+##### `ps` command
 
 For the BSD variation of `ps` command, use `ps aux` to display all processes of all users, and use `ps axo <attributes>` to specify a list of attributes to view.
 
 For the SystemV variation of `ps` command, options need the dash prefixes and are different.
 
+**Several useful `ps` combination should be remembered:**
+
+`ps -l` shows only your process related to this bash. Some columns explained:
+
+- `F` represents process flags, means this process's access
+    - 4 means root
+    - 1 means forked but not exec
+- `S` represents Status
+    - R: running
+    - S: sleep, idle, can be signaled to wakeup
+    - D: usually doing I/O, cannot be wakeup
+    - T: stop, might be under job control
+    - Z: zombie, process terminated but cannot be moved out of memory
+- `C` represents CUP usage percentage
+- `PRI/NI` is short for priority/nice, means the priority for CPU to execute it. Smaller number means higher priority
+- `ADDR/SZ/WCHAN` related to memory, ADDR is a kernel function showing which part of memory; SZ means size; WCHAN means whether it is running ('-' means running)
+- `TTY`: user's terminal from logged in
+- `TIME`: CPU time used
+- `CMD`: command
+
+`ps aux` shows all process. Some columns explained:
+
+- `USER` the process belongs to
+- `PID` that process has
+- `%CPU` usage
+- `%MEM` usage
+- `VSZ` virtual memory usage (Kbytes)
+- `RSS` physical memory usage (Kbytes)
+- `TTY` from which terminal, if pts/n, means logged in from remote terminal
+- `STAT`, status, shows the same as `ps -l`
+- `TIME`, actual CPU usage in time unit
+- `COMMAND`, which command triggered
+
+`ps -axjf` shows all processes in a tree view fashion
+
 `pstree` displays the processes running on the system in the form of a tree diagram showing the relationship between a process and its parent process and any other processes that it created, and threads displayed within `{}`.
 
-##### top command
+- `pastree [-A|U] [-up]`
+- `-A`: use ASCII char to represent tree
+- `-U`: use UTF char to represent tree
+- `-p`: show process PID
+- `-u`: show process user
+
+##### `top` command
 
 `top` gives an over view of system performance live over time.
 
@@ -475,6 +670,120 @@ _The fourth and fifth lines_ indicate **memory** usage, which is divided in two 
 - Swap space on line 5.
 
 Once the physical memory is exhausted, the system starts using swap space (temporary storage space on the hard drive) as an extended memory pool, and since accessing disk is much slower than accessing memory, this will negatively affect system performance.
+
+- `top [-d numb] | top [-bnp]`
+- `-d`: screen refresh rate at seconds
+- `-b`: exec *top* in order, used with data redirection
+- `-n`: used with -b, number of times *top* outputs
+- `-p`: specify some PID for monitoring
+- commands in `top`:
+    - `?`: shows available commands
+    - `P`: arrange by CPU usage
+    - `M`: arrange by Memory usage
+    - `N`: arrange by PID
+    - `T`: arrange by CPU time
+    - `k`: send one PID a signal
+    - `r`: send one PID new nice value
+    - `q`: quit
+
+##### `free` command
+
+`free [-b|-k|-m|-g] [-t]` shows memory usage
+
+- `-b|-k|-m|-g`, by default output shows in unit Kbytes, use this to override to bytes, Mbytes, Gbytes
+- `-t`, shows physical and swap memory as well
+
+##### `uname` command
+
+`uname [-asrmpi]` checks system and core information
+
+- `-a`: all system related information will be shown
+- `-s`: system core name
+- `-r`: system core version
+- `-m`: system hardware architecture
+- `-p`: CPU type
+- `-i`: hardware platform
+
+##### `netstat` command
+
+`netstat -[atunlp]` can track network usage on a process level
+
+- `-a`: show current system's all network, listening port, sockets
+- `-t`: list tcp packet data
+- `-u`: list udp packet data
+- `-n`: show service by port number
+- `-l`: list services being listened
+- `-p`: show services with PID
+
+##### `vmstat`
+
+`vmstat` can track system resource changes
+
+- `-a [delay [total examine times]]`shows active/inactive replace buffer/cache info
+- `-f` show number of forks
+- `-s` show memory changes
+- `-S <unit>` use `K/M` replace bytes
+- `-d` show number of disk read/write
+- `-p <partition>` show a partition read/write stats
+- categories shown: procs, memory, swap, io, system, cpu
+    - `procs`: the more of r and b, the busier the system
+        - r: process waiting to run
+        - b: un-wakeable processes
+    - `memory`: like shown by `free`
+        - swpd: virtual memory usage
+        - free: unused mem
+        - buff: buffer storage
+        - cache: high-speed cache
+    - `swap`: when si and so get larger, system is short of memory
+        - si: amount taken from disk
+        - so: amount written into swap
+    - `io`: when bi and bo get larger, system is doing lots of I/O
+        - bi: blocks read from disk
+        - bo: blocks written into disk
+    - `system`: when in and cs get larger, system communicates with external devices quite often
+        - in: processes interrupted per second
+        - cs: context-switch times per second
+    - `cpu`:
+        - us: non-core usage of CPU
+        - sy: core usage of CPU
+        - id: idle status
+        - wa: wait I/O CPU waste
+        - st: virtual machine CPU usage.
+
+##### `fuser` command
+
+`fuser [-umv] [-k [i] [-signal]] file/dir` can find out which process is using which file/directory, from the point of the file/directory
+
+- `-u`: show both PID and process owner
+- `-m`: increase priority of the file
+- `-v`: show each file and process related
+- `-k`: show the process using this file/dir, and signal kill to the process
+- `-i`: use with -k, ask for decision before kill the process
+- `-<signal>`: send a signal code
+- What will be shown is `USER PID ACCESS COMMAND`
+    - the _ACCESS_ represents:
+    - `c`: the process is under current directory
+    - `e`: can be executed
+    - `f`: is an opened file
+    - `r`: is the root directory
+    - `F`: the file is opened but pending complete
+    - `m`: sharable dynamical library
+
+##### `lsof` command
+
+`lsof [-aUu] [+d]` lists which process is using which files
+
+- `-a`: show when all criteria satisfied
+- `-U`: show only Unix like system's socket files
+- `-u username`: list files opened by the user
+- `+d directory`: list files opened under a directory
+
+##### `pidof` command
+
+`pidof [-sx] program_name` list the active PIDs of a program
+
+- `-s`: show only one, not all of the PIDs
+- `-x`: show also the program's possible parent PID (PPID)
 
 ###### Process List
 
@@ -536,6 +845,68 @@ cron can be configured with the system-wide or the user-specific crontab. each l
 # minute(0-59), hour(0-23), day of month(1-31), month(1-12), day of week(0-6), shell command
 ```
 
+##### System Services (Daemon)
+
+System service programs are called daemons. usually the service name with a suffix **d**
+
+**Stand-alone Daemons** starts without being managed by other programs. It Stays in the system memory once started, and uses resources. Fast responding to users.
+
+**Super Daemon** is a single daemon to start other daemons upon request from the client. The daemons started will be closed when the client session ends. i.e. `telnet` is a service managed by the super daemon
+
+Each service maps to an unique port and this mapping is in `/etc/services` file
+
+To starting up a daemon, it requires an executable, a configuration, and an environment. They are stored at:
+
+- `/etc/init.d/`: for starting up scripts
+- `/etc/sysconfig/`: for initialization environment config
+- `/etc/xinetd.conf`, `/etc/xinetd.d/`: super daemon config
+- `/etc/`: services' configuration files
+- `/var/lib/`: services' database files
+- `/var/run/`: all services' PID record
+
+`service` is a command (in fact, a script) to start, terminate, and monitor any services.
+
+- `service [service_name] (start|stop|restart|status|--status-all)`
+
+#### Job Control
+
+**foreground jobs** are jobs actively prompting in the terminal and is interactable. **Background jobs**: the jobs running in the background without interaction with the user. Appending `&` to commands will be thrown to the background
+
+- switching jobs: in the middle of running a command, press `ctrl-z` to pause it and throw it to the background
+- use **`jobs`** command to check running/stopped jobs
+    - lists process recently put into the background, with (+) means next retrieving job using `fg` and (-) means the second latest job put into hte background
+    - `jobs [-lrs]`
+    - `-l`: show PID
+    - `-r`: show running only
+    - `-s`: show stopped only
+- **`fg`** to bring back a job suspended.
+    - `fg %<jobnumber>` use it without _jobnumber_ will bring back the one with (+)
+    - can also `fg -` to bring back the one with (-)
+- **`bg`** can make a stopped job running in the background again
+    - `bg %<jobnumber>` will also append `&` to the job command
+- **`kill`** can remove jobs or restart jobs
+    - `kill -<signal> %<jobnumber>` the `<signal>` can be a number or text:
+    - `-l`: list all kill signals
+    - `-1`: reload configuration files
+    - `-2`: like entering ctrl-c to interrupt a process
+    - `-9`: forced stop
+    - `-15`: normal termination
+    - `-17`: like entering ctrl-z to stop a process
+    - `kill -<signal> PID` also works
+- `killall` can work on all running processes of a command, useful if you don't want bother to lookup its PID
+    - `killall [-iIe] [-signal] [command_name]`
+    - `-i`: interactive
+    - `-e`: exact, means the command_name must match
+    - `-I`: command_name ignore cases
+
+##### Offline Jobs
+
+Notice the background from job control is not "system background", it is just a way to help you run and manage multiple things in the terminal.
+
+If there is need to run a job even after logged out of the system, then offline jobs may help. While `at` works for this case, `nohup` can also work!
+
+- `nohup <command>` or `nohup <command> &` to run in the background
+
 ### Linux Users and Groups
 
 Linux is a multi-user operating system. To identify the current user, use `whoami`. To list the currently logged-on users, use `who` or `users`. `who -a` gives more detailed information.
@@ -556,13 +927,76 @@ To temporarily become the superuser for a series of commands, you can use `su` a
 
 **sudo** access priviledge is granted per user and its configuration files are stored in the `/etc/sudoers` file and in the `/etc/sudoers.d/` directory. By default, the sudoers.d directory is empty.
 
-#### File Ownership
+#### File Ownership, Permission
 
 In Linux, every file is associated with a user who is the **owner** and a group for whom has the right to acess it in certain ways: `read(r), write(w), execute(x)`.
+
+For a file, `execute(x)` means whether it can be executed; for a directory it means whether a user can `cd` into this directory as working directory. Whether a user can delete a file depends on its access right on the current directory. Must be `write(w)`
+
+File permission
+
+```
+[-][rwx][r-x][r--]
+ 0  123  456  789
+0 - file type
+123 - owner access right
+456 - group access right
+789 - global access right
+```
+
+file types:
+
+- `-` regular file
+- `d` directory
+- `l` link
+- `b` block device file, like a hard-drive; or `c` character device file, like a mouse or keyboard
+- `s` socket, for network data
+- `p` pipe, FIFO, allow many process read the same file
 
 `chown` is used to change user ownership (and group) of a file or directory, `chgrp` for changing group ownership. `chmod` is for changing the permissions on the file at `user(u) group(g) others(o)` levels.
 
 A single digit is sufficient to specify all three types permission bits for each entity: `read(4), write(2), execute(1)` which is the sum of those digits.
+
+##### umask
+
+`umask` can be used to disable certain rights for newly created files or directories. i.e.  `unmask 023` means new files created will NOT have `w` for groups and not have `wx` for world
+
+##### Hidden attributes
+
+Hidden attributes on a file are useful for security reasons.
+
+- `lsattr` allows you to view the hidden attributes of a file
+- `chattr` allows you to change the hidden attributes of a file
+    - `-i` means let a file be unchangable
+    - `-a` allows adding but not changing/deleting old portion of the file
+
+#### Clean shutdown
+
+- use `who` to see who is using current system.
+- use `netstat -a` to see Internet connections status
+- use `ps -aux` to see running process in the background
+
+`sync` command will sync data into hard drives. It is best to remember to run this command before reboot or shutdown the system.
+
+`shutdown` or `halt` can done many things such as shutdown, reboot, or enter single-user mode
+
+- set shutdown time, now or in the future
+- set shutdown message to online users
+- send warning info broadcast. Useful when need to notify others for important messages
+- whether use fsck to check file system
+- `shutdown [-t seconds] [-arkhncfF] [time] [warning_info]`
+- usage below:
+
+Option | Setting
+------ | -------
+`-t sec` | shutdown in some seconds
+`-k` | send warning message without shutting down
+`-r` | reboot after system services terminate
+`-h` | shutdown after system services terminate
+`-n` | shutdown without the init process
+`-f` | reboot skipping fsck check
+`-F` | reboot force fsck check
+`-c` | cancel current shutdown directive
 
 ### Linux shell
 
@@ -807,7 +1241,21 @@ For a safe working environment, it is advised to grant the **minimum privileges*
 
 **root** is the most privileged account on a Linux/UNIX system. This account has the ability to carry out ALL facets of system administration, and utmost care must be taken when using this account. root privilege is required for performing administration tasks such as restarting most services, manually installing packages and managing parts of the filesystem that are outside the normal user’s directories.
 
-**SUID** (**Set owner User ID upon execution** - similar to the Windows "run as" feature) is a special kind of file permission given to a file. Use of SUID provides **temporary permissions** to a user to run a program with the permissions of the **file owner** (which may be root) instead of the permissions held by the user.
+##### SUID, SGID, SBIT
+
+**SUID** (**Set owner User ID upon execution** - similar to the Windows "run as" feature) is a special kind of file permission given to a file.
+
+Use of SUID provides **temporary permissions** to a user to run a program with the permissions of the **file owner** (which may be root) instead of the permissions held by the user.
+
+i.e., I have `x` access to `/usr/bin/passwd` and `passwd` is owned by _root_. When I execute `passwd` I temporarily get root access so I can change `/etc/shadow`
+
+SUID can only be used on binary program, NOT on shell script, and NOT on directories.
+
+SGID can be used on binary program and directories, NOT on shell script.
+
+SBIT, Sticky Bit, only used on directories. When a user has `wx` access on a directory and creates a file under it, only this user or root can delete that file.
+
+How to set these bits: `SUID: 4, SGID: 2, SBIT: 1`, i.e. `chmod 4755 file_name`
 
 ##### sudo
 
@@ -865,6 +1313,35 @@ Linux limits user access to **non-networking hardware devices** in a manner that
 
 Applications interact with devices by engaging the **filesystem** layer, which opens a **device special file** (aka device node) under `/dev` that corresponds to the device being accessed. Each device special file has standard **owner, group and world permission** fields. Security is naturally enforced just as it is when standard files are accessed.
 
+### Linux System Troubleshoot
+
+#### Syslog files
+
+_Syslog files_ log the timestamp, source IP, service name, actions from users
+
+It is useful in may ways:
+
+- system side error debugging
+- monitor service actions for abnormal activities
+- fix network issues
+
+Some mostly accessed sys logs:
+
+- `/var/log/cron`: for crontab
+- `/var/log/dmesg`: core check on start up
+- `/var/log/lastlog`: last logged in for each account
+- `/var/log/maillog`: record SMTP provider's and POP3 provider's info and log
+- `/var/log/messages`: all system error info will be here
+- `/var/log/secure`: logs for any actions to do with passwords
+- `/var/log/wtmp`, `/var/log/faillog`: records correct logged in users and failed log in attempts
+- `/var/log/httpd/`, `/var/log/news/`, `/var/log/samba/`: each service's own logs
+
+**system services related to logs**
+
+- `syslogd`: for logging system and network info
+- `klog`: for logging anything from core
+- `logrotate`: for switching and getting rid of old large log files
+
 ### Other Misc. Linux Utilities
 
 #### Printing
@@ -917,5 +1394,113 @@ Postscript has been for the most part superseded by the **PDF** format (Portable
 
 can be done with tools like `qpdf pdftk gs(ghostscript)`. Some additional tools `pdfinfo flpsed pdfmod` provides basic information-fetching/editing capabilities.
 
+## Tricks
 
+**Calculator in Terminal** `bc` can be a quick and light-weight calculator
 
+- set `scale = 4` to make division precision (number of digits after decimal point)
+- `quit` to leave
+
+**check filesystem space**
+
+- `df` gives the overall filesystem usage
+- `du` evaluates filesystem usage of certain directory
+
+**create partitions**
+
+- `fdisk` - use `fdisk [-l] device_name` shows the device's partitions. without `-l` will be interactive mode. (P264 for more info)
+- `df` - use `df pathname` to find the name and usage of the hosting device
+- It is best to do partition in single-user mode
+
+**disk check**
+
+- `fsck` is a serious command to use when filesystem has problems
+    - actually calling `e2fsck`
+    - must be used when the partition inspected was unmounted
+- `badblocks` can check whether the drive has broken sectors
+    - `badblocks -[svw] device_name`
+
+**End of File**
+
+- `[Ctrl]+[d]` means End of File, End of Input. Can be used in the place of entering `exit` command
+
+**Format a partition**
+
+- `mkfs` - to format and make a filesystem
+    - use `mkfs [-t filesystem_format] device_name`
+    - do `mkfs[tab][tab]` will give you a list of supported filesystem format
+- `mke2fs` - a very detailed and sophisticated command
+    - can set filesystem label, block size, inode per N bytes, journal system configuration
+    - i.e. `mke2fs -j -L "vbird_logical" -b 2048 -i 8192 /dev/hdc6`
+
+**Linux X Window and Terminal Switching**
+
+- `[Ctrl]+[Alt]+[F1]~[F6]` are pre-loaded _tty1 ~ tty6_ Terminal workspaces
+- `[Ctrl]+[Alt]+[F7]` switch back to X Window interface
+- if started without X Window, can start it using command `startx`
+
+To change run levels, change `/etc/inittab`
+
+**mount/unmount a partition**
+
+- Things to ensure before mounting
+    - single filesystem should not be mounted to different mounting points
+    - single directory should not be mounting multiple filesystems
+    - directories mouting filesystems should be originally empty
+- `mount`
+    - `mount -l` shows mounted info
+    - `mount -a` mounts all unmounted filesystems
+    - `mount [-t filesystem] [-L Label_name] [-o otheroptions] device_name mounting_point` typical use of command
+    - `mount -o remount,rw,auto /` when root became read-only, use this to remount and make it writable again (saves a reboot)
+- `unmount`
+    - `unmount [-fn] device_name[or]mounting_point`
+
+**Mount at boot time**
+
+- Some limitations:
+    - root '/' must be the first to mount
+    - other mount point must be existing directory
+    - all mount points can be used only once
+    - all partition can be mounted only once
+- `/etc/fstab` file
+    - contents listed in order:
+    - Device_label Mount_point filesystem parameters dump fsck
+    - device_label can be checked using `dumpe2fs`
+
+**Softlink vs. hardlink**
+
+- use `ln` to make hard links
+- use `ln -s` to make hard links
+- hardlink to a file shares the original's inode
+    - hardlink has the same access rights of the original
+    - original inode exists as long as there is pointer to this inode
+    - content not lost if original file is deleted
+- softlink is just a pointer to another file.
+    - can span to different filesystem
+    - can work on directory
+    - if original file deleted, content is lost and softlink become invalid
+
+**troubleshoot file system errors**
+
+Possible causes:
+
+- abnormal shutdown, like sudden cut off of power
+- frequent Harddisk access, over-heat, high-humidity
+
+If the error happens in partition of `/dev/sda7`, then at boot time press ctrl-D to enter root password
+- then enter `fsck /dev/sda7` to check for disk errors. If none found, enter Y to clear and reboot
+
+If root is broken, unplug the harddisk and connect to another working Linux machine
+
+- do not mount that drive
+- login as root, execute `fsck /dev/sdb1` assume `sdb1` is the broken disk
+- the same thing can be done using a Linux bootable USB to rescue the disk
+
+**use Single User Mode to reset forgotten root password**
+
+- reboot, when it is counting seconds, press any key to enter grub editor
+- press `[e]` to enter grub editing mode
+- move cursor to line starting with 'kernel', add 'single' at the end of line
+- press `[enter]` to save
+- press `[b]` to enter single user maintenance mode
+- enter `passwd` and enter new root password twice

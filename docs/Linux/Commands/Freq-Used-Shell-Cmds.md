@@ -9,7 +9,7 @@ tags: notes reference check
 
 ## Frequently Used sh/Bash Builtin Commands
 
-**alias** define short cuts for long commands
+**alias** define shortcuts for long commands
 
 - `alias [-p] [<name>[=<value>] …]`
 - without arguments or with the `-p` option, prints a list of aliases

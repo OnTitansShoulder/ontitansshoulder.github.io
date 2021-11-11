@@ -60,17 +60,12 @@ nav:
       - Concepts:
         - Linux Foundation: "Linux/Concepts/Linux_Foundation.md"
         - Linux System Administration: "Linux/Concepts/Linux_Foundation_System_Admin.md"
-        - Linux Basics Must-know: "Linux/Concepts/Basics.md"
-        - Linux Advanced Must-know: "Linux/Concepts/Adv_Concepts.md"
-        - Linux Network Concepts: "Linux/Concepts/Networking-Concepts.md"
-        - Basic Linux Server Concepts: "Linux/Concepts/Server-Basics.md"
       - Commands:
         - Freq Used Shell Cmds: "Linux/Commands/Freq-Used-Shell-Cmds.md"
         - Freq Used Network Cmds: "Linux/Commands/Networking-Shell-Cmds.md"
         - Text Manipulating Cmds: "Linux/Commands/Text-Manipulating-Cmds.md"
       - Manage Accounts & Groups: "Linux/Account-Administration.md"
       - Freq Linux Tasks: "Linux/Freq-Tasks.md"
-      - Shell Scripting: "Linux/Shell-Scripting.md"
       - Linux Terminal Tricks: "Linux/Terminal-Tricks.md"
       - Vim Tricks: "Linux/Vim-Tricks.md"
     - Programming Lang Reference:
@@ -84,6 +79,8 @@ nav:
         - Testing Design Patterns: "Programming-Lang-Reference/Java/Testing-Design-Patterns.md"
       - Perl:
         - Perl Language Reference: "Programming-Lang-Reference/Perl/Perl-Lang-Specs.md"
+      - Shell:
+        - Shell Scripting: "Programming-Lang-Reference/Shell/Shell-Scripting.md"
       - Github Markdown Guide: "Programming-Lang-Reference/Github-Markdown.md"
       - Regex Cheatsheet: "Programming-Lang-Reference/Regex-Specs.md"
     - Other Reading Notes:
