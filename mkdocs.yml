@@ -64,10 +64,11 @@ nav:
         - Freq Used Shell Cmds: "Linux/Commands/Freq-Used-Shell-Cmds.md"
         - Freq Used Network Cmds: "Linux/Commands/Networking-Shell-Cmds.md"
         - Text Manipulating Cmds: "Linux/Commands/Text-Manipulating-Cmds.md"
-      - Manage Accounts & Groups: "Linux/Account-Administration.md"
-      - Freq Linux Tasks: "Linux/Freq-Tasks.md"
-      - Linux Terminal Tricks: "Linux/Terminal-Tricks.md"
-      - Vim Tricks: "Linux/Vim-Tricks.md"
+      - References:
+        - Freq Linux Tasks: "Linux/References/Freq-Tasks.md"
+        - Linux Terminal Tricks: "Linux/References/Terminal-Tricks.md"
+        - Vim Tricks: "Linux/References/Vim-Tricks.md"
+        - Manage Accounts & Groups: "Linux/References/Account-Administration.md"
     - Programming Lang Reference:
       - Golang:
         - Golang Language Reference: "Programming-Lang-Reference/Golang/Golang-Specs.markdown"
@@ -87,4 +88,5 @@ nav:
       - How Netflix Works: "Reading-Notes/How-Netflix-Works.md"
       - System Design Guide: "Reading-Notes/System-Design-Concepts.md"
       - Why Latency Matters: "Reading-Notes/Why-Latency-Matters.md"
+      - Intro to DevOps and SRE: "Reading-Notes/DevOps_SRE.md"
       - Leading Without Formal Authority: "Reading-Notes/Leading-without-formal-authority.md"
