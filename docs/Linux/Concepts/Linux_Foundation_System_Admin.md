@@ -26,7 +26,7 @@ The Filesystem Hierarchy Standard (FHS) document specifies the main directories 
 
 Contains executable programs and scripts needed by both system administrators and unprivileged users, which are required when no other filesystems have yet been mounted (single user or recovery mode).
 
-Required programs which must exist in /bin/ include:
+Required programs which must exist in `/bin/` include:
 
 ```
 cat, chgrp, chmod, chown, cp, date, dd, df, dmesg, echo, false, hostname, kill, ln, login, ls, mkdir, mknod, more, mount, mv, ps, pwd, rm, rmdir, sed, sh, stty, su, sync, true, umount and uname
@@ -47,7 +47,7 @@ Contains special device files (also known as device nodes) which represent devic
 
 Network devices do not have device nodes in Linux, and are instead referenced by name, such as eth1 or wlan0.
 
-All modern Linux distributions use the udev system, which creates nodes in /dev only as needed when devices are found. On ancient systems (or embedded devices, it can be created by MAKEDEV or mknod at install or at any other time, as needed.
+All modern Linux distributions use the udev system, which creates nodes in `/dev` only as needed when devices are found. On ancient systems (or embedded devices, it can be created by MAKEDEV or mknod at install or at any other time, as needed.
 
 ### /etc
 
@@ -59,9 +59,10 @@ Files and directories which may be found in this directory include:
 csh.login, exports, fstab, ftpusers, gateways, gettydefs, group, host.conf, hosts.allow, hosts.deny, hosts,equiv, hosts.lpd, inetd.conf, inittab, issue, ld.so.conf, motd, mtab, mtools.conf, networks, passwd, printcap, profile, protocols, resolv.conf, rpc, securetty, services, shells, syslog.conf
 ```
 
-- /etc/skel - Contains skeleton files used to populate newly created home directories.
-- /etc/systemd - Contains or points to configuration scripts for starting, stopping system services when using systemd.
-- /etc/init.d - Contains startup and shut down scripts when using System V initialization.
+- `/etc/skel` - Contains skeleton files used to populate newly created home directories.
+- `/etc/systemd` - Contains or points to configuration scripts for starting, stopping system services when using systemd.
+- `/etc/init.d` - Contains startup and shut down scripts when using System V initialization.
+- `/etc/default/` - Contains configurations for many default actions, like cron, useradd
 
 ### /opt
 
@@ -71,15 +72,15 @@ For example, if dolphy_app were the name of a package which resided under /opt, 
 
 This can make both installing and uninstalling software relatively easy, as everything is in one convenient isolated location in a predictable and structured manner.
 
-The directories /opt/bin, /opt/doc, /opt/include, /opt/info, /opt/lib, and /opt/man are reserved for local system administrator use. Packages may provide files which are linked or copied to these reserved directories, but the packages must also be able to function without the programs being in these special directories. Most systems do not populate these directories.
+The directories `/opt/bin, /opt/doc, /opt/include, /opt/info, /opt/lib, and /opt/man` are reserved for local system administrator use. Packages may provide files which are linked or copied to these reserved directories, but the packages must also be able to function without the programs being in these special directories. Most systems do not populate these directories.
 
 ### /proc
 
 Mount point for a pseudo-filesystem, where all information resides only in memory. The kernel exposes some important data structures through /proc entries
 
-Important pseudo-files, including /proc/interrupts, /proc/meminfo, /proc/mounts, and /proc/partitions, provide an up-to-the-moment glimpse of the system's hardware.
+Important pseudo-files, including `/proc/interrupts, /proc/meminfo, /proc/mounts, and /proc/partitions`, provide an up-to-the-moment glimpse of the system's hardware.
 
-Others, like /proc/filesystems and the /proc/sys/ directory, provide system configuration information and interfaces. The process directories contain information about each running process on the system.
+Others, like `/proc/filesystems` and the `/proc/sys/` directory, provide system configuration information and interfaces. The process directories contain information about each running process on the system.
 
 ### /sys
 
@@ -89,7 +90,7 @@ sysfs is used both to gather information about the system, and modify its behavi
 
 ### /sbin
 
-Contains binaries essential for booting, restoring, recovering, and/or repairing in addition to those binaries in the /bin directory.
+Contains binaries essential for booting, restoring, recovering, and/or repairing in addition to those binaries in the `/bin` directory.
 
 The following programs should be included in this directory (if their subsystems are installed):
 
@@ -116,11 +117,11 @@ For security reasons, it is often considered a good idea to mount /var as a sepa
 
 ### /run
 
-The purpose of /run is to store transient files: those that contain runtime information, which may need to be written early in system startup, and which do not need to be preserved when rebooting.
+The purpose of `/run` is to store transient files: those that contain runtime information, which may need to be written early in system startup, and which do not need to be preserved when rebooting.
 
-Generally, /run is implemented as an empty mount point, with a tmpfs ram disk (like /dev/shm) mounted there at runtime. Thus, this is a pseudo-filesystem existing only in memory.
+Generally, `/run` is implemented as an empty mount point, with a tmpfs ram disk (like `/dev/shm`) mounted there at runtime. Thus, this is a pseudo-filesystem existing only in memory.
 
-Some existing locations, such as /var/run and /var/lock, will be now just symbolic links to directories under /run.
+Some existing locations, such as `/var/run` and `/var/lock`, will be now just symbolic links to directories under /run.
 
 ## Processes
 
@@ -130,19 +131,19 @@ A program is a set of instructions, along with any internal or external data use
 
 People often distinguish between programs, which are compiled into a binary executable form; and scripts, which need to be run by an interpreter such as bash, Python or Perl.
 
-A process is an instance of a program in execution. Every process has a pid (Process ID), a ppid (Parent Process ID), and a pgid (Process Group ID). Every process has program code, data, variables, file descriptors, and an environment.
+A process is an instance of a program in execution. Every process has a **pid** (Process ID), a **ppid** (Parent Process ID), and a **pgid** (Process Group ID). Every process has program code, data, variables, file descriptors, and an environment.
 
-For historical reasons, the largest PID has been limited to a 16-bit number, or 32768. It is possible to alter this value by changing /proc/sys/kernel/pid_max. Eventually when process id reaches the max, it will start again at PID = 300.
+For historical reasons, the largest PID has been limited to a 16-bit number, or **32768**. It is possible to alter this value by changing `/proc/sys/kernel/pid_max`. Eventually when process id reaches the max, it will start again at `PID = 300`.
 
 A program may be composed of multiple simultaneous threads (multithreading), each of which is considered as its own process.
 
 ### Process Attributes
 
-At any given moment, the process may take a snapshot of itself by trapping the state of its CPU registers, where it is executing in the program, what is in the process' memory, and other information. This is the context (state) of the process, which is critical to the kernel's ability to do context switching.
+At any given moment, the process may take a snapshot of itself by trapping the state of its CPU registers, where it is executing in the program, what is in the process' memory, and other information. This is the context (state) of the process, which is critical to the kernel's ability to do **context switching**.
 
 Every process has permissions based on which user has called it to execute. It may also have permissions based on who owns its program file.
 
-Programs which are marked with an "s" execute bit have a different "effective" user id than their "real" user id. These programs are referred to as setuid programs. They run with the user-id of the user who owns the program, where a non-setuid program runs with the permissions of the user who starts it. setuid programs owned by root can be a security problem.
+Programs which are marked with an "s" execute bit have a different "effective" user id than their "real" user id. These programs are referred to as **setuid programs**. They run with the user-id of the user who **owns** the program, where a non-setuid program runs with the permissions of the user who **starts** it. **setuid programs owned by root can be a security problem**.
 
 Every process has resources such as allocated memory, file handles, etc. When a process is started, it is isolated in its own user space to protect it from other processes.
 
@@ -150,7 +151,7 @@ Processes do not have direct access to hardware. Hardware is managed by the kern
 
 #### Control process with ulimit
 
-`ulimit` is a built-in bash command that displays or resets a number of resource limits associated with processes running under a shell. The changes only affect the current shell. To make changes that are effective for all logged-in users, you need to modify `/etc/security/limits.conf`
+`ulimit` is a built-in bash command that displays or resets a number of **resource limits** associated with processes running under a shell. The changes only affect the **current shell**. To make changes that are effective for all logged-in users, you need to modify `/etc/security/limits.conf`
 
 A system administrator may need to change some of these values in either direction:
 
@@ -159,13 +160,13 @@ A system administrator may need to change some of these values in either directi
 
 ### Creating Processes
 
-An average Linux system is always creating new processes. This is often called forking; the original parent process keeps running, while the new child process starts.
+An average Linux system is always creating new processes. This is often called **forking**; the original parent process **keeps running**, while the new child process starts.
 
-Often, rather than just a fork, one follows it with an exec, where the parent process terminates, and the child process inherits the process ID of the parent.
+Often, rather than just a fork, one follows it with an **exec**, where the parent process terminates, and the child process **inherits the process ID of the parent**.
 
 Take sshd daemon as an example: it is started when the init process executes the sshd init script, then the daemon process listens for ssh requests from remote users.When a request is received, sshd creates a new copy of itself to service the request. Each remote user gets their own copy of the sshd daemon running to service their remote login. The sshd process will start the login program to validate the remote user. If the authentication succeeds, the login process will fork off a shell (say bash) to interpret the user commands, and so on.
 
-systemd-based systems run a special process named kthreadd with pid=2 whose job is to adopt orphaned children, who will then show ppid=2.
+systemd-based systems run a special process named kthreadd with pid=2 whose job is to **adopt orphaned children**, who will then show ppid=2.
 
 What happens when a user executes a command in a command shell interpreter, such as bash?
 
@@ -198,13 +199,13 @@ The mode is not a state of the system; it is a state of the processor, as in a m
 
 #### User Mode
 
-Each process executing in user mode has its own memory space, parts of which may be shared with other processes; except for the shared memory segments, a user process is not able to read or write into or from the memory space of any other process.
+Each process executing in user mode has its **own memory space**, parts of which may be shared with other processes; except for the shared memory segments, a user process is not able to read or write into or from the memory space of any other process.
 
 Even a process run by the root user or as a setuid program runs in user mode, except when jumping into a system call, and has only limited ability to access hardware.
 
 #### System (Kernel) Mode
 
-CPU has full access to all hardware on the system, including peripherals, memory, disks, etc. If an application needs access to these resources, it must issue a system call, which causes a context switch from user mode to kernel mode. This procedure must be followed when reading and writing from files, creating a new process, etc.
+CPU has full access to **all hardware on the system**, including peripherals, memory, disks, etc. If an application needs access to these resources, it must issue a system call, which causes a context switch from user mode to kernel mode. This procedure must be followed when reading and writing from files, creating a new process, etc.
 
 Application code never runs in kernel mode, only the system call itself which is kernel code. When the system call is complete, a return value is produced and the process returns to user mode with the inverse context switch.
 
@@ -232,21 +233,21 @@ By default, only a superuser can decrease the niceness. After a non-privileged u
 
 ### Static and Shared Libraries
 
-static library - The code for the library functions is inserted in the program at compile time, and does not change thereafter, even if the library is updated.
+**static library** - The code for the library functions is inserted in the program at compile time, and does not change thereafter, even if the library is updated.
 
-shared library - The code for the library functions is loaded into the program at run time, and if the library is changed later, the running program runs with the new library modifications.
+**shared library** - The code for the library functions is loaded into the program at run time, and if the library is changed later, the running program runs with the new library modifications.
 
 Using shared libraries is more efficient because they can be used by many applications at once; memory usage, executable sizes, and application load time are reduced.
 
-Shared Libraries are also called Dynamic Link Libraries (DLLs). Under Linux, shared libraries are (and must be) carefully versioned to avoid DLL Hell.
+Shared Libraries are also called **Dynamic Link Libraries** (DLLs). Under Linux, shared libraries are (and must be) carefully versioned to avoid DLL Hell.
 
-`ldd` can be used to ascertain what shared libraries an executable requires. It shows the soname of the library and what file it actually points to.
+`ldd` can be used to ascertain what shared libraries an executable requires. It shows the .so name of the library and what file it actually points to.
 
 `ldconfig` is generally run at boot time (but can be run anytime), and uses `/etc/ld.so.conf`, which lists the directories that will be searched for shared libraries. ldconfig must be run as root, and shared libraries should only be stored in system directories when they are stable and useful. The linker also first search any directories specified in the environment variable `LD_LIBRARY_PATH`, a colon separated list of directories.
 
-## Signals
+### Signals
 
-Signals are one of the oldest methods of Inter-Process Communication (IPC) and are used to notify processes about asynchronous events (or exceptions).
+Signals are one of the oldest methods of **Inter-Process Communication** (IPC) and are used to notify processes about **asynchronous events** (or exceptions).
 
 Signals can only be sent between processes owned by the same user or from a process owned by the superuser to any process.
 
@@ -349,13 +350,13 @@ The rpm and dpkg utilities play this role for the packaging systems that use the
 **High Level Utilities**
 If another package or group of packages needs to be installed before software can be installed, such needs will be satisfied. If removing a package interferes with another installed package, the administrator will be given the choice of either aborting, or removing all affected software.
 
-The dnf and zypper utilities (and the older yum) take care of the dependency resolution for rpm systems, and apt-get and apt-cache and other utilities take care of it for dpkg systems.
+The `dnf` and `zypper` utilities (and the older `yum`) take care of the dependency resolution for `rpm` systems, and `apt-get` and `apt-cache` and other utilities take care of it for `dpkg` systems.
 
 ### Package Sources
 
 Every distribution has one or more package repositories where system utilities go to obtain software and to update with new versions. It is the job of the distribution to make sure all packages in the repositories play well with each other.
 
-There are always other external repositories which can be added to the standard distribution-supported list. i.e. EPEL (Extra Packages for Enterprise Linux) fit well with RHEL since their source is Fedora and the maintainers are close to Red Hat.
+There are always other external repositories which can be added to the standard distribution-supported list. i.e. **EPEL** (Extra Packages for Enterprise Linux) fit well with RHEL since their source is Fedora and the maintainers are close to Red Hat.
 
 Building your own package allows you to control exactly what goes in the software and exactly how it is installed.
 
@@ -368,7 +369,7 @@ Building your own package allows you to control exactly what goes in the softwar
 
 #### Git
 
-Git has two important data structures: an object database and a directory cache.
+Git has two important data structures: an **object database** and a **directory cache**.
 
 The object database contains objects of three varieties:
 
@@ -395,7 +396,7 @@ sed-4.5-2.e18.x86_64.rpm
 
 `/var/lib/rpm` is the default system directory which holds RPM database files in the form of Berkeley DB hash files. The database files should not be manually modified; updates should be done only through the use of the rpm program. One can use `--dbpath` to specify another location for database, and `--rebuilddb` to rebuild the database indices from the installed package headers.
 
-Helper programs and scripts used by RPM reside in `/usr/lib/rpm`. You can create an rpmrc file to specify default settings for rpm. By default, rpm looks for it in:
+Helper programs and scripts used by RPM reside in `/usr/lib/rpm`. You can create an `rpmrc` file to specify default settings for rpm. By default, rpm looks for it in:
 
 1. /usr/lib/rpm/rpmrc
 2. /etc/rpmrc
@@ -739,11 +740,11 @@ With the `-d` option to get a table of disk statistics. Use `-p partition` to vi
 
 One way to deal with memory pressure would be to permit memory allocations to succeed as long as free memory is available and then fail when all memory is exhausted.
 
-Alternatively, use swap space on disk as "secondary memory" to push some of the resident memory out when under memory pressure.
+Alternatively, use **swap** space on disk as "secondary memory" to push some of the resident memory out when under memory pressure.
 
-Linux also permits the system to overcommit memory (only for user processes, not kernel processes), so that it can grant memory requests that exceed the size of RAM plus swap.
+Linux also permits the system to **overcommit** memory (only for user processes, not kernel processes), so that it can grant memory requests that exceed the size of RAM plus swap.
 
-Every time a child process is forked, it receives a copy of the entire memory space of the parent. Linux uses the COW (copy on write) technique, unless one of the child processes modifies its memory space, no actual copy needs be made. However, the kernel has to assume that the copy might need to be done.
+Every time a child process is forked, it receives a copy of the entire memory space of the parent. Linux uses the **COW** (copy on write) technique, unless one of the child processes modifies its memory space, no actual copy needs be made. However, the kernel has to assume that the copy might need to be done.
 
 You can modify overcommission by setting the value of /proc/sys/vm/overcommit_memory:
 
@@ -751,7 +752,7 @@ You can modify overcommission by setting the value of /proc/sys/vm/overcommit_me
 - 1: All memory requests are allowed to overcommit.
 - 2: Turn off overcommission. Memory requests will fail when the total memory commit reaches the size of the swap space plus a configurable percentage (50 by default) of RAM. This factor is modified changing /proc/sys/vm/overcommit_ratio.
 
-If available memory is exhausted, Linux invokes the **OOM-killer** (Out Of Memory) to decide which process(es) should be exterminated to open up some memory. A value called the **badness** is computed (which can be read from `/proc/[pid]/oom_score`) for each process on the system and the order of the killing. `oom_adj_score` can be directly adjusted to override the badness score of a process.
+If available memory is exhausted, Linux invokes the **OOM-killer** (Out Of Memory) to decide which process(es) should be exterminated to open up some memory. A value called the **badness** is computed (which can be read from `/proc/[pid]/oom_score`) for each process on the system and the order of the killing. `oom_score_adj` can be directly adjusted to override the badness score of a process.
 
 ### IO Monitoring
 
@@ -819,28 +820,29 @@ Any I/O scheduling algorithm has to satisfy certain requirements:
 - Write operations can usually wait to migrate from caches to disk without stalling processes. Read operations, however, almost always require a process to wait for completion before proceeding further. Favoring reads over writes leads to better parallelism and system responsiveness.
 - Processes should share the I/O bandwidth in a fair, or at least consciously prioritized fashion; even if it means some overall performance slowdown of the I/O layer, process throughput should not suffer inordinately.
 
-At least one of the I/O scheduling algorithms must be compiled into the kernel. The scheduler for each device can be selected or viewed at run time. i.e. `/sys/block/sda/queue/scheduler` and scheduler-specific tunables can be found in /sys/block/sda/queue/iosched.
+At least one of the I/O scheduling algorithms must be compiled into the kernel. The scheduler for each device can be selected or viewed at run time. i.e. `/sys/block/sda/queue/scheduler` and scheduler-specific tunables can be found in `/sys/block/sda/queue/iosched`.
 
 ## Filesystems and VFS
 
-A UNIX-like filesystem uses a tree hierarchy. Multiple filesystems can be merged together into a single tree structure. Linux uses a virtual filesystem layer (VFS) to communicate with the filesystem software.
+A UNIX-like filesystem uses a **tree** hierarchy. Multiple filesystems can be merged together into a single tree structure. Linux uses a **virtual filesystem layer** (VFS) to communicate with the filesystem software.
 
-Local filesystems generally reside within a disk partition which can be a physical partition on a disk, or a logical partition controlled by a Logical Volume Manager (LVM).
+Local filesystems generally reside within a disk partition which can be a physical partition on a disk, or a logical partition controlled by a **Logical Volume Manager** (LVM).
 
 Filesystems can also be of a network nature and their true physical embodiment completely hidden to the local system across the network.
 
 ### inodes
 
-An inode is a data structure on disk that describes and stores file attributes such as name, location, file attributes (permissions, ownership, size, etc.), access & modify times and others.
+An inode is a data structure on disk that describes and stores **file attributes** such as name, location, file attributes (permissions, ownership, size, etc.), access & modify times and others.
 
-Filenames are not stored in the inode; they are stored in the directory that contains the files.
+Filenames are not stored in the inode; they are stored in the **directory** that contains the files.
 
 #### Hard/soft links
 
 A directory file is a particular type of file that is used to associate file names and inodes. Two ways to associate (or link) a file name with an inode:
 
-- Hard links point to an inode.​ All hard linked files have to be on the same filesystem. Changing the content of a hard linked file in one place may not change it in other places.
+- Hard links point to an inode.​ All hard linked files have to be on the same filesystem. Changing the content of a hard linked file in one place may change it in other places.
 - Soft (or symbolic) links point to a file name which has an associated inode. Soft linked files may be on different filesystems. If the target does not yet exist or is not yet mounting, it can be dangling.
+- A nice article explaning the differences between hard and soft links: https://linuxgazette.net/105/pitcher.html
 
 When two or more directory entries to point to the same inode (hard links), a file can be known by multiple names, each of which has its own place in the directory structure.
 
@@ -854,15 +856,15 @@ Neither the specific actual filesystem or physical media and hardware on which i
 
 Network filesystems (such as NFS) can also be handled transparently. This permits Linux to work with more filesystem varieties than any other operating system.
 
-Commonly used filesystems include ext4, xfs, btrfs, squashfs, nfs and vfat.
+Commonly used filesystems include `ext4, xfs, btrfs, squashfs, nfs and vfat`.
 
-A list of currently supported filesystems is at /proc/filesystems. The ones with nodev are special filesystems which do not reside on storage.
+A list of currently supported filesystems is at `/proc/filesystems`. The ones with nodev are special filesystems which do not reside on storage.
 
 #### Journaling Filesystems
 
 Journaling filesystems recover from system crashes or ungraceful shutdowns with little or no corruption, and do so very rapidly.
 
-In a journaling filesystem, operations are grouped into transactions. A transaction must be completed without error, atomically; otherwise, the filesystem is not changed. A log file is maintained of transactions. When an error occurs, usually only the last transaction needs to be examined.
+In a journaling filesystem, operations are grouped into **transactions**. A transaction must be completed without error, atomically; otherwise, the filesystem is not changed. A log file is maintained of transactions. When an error occurs, usually only the **last** transaction needs to be examined.
 
 ### Disk Partitioning
 
@@ -877,29 +879,25 @@ Reasons for doing disk partitions:
 
 A common partition layout contains a `/boot` partition, a partition for the root filesystem `/`, a swap partition, and a partition for the `/home` directory tree.
 
-It is more difficult to resize a partition after the fact than during install/creation time.
+It is more difficult to resize a partition after installing the OS.
 
 #### common disk types
 
-SATA (Serial Advanced Technology Attachment) - SATA disks were designed to replace the old IDE (Integrated Drive Electronics) drives. They offer a smaller cable size (7 pins), native hot swapping, and faster and more efficient data transfer. They are seen as SCSI devices.
-
-SCSI (Small Computer Systems Interface) - SCSI disks range from narrow (8 bit bus) to wide (16 bit bus), with a transfer rate from about 5 MB per second (narrow, standard SCSI) to about 160 MB per second (Ultra-Wide SCSI-3). SCSI has numerous versions such as Fast, Wide, and Ultra, Ultrawide.
-
-SAS (Serial Attached SCSI) - SAS uses a newer point-to-point protocol, has a better performance than SATA disks and is better suited for servers. Learn more [SAS vs SATA](https://www.hp.com/us-en/shop/tech-takes/sas-vs-sata){target=_blank}
-
-USB (Universal Serial Bus) - These include flash drives and floppies. And are seen as SCSI devices.
-
-SSD (Solid State Drives) - Modern SSD drives have come down in price, have no moving parts, use less power than drives with rotational media, and have faster transfer speeds. Internal SSDs are even installed with the same form factor and in the same enclosures as conventional drives. SSDs still cost a bit more, but price is decreasing. It is common to have both SSDs and rotational drives in the same machines, with frequently accessed and performance critical data transfers taking place on the SSDs.
+- SATA (Serial Advanced Technology Attachment) - SATA disks were designed to replace the old IDE (Integrated Drive Electronics) drives. They offer a smaller cable size (7 pins), native hot swapping, and faster and more efficient data transfer. They are seen as SCSI devices.
+- SCSI (Small Computer Systems Interface) - SCSI disks range from narrow (8 bit bus) to wide (16 bit bus), with a transfer rate from about 5 MB per second (narrow, standard SCSI) to about 160 MB per second (Ultra-Wide SCSI-3). SCSI has numerous versions such as Fast, Wide, and Ultra, Ultrawide.
+- SAS (Serial Attached SCSI) - SAS uses a newer point-to-point protocol, has a better performance than SATA disks and is better suited for servers. Learn more [SAS vs SATA](https://www.hp.com/us-en/shop/tech-takes/sas-vs-sata){target=_blank}
+- USB (Universal Serial Bus) - These include flash drives and floppies. And are seen as SCSI devices.
+- SSD (Solid State Drives) - Modern SSD drives have come down in price, have no moving parts, use less power than drives with rotational media, and have faster transfer speeds. Internal SSDs are even installed with the same form factor and in the same enclosures as conventional drives. SSDs still cost a bit more, but price is decreasing. It is common to have both SSDs and rotational drives in the same machines, with frequently accessed and performance critical data transfers taking place on the SSDs.
 
 #### Disk drives
 
-Rotational disks are composed of one or more platters and each platter is read by one or more heads. Heads read a circular track off a platter as the disk spins. Circular tracks are divided into data blocks called sectors. A cylinder is a group which consists of the same track on all platters.
+Rotational disks are composed of one or more **platters** and each platter is read by one or more **heads**. Heads read a circular track off a platter as the disk spins. Circular tracks are divided into data blocks called sectors. A cylinder is a group which consists of the same track on all platters.
 
 The physical structural image has become less and less relevant as internal electronics on the drive actually obscure much of it.
 
 Use `sudo fdisk -l /dev/sdc` to list the partition table without entering interactive mode.
 
-`fdisk` is a menu-driven partition table editor and included in any Linux installation. It is the most standard and one of the most flexible of the partition table editors. As with any other partition table editor, make sure that you either write down the current partition table settings or make a copy of the current settings before making changes.
+**`fdisk`** is a menu-driven partition table editor and included in any Linux installation. It is the most standard and one of the most flexible of the partition table editors. As with any other partition table editor, make sure that you either write down the current partition table settings or make a copy of the current settings before making changes.
 
 No actual changes are made until you write the partition table to the disk by entering w. It is therefore important to verify your partition table is correct (with p) before writing to disk with w. If something is wrong, you can jump out safely with q. After the edit is made, either reboot or use `sudo partprobe -s` to make the change taking in effect.
 
@@ -914,19 +912,19 @@ Disks are divided into partitions. A partition is a physically contiguous region
 - MBR (Master Boot Record)
 - GPT (GUID Partition Table)
 
-MBR dates back to the early days of MSDOS. When using MBR, a disk may have up to four primary partitions. One (and only one) of the primary partitions can be designated as an extended partition, which can be subdivided further into logical partitions with 15 partitions possible.
+**MBR** dates back to the early days of MSDOS. When using MBR, a disk may have up to _four_ **primary partitions**. _One_ (and only one) of the primary partitions can be designated as an **extended partition**, which can be subdivided further into **logical partitions** with 15 total partitions possible.
 
-GPT is on all modern systems and is based on UEFI (Unified Extensible Firmware Interface). By default, it may have up to 128 primary partitions. When using the GPT scheme, there is no need for extended partitions. Partitions can be up to 233 TB in size (with MBR, the limit is just 2TB).
+GPT is on all modern systems and is based on **UEFI** (Unified Extensible Firmware Interface). By default, it may have up to _128_ primary partitions. When using the GPT scheme, there is no need for extended partitions. Partitions can be up to _233 TB_ in size (with MBR, the limit is just _2TB_).
 
 #### MBR Parition Table
 
-The disk partition table is contained within the disk's Master Boot Record (MBR), and is the 64 bytes following the 446 byte boot record. One partition on a disk may be marked active. When the system boots, that partition is where the MBR looks for items to load.
+The **disk partition table** is contained within the disk's Master Boot Record (MBR), and is the **64 bytes** following the 446 byte boot record. One partition on a disk may be marked active. When the system boots, that partition is where the MBR looks for items to load.
 
-The structure of the MBR is defined by an operating system-independent convention. The first 446 bytes are reserved for the program code. They typically hold part of a boot loader program.
+The structure of the MBR is defined by an operating system-independent convention. The **first 446 bytes** are reserved for the program code. They typically hold part of a **boot loader program**.
 
-There are 2 more bytes at the end of the MBR known as the magic number, signature word, or end of sector marker, which always have the value 0x55AA.
+There are **2 more bytes** at the end of the MBR known as the **magic number, signature word, or end of sector marker**, which always have the value **0x55AA**.
 
-Each entry in the partition table is 16 bytes long and contains information:
+Each entry in the partition table is **16 bytes long** and contains information:
 
 - Active bit
 - Beginning address in cylinder/head/sectors (CHS) format
@@ -935,7 +933,7 @@ Each entry in the partition table is 16 bytes long and contains information:
 - Start sector, counting linearly from 0
 - Number of sectors in partition.
 
-Linux only uses the last two fields for addressing, using the linear block addressing (LBA) method.
+Linux only uses the last two fields for addressing, using the **linear block addressing** (LBA) method.
 
 For MBR systems, `dd` can be used for converting and copying files. However, be careful using `dd`: a simple typing error or misused option could destroy your entire disk.
 
@@ -947,11 +945,11 @@ The MBR can be restored using the following command: `$ sudo dd if=mbrbackup of=
 
 Modern hardware comes with GPT support; MBR support will gradually fade away. The Protective MBR is for backwards compatibility, so UEFI systems can be booted the old way.
 
-There are two copies of the GPT header, at the beginning and at the end of the disk, describing metadata:
+There are **two copies** of the GPT header, at the beginning and at the end of the disk, describing metadata:
 
 - List of usable blocks on disk
 - Number of partitions
-- Size of partition entries. Each partition entry has a minimum size of 128 bytes.
+- Size of partition entries. Each partition entry has a minimum size of **128 bytes**.
 
 The `blkid` utility shows information about partitions. i.e. `sudo blkid /dev/sda8`
 
@@ -961,28 +959,28 @@ The `blkid` utility shows information about partitions. i.e. `sudo blkid /dev/sd
 
 #### Devices Nodes
 
-The Linux kernel interacts at a low level with disks through device nodes normally found in the /dev directory.
+The Linux kernel interacts at a low level with disks through device nodes normally found in the `/dev` directory.
 
-Device nodes for SCSI and SATA disks follow a simple xxy[z] naming convention, where xx is the device type (usually sd), y is the letter for the drive number (a, b, c, etc.), and z is the partition number.
+Device nodes for SCSI and SATA disks follow a simple `xxy[z]` naming convention, where xx is the device type (usually sd), y is the letter for the drive number (a, b, c, etc.), and z is the partition number.
 
-sd means SCSI or SATA disk. Back in the days where IDE disks could be found, they would have been /dev/hda3, /dev/hdb
+sd means SCSI or SATA disk. Back in the days where IDE disks could be found, they would have been `/dev/hda3, /dev/hdb`
 
 ### Filesystem Features
 
 #### File Attributes
 
-Extended Attributes associate metadata not interpreted directly by the filesystem with files: user, trusted, security, and system
+**Extended Attributes** associate metadata not interpreted directly by the filesystem with files: `user, trusted, security, and system`
 
-The system namespace is used for Access Control Lists (ACLs), and the security namespace is used by SELinux.
+The system namespace is used for **Access Control Lists** (ACLs), and the security namespace is used by SELinux.
 
 Flag values are stored in the file inode and may be modified and set only by the root user. They are viewed with `lsattr filename` and set with `chattr [+|-|=mode] filename`.
 
 Flags that can be set:
 
-- i: immutable - A file with the immutable attribute cannot be modified (not even by root). It cannot be deleted or renamed. No hard link can be created to it, and no data can be written to the file. Only the superuser can set or clear this attribute.
-- a: append-only - A file with the append-only attribute set can only be opened in append mode for writing. Only the superuser can set or clear this attribute.
-- d: no-dump - A file with the no-dump attribute set is ignored when the dump program is run. This is useful for swap and cache files that you don't want to waste time backing up.
-- A: no atime update - A file with the no-atime-update attribute set will not modify its atime (access time) record when the file is accessed but not otherwise modified. This can increase the performance on some systems because it reduces the amount of disk I/O.
+- i: immutable - A file with the **immutable** attribute cannot be modified (not even by root). It cannot be deleted or renamed. No hard link can be created to it, and no data can be written to the file. Only the superuser can set or clear this attribute.
+- a: append-only - A file with the **append-only** attribute set can only be opened in append mode for writing. Only the superuser can set or clear this attribute.
+- d: no-dump - A file with the **no-dump** attribute set is ignored when the dump program is run. This is useful for swap and cache files that you don't want to waste time backing up.
+- A: no atime update - A file with the **no-atime-update** attribute set will not modify its atime (access time) record when the file is accessed but not modified. This can increase the performance on some systems because it reduces the amount of disk I/O; say some files that are being accessed very frequently.
 
 #### mkfs
 
@@ -1002,18 +1000,18 @@ You can control whether any errors found should be fixed one by one manually wit
 
 #### /etc/fstab
 
-During system initialization, the command `mount -a` is executed in order to mount all filesystems listed in `/etc/fstab`. `/etc/fstab` is used to define mountable file systems and devices on startup. This may include both local and remote network-mounted filesystems, such as NFS and samba filesystems.
+During system initialization, the command `mount -a` is executed in order to mount all filesystems listed in `/etc/fstab`. `/etc/fstab` is used to define mountable file systems and devices on startup. This may include both local and remote network-mounted filesystems, such as **NFS** and **samba** filesystems.
 
-Each record in the /etc/fstab file contains white space separated files of information about a filesystem to be mounted:
+Each record in the `/etc/fstab` file contains white space separated files of information about a filesystem to be mounted:
 
-- Device file name (such as /dev/sda1), label, or UUID
+- Device file name (such as `/dev/sda1`), label, or UUID
 - Mount point for the filesystem (where in the tree structure is it to be inserted)
 - Filesystem type
 - A comma-separated list of options
 - dump frequency used by the dump -w command, or a zero which is ignored by dump
 - fsck pass number or a zero - meaning do not fsck this partition
 
-Linux systems have long had the ability to mount a filesystem only when it is needed, which is done through `autofs`.
+Linux systems have long had the ability to mount a filesystem only when it is needed, which is done through **`autofs`**.
 
 While `autofs` is very flexible and well understood, `systemd`-based systems (including all enterprise Linux distributions) come with `automount` facilities built into the `systemd` framework.
 
@@ -1042,7 +1040,7 @@ Commands involved with swap are
 
 At any given time, most memory is in use for caching file contents to prevent actually going to the disk any more than necessary and are never swapped out since it is pointless; instead, dirty pages are flushed out to disk.
 
-Linux memory used by the kernel itself, as opposed to application memory, is never swapped out.
+Linux memory used by the **kernel** itself is never swapped out.
 
 #### Quotas
 
@@ -1081,15 +1079,15 @@ $ sudo edquota someusername
 
 #### ext4
 
-The ext4 filesystem can support volumes up to 1 EB and file sizes up to 16 TB. Until very recently, ext4 was the most frequent default choice of Linux distributions, due to its excellent combination of performance, integrity, and stability.
+The ext4 filesystem can support volumes up to `1 EB` and file sizes up to `16 TB`. Until very recently, ext4 was the most frequent default choice of Linux distributions, due to its excellent combination of performance, integrity, and stability.
 
-An extent is a group of contiguous blocks. Use of extents can improve large file performance and reduce fragmentation. Extents replace the older block mapping mechanism from ext3.
+An **extent** is a group of contiguous blocks. Use of extents can improve large file performance and reduce **fragmentation**. Extents replace the older block mapping mechanism from ext3.
 
-ext4 is backwards compatible with ext3 and ext2. It can pre allocate disk space for a file. The allocated space is usually guaranteed and contiguous. It also uses a performance technique called allocate-on-flush (delays block allocation until it writes data to disk). ext4 breaks the 32,000 subdirectory limit of ext3.
+ext4 is backwards compatible with ext3 and ext2. It can **pre-allocate** disk space for a file. The allocated space is usually guaranteed and **contiguous**. It also uses a performance technique called **allocate-on-flush** (delays block allocation until it writes data to disk). ext4 breaks the 32,000 subdirectory limit of ext3.
 
-ext4 uses checksums for the journal which improves reliability. This can also safely avoid a disk I/O wait during journalling. ext4 provides timestamps measured in nanoseconds.
+ext4 uses **checksums** for the journal which improves reliability. This can also safely avoid a disk I/O wait during journalling. ext4 provides timestamps measured in nanoseconds.
 
-The superblock is stored in block 0 of the disk, and contains global information about the ext4 filesystem:
+The **superblock** is stored in block 0 of the disk, and contains global information about the ext4 filesystem:
 
 - Mount count and maximum mount count (every time the disk is successfully mounted, mount count is incremented; the filesystem is checked every maximum-mount-counts or every 180 days whichever comes first)
 - Block size (block size can be set through the mkfs command)​
@@ -1098,11 +1096,11 @@ The superblock is stored in block 0 of the disk, and contains global information
 - Free inode count
 - Operating System ID
 
-All fields in ext4 are written to disk in little-endian order, except the journal.
+All fields in ext4 are written to disk in **little-endian** order, except the journal.
 
-An ext4 filesystem is split into a set of block groups. The block allocator tries to keep each file’s blocks within the same block group to reduce seek times. The default block size is 4 KB, which would create a block group of 128 MB.
+An ext4 filesystem is split into a set of **block groups**. The block allocator tries to keep each file’s blocks within the same block group to reduce seek times. The default block size is 4 KB, which would create a block group of 128 MB.
 
-For block group 0, the first 1024 bytes are unused (to allow for boot sectors, etc), and the superblock will start at the first block after block group 0, then followed by the group descriptors and a number of GDT (Group Descriptor Table) blocks. These are followed by the data block bitmap, the inode bitmap, the inode table, and the data blocks.
+For **block group 0**, the first _1024 bytes_ are unused (to allow for boot sectors, etc), and the superblock will start at the first block after block group 0, then followed by the **group descriptors** and a number of **GDT** (Group Descriptor Table) blocks. These are followed by the data block bitmap, the inode bitmap, the inode table, and the data blocks.
 
 In blocks view, they are like
 
@@ -1110,7 +1108,7 @@ In blocks view, they are like
 Super Block | Group Descriptors | Data Block Bitmap | Inode Bitmap | Inode Table (n blocks) | Data Blocks (n blocks)
 ```
 
-The first and second blocks are the same in every block group, and comprise the Superblock and the Group Descriptors. Under normal circumstances, only those in the first block group are used by the kernel; the duplicate copies are only referenced when the filesystem is being checked. If everything is OK, the kernel merely copies them over from the first block group. If there is a problem with the master copies, it goes to the next and so on until a healthy one is found and the filesystem structure is rebuilt. This redundancy makes it very difficult to thoroughly fry an ext2/3/4 filesystem.
+The first and second blocks are **the same** in **every block group**, and comprise the Superblock and the Group Descriptors. Under normal circumstances, only those in the first block group are used by the kernel; the duplicate copies are only referenced when the filesystem is being checked. If everything is OK, the kernel merely copies them over from the first block group. If there is a problem with the master copies, it goes to the next and so on until a healthy one is found and the filesystem structure is rebuilt. This **redundancy** makes it very difficult to thoroughly fry an ext2/3/4 filesystem.
 
 As an optimization, today not all block groups have a copy of the superblock and group descriptors. To view which block holds backups use `dumpe2fs`.
 
@@ -1148,7 +1146,7 @@ Filesystems may be encrypted to protect them from both prying eyes and attempts 
 
 It is straightforward to create and format encrypted partitions at a later time, but you cannot encrypt an already existing partition in place without a data copying operation.
 
-Modern Linux distributions provide block device level encryption mainly through the use of LUKS (Linux Unified Key Setup).
+Modern Linux distributions provide block device level encryption mainly through the use of **LUKS** (Linux Unified Key Setup).
 
 LUKS is built on top of `cryptsetup` to encrypt filesystems. The general form of a command is: `cryptsetup [OPTION...] <action> <action-specific>`
 
@@ -1174,9 +1172,9 @@ To mount an encrypted filesystem at boot time, first ensure it has an entry in `
 
 ### LVM
 
-LVM (Logical Volume Management) breaks up one virtual partition into multiple chunks, each of which can be on different partitions and/or disks.
+**LVM** (Logical Volume Management) breaks up one virtual partition into multiple chunks, each of which can be on different partitions and/or disks.
 
-Logical volumes are created by putting all the devices into a large pool of disk space (the volume group), and then allocating space from the pool to create a logical volume. Additional devices can be added to the logical volume at any time.
+Logical volumes are created by putting all the devices into a large **pool of disk space** (the **volume group**), and then allocating space from the pool to create a **logical volume**. Additional devices can be added to the logical volume at any time.
 
 Logical volumes have features similar to RAID devices. They can actually be built on top of a RAID device. This would give the logical volume the redundancy of a RAID device with the scalability of LVM.
 
@@ -1197,13 +1195,7 @@ Logical volumes are allocated from volume groups:
 - Can be named anything.
 
 The hierarchy in layers:
-Physical Drives -> Parititions -> Physical Volumes -> Volume Groups -> Logical Volumes -> File Systems
-
-Commands to manipulate volume groups:
-
-- `vgcreate`: Creates volume groups.
-- `vgextend`: Adds to volume groups.
-- `vgreduce`: Shrinks volume groups.
+`Physical Drives -> Parititions -> Physical Volumes -> Volume Groups -> Logical Volumes -> File Systems`
 
 Commands to manipulate physical volumes:
 
@@ -1211,6 +1203,12 @@ Commands to manipulate physical volumes:
 - `pvdisplay`: Shows the physical volumes being used.
 - `pvmove`: Moves the data from one physical volume within the volume group to others; this might be required if a disk or partition is being removed for some reason. It would then be followed by:
 - `pvremove`: Remove a partition from a physical volume.
+
+Commands to manipulate volume groups:
+
+- `vgcreate`: Creates volume groups.
+- `vgextend`: Adds to volume groups.
+- `vgreduce`: Shrinks volume groups.
 
 use `man lvm` to view more utilities related. There are a number of utilities that manipulate logical volumes, and a short list can be viewed with `ls -lF /sbin/lv*`
 
@@ -1247,17 +1245,17 @@ sudo mount /dev/vg/mylvm /mylvm
 
 Resizing a logical volume is quick and easy compare to doing so with a physical paritition that already contains a filesystem. 
 
-Extents for a logical volume can be added or subtracted from the logical volume, and they can come from anywhere in the volume group; they need not be from physically contiguous sections of the disk.
+Extents for a logical volume can be added or subtracted from the logical volume, and they can come from **anywhere** in the volume group; they need not be from physically contiguous sections of the disk.
 
-When expanding a logical volume with a filesystem, you must first expand the volume, and then expand the filesystem.​ When shrinking a logical volume with a filesystem, you must first shrink the filesystem, and then shrink the volume. This is done using `lvresize`.
+When expanding a logical volume with a filesystem, you must **first expand the volume**, and then expand the **filesystem**.​ When shrinking a logical volume with a filesystem, you must first **shrink the filesystem**, and then shrink the **volume**. This is done using `lvresize`.
 
 As an example of shrinking: `sudo lvresize -r -L 20 GB /dev/VG/mylvm`. The `-r` option causes resizing of the filesystem at the same time as the volume size is changed. The filesystem cannot be mounted when being shrunk.
 
-`sudo lvresize -r -L +100M /dev/vg/mylvm` to grow a logical volume, while the plus sign (+) indicates adding space. Note that you need not unmount the filesystem to grow it.
+`sudo lvresize -r -L +100M /dev/vg/mylvm` to grow a logical volume, while the plus sign (+) indicates adding space. Note that you need NOT **unmount** the filesystem to grow it.
 
 #### LVM Snapshots
 
-LVM snapshots create an exact copy of an existing logical volume. They are useful for backups, application testing, and deploying VMs (Virtual Machines). The original state of the snapshot is kept as the block map.
+LVM **snapshots** create an exact copy of an existing logical volume. They are useful for backups, application testing, and deploying VMs (Virtual Machines). The original state of the snapshot is kept as the block map.
 
 Snapshots only use space for storing deltas:
 
@@ -1268,7 +1266,7 @@ Use `-s` option with `lvcreate` to create snapshots, i.e. `lvcreate -l 128 -s -n
 
 ### RAID
 
-RAID (Redundant Array of Independent Disks) spreads I/O over multiple disks. This can really increase performance in modern disk controller interfaces, such as SCSI, which can perform the work in parallel efficiently.
+**RAID** (Redundant Array of Independent Disks) spreads I/O over multiple disks. This can really increase performance in modern disk controller interfaces, such as SCSI, which can perform the work in parallel efficiently.
 
 RAID can be implemented either in software or in hardware. One disadvantage of using hardware RAID is that if the disk controller fails, it must be replaced by a compatible controller, which may not be easy to obtain. When using software RAID, the same disks can be attached to and work with any disk controller.
 
@@ -1362,7 +1360,7 @@ Use `cat /proc/cmdline` to see what command line a system was booted with.
 
 #### sysctl
 
-`sysctl` interface can be used to read and tune kernel parameters at run time. View kernel parameters with `sysctl -a`; each value corresponds to a particular pseudofile residing under /proc/sys, with directory slashes being replaced by dots.
+`sysctl` interface can be used to read and tune kernel parameters at run time. View kernel parameters with `sysctl -a`; each value corresponds to a particular pseudofile residing under `/proc/sys`, with directory slashes being replaced by dots.
 
 To apply a change at runtime:
 
@@ -1377,7 +1375,7 @@ Vendors put their settings in files in the `/usr/lib/sysctl.d/` directory. These
 
 ### Kernel Modules
 
-The Linux kernel makes extensive use of modules, which contain important software that can be dynamically loaded and unloaded as needed after the system starts.
+The Linux kernel makes extensive use of **modules**, which contain important software that can be dynamically loaded and unloaded as needed after the system starts.
 
 This flexibility also aids in development of new features as system reboots are almost never needed to test during development and debugging.
 
@@ -1385,13 +1383,13 @@ This flexibility also aids in development of new features as system reboots are 
 
 There are a number of utility programs that are used with kernel modules:
 
-- lsmod - List loaded modules.
-- insmod - Directly load modules.
-- rmmod - Directly remove modules.
+- `lsmod` - List loaded modules.
+- `insmod` - Directly load modules.
+- `rmmod` - Directly remove modules.
 - `modprobe` - Load or unload modules, using a pre-built module database with dependency and location information, which does dependency modules check and loads/unloads automatically.
     - i.e. `modprobe e1000e`, `modprobe -r e1000e`
-- depmod - Rebuild the module dependency database.
-- modinfo - Display information about a module.
+- `depmod` - Rebuild the module dependency database.
+- `modinfo` - Display information about a module.
 
 `modprobe` requires a module dependency database be updated. Use depmod to generate or update the file `/lib/modules/$(uname -r)/modules.dep`
 
@@ -1410,7 +1408,7 @@ Much information about modules can also be seen in the `/sys/module/<module_name
 
 ### Devices and udev
 
-dev stands for User Device management. It dynamically discovers built-in hardware as well as peripheral devices during boot time or ad-hoc plugged at run time.
+`udev` stands for **User Device management**. It dynamically discovers built-in hardware as well as peripheral devices during boot time or ad-hoc plugged at run time.
 
 udev handles loading and unloading device drivers with proper configurations as need, including:
 
@@ -1423,9 +1421,9 @@ udev runs as a daemon (either udevd or systemd-udevd) and monitors a netlink soc
 
 The three components of udev are:
 
-- The libudev library which allows access to information about the devices
-- The udevd or systemd-udevd daemon that manages the /dev directory
-- The udevadm utility for control and diagnostics
+- The `libudev` library which allows access to information about the devices
+- The `udevd` or systemd-udevd daemon that manages the `/dev` directory
+- The `udevadm` utility for control and diagnostics
 
 The main configuration file is `/etc/udev/udev.conf`. It contains information such as where to place device nodes, default permissions and ownership, etc
 
@@ -1453,7 +1451,7 @@ System administrators can control how udev operates and craft special udev rules
 
 #### Device Nodes
 
-Device nodes are used by programs to communicate with devices through nodes using normal I/O methods. Character and block devices have device nodes; network devices do not.
+**Device nodes** are used by programs to communicate with devices through nodes using normal I/O methods. Character and block devices have device nodes; network devices do not.
 
 A device driver may use multiple device nodes. Device nodes are located in the `/dev` directory. Device nodes can be created with: `sudo mknod [-m mode] /dev/name <type> </major> <minor>`
 
@@ -1461,17 +1459,17 @@ The major and minor numbers identify the driver associated with the device, with
 
 The major and minor numbers appear in the same place that file size would when looking at a normal file with `ls`. The minor number is used only by the device driver to differentiate between the different devices it may control, or how they are used. These may either be different instances of the same kind of device, (such as the first and second sound card, or hard disk partition) or different modes of operation of a given device (such as different density floppy drive media).
 
-Device numbers have meaning in user-space as well. Two system calls, mknod() and stat(), return information about major and minor numbers.
+**Device numbers** have meaning in user-space as well. Two system calls, `mknod()` and `stat()`, return information about major and minor numbers.
 
 ## Virtualization
 
-Virtual Machines are a virtualized instance of an entire operating system, and may fulfill the role of a server or a desktop/workstation. The outside world sees the VM as if it were an actual physical machine, present somewhere on the network. Applications running in the VM are generally unaware of their non-physical environment.​
+**Virtual Machines** are a virtualized instance of an entire operating system, and may fulfill the role of a server or a desktop/workstation. The outside world sees the VM as if it were an actual physical machine, present somewhere on the network. Applications running in the VM are generally unaware of their non-physical environment.​
 
 Other kinds of virtualization:
 
-- Network - The details of the actual physical network, such as the type of hardware, routers, etc., are abstracted and need not be known by software running on it and configuring it.
-- Storage - Multiple network storage devices are configured to look like one big storage unit, such as a disk. Examples: Network Attached Storage or NAS.
-- Application - An application is isolated into a standalone format, such as a container
+- **Network** - The details of the actual physical network, such as the type of hardware, routers, etc., are abstracted and need not be known by software running on it and configuring it.
+- **Storage** - Multiple network storage devices are configured to look like one big storage unit, such as a disk. Examples: Network Attached Storage or NAS.
+- **Application** - An application is isolated into a standalone format, such as a container
 
 Virtualization is developed and evolving for several reasons:
 
@@ -1488,23 +1486,23 @@ Low-level performance tuning on areas such as CPU utilization, networking throug
 
 ### Emulation
 
-The first implementations of virtualization on the PC architecture were through the use of emulators. An Emulator runs completely in software. It is useful for running virtual machines on different architectures, such as running a pretend ARM guest machine on an X86 host. Performance is relatively slow.
+The first implementations of virtualization on the PC architecture were through the use of **emulators**. An Emulator runs completely in software. It is useful for running virtual machines on different architectures, such as running a pretend ARM guest machine on an X86 host. Performance is relatively slow.
 
 ### Hypervisors
 
-The host system acts as the hypervisor that initiates, terminates, and manages guests. It also called Virtual Machine Monitor (VMM). Two basic methods of virtualization:
+The host system acts as the **hypervisor** that initiates, terminates, and manages guests. It also called **Virtual Machine Monitor** (VMM). Two basic methods of virtualization:
 
-- hardware virtualization - The guest system runs without being aware it is running as a virtualized guest, and does not require modifications to be run in this fashion. ​It is also known as Full Virtualization.
-- para-virtualization - The guest system is aware it is running in a virtualized environment, and has been modified specifically to work with it.
+- **hardware virtualization** - The guest system runs without being aware it is running as a virtualized guest, and does not require modifications to be run in this fashion. ​It is also known as Full Virtualization.
+- **para-virtualization** - The guest system is aware it is running in a virtualized environment, and has been modified specifically to work with it.
 
-You can check directly if your CPU supports hardware virtualization extensions by looking at /proc/cpuinfo; if you have an IVT-capable chip, you will see vmx in the flags field; and, if you have an AMD-V capable chip, you will see svm in the same field. You may also have to ensure the virtualization capability is turned on in your CMOS.
+You can check directly if your CPU supports hardware virtualization extensions by looking at `/proc/cpuinfo`; if you have an IVT-capable chip, you will see vmx in the flags field; and, if you have an AMD-V capable chip, you will see svm in the same field. You may also have to ensure the virtualization capability is turned on in your CMOS.
 
 The hypervisor can be:
 
 - External to the host operating system kernel: VMware
 - Internal to the host operating system kernel: KVM
 
-Going past Emulation, the merging of the hypervisor program into a specially-designed lightweight kernel was the next step in the Virtualization deployment. i.e. the KVM project added hypervisor capabilities into the Linux kernel. Specific CPU chip functions and facilities were required and deployed for this type of virtualization.​
+Going past Emulation, the merging of the hypervisor program into a specially-designed lightweight kernel was the next step in the Virtualization deployment. i.e. the **KVM project** added hypervisor capabilities into the Linux kernel. Specific CPU chip functions and facilities were required and deployed for this type of virtualization.​
 
 ### libvirt
 
@@ -1514,17 +1512,17 @@ The [`libvirt` project](https://www.libvirt.org/){target=_blank} is a toolkit to
 
 KVM uses the Linux kernel for computing resources, including memory management, scheduling, synchronization, and more. When running a virtual machine, KVM engages in a co-processing relationship with the Linux kernel.
 
-Managing KVM can be done with ommand line tools include: `virt-*` and `qemu-*`. Graphical interfaces include virt-manager, kimchi, OpenStack, oVirt, etc.
+Managing KVM can be done with command line tools include: `virt-*` and `qemu-*`. Graphical interfaces include `virt-manager, kimchi, OpenStack, oVirt`, etc.
 
 ### Containers
 
 Further integration between the hypervisor and the Linux kernel allowed the creation of operating system-level virtual machines, or containers.
 
-Containers share many facilities in the Linux kernel, and make use of namespaces and cgroups. Containers are very lightweight and reduce the overhead associated with having whole virtual machines.
+**Containers** share many facilities in the Linux kernel, and make use of **namespaces** and **cgroups**. Containers are very lightweight and reduce the overhead associated with having whole virtual machines.
 
-OS container is a flavor that runs an image of an operating system with the ability to run init processes and spawn multiple applications. i.e. LXC (Linux Containers)
+**OS container** is a flavor that runs an image of an operating system with the ability to run init processes and spawn multiple applications. i.e. LXC (Linux Containers)
 
-Application virtualization runs one application for each container. Many single application containers are typically initialized on a single machine which creates a greater flexibility and reduces overhead normally associated with virtualization.
+**Application virtualization** runs one application for each container. Many single application containers are typically initialized on a single machine which creates a greater flexibility and reduces overhead normally associated with virtualization.
 
 Virtual machines run a complete operating system, and can run many services and applications. Virtual machines use more resources than a container. ​Containers usually run one thing. Containers are more portable, and can be run inside a VM.
 
@@ -1532,7 +1530,7 @@ Scaling workloads is different for containers and virtual machines. Orchestratio
 
 #### Docker
 
-Docker is an application-level virtualization using many individual images to build up the necessary services to support the target application. These images are packaged into containers - they are components in containers. Images may contain:
+**Docker** is an application-level virtualization using many individual images to build up the necessary services to support the target application. These images are packaged into containers - they are components in containers. Images may contain:
 
 - Application code​
 - Runtime libraries​
@@ -1559,16 +1557,16 @@ Normal user accounts are for people who will work on the system. Some user accou
 
 A line in `/etc/passwd` consists of: user name, user password (use `/etc/shadow` if value is `x`), UID, GID, comment, home directory, login shell
 
-Add user with `sudo useradd <username>`, which will create an account using default algorithms for assigning user and group id, home directory, and shell choice; the defaults can easily be overruled by using options to `useradd`. i.e. `sudo useradd dexter` will:
+Add user with `sudo useradd <username>`, which will create an account using default algorithms for assigning **user and group id**, home directory, and shell choice; the defaults can easily be overruled by using options to `useradd`. i.e. `sudo useradd dexter` will:
 
-- The next available UID greater than UID_MIN (specified in /etc/login.defs) by default is assigned as dexter's UID.
+- The next available UID greater than *UID_MIN* (specified in `/etc/login.defs`) by default is assigned as dexter's UID.
     - The convention most Linux distributions have used is that any account with a user ID less than 1000 is considered special and belongs to the system; normal user accounts start at 1000 (UID_MIN defined in `/etc/login.defs`)
 - A group called dexter with a GID=UID is also created and assigned as dexter's primary group.
-    - aka Primary Group ID, and sometimes called User Private Groups (UPG)
-- A home directory /home/dexter is created and owned by dexter.
-- dexter's login shell will be /bin/bash.
-- The contents of /etc/skel is copied to /home/dexter. By default, /etc/skel includes startup files for bash and for the X Window system.
-- An entry of either !! or ! is placed in the password field of the /etc/shadow file for dexter's entry, thus requiring the administrator to assign a password for the account to be usable.
+    - aka **Primary Group ID**, and sometimes called User Private Groups (UPG)
+- A home directory `/home/dexter` is created and owned by dexter.
+- dexter's login shell will be `/bin/bash`.
+- The contents of `/etc/skel` is copied to `/home/dexter`. By default, `/etc/skel` includes startup files for bash and for the X Window system.
+- An entry of either `!!` or `!` is placed in the password field of the `/etc/shadow` file for dexter's entry, thus requiring the administrator to assign a password for the account to be usable.
 
 Use of `/etc/shadow` enables password aging on a per user basis. At the same time, it also allows for maintaining greater security of hashed passwords since it has permission 400 while `/etc/passwd` has permission 644.
 
@@ -1584,13 +1582,13 @@ Use of `/etc/shadow` enables password aging on a per user basis. At the same tim
 - expire: date that account is/will be disabled
 - reserved: reserved field
 
-Note the _dates_ are stored as the number of days since Jan. 1, 1970 (the epoch date). The username in each record must match exactly that found in /etc/passwd, and also must appear in the identical order. The password hash is the string "$6$" followed by an eight character salt value, which is then followed by a $ and an 88 character (sha512) password hash.
+Note the _dates_ are stored as the number of days since Jan. 1, 1970 (the epoch date). The username in each record must match exactly that found in `/etc/passwd`, and also must appear in the **identical order**. The password hash is the string `"$6$"` followed by an _eight-character_ **salt value**, which is then followed by a `$` and an _88-character_ (sha512) password hash.
 
-Additionally, `userdel` is used to remove user accounts, and `usermod` is used to change characteristics of a user account.
+Additionally, **`userdel`** is used to remove user accounts, and **`usermod`** is used to change characteristics of a user account.
 
 You can lock a user account to prevent login by `usermod -L <username>` (and unlock with `-U` option). Linux ships with some system accounts that are locked (such as bin, daemon, or sys), which means they can run programs, but can never login to the system and have no valid password associated with them. These accounts has `/sbin/nologin` as their login shell. Attempt to login will show message from `/etc/nologin.txt`.
 
-You can also lock a user account by setting an expiration date on an account, with `change`: `chage [-m mindays] [-M maxdays] [-d lastday] [-I inactive] [-E expiredate] [-W warndays] user`. i.e. `sudo chage -E 2014-09-11 morgan`. Only the root user can use chage. Normal user can run `change -l` to check when their password or account will expire.
+You can also lock a user account by setting an expiration date on an account, with `chage`: `chage [-m mindays] [-M maxdays] [-d lastday] [-I inactive] [-E expiredate] [-W warndays] user`. i.e. `sudo chage -E 2014-09-11 morgan`. Only the root user can use `chage`. Normal user can run `chage -l` to check when their password or account will expire.
 
 Passwords can be changed with `passwd`; a normal user can change only their own password, while root can change any user password. 
 
@@ -1598,10 +1596,10 @@ Passwords can be changed with `passwd`; a normal user can change only their own 
 
 One can set restricted shell as login shell `/bin/rbash`, which is equivalent to `/bin/bash -r`. It:
 
-- Prevents the user from using cd to change directories.
-- Prevents setting the SHELL, ENV or PATH environment variables.
-- Prohibits specifying path or command names containing /.
-- Restricts redirection of output and/or input.
+- Prevents the user from using `cd` to change directories.
+- Prevents setting the `SHELL, ENV or PATH` environment variables.
+- Prohibits specifying **path or command** names containing `/`.
+- Restricts **redirection** of output and/or input.
 
 However, it is fairly easy to defeat the restricted shell. Read more at ["Escaping Restricted Shell rbash"](https://www.metahackers.pro/breakout-of-restricted-shell/){target=_blank} and ["Linux Restricted Shell Bypass"](https://www.exploit-db.com/docs/english/44592-linux-restricted-shell-bypass-guide.pdf){target=_blank}
 
@@ -1615,31 +1613,31 @@ You can also set up restricted user account which:
 
 When the restricted shell is invoked, it executes $HOME/.bash profile without restriction. This is why the user must not have either write or execute permissions on the home directory.
 
-Make sure that when you set up such an account that you do not inadvertently add system directories to the PATH environment variable, because this allows the restricted user the ability to execute other system programs, such as an unrestricted shell.
+Make sure that when you set up such an account that you do NOT inadvertently add **system directories** to the PATH environment variable, because this allows the restricted user the ability to execute other system programs, such as an unrestricted shell.
 
 By default, root logins through the network are generally prohibited for security reasons. It is generally recommended that all root access be through `su`, or `sudo` (causing an audit trail of all root access through `sudo`). PAM  (Pluggable Authentication Modules) can also be used to restrict which users are allowed to `su` to root. It might also be worth it to configure auditd to log all commands executed as root.
 
 #### ssh
 
-SSH (Secure SHell) exists for the needs to login through the network into a remote system, or to transfer files to and from a remote machine.
+**SSH** (Secure SHell) exists for the needs to login through the network into a remote system, or to transfer files to and from a remote machine.
 
 User-specific ssh configuration files are created under every user's home directory in the hidden `.ssh` directory. Within the directory:
 
-- id_rsa: The user's private encryption key
-- id_rsa.pub: The user's public encryption key
-- authorized_keys: A list of public keys that are permitted to login
-- known_hosts: A list of hosts from which logins have been allowed in the past
-- config: A configuration file for specifying various options
+- `id_rsa`: The user's private encryption key
+- `id_rsa.pub`: The user's public encryption key
+- `authorized_keys`: A list of public keys that are permitted to login
+- `known_hosts`: A list of hosts from which logins have been allowed in the past
+- `config`: A configuration file for specifying various options
 
-First, a user has to generate their private and public encryption keys with `ssh-keygen`. The private keys must never be shared. The public key, however, should be given to any machine with which you want to permit password-less access. It should also be added to your authorized_keys file, together with all the public keys from other users who have accounts on your machine and you want to permit password-less access to their accounts.
+First, a user has to generate their private and public encryption keys with `ssh-keygen`. The private keys must never be shared. The public key, however, should be given to any machine with which you want to permit **password-less access**. It should also be added to your authorized_keys file, together with all the public keys from other users who have accounts on your machine and you want to permit password-less access to their accounts.
 
 ### Group Accounts
 
-Linux systems form collections of users called groups which share some common purpose, and share certain files and directories and maintain some common privileges. 
+Linux systems form collections of users called **groups** which share some common purpose, and share certain files and directories and maintain some common privileges. 
 
 Groups are defined in `/etc/group`, which has the same role for groups as `/etc/passwd` has for users. Each line of the file looks like: `groupname:password:GID:user1,user2,...`. A Linux user has one primary group; this is listed in /etc/passwd and will also be listed in `/etc/group`. A user may belong to between 0 and 15 secondary groups.
 
-Group passwords may be set, but only if `/etc/gshadow` exists. GID is the group identifier. Values between 0 and 99 are for system groups. Values between 100 and GID_MIN (as defined in /etc/login.defs and usually the same as UID_MIN) are considered special. Values over GID_MIN are for UPG (User Private Groups)
+Group passwords may be set, but only if `/etc/gshadow` exists. GID is the group identifier. Values between 0 and 99 are for system groups. Values between 100 and GID_MIN (as defined in `/etc/login.defs` and usually the same as UID_MIN) are considered special. Values over GID_MIN are for UPG (User Private Groups)
 
 #### Group Management
 
@@ -1689,9 +1687,9 @@ Changing the group is done with `chgrp`. You can only change group ownership to 
 
 #### umask
 
-The default permissions given when creating a file are read/write for owner, group and world (0666), and for a directory it is read/write/execute for everyone (0777). 
+The **default permissions** given when creating a **file** are read/write for owner, group and world **(0666)**, and for a **directory** it is read/write/execute for everyone **(0777)**. 
 
-However, the actual permissions have changed to 664 for the file and 775 for the directory as they have been modified by the current `umask` whose purpose is to show which permissions should be denied.
+However, the actual permissions have changed to 664 for the file and 775 for the directory as they have been modified by the current `umask=002` whose purpose is to show which permissions should be denied.
 
 You can change the `umask` at any time with the `umask` command; which is the most conventional value set by system administrators for users. This value is combined with the file creation permissions to get the actual result; i.e., `0666 & ~002 = 0664; i.e., rw-rw-r--`
 
@@ -1701,32 +1699,32 @@ POSIX ACLs (Access Control Lists) extend the simpler user, group, and world syst
 
 All major filesystems used in modern Linux distributions incorporate the ACL extensions, and one can use the option -acl when mounting. A default set of ACLs is created at system install.
 
-Use `getfacl/setfacl` to get/set ACLs. New files inherit the default ACL (if set) from the directory they reside in. Also `mv` and `cp -p` preserve ACLs.
+Use `getfacl/setfacl` to get/set ACLs. New files **inherit** the default ACL (if set) from the **directory** they reside in. Also `mv` and `cp -p` preserve ACLs.
 
-## Pluggable Authentication Modules
+## Pluggable Authentication Modules (PAM)
 
 Historically, authentication of users was performed individually by individual applications; i.e., su, login, and ssh would each authenticate and establish user accounts independently of each other.
 
-Most modern Linux applications have been written or rewritten to exploit PAM so that authentication can be done in one uniform way, using libpam.
+Most modern Linux applications have been written or rewritten to exploit PAM so that authentication can be done in one uniform way, using `libpam`.
 
 PAM incorporates the following concepts:
 
 - PAM-aware applications
 - Configuration files in `/etc/pam.d/`
-- PAM modules in the libpam* libraries, which can be found in different locations depending on the Linux distribution
+- PAM modules in the `libpam*` libraries, which can be found in different locations depending on the Linux distribution
 
 ### PAM Rules
 
 Each file in `/etc/pam.d/` corresponds to a service and each (non-commented) line in the file specifies a rule. The rule is formatted as a list of space-separated tokens, the first two of which are case insensitive: `type control module-path module-arguments`
 
-type controls the step of the authentication process:
+The `type` controls the step of the authentication process:
 
-- auth: Instructs the application to prompt the user for identification (username, password, etc). May set credentials and grant privileges.
+- auth: Instructs the application to **prompt** the user for identification (username, password, etc). May set credentials and grant privileges.
 - account: Checks on aspects of the user's account, such as password aging, access control, etc.
-- password: Responsible for updating the user authentication token, usually a password.
-- session: Used to provide functions before and after the session is established (such as setting up environment, logging, etc.)
+- password: Responsible for updating the user **authentication token**, usually a password.
+- session: Used to provide **functions** before and after the session is established (such as setting up environment, logging, etc.)
 
-The control flag controls how the success or failure of a module affects the overall authentication process:
+The `control` flag controls how the success or failure of a module affects the overall authentication process:
 
 - required: Must return success for the service to be granted. If part of a stack, all other modules are still executed. Application is not told which module or modules failed.
 - requisite: Same as required, except a failure in any module terminates the stack and a return status is sent to the application.
@@ -1735,7 +1733,7 @@ The control flag controls how the success or failure of a module affects the ove
 
 ### LDAP Authentication
 
-The Lightweight Directory Access Protocol (LDAP) is an industry standard protocol for using and administering distributed directory services over the network, and is meant to be both open and vendor-neutral.
+The **Lightweight Directory Access Protocol** (LDAP) is an industry standard protocol for using and administering distributed directory services **over the network**, and is meant to be both open and vendor-neutral.
 
 With LDAP, each system (or client) connects to a centralized LDAP server for user authentication. Using Transport Layer Security (TLS) makes it a secure option and is recommended.
 
@@ -1761,17 +1759,17 @@ IPv4 is a 32-bit address, composed of 4 octets (an octet is just 8 bits, or a by
 
 ### IPv4 Address Types
 
-- Unicast - An address associated with a specific host. i.e. `140.211.169.4`
-- Network - An address whose host portion is set to all binary zeroes. i.e. `192.168.1.0`
-- Broadcast - An address to which each member of a particular network will listen. i.e. `172.16.255.255`
-- Multicast - An address to which appropriately configured nodes will listen. Only nodes specifically configured to pay attention to a specific multicast address will interpret packets for that multicast group
+- **Unicast** - An address associated with a specific host. i.e. `140.211.169.4`
+- **Network** - An address whose host portion is set to all binary zeroes. i.e. `192.168.1.0`
+- **Broadcast** - An address to which each member of a particular network will listen. i.e. `172.16.255.255`
+- **Multicast** - An address to which appropriately configured nodes will listen. Only nodes specifically configured to pay attention to a specific multicast address will interpret packets for that multicast group
 
 #### Reserved IPv4 Addresses
 
-Certain addresses and address ranges are reserved for special purposes:
+Certain addresses and address ranges are **reserved** for special purposes:
 
 - 127.x.x.x - Reserved for the loopback (local system) interface
-- 0.0.0.0 - Used by systems that do not yet know their own address. Protocols like DHCP and BOOTP use this address when attempting to communicate with a server.
+- 0.0.0.0 - Used by systems that **do NOT yet know** their own address. Protocols like DHCP and BOOTP use this address when attempting to communicate with a server.
 - 255.255.255.255 - Generic broadcast private address, reserved for internal use. These addresses are never assigned or registered to anyone. They are generally not routable.
 - Others
     - 10.0.0.0 - 10.255.255.255
@@ -1785,7 +1783,7 @@ Historically, IP addresses are based on defined classes. Classes A, B, and C are
 
 Network Class | Highest order octet range | Notes
 ------------- | ------------------------- | -----
-A|1-127	128|networks, 16,772,214 hosts per network, 127.x.x.x reserved for loopback
+A|1-127|networks, 16,772,214 hosts per network, 127.x.x.x reserved for loopback
 B|128-191|16,384 networks, 65,534 hosts per network
 C|192-223|2,097,152 networks, 254 hosts per network
 D|224-239|Multicast addresses
@@ -1805,7 +1803,7 @@ IPv6 has some special types of addresses such as loopback, which is assigned to 
 
 ### Netmasks
 
-netmask is used to determine how much of the address is used for the network portion and how much for the host portion as we have seen. It is also used to determine network and broadcast addresses.
+**Netmask** is used to determine how much of the address is used for the network portion and how much for the host portion as we have seen. It is also used to determine network and broadcast addresses.
 
 Network Class | Decimal | Hex | Binary
 ------------- | ------- | --- | ------
@@ -1813,13 +1811,13 @@ A|255.0.0.0|ff:00:00:00|11111111 00000000 00000000 00000000
 B|255.255.0.0|ff:ff:00:00|11111111 11111111 00000000 00000000
 C|255.255.255.0|ff:ff:ff:00|11111111 11111111 11111111 00000000
 
-The network address is obtained by logical anding (`&`) the IP address with the netmask. We are interested in the network addresses because they define a local network which consists of a collection of nodes connected via the same media and sharing the same network address. All nodes on the same network can directly see each other. For example:
+The network address is obtained by **logical AND**ing (`&`) the **IP address** with the **netmask**. We are interested in the network addresses because they define a local network which consists of a collection of nodes connected via the same media and **sharing** the same network address. All nodes on the same network can **directly see each other**. For example:
 
 ```
-172.16.2.17 ip address
-&255.255.0.0 netmask
------------------
-172.16.0.0 network address
+  172.16.2.17 ip address
+& 255.255.0.0 netmask
+-----------------------------
+  172.16.0.0 network address
 ```
 
 ### hostname
@@ -1830,13 +1828,13 @@ To change hostname only once before next reboot, just execute `sudo hostname <ne
 
 Hostname configuration is stored under `/etc/`. On Red Hat-based systems this was `/etc/sysconfig/network`, on Debian-based systems this was `/etc/hostname` and on SUSE-based systems it was `/etc/HOSTNAME`.
 
-For DNS purposes, hostnames are appended with a period (dot) and a domain name, so that a machine with a hostname of antje could have a fully qualified domain name (FQDN) of antje.linuxfoundation.org.
+For **DNS** purposes, hostnames are appended with a **period** (dot) and a **domain name**, so that a machine with a hostname of antje could have a **fully qualified domain name** (FQDN) of antje.linuxfoundation.org.
 
 ## Network Devices and Configs
 
 ### network devices
 
-Unlike block and character devices, network devices are not associated with special device files (aka device nodes). Network devices are known by their names, which usually consist of a type identifier followed by a number:
+Unlike block and character devices, network devices are not associated with special device files (aka device nodes). **Network devices** are known by their names, which usually consist of a type identifier followed by a number:
 
 - `eth0, eth1, eno1, eno2, etc.`, for ethernet devices.
 - `wlan0, wlan1, wlan2, wlp3s0, wlp3s2, etc.`, for wireless devices.
@@ -1847,7 +1845,7 @@ Historically, multiple virtual devices could be associated with single physical 
 
 ### ip
 
-`ip` is the command line utility used to configure, control and query interface parameters and control devices, routing, etc. It is more efficient and versatile than `ifconfig` because it uses netlink sockets, rather than ioctl system calls.
+`ip` is the command line utility used to configure, control and query interface parameters and control devices, routing, etc. It is more efficient and versatile than `ifconfig` because it uses `netlink` sockets, rather than `ioctl()` system calls.
 
 `ip` basic syntax is `ip [ OPTIONS ] OBJECT { COMMAND | help }`. It can also be used with `ip [ -force ] -batch filename` to process commands from a file. The `OBJECT` argument describes what kind of action is going to be performed; the `COMMANDS` depends on the OBJECT selected:
 
@@ -1886,7 +1884,7 @@ Some examples of using `ifconfig`:
 
 ### PNIDN
 
-The Predictable Network Interface Device Names (PNIDN) is strongly correlated with the use of udev and integration with systemd. There are now 5 types of names that devices can be given:
+The **Predictable Network Interface Device Names** (PNIDN) is strongly correlated with the use of udev and integration with systemd. There are now 5 types of names that devices can be given:
 
 - Incorporating Firmware or BIOS provided index numbers for on-board devices
     - Example: eno1
@@ -1900,7 +1898,7 @@ The Predictable Network Interface Device Names (PNIDN) is strongly correlated wi
 - Using the old classic method
     - Example: eth0
 
-It is easy to turn off the new scheme and go back to the classic names.
+You can choose to turn off the new scheme and go back to the classic names.
 
 ### NIC Config Files
 
@@ -1930,11 +1928,11 @@ Use of a GUI tool, `nmtui` or `nmcli` (for scripting) are the common ways to man
 
 ### Routing
 
-Routing is the process of selecting paths in a network along which to send network traffic. The routing table is a list of routes to other networks managed by the system. It defines paths to all networks and hosts, sending remote traffic to routers.
+**Routing** is the process of selecting paths in a network along which to send network traffic. The **routing table** is a list of routes to other networks managed by the system. It defines paths to all networks and hosts, sending remote traffic to routers.
 
 To see the current routing table, you can use `route -n` or `ip route`.
 
-The default route is the way packets are sent when there is no other match in the routing table for reaching the specified network, which can be obtained dynamically using DHCP or manually configured (static). You can set the default gateway at runtime with: `sudo route add default gw 192.168.1.10 enp2s0`
+The **default route** is the way packets are sent when there is no other match in the routing table for reaching the specified network, which can be obtained dynamically using DHCP or manually configured (static). You can set the default gateway at runtime with: `sudo route add default gw 192.168.1.10 enp2s0`
 
 To make persistent change, do:
 
@@ -1944,7 +1942,7 @@ To make persistent change, do:
 
 #### Static Routes
 
-Static routes are used to control packet flow when there is more than one router or route. They are defined for each interface and can be either persistent or non-persistent. When the system can access more than one router, or perhaps there are multiple interfaces, it is useful to selectively control which packets go to which router.
+**Static routes** are used to control packet flow when there is more than one router or route. They are defined for each interface and can be either persistent or non-persistent. When the system can access more than one router, or perhaps there are multiple interfaces, it is useful to selectively control which packets go to which router.
 
 To make static route at run time, do `ip route add 10.5.0.0/16 via 192.168.1.100`
 
@@ -1971,7 +1969,7 @@ post-up route add -host 10.1.2.52 eth1
 
 ### Name Resolution
 
-Name resolution is the act of translating hostnames to the IP addresses of their hosts. There are two facilities for doing this translation:
+**Name resolution** is the act of translating hostnames to the IP addresses of their hosts. There are two facilities for doing this translation:
 
 - Static name resolution (using `/etc/hosts`).
 - Dynamic name resolution (using DNS servers).
@@ -1988,11 +1986,11 @@ The other host-related files in `/etc` are `/etc/hosts.deny` and `/etc/hosts.all
 
 #### DNS
 
-If name resolution cannot be done locally using /etc/hosts, then the system will query a DNS (Domain Name Server) server.
+If name resolution cannot be done locally using `/etc/hosts`, then the system will query a DNS (Domain Name Server) server.
 
-DNS is dynamic and consists of a network of servers which a client uses to look up names. The service is distributed; any one DNS server has only information about its zone of authority; however, all of them together can cooperate to resolve any name.
+DNS is **dynamic** and consists of a **network of servers** which a client uses to look up names. The service is distributed; any one DNS server has only information about its zone of authority; however, all of them together can cooperate to resolve any name.
 
-The machine's usage of DNS is configured in /etc/resolv.conf, which historically has looked like:
+The machine's usage of DNS is configured in `/etc/resolv.conf`, which historically has looked like:
 
 ```
 search example.com aps.org
@@ -2012,20 +2010,20 @@ Most modern systems will have an `/etc/hosts.resolv` file generated automaticall
 
 Some utilities that helps diagnosis network:
 
-- ping - Sends 64-byte test packets to designated network hosts and tries to report back on the time required to reach it, any lost packets, and some other parameters. You can see whether the network is working and the host is reachable.
-- traceroute - Displays a network path to a destination. It shows the routers packets flow through to get to a host, as well as the time it takes for each hop.
-- mtr - It combines the functionality of `ping` and `traceroute`, and creates a continuously updated display.
-- dig - It is useful for testing DNS functionality. Note that one can also use `host` or `nslookup`, older programs that also try to return DNS information about a host.
+- `ping` - Sends 64-byte test packets to designated network hosts and tries to report back on the time required to reach it, any lost packets, and some other parameters. You can see whether the network is working and the host is reachable.
+- `traceroute` - Displays a network path to a destination. It shows the routers packets flow through to get to a host, as well as the time it takes for each hop.
+- `mtr` - It combines the functionality of `ping` and `traceroute`, and creates a continuously updated display.
+- `dig` - It is useful for testing DNS functionality. Note that one can also use `host` or `nslookup`, older programs that also try to return DNS information about a host.
 
 ## Firewall
 
-A firewall is a network security system that monitors and controls all network traffic. It applies rules on both incoming and outgoing network connections and packets and builds flexible barriers depending on the level of trust and network topography (or topology) of a given connection.
+A firewall is a network security system that **monitors and controls** all network traffic. It applies rules on both **incoming and outgoing** network connections and packets and builds flexible **barriers** depending on the level of trust and network topography (or topology) of a given connection.
 
 Firewalls can be hardware or software based. They are found both in network routers, as well as in individual computers, or network nodes. Many firewalls also have routing capabilities.
 
 Information is transmitted​ across networks in the form of packets, and each one of these packets has: Header, Payload, Footer. The header and footer contain information about destination and source addresses, what kind of packet it is, and which protocol it obeys, various flags, which packet number this is in a stream, and ​all sorts of other metadata about transmissions. The actual data is in the payload.
 
-Almost all firewalls are based on Packet Filtering. ​Packet filtering intercepts packets at one or more stages in the network transmission, including application, transport, network, and datalink. A firewall establishes a set of rules by which each packet may be:
+Almost all firewalls are based on **Packet Filtering**. ​Packet filtering intercepts packets at one or more stages in the network transmission, including application, transport, network, and datalink. A firewall establishes a set of rules by which each packet may be:
 
 - Accepted or rejected based on content, address, etc.​
 - Mangled in some way
@@ -2097,17 +2095,17 @@ The boot sequence basic steps are:
 - The boot loader loads the kernel.
     - kernel need to be decompressed, then performs hardware checks, gains access to important peripheral hardware
 - The kernel starts the init process (pid=1).
-- init manages system initialization, using systemd or the older Upstart and SysVinit startup scripts.
+- init manages system initialization, using `systemd` or the older Upstart and SysVinit startup scripts.
 
 ### GRUB
 
-Virtually, all (non-embedded) modern Linux distributions use GRUB (GRand Unified Boot Loader). efibootmgr is not actually a boot loader, but is a boot manager, used in conjunction with GRUB on multi-boot EFI systems.
+Virtually, all (non-embedded) modern Linux distributions use **GRUB** (GRand Unified Boot Loader). `efibootmgr` is not actually a boot loader, but is a boot manager, used in conjunction with GRUB on multi-boot EFI systems.
 
 Some important features of GRUB are:
 
 - Alternative operating systems can be chosen at boot time.
 - Alternative kernels and/or initial ramdisks can be chosen at boot time for a given operating system.
-- Boot parameters can be easily changed at boot time without having to edit configuration files, etc., in advance.
+- Boot parameters can be easily **changed at boot time** without having to edit configuration files, etc., in advance.
 
 At boot, a basic configuration file is read, `/boot/grub/grub.cfg`, or `/boot/grub2/grub.cfg`, or `/boot/efi/EFI/redhat/grub.cfg`. This file is auto-generated by `update-grub` (or `grub-mkconfig` or `grub2-mkconfig`) based on configuration files in the `/etc/grub.d` directory and on `/etc/default/grub` and should not be edited by hand.
 
@@ -2121,13 +2119,13 @@ On systems configured with Boot Loader Specification Configuration (BLSCFG), one
 
 ### Configuration Files in `/etc`
 
-For historical reasons, Linux distributions evolved their own rules about exactly where to place some information in /etc. For example, all Red Hat-derived systems make extensive use of /etc/sysconfig, while Debian-based systems have used /etc/default. Interestingly, RHEL and SUSE use both.​
+For historical reasons, Linux distributions evolved their own rules about exactly where to place some information in `/etc`. For example, all Red Hat-derived systems make extensive use of `/etc/sysconfig/`, while Debian-based systems have used `/etc/default/`. Interestingly, RHEL and SUSE use both.​
 
-There should be only text files found under /etc, no binary formats or data.
+There should be only text files found under `/etc`, no binary formats or data.
 
 #### /etc/sysconfig
 
-Files in this directory and its subdirectories are used by many system utilities services, often consulted when the system starts and stops services or queries their status.
+Files in this directory and its subdirectories are used by many **system utilities** services, often consulted when the system starts and stops services or queries their status.
 
 #### /etc/default
 
@@ -2139,7 +2137,7 @@ The files are used to provide extra options when starting a service and typicall
 
 ### /sbin/init
 
-`/sbin/init` (usually just called init) is the first user-level process (or task) run on the system and continues to run until the system is shutdown. Traditionally, it has been considered the parent of all user processes, although technically that is not true, as some processes are started directly by the kernel.
+`/sbin/init` (usually just called init) is the **first user-level process** (or task) run on the system and continues to run until the system is shutdown. Traditionally, it has been considered the **parent** of all user processes, although technically that is not true, as some processes are started directly by the kernel.
 
 init coordinates the later stages of the boot process, configures all aspects of the environment, and starts the processes needed for logging into the system. init also works closely with the kernel in cleaning up after processes when they terminate.
 
@@ -2170,7 +2168,7 @@ The `systemd` system and session manager for Linux is now dominant in all major 
 
 #### systemctl
 
-systemctl is the main utility for managing services. Its basic syntax is: `systemctl [options] command [name]`. Some examples:
+`systemctl` is the main utility for managing services. Its basic syntax is: `systemctl [options] command [name]`. Some examples:
 
 - `systemctl` - To show the status of everything that systemd controls
 - `systemctl list-units -t service --all` - To show all available services
