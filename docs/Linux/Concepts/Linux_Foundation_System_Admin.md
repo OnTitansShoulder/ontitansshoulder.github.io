@@ -1592,6 +1592,12 @@ You can also lock a user account by setting an expiration date on an account, wi
 
 Passwords can be changed with `passwd`; a normal user can change only their own password, while root can change any user password. 
 
+#### Sudoers
+
+The `/etc/sudoers` defines the sudo access. Usually you don't need to temper with this file and just add new user to the `sudo` group to grant sudo access.
+
+The file has default access mode of 400. To do quick edit, use `sudo visudo`. The syntax of lines in the `/etc/sudoers` file is `users hosts=(user:group) commands`.
+
 #### Account Restriction
 
 One can set restricted shell as login shell `/bin/rbash`, which is equivalent to `/bin/bash -r`. It:

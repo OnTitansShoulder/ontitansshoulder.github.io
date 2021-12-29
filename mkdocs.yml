@@ -60,6 +60,7 @@ nav:
       - Concepts:
         - Linux Foundation: "Linux/Concepts/Linux_Foundation.md"
         - Linux System Administration: "Linux/Concepts/Linux_Foundation_System_Admin.md"
+        - Linux Network Administration: "Linux/Concepts/Linux_Foundation_Network_Admin.md"
       - Commands:
         - Freq Used Shell Cmds: "Linux/Commands/Freq-Used-Shell-Cmds.md"
         - Freq Used Network Cmds: "Linux/Commands/Networking-Shell-Cmds.md"
