@@ -871,8 +871,8 @@ To install the keys, change the configuration file (`ssl.config`) or place them
 /etc/apache2/ssl.crt/server.crt: Signed Certificate
 /etc/apache2/ssl.key/server.key: Private Key
 # On Ubuntu:
-/etc/ssl/certs/ssl-cert.pem: Signed Certificate
-/etc/ssl/private/ssl-cert.key: Private Key
+/etc/ssl/certs/ssl-cert-snakeoil.pem: Signed Certificate
+/etc/ssl/private/ssl-cert-snakeoil.key: Private Key
 ```
 
 ### Rewriting rules with mod_rewrite
@@ -1071,4 +1071,260 @@ Specialty HTTP servers have been developed to deal with different issues.
 - cherokee - innovative web-based configuration panel, very fast in serving dynamic and static content
 - nginx - has a small resource footprint, scales well from small servers to high performance web servers
 - lighttpd - power some high-profile sites, light-weight and scales well
+
+## Email Servers
+
+Email programs and daemons have multiple roles and utilize various protocols.
+
+**Mail User Agent** (MUA) is the main role of email client for composing and reading emails. It uses Internet Message Access Protocol (IMAP) or Post Office Protocol (POP3).
+
+**Mail Submission Program** (MSP) is the role of email client responsible for sending mails through the Mail Transfer Agent (MTA) using SMTP.
+
+**Mail Transfer Agent** (MTA) is the main role of email server, responsible for starting the process of sending the message to the recipient by looking up the recipient and sending the message to their MTA using SMTP.
+
+**Mail Delivery Agent** (MDA) is the role of email server for receiving and storing email for future retrieval. MTA uses SMTP, Local Mail Transfer Protocl (LMTP) or other protocols to transfer message to MDA.
+
+**SMTP** is a TCP/IP protocol used as an Internet standard for electronic mail transmission. It uses a plain "English" syntax such as `HELO, MAIL, RCPT, DATA, or QUIT`. SMTP is easily tested using `telnet`.
+
+**POP3** is one of the main protocols used by MUAs to fetch mail. By default, the protocol downloads the messages and deletes them from the server. It is simpler yet less flexible protocol.
+
+**IMAP** is the other main protocol used by MUA to fetch mail. Messages are managed on the server and left there. Copies are downloaded to the MUA. This protocol is more complex and more flexible than POP3.
+
+### Email lifecycle
+
+The email life cycle looks like this:
+
+1. You compose an email using your MUA.
+2. Your MUA connects to your outbound MTA via SMTP, and sends the message to be delivered.
+3. Your outbound MTA connects to the inbound MTA of the recipient via SMTP, and sends the message along. (Note: This step can happen more than once).
+4. Once the message gets to the final destination MTA, it is delivered to the MDA. This can happen over SMTP, LMTP or other protocols.
+5. The MDA stores the message (on disk as a file, or in a database, etc).
+6. The recipient connects (via IMAP, POP3 or a similar protocol) to their email server, and fetches the message. The IMAP or POP daemon fetches the message out of the storage and sends it to the MUA.
+7. The message is then read by the recipient.
+
+#### Postfix
+
+Postfix has components that does MTA and MDA. In postfix `/etc/postfix/main.cf` contains location information for the alias database; `/etc/aliases` (`newaliases` command) for system-wide redirection of mail, `~/.forward` for user-configurable redirection of mail. `/etc/aliases` generally stores data in a `.bdm` or hash format, with format `name : val1, val2, val3 ...`
+
+The `postconf` command can be used to customize `main.cf`. Some usual candidates for customization in `main.cf`: 
+
+- The domain name to use for outbound mail (myorigin).
+- The domains to receive mail for (mydestination).
+- The clients to allow relaying of mail (mynetworks).
+- The destinations to relay mail to (relay_domains).
+- The delivery method, indirect or direct (relayhost).
+- Trust hosts for blindly forward email (mynetworkds_style).
+- IP addresses to listen on for incoming connections (inet_interfaces).
+
+Within Postfix there is a process called master that controls all other Postfix processes that are involved in moving mail. The defaults in the `/etc/postfix/master.cf` file are usually sufficient.
+
+SMTP is a clear-text protocol, security is a concern; postfix by default has no SSL/TLS encryption and no spam filtering. Postfix does not provide a **Simple Authentication and Security Layer** (SASL) mechanism itself and relies on proper set up. Postfix daemon support the Cyrus SASL or the Dovecot SASL mechanisms.
+
+```sh
+smtpd_sasl_type = dovecot
+smtpd_sasl_path = private/auth
+smtpd_sasl_auth_enable = yes
+broken_sasl_auth_clients = yes
+```
+
+Postfix SASL authentication with Dovecot can be enabled over a UNIX Domain Socket and over TCP. To enable UNIX accounts to authenticate over a UNIX Domain Socket, edit the `/etc/dovecot/conf.d/10-master.conf` file:
+
+```sh
+service auth {
+   unix_listener auth-userdb { }
+   unix_listener /var/spool/postfix/private/auth { }
+}
+```
+
+When testing plain-text SASL authentication, you will need to submit a base64 encoded username and password, i.e. `echo -en "\0user\0password" | base64`, then test SMTP auth with `AUTH PLAIN <hash_string>`
+
+To enable TLS encryption:
+
+```sh
+smtpd_tls_cert_file = /etc/postfix/server.pem
+smtpd_tls_key_file = $smtpd_tls_cert_file
+smtpd_tls_security_level = may
+smtpd_tls_auth_only = yes
+```
+
+Some ways to monitor postfix:
+
+- pflogsumm - a Perl script which translates Postfix log files into a human-readable summary.
+- qshape - prints the domains and ages of items in the Postfix queue, useful for determining where emails are getting stuck in queues. The output of the command displays the distribution of the items in the Postfix queues by recipient or sender domain.
+- mailgraph - creates RRD graphics of mail logs and allows monitor trends in your email server.
+
+SpamAssassin can be used as a milter (mail filter) or a standalone MDA. Other tools exist like Sender Policy Framework, DomainKeys.
+
+#### Dovecot
+
+Dovecot is an open-source IMAP/POP3 server. Dovecot is secure, easy to configure and is standards compliant.
+
+The `doveconf` utility parses the configuration file (`/etc/dovecot/dovecot.conf, /etc/dovecot/conf.d/`) for both the Dovecot daemons and for debugging purposes.
+
+The common Dovecot setup binds to a specific IP address, defines the protocols to serve, applies password restrictions, accepts some clients with minor protocol issues, and points to user and password databases:
+
+```sh
+listen = 10.20.34.111
+protocols = imap pop3 lmtp
+disable_plaintext_auth = yes
+imap_client_workarounds pop3_client_workarounds
+
+# SSL/TSL config in /etc/dovecot/conf.d/10-ssl.conf
+ssl = yes
+ssl_cert = < cert-file > # suggested permissions root:root 0444
+ssl_key = < private-key-file > # suggested permissions root:root 0400
+```
+
+A working email client is the easiest way to troubleshoot and test an IMAP or POP3 server. The mutt email client works well.
+
+## File Sharing
+
+The **File Transfer Protocol** (FTP) is one of the first protocols of the Internet. Data is sent in plain text. Clients have interactive or non-interactive modes.
+
+FTP Active transfer mode let server push data to the client on a random high-numbered port. This method is not compatible with firewalls or NAT networks.
+
+FTP Passive transfer mode let client request a passive connection and the server opens a random high-numbered port for data transfer.
+
+### vsftpd
+
+Very Secure FTP Daemon (`vsftpd`) has enhanced security features than FTP server:
+
+- Virtual IPs
+- Virtual users
+- Stand-alone daemon or inetd-ready
+- Per-user configuration
+- Per-source configuration
+- Optional SSL integration
+
+Verify that anonymous access is enabled in `vsftpd.conf`: `anonymous_enable=YES`. To allow system users to create authenticated FTP sessions, you should make the following changes to `vsftpd.conf`:
+
+```
+local_enable=YES
+write_enable=YES
+local_umask=022
+```
+
+`vsftpd` uses PAM by default for authentication (`/etc/pam.d/vsftpd`). System security is enforced by the files `/etc/vsftpd/ftpusers, /etc/vsftpd/users_list`. Account names listed in `ftpusers` are not allowed to login via FTP.
+
+Depending on the value of the `userlist_deny` setting in vsftpd.conf, the users in `/etc/vsftpd/users_list` act as either allow only the users in the list, or explicitly deny the listed users.
+
+### rsync
+
+The **rsync** protocol was written as a replacement for rcp and uses an advanced algorithm to intelligently transfer files. Only the files or parts of files which have **changed** are copied.
+
+`rsync` uses Delta encoding and requires the source and destination to be specified (either or both may be remote). `rsync` protocol does not have in-transit security. However, rsync can be tunneled over the SSH protocol. 
+
+`rsync` is mostly used over SSH, but starting the `rsync` daemon is as easy as `rsync --daemon`. When running as a daemon, rsync will read the `/etc/rsyncd.conf` configuration file. Each client that connects to the rsync daemon will force rsync to re-read the configuration.
+
+The `/etc/rsyncd.conf` file defines global options, as well as rsync modules which will be served by the rsync daemon. When running the `rsync` command, it will use any transparent remote shell. The default shell is ssh, which encrypts the traffic. The rsync protocol can be invoked with the `rsync://` URI in the command or with `rsyncd`. i.e. `rsync -av root@server:/etc/. /srv/backup/server-backup/etc/.` backs up an entire directory.
+
+### scp and sftp
+
+`scp` (Secure Copy) is non-interactive, while `sftp` (Simple File Transfer Protocol) is interactive way to transfer files and they both use your system or the user ssh client configuration files (`~/.ssh/config`).
+
+### WebDAV
+
+**WebDAV** is an extension to HTTP for read/write access to resources and is available on most operating systems. A command-line tool `cadaver` can be used to manipulate a WebDAV share. 
+
+The Apache module `mod_dav` is one method to enable WebDAV and requires a defined lock file, which should be writable by the Apache user: `DavLockDB davlockdb`. WebDAV can be enabled in either a `<Directory>` or `<Location>` stanza. However, it is more secure to create an alias and use the directory options to increase security. Uploads, PUT, POST, and similar methods should not be allowed, except for by an authenticated user.
+
+### BitTorrent
+
+**BitTorrent** is a protocol which allows for very efficient transfer of large files or directories using a **distributed peer-to-peer** architecture. A file served over BitTorrent is divided into small chunks and is distributed by anyone who is connected to the same tracker. This allows for much lesser resource use by the server hosting the original content, as the file needs to be downloaded only once.
+
+BitTorrent becomes more efficient the more concurrent clients are participating. Tools available are `rtorrent` as a CLI client and `mktorrent` as a CLI for creating `.torrent` files.
+
+## Advanced Networking
+
+### Routing
+
+Routing commands include `route` and `ip route`. Dynamic routing protocols include RIP, OSPF, BGP and IS-IS.
+
+To create a new run time route, do `ip route add 10.1.11.0/24 via 10.30.0.101 dev eth2`
+
+To create a static rule which will survive a reboot, do:
+
+```sh
+# On CentOS, edit the /etc/sysconfig/network-scripts/route-<INTERFACE> file and add a line like this:
+10.1.11.0/24 via 10.30.0.101 dev eth2
+# On Ubuntu, edit the /etc/network/interfaces file and add a line like this:
+ip route add -net 10.1.11.0/24 gw 10.30.0.101 dev eth2
+# On OpenSUSE, edit the /etc/sysconfig/network/ifroute-<INTERFACE> file and add a line like this:
+10.1.11.0/24 10.30.0.101 - eth2
+# Network Manager systems can use:
+nmcli con modify "connection-name" ipv4.routes "10.1.11.0/24 10.30.0.101 99"
+```
+
+The downside to static routes is inflexibility. Dynamic routing protocols are more efficient at detecting and fixing routing problems quickly. 
+
+### VLAN
+
+VLANs use functionality in the switches and routers. The most common use for VLANs is to bridge switches together. A VLAN is also a method for securing two or more LANs from each other on the same set of switches.
+
+Creating a trunk connection (802.1q is one such protocol between two switches essentially connects the networks together. VLANs can be created on the trunked together switches to then isolate specific ports on each switch to belong to a Virtual LAN. VLANs use optional functionality within the packet to identify which VLANs are being used.
+
+When VLANs are enabled, an additional header is added to the packet. This is the 802.1Q or dot1q header. The 802.1Q header contains:
+
+- **Tag Protocol ID** (TPID), a 16bit identifier to distinguish between a VLAN tagged frame or it indicates the EtherType. The value of x8100 indicates an 802.1Q tagged frame.
+
+- The next 16bits are the **Tag Control Information** (TCI), comprising of:
+    - **Priority Code Point** (PCP), a 3bit field that indicates the 802.1q priority class. See the IEEE P802.1Q webpage for more details.
+    - **Drop Eligible Indicator** (DEI). This 1bit flag indicates the frame may be dropped when network congestion occurs. The field may be used alone or in conjunction with the PCP. This field used to be the **Canonical Format Indicator** (CFI), and was used for compatibility between Ethernet and Token Ring frames.
+    - **VLAN Identifier ID** (VID), a 12bit field indicating to which VLAN the frame belongs to.
+
+<img src="https://d36ai2hkxl16us.cloudfront.net/course-uploads/e0df7fbf-a057-42af-8a1f-590912be5460/wcyzmjoqtair-LFS311-V6_vlan-packet.png" />
+
+### DHCP Server
+
+The dhcpd daemon is configured with `/etc/dhcp/dhcpd.conf` and some options files: `/etc/sysconfig/dhcpd` (CentOS), `/etc/default/isc-dhcp-server` (Ubuntu), `/etc/sysconfig/dhcpd` (OpenSUSE)
+
+The dhcp server will only serve out addresses on an interface that it finds a subnet block defined in the `/etc/dhcp/dhcpd.conf` file. Additional or different daemon command line options may be passed to the daemon at start time by the systems' drop-in files.
+
+Global options are settings which should apply to all the hosts in a network. You can also define options on a per-network basis.
+
+A sample configuration would be:
+
+```
+subnet 10.5.5.0 netmask 255.255.255.224 {
+  range 10.5.5.26 10.5.5.30;
+  option domain-name-servers ns1.internal.example.org;
+  option domain-name "internal.example.org";
+  option routers 10.5.5.1;
+  option broadcast-address 10.5.5.31;
+  default-lease-time 600;
+  max-lease-time 7200;
+}
+```
+
+### Network Time Protocol
+
+The security of many encryption systems is highly dependent on proper time. **NTP** time sources are divided up into **strata**.
+
+- A strata 0 clock is a special purpose time device (atomic clock, GPS radio, etc).
+- A strata 1 server is any NTP server connected directly to a strata 0 source (over serial or the like).
+- A strata 2 server is any NTP server which references a strata 1 server using NTP.
+- A strata 3 server is any NTP server which references a strata 2 server using NTP.
+
+NTP may function as a client, a server, or a peer:
+
+- Client: Acquires time from a server or a peer.
+- Server: Provides time to a client.
+- Peers: Synchronize time between other peers, regardless of the defined servers.
+
+Some NTP applications implementations are `ntp`, `chrony`, or `systemd-timesyncd`.
+
+The `ntpdc -c peers` command can show the time difference between the local system and configured time servers. The `timedatectl` command is in many distributions and may be used to query and control the system time and date.
+
+To configure the `ntpd` server, allow clients to request time (restrict), set up access for peers, declare the local machine to be a time reference, regulate who can query the time server with `ntpq` and `ntpdc` commands and start the NTP daemon.
+
+A good NTP server is only as good as its time source. The NTP Pool Project was created to alleviate the load that was crippling the small number of NTP servers. To configure your NTP server to use the NTP pool, edit the /etc/ntp.conf file and add or edit the following settings:
+
+```
+driftfile /var/lib/ntp/ntp.drift
+pool 0.pool.ntp.org
+pool 1.pool.ntp.org
+pool 2.pool.ntp.org
+pool 3.pool.ntp.org
+```
+
 

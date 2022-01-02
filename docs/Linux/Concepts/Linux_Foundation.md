@@ -446,6 +446,54 @@ Package documentation is directly pulled from the upstream source code and place
 
 ### Linux Documentation
 
+#### `info` pages
+
+`info` is the other form of documentation pages besides `man`.
+
+Navigation within `info`:
+
+=== "Navigate within a Node"
+    Action | Keys
+    ------ | ----
+    Next Line|CTRL-n or <Down> arrow key
+    Previous Line|CTRL-p or <Up> arrow key
+    Beginning of Line|CTRL-a or <Home> key
+    End of Line|CTRL-e or <End> key
+    Forward 1 Character|CTRL-f or <Right> arrow key
+    Backward 1 Character|CTRL-b or <Left> arrow key
+    Forward 1 Word|ALT-f or CTRL-<Right> arrow key
+    Backward 1 Word|ALT-b or CTRL-<Left> arrow key
+    **Beginning of Node**|ALT-<
+    **End of Node**|ALT->
+    End of Current Node|e Quit q
+
+=== "Selecting Nodes"
+    Action | Keys
+    ------ | ----
+    **Next Node**|n
+    **Previous Node**|p
+    **Up a Node**|u
+    **Last Node Viewed**|l
+    Top Node|t
+    Directory Node|d
+    First Node|<
+    Last Node|>
+    **Global Next Node**|]
+    **Global Previous Node**|[
+
+=== "Searching within a Node"
+    Action | Keys
+    ------ | ----
+    **Search Forward**|s(string) or /(string)
+    **Search Backwards**|?(string)
+    Search Case-Sensitive|S(string)
+    Next word in Search|n
+    Next word Case-Sensitive|N
+    **Interactively Search Forwards**|CTRL-s(string)
+    **Interactively Search Backwards**|CTRL-r(string)
+    Index Search|i(string)
+    Next Index Search|,
+    
 #### Ask the `man`
 
 `man` is short for "manual". **man pages** are present on all Linux distributions and offer in-depth documentation about many programs and utilities, as well as other topics, including configuration files, and programming APIs for system calls, library routines, and the kernel.
@@ -632,7 +680,7 @@ For the SystemV variation of `ps` command, options need the dash prefixes and ar
 
 `pstree` displays the processes running on the system in the form of a tree diagram showing the relationship between a process and its parent process and any other processes that it created, and threads displayed within `{}`.
 
-- `pastree [-A|U] [-up]`
+- `pstree [-A|U] [-up]`
 - `-A`: use ASCII char to represent tree
 - `-U`: use UTF char to represent tree
 - `-p`: show process PID

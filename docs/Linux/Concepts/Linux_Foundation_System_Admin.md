@@ -143,7 +143,9 @@ At any given moment, the process may take a snapshot of itself by trapping the s
 
 Every process has permissions based on which user has called it to execute. It may also have permissions based on who owns its program file.
 
-Programs which are marked with an "s" execute bit have a different "effective" user id than their "real" user id. These programs are referred to as **setuid programs**. They run with the user-id of the user who **owns** the program, where a non-setuid program runs with the permissions of the user who **starts** it. **setuid programs owned by root can be a security problem**.
+Programs which are marked with an "s" execute bit have a different "effective" user id than their "real" user id. These programs are referred to as **setuid programs**. They run with the user-id of the user who **owns** the program, where a non-setuid program runs with the permissions of the user who **starts** it.
+
+Note that **setuid programs owned by root can be a security problem**. Also Note that setuid bit only works on **binary executables**, not on scripts, as a security measure.
 
 Every process has resources such as allocated memory, file handles, etc. When a process is started, it is isolated in its own user space to protect it from other processes.
 
@@ -177,7 +179,9 @@ What happens when a user executes a command in a command shell interpreter, such
 - The parent shell is re-awakened by the death of the child process and proceeds to issue a new shell prompt.
 - The parent shell then waits for the next command request from the user, at which time the cycle will be repeated.
 
-If a command is issued for background processing (by adding an ampersand -&- at the end of the command line), the parent shell skips the wait request and is free to issue a new shell prompt immediately, allowing the background process to execute in parallel. Otherwise, for foreground requests, the shell waits until the child process has completed or is stopped via a signal.
+If a command is issued for **background** processing (by adding an ampersand `&` at the end of the command line), the parent shell skips the wait request and is free to issue a new shell prompt immediately, allowing the background process to execute in **parallel**. Otherwise, for foreground requests, the shell waits until the child process has completed or is stopped via a signal.
+
+Use `jobs -l` to view background processes. Use `kill -15 %<job_number>` to send a SIG_TERM to that process. Use `fg %<job_number` to bring a background process to the foreground. Use `bg %<job_number>` after `CTRL+Z` to resume a stopped process. 
 
 Some shell commands (such as echo and kill) are built into the shell itself, and do not involve loading of program files. For these commands, neither a fork nor an exec is issued for the execution.
 
@@ -1596,7 +1600,9 @@ Passwords can be changed with `passwd`; a normal user can change only their own 
 
 The `/etc/sudoers` defines the sudo access. Usually you don't need to temper with this file and just add new user to the `sudo` group to grant sudo access.
 
-The file has default access mode of 400. To do quick edit, use `sudo visudo`. The syntax of lines in the `/etc/sudoers` file is `users hosts=(user:group) commands`.
+The file has default access mode of 400. To do quick edit, use `sudo visudo`. The syntax of lines in the `/etc/sudoers` file is `users hosts=(user:group) commands`, where `group` can be omitted.
+
+You should use drop-ins under `/etc/sudoers.d/` to add additional sudoer access, and leave the main sudoers file unchanged.
 
 #### Account Restriction
 
@@ -2141,6 +2147,8 @@ The files are used to provide extra options when starting a service and typicall
 
 `shutdown` is used to bring the system down in a secure fashion, notifying all users that the system is going down and then stopping it in a graceful and non-destructive way. After it is shut down, the system is either halted or rebooted. There are also the legacy commands `reboot`, `halt`, and `poweroff`
 
+This [article](https://sysadminxpert.com/checklist-for-pre-and-post-linux-reboot/){target=_blank} shows a checklist of things to do pre and post reboot.
+
 ### /sbin/init
 
 `/sbin/init` (usually just called init) is the **first user-level process** (or task) run on the system and continues to run until the system is shutdown. Traditionally, it has been considered the **parent** of all user processes, although technically that is not true, as some processes are started directly by the kernel.
@@ -2170,7 +2178,27 @@ The `systemd` system and session manager for Linux is now dominant in all major 
 - Implements an elaborate transactional dependency-based service control logic
 - Can work as a drop-in replacement for SysVinit and is compatible with SysVinit scripts.
 
-`systemd` is backward compatible with SysVinit and the concept of runlevels is supported via runlevel targets. The telinit program is emulated to work with runlevels. `systemd` prefers to use a set of standardized configuration files, it can also use distribution-dependent legacy configuration files as a fall-back.
+`systemd` is backward compatible with **SysVinit** and the concept of **runlevels** is supported via **runlevel targets**. The telinit program is emulated to work with runlevels. `systemd` prefers to use a set of standardized configuration files, it can also use distribution-dependent legacy configuration files as a fall-back.
+
+Runlevel | Target
+-------- | ------
+0|poweroff.target
+1|rescue.target
+2,3,4|multi-user.target
+5|graphical.target
+6|reboot.target
+
+The `isolate` command will immediately stop processes that are not enabled in the new unit, possibly including the graphical environment or terminal you are currently using
+
+```sh
+# immediately change the target
+sudo systemctl isolate multi-user.target
+# change the default target, effective after each reboot
+sudo systemctl enable multi-user.target
+sudo systemctl set-default multi-user.target
+```
+
+Use `man systemd.special` to learn more.
 
 #### systemctl
 
@@ -2185,6 +2213,24 @@ The `systemd` system and session manager for Linux is now dominant in all major 
 For most commands, you can omit the `.service` attached to the service name. 
 
 Also worth read [SysVinit to Systemd Cheetsheet](https://fedoraproject.org/wiki/SysVinit_to_Systemd_Cheatsheet){target=_blank}.
+
+#### .service file
+
+To make a service start up when system boots, we need to configure it and put under `/etc/systemd/system/multi-user.target.wants/`.
+
+A simple service file may look like the following. For more info check `man systemd.service` or [here](https://www.freedesktop.org/software/systemd/man/systemd.service.html){target=_blank}
+
+```
+[Unit]
+Description=Simple notifying service
+
+[Service]
+Type=notify
+ExecStart=/usr/sbin/simple-notifying-service
+
+[Install]
+WantedBy=multi-user.target
+```
 
 ## Backup and Recovery
 
@@ -2273,6 +2319,8 @@ SELinux modes are selected (and explained) in `/etc/sysconfig/selinux` (CentOS a
 - Permissive - Enables SELinux code, but only audits and warns about operations that would be denied in enforcing mode.
 - Disabled - Completely disables SELinux kernel and application code, leaving the system without any of its protections.
 
+Read this comprehensive guide to [install and enable SELinux](https://linuxconfig.org/how-to-disable-enable-selinux-on-ubuntu-20-04-focal-fossa-linux){target=_blank}.
+
 #### getenforce, setenforce
 
 `getenforce` can be used to get the current SELinux mode. `setenforce` can be used to switch between enforcing and permissive modes on the fly while the system is in operation, but it does not allow you to enable/disable SELinux completely.
@@ -2301,7 +2349,6 @@ SELinux policy behavior can be configured at runtime without rewriting the polic
     - default the change is not persistent. Make it persistent with option `-P`
 - `semanage boolean -l` - to see persistent boolean settings
 
-
 #### Contexts
 
 There are four SELinux contexts: User, Role, Type, Level.
@@ -2329,7 +2376,7 @@ AppArmor is an LSM alternative to SELinux, used by SUSE, Ubuntu and other distri
 
 In addition to manually specifying profiles, AppArmor includes a learning mode, in which violations of the profile are logged, but not prevented. This log can then be turned into a profile, based on the program's typical behavior.
 
-To view its status, do `sudo apparmor_status`.
+To view its status, do `sudo apparmor_status` or `sudo aa_status`.
 
 AppArmor Modes:
 

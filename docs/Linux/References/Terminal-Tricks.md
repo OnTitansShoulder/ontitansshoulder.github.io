@@ -9,6 +9,8 @@ tags: notes cheatsheet check
 
 Some things I found useful when using Linux terminal.
 
+`tmux` is a must when working with limited screen or terminals. A great [tmux-guide](https://www.shells.com/l/en-US/tutorial/Installing-and-using-tmux-on-Ubuntu-20-04){target=_blank}.
+
 <br/>
 
 ### Execution Control
