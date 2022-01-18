@@ -7,7 +7,7 @@ category: Tool
 tags: notes reference check
 ---
 
-This set of notes is taken from a book _Docker High Performance_ by Allan Espinosa, Russ McKendrick and from the official [Docker documentation](https://docs.docker.com).
+This set of notes is taken from the book _Docker High Performance_ by Allan Espinosa, Russ McKendrick and from the official [Docker documentation](https://docs.docker.com).
 
 <br/>
 

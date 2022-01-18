@@ -46,31 +46,32 @@ markdown_extensions:
 nav:
   - Notes:
     - Welcome: "index.md"
-    - Cloud and Containers:
-      - Docker:
-        - "Cloud-and-Containers/Docker/Docker-Knowledge.md"
-      - k8s:
-        - "Cloud-and-Containers/k8s/K8s-Knowledge.md"
-        - "Cloud-and-Containers/k8s/service_mesh.md"
-    - Dev Tools Reference:
-      - Splunk:
-        - "Dev-Tools-Reference/Splunk/Splunk-References.md"
-        - "Dev-Tools-Reference/Splunk/Splunk-Dashboarding.md"
+    - Foundamentals:
+      - Data Structures and Algos: "Foundamental/Data_Structures_and_Algos.md"
     - Linux:
       - Concepts:
         - Linux Foundation: "Linux/Concepts/Linux_Foundation.md"
         - Linux System Administration: "Linux/Concepts/Linux_Foundation_System_Admin.md"
         - Linux Network Administration: "Linux/Concepts/Linux_Foundation_Network_Admin.md"
-      - Commands:
+      - Practical References:
         - Freq Used Shell Cmds: "Linux/Commands/Freq-Used-Shell-Cmds.md"
         - Freq Used Network Cmds: "Linux/Commands/Networking-Shell-Cmds.md"
         - Text Manipulating Cmds: "Linux/Commands/Text-Manipulating-Cmds.md"
-      - References:
+      - Tricks:
         - Freq Linux Tasks: "Linux/References/Freq-Tasks.md"
         - Linux Terminal Tricks: "Linux/References/Terminal-Tricks.md"
         - Vim Tricks: "Linux/References/Vim-Tricks.md"
         - Manage Accounts & Groups: "Linux/References/Account-Administration.md"
-    - Programming Lang Reference:
+    - Cloud:
+      - Docker and Containers: "Cloud-and-Containers/Docker/Docker.md"
+      - Docker Practical: "Cloud-and-Containers/Docker/Docker-Practical.md"
+      - K8s Knowledge: "Cloud-and-Containers/k8s/K8s-Knowledge.md"
+      - Service Mesh: "Cloud-and-Containers/k8s/service_mesh.md"
+    - Monitoring:
+      - Splunk:
+        - Splunk Knowledge: "Dev-Tools-Reference/Splunk/Splunk-References.md"
+        - Splunk Dashboarding: "Dev-Tools-Reference/Splunk/Splunk-Dashboarding.md"
+    - Programming Langs:
       - Golang:
         - Golang Language Reference: "Programming-Lang-Reference/Golang/Golang-Specs.markdown"
         - Effective Go: "Programming-Lang-Reference/Golang/Best-Practices.md"
@@ -91,3 +92,4 @@ nav:
       - Why Latency Matters: "Reading-Notes/Why-Latency-Matters.md"
       - Intro to DevOps and SRE: "Reading-Notes/DevOps_SRE.md"
       - Leading Without Formal Authority: "Reading-Notes/Leading-without-formal-authority.md"
+    - Good Reads: "Good-Reads.md"
