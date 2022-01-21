@@ -26,11 +26,25 @@ It is also useful when dynamically calculate medians of a set of numbers that ha
 
 In Java you can use `PriorityQueue` or `TreeSet`.
 
+Signs for using Heap:
+
+- Find the min or max from a given list of elements
+- Find the kth largest/smallest
+- When desires O(log(n)) for each operation
+
+Signs for not using Heap:
+
+- Find the closest value to some value (balanced BST)
+- Find the min/max from a given range (Segment Tree)
+- Use O(n) to find kth largest (Quick Select)
+
 ## Stack
 
 **Stack** is a **first-in-last-out** data structure, good for hold state (**temporarily**) then process more recent elements.
 
 Use Stack also to turn recursive logic into iterative, mostly in **DFS**, where the call stack can be large for recursion, i.e. processing parenthesis errors. Use it also to solve cases when it is necessary to (**partially**) revert the order of some data sets.
+
+Stack is also useful for binary tree in-order traversal, as well as BST in-order traversal to find kth largest element.
 
 ### Monotonous Stack
 
@@ -42,11 +56,13 @@ This type of property is especially useful for when need to calculate a sum/prod
 
 ## Queue
 
-**Queue** is a **first-in-first-out** data structure, often used in tree pre-order traversal through **BFS**. 
+**Queue** is a **first-in-first-out** data structure, often used in tree level-order traversal through **BFS**. 
 
 ## Trees
 
 **Tree** is a data structure that each tree node may contain a value, and **child nodes**. Binary tree are the most used tree types. There are also n-ary tree like Trie.
+
+Use **divide conquer** on binary tree problems to calculate from small units and merge back up to final result.
 
 ??? Note "Binary Tree Divide Conquer"
     Recursion often used for traversing binary trees
@@ -175,11 +191,11 @@ Java's `TreeMap` has a Red-Black tree implementation which allows it to do all b
     T1, T2 and T3 are subtrees of the tree 
     rooted with y (on the left side) or x (on 
     the right side)           
-        y                               x
+         y                               x
         / \     Right Rotation          /  \
-    x   T3   - - - - - - - >        T1   y 
-    / \       < - - - - - - -            / \
-    T1  T2     Left Rotation            T2  T3
+       x   T3   - - - - - - - >        T1   y 
+      / \       < - - - - - - -            / \
+    T1  T2     Left Rotation             T2  T3
     Keys in both of the above trees follow the 
     following order 
     keys(T1) < key(x) < keys(T2) < key(y) < keys(T3)
@@ -262,6 +278,11 @@ Trie has great advantage over Maps when looking up a lots of words with common p
 
 Trie is great for use with **DFS** for solving complex problems. Be sure to know how to implement a Trie.
 
+Signs for using a Trie:
+
+- quick lookup if some word with certain prefix exists
+- look for words in matrix of letters
+
 ??? Note "Trie"
     Use as a helper class.
 
@@ -341,6 +362,8 @@ Quick Sort can be implemented in-place so it can sort in **constant space**. The
 
 Quick Sort is NOT a **stable sort**, however, unlike merge sort, which could be a trade off.
 
+The **Quick Select** algorithm derived from Quck Sort borrows its partitioning thinking, which can be used to solve certain problems in `O(log(n))` where sorting the list of items is not necessary.
+
 ### Merge Sort
 
 **Merge Sort** works by recursively divide the array into sub array of size 1, then on the way down the call stack, construct the merged and sorted subarrays.
@@ -359,13 +382,24 @@ Merge Sort is a **stable sort**. But it takes both `O(nlog(n))` time and `O(n)` 
 
 **Dynamic Programming (DP)** is a mathematical optimization method to break down a large and complicated problem into smaller and simpler sub-problems, then build each sub-problem upon results from previous ones.
 
-There are two fashions for Dynamic Programming thinking:
+Signs for using DP:
+
+- find number of ways to do something
+- find the min/max of some value(s) that satisfy some condition
+- find if some action can be completed
+
+Possibly not a DP solution:
+
+- finding concrete set of solutions that satisfy some condition (DFS)
+- given input is unsorted
+
+There are four fashions for Dynamic Programming thinking:
 
 - _Rolling Update_ on an array or matrix of numbers
-    - use small and **previous result** to build next result, how to get there
+    - use **previous result** to build next result, how to get there
     - how to initialize the state and starting point
     - where does the final answer lies
-    - the key is to find what does the dp value represent, what are transition from state to state, and how to initialize the dp values before iterating
+    - the key is to find what does the dp value represent, what are transition from state to the next state, and how to initialize the dp values before iterating (the extreme or end cases)
 - _Memorization_ of state
     - when some state repeats within the sub-problems, calculate it once and save its result for use in future occurrances
     - the core is dfs
@@ -458,6 +492,33 @@ There are no fixed way to solve anything with DP. The key is to think in DP.
             - `dp[i][j] += dp[i-1][j - num * k]`, where k = 0~v where k*v <= j
             - basically we are trying to see, if we take one, two, or more of the same num, can be get more combinations
 
+### DFS
+
+Depth-First-Search (DFS) is an algorithm good for searching within a tree, a graph, or backtrack iterating through elements in an array. DFS is mostly implemented recursively.
+
+Pay attention to when the order of elements affect the condition for going deeper, what does duplicate elements mean for the algorithm. Sometimes it helps to use Set or Map to memorize and to avoid revisiting the same path seen before.
+
+Signs for using DFS:
+
+- Find all solutions that satisify some condition
+- Binary Tree traversal
+- Permutation problems (list order does not matter)
+- Arrangement problems (list order matters)
+
+### BFS
+
+Breath-First-Search (BFS) is an algorithm good for level-order traversing trees, topology sort, search in graphs.
+
+BFS can be implemented iteratively using a Queue. Consider use Set to track node visisted, or Map to track distances between visited nodes. Some problems can be optimized using two BFS traversing from two ends to reduce number of nodes visited.
+
+Signs for using BFS:
+
+- Topology sort
+- Tree level order traversal
+- Shortest path in graph
+- Fewest moves to get to a state, given a state-change function
+- When elements in a data structure are connected in some way
+- Where there is a clear BFS solution, iteration may be more efficient than recursive DFS
 
 ## Special Algorithms
 
@@ -474,6 +535,13 @@ Also note the binary search is NOT necessarily always must be applied on an **ar
 - if condition not met, continue search while cut down range by half
 
 The **Condition** part of this problem usually can be the difficult part. It is not hard to realize the binary approach after all. This conditional verification can take O(n) to complete, thus brings overall to `O(nlog(n))`. When working on some problem where the clear brute-force approach takes `O(n^2)`, try thinking in this direction see if you can come up with something.
+
+Signs for using binary search:
+
+- search in ordered list
+- when time complexity requires better than O(n)
+- when a list can be partitioned into two parts, where answer lies in one part
+- find a max/min value to satisfy a certain condition
 
 ??? Note "Binary Search"
     Basic form, good for when we know there is only one index may satisfy the condition.
@@ -541,9 +609,9 @@ Some common signs for two pointers:
 
 - Sliding window, when need to inspect a range of numbers/characters
     - i.e. inspect subarray/substring
-- When required time complexity is O(n)
-- When no extra Space is required
-- Palindrome
+- When the most optimal time complexity is O(n)
+- When we want to use no extra space to solve
+- Palindrome problems
 
 The two pointers can move in the same direction or the opposite direction
 
