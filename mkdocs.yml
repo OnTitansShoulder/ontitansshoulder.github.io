@@ -77,6 +77,7 @@ nav:
         - Effective Go: "Programming-Lang-Reference/Golang/Best-Practices.md"
         - Go libraries and examples: "Programming-Lang-Reference/Golang/Freq-Used-Libs.md"
       - Java:
+        - Style Guide: "Programming-Lang-Reference/Java/Style-Guide.md"
         - Effective Java: "Programming-Lang-Reference/Java/Best-Practices.md"
         - Java Design Patterns: "Programming-Lang-Reference/Java/Design-Patterns.md"
         - Testing Design Patterns: "Programming-Lang-Reference/Java/Testing-Design-Patterns.md"
