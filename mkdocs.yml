@@ -63,6 +63,7 @@ nav:
         - Vim Tricks: "Linux/References/Vim-Tricks.md"
         - Manage Accounts & Groups: "Linux/References/Account-Administration.md"
     - Cloud:
+      - Cloud App Architecture: "Cloud-and-Containers/Architecture/Cloud-App-Architecture.md"
       - Docker and Containers: "Cloud-and-Containers/Docker/Docker.md"
       - Docker Practical: "Cloud-and-Containers/Docker/Docker-Practical.md"
       - K8s Knowledge: "Cloud-and-Containers/k8s/K8s-Knowledge.md"
