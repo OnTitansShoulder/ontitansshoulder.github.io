@@ -638,6 +638,10 @@ The two pointers can move in the same direction or the opposite direction
     }
     ```
 
+### Topology Sort
+
+Classical problem where dependency relationships are clear.
+
 ### Disjoint Sets for Union Find
 
 Union Find with Disjoint Sets is used to solve problems that require

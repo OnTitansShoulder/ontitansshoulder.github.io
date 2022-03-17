@@ -217,6 +217,20 @@ CMD ["--help"]
 
 <br/>
 
+## Docker Disk Usage Cleanup
+
+```sh
+# prunes stopped containers, unused networks, dangling images, volumes, and cache
+docker system prune --all
+docker system prune
+docker system prune --volumes
+
+# clean up specific component
+docker rmi $(docker images -qf dangling=true)
+docker rmi $(docker images | grep <image-name> | awk '{print $3}')
+docker volume rm $(docker volume ls -qf dangling=true)
+```
+
 ## Frequently-used Docker CLI commands reference
 
 ```sh
