@@ -711,6 +711,33 @@ To solve it in `O(n)`, first create a list to put all intervals numbers together
 
 The problem can get more complex, i.e. having additional parameter to consider and sort. But in the end it just adds more cases to consider, the core idea remains the same.
 
+### Shortest Path
+
+Given a graph and a source vertex in the graph, find the shortest paths from the source to one or all vertices in the given graph.
+
+#### Dijkstra
+
+All nodes within the graph must be connected.
+
+Dijkstra's algorithm solves this problem in O(u * v). We keep a set to track visited vertices, and a another map to track the minimal distance from source to every other vertice.
+
+It works by starting from a node/vertice then update its immediate neighbors distance with the distance to current node + edge cost to that neighbor, then move on to the next unvisited node with minimal distance, then repeat until all nodes are visited.
+
+The algorithm:
+
+- first make the adjacency matrix or adjacency list out of the graph.
+- initialize a `visitedSet` to track visited vertices
+- initialize `minDistanceMap` as empty and only keeps finite minDistances, assume unvisited vertices are Infinity distance if it is not in the Map
+- set source minDistance to 0 by adding it to `minDistanceMap`
+- while there is any vertice unvisited
+    - for each unvisited vertice with finite minDistance, choose one `v` that has the minimal distance
+    - set `v` as visited by adding it to the `visitedSet`
+    - remove `v`'s minDistance from `minDistanceMap`
+    - check `v`'s immediate neighbors `u` that are unvisited
+        - now `v` to `u` distance `d` is `v`'s minDistance + edge cost to `u`
+        - if `u`'s minDistance is Infinity, set `u` -> `d` in `minDistanceMap`
+        - if `u`'s minDistance is finite but larger than `d`, update this value in `minDistanceMap`
+
 ### Iterator implementation
 
 When implementing iterator for data structures that may contain nested structure, we need to avoid the hell of recursively getting the whole structure built at once either at the constructor or next() method.
