@@ -1,7 +1,7 @@
-site_name: Ontitansshoulder's Blog
+site_name: Ontitansshoulder
 site_author: Zhongkai Liu
 site_description: >-
-  A collection of notes I took during my learning...
+  We are all standing on the shoulders of the giants...
 
 # theme config
 theme:
@@ -82,6 +82,8 @@ nav:
         - Effective Java: "Programming-Lang-Reference/Java/Best-Practices.md"
         - Java Design Patterns: "Programming-Lang-Reference/Java/Design-Patterns.md"
         - Testing Design Patterns: "Programming-Lang-Reference/Java/Testing-Design-Patterns.md"
+      - C++:
+        - C++ Language Reference: "Programming-Lang-Reference/CPP/CPlusPlus_Lang_Specs.md"
       - Perl:
         - Perl Language Reference: "Programming-Lang-Reference/Perl/Perl-Lang-Specs.md"
       - Shell:

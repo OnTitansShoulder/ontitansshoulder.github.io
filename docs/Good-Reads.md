@@ -12,9 +12,11 @@ tags: reference check
 - [highscalability.com](http://highscalability.com/){target=_blank}
 - [netflixtechblog.com](https://netflixtechblog.com/){target=_blank}
 - [blog.google](https://blog.google/technology/){target=_blank}
+- [azure architecture](https://docs.microsoft.com/en-us/azure/architecture/){target=_blank}
 - [aws.amazon.com/blogs](https://aws.amazon.com/blogs/architecture/){target=_blank}
 - [news.ycombinator.com](https://news.ycombinator.com/){target=_blank}
 - [insights.sei.cmu.edu](https://insights.sei.cmu.edu/blog/){target=_blank}
+- [particular.net/blog](https://particular.net/blog){target=_blank}
 
 ## Inspiring Private Blogs
 

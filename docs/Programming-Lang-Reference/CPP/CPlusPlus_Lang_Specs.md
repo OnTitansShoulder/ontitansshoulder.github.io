@@ -9,6 +9,11 @@ tags: notes reference check
 
 This set of notes is taken from [learncpp.com](https://www.learncpp.com/){target=_balnk}.
 
+C++ language references:
+
+- [cplusplus.com](https://cplusplus.com/reference/){target=_blank}
+- [cppreference.com](https://en.cppreference.com/w/){target=_blank}
+
 ## Overview
 
 C++ is one of the popular high level languages and requires compiling source code into machine code for computer to run. C++ excels in situations where high performance and precise control over memory and other resources is needed. Some common places where C++ shines:
@@ -246,11 +251,26 @@ auto printSomething() -> void;
 
 string type is not a fundamental type, but a compound type. strings are double quoted characters. Quoted text separated by nothing but whitespace (spaces, tabs, or newlines) will be concatenated.
 
-`#include` the `<string>` header to bring in the declarations for std::string.
+`#include` the `<string>` header to bring in the declarations for **std::string**.
 
 A string's length is optained with `str.length()` function call.
 
-The plain quote-surrounded strings are in fact C-style strings, not std::string. To specify different types of strings:
+The plain quote-surrounded strings are in fact **C-style strings**, not std::string. To specify different types of strings:
+
+C-style string is essentially an array of chars which implicitly adds a null character `\0` to end of the string. The `strlen()` function from `cstring>` returns the length of the C-style string without the null terminator.
+
+Other useful C-style functions:
+
+- strcpy() -- copy a string to another string
+- strcpy_s() strlcpy() -- string copy allowing a size parameter
+- strcat() -- appends one string to another (dangerous)
+- strncat() -- appends one string to another (with buffer length check)
+- strcmp() -- compare two strings (returns 0 if equal)
+- strncmp() -- compare two strings up to a specific number of characters (returns 0 if equal)
+
+As a rule of thumb, use std::string or std::string_view (next lesson) instead of C-style strings. Prefer std::string_view over std::string for read-only strings
+
+C++17 introduces **std::string_view** which provides a view of a string to avoid unnecessary copies of strings. It also contains functions for shrinking the view of the string which do not reflect on the underlying string.
 
 ```c++
 #include <string>
@@ -260,8 +280,14 @@ void foo() {
     auto s1 { "Hello, world" }; // c-style string of type const char*
     auto s2 { "Hello"s }; // std::string
     auto s3 { "hi"sv }; // std::string_view
+    auto s4 { s1 }; // std::string
+    auto s5 { s4 }; // std::string_view
+    auto s6 { static_cast<std::string>(s5) }; // std::string
+    auto s7 { s6.c_str() }; // c-style string
 }
 ```
+
+Prefer passing strings using std::string_view (by value) instead of const std::string&, unless your function calls other functions that require C-style strings or std::string parameters.
 
 #### Operators
 
@@ -276,6 +302,84 @@ void foo() {
 #### Variable scopes
 
 Variables declared within a function scope is local variable and only visible within the closure of the function.
+
+#### Arrays
+
+An **array** is an aggregate data type that holds many values of the same type through a single identifier.
+
+A **fixed array** is an array where the length is known at compile time. i.e. `int prime[5]{};` or `int array[]{ 0, 1, 2, 3, 4 };`
+
+Copying large arrays can be very expensive, C++ does not copy an array when an array is passed into a function.
+
+A fixed array identifier **decay** (inplicitly convert) to a pointer that points to the first element of the array. This makes `void printSize(int array[]);` and `void printSize(int* array);` declarations identical. In most cases, because the pointer doesn't know how large the array is, you'll need to pass in the array size as a separate parameter anyway.
+
+Favor the pointer syntax (*) over the array syntax ([]) for array function parameters.
+
+When using arrays, ensure that your indices are valid for the range of your array, as compiler does not check this. Array size can be accessed with `std::size(<array>)`.
+
+C++ multi-dimensional array can be declared as `int array[3][5]{};`.
+
+Array indexing:
+
+```c++
+int main() {
+     int array[]{ 9, 7, 5, 3, 1 };
+     std::cout << &array[1] << '\n'; // print memory address of array element 1
+     std::cout << array+1 << '\n'; // print memory address of array pointer + 1
+     std::cout << array[1] << '\n'; // prints 7
+     std::cout << *(array+1) << '\n'; // prints 7
+    return 0;
+}
+```
+
+**`std::array`** from `<array>` works like fixed arrays and makes array management easier. It does auto clean up after going out of scope, and offers convenient functions like `size()`. i.e. `std::array<int, 3> myArray;` creates an integer array of size 3.
+
+std::array allows assigning values to the array using an initializer list. Access std::array values with the subscript operator `[]` or the `at()` function.
+
+Always pass std::array by reference or const reference to avoid unnecessary copies. Favor std::array over built-in fixed arrays for any non-trivial array use.
+
+A **dynamic array** allows choosing an array length at runtime. Use `new[] and delete[]` with dynamic arrays. i.e. `int* array{ new int[length]{} };` and `delete[] array;`.
+
+Dynamic arrays can be initialized using initializer lists, and benefits from `auto` type deduction. i.e. `auto* array{ new int[5]{ 9, 7, 5, 3, 1 } };`
+
+Note that for-each loop do not work with pointer arrays since the array size is unknown.
+
+A pointer to a pointer can be used to create dynamical multi-dimensional arrays. i.e.
+
+```c++
+void foo() {
+    int** array2d { new int*[10] };
+    for (int i = 0; i < 10; ++i) {
+        array2d[i] = new int[5];
+    }
+    array2d[4][3]; // access
+
+    // free up
+    for (int i = 0; i < 10; ++i) {
+        delete[] array2d[i];
+    }
+    delete[] array2d;
+}
+```
+
+**`std::vector`** from `<vector>` makes working with dynamic arrays safer and easier. It does auto clean up after going out of scope, and offers convenient functions like `size(), resize()`. i.e. `std::vector<int> empty {};`
+
+std::vector allows assigning values to the array using an initializer list. Access std::vector values with the subscript operator `[]` or the `at()` function.
+
+An **iterator** is an object designed to traverse through a container (array, string) and provide access to each element along the way.
+
+The simplest kind of iterator is a **pointer**, which works for data stored **sequentially** in memory.
+
+```c++
+void foo() {
+    std::array a{ 0, 1, 2, 3, 4, 5, 6 };
+    auto begin{ &a[0] }; // or { a.data() }, { a.begin() }, { std::begin(a) }
+    auto end{ begin + std::size(a) }; // or { a.end() }, { std::end(a) }
+    for (auto ptr{ begin }; ptr != end; ++ptr) {
+        std::cout << *ptr << ' ';
+    }
+}
+```
 
 ### Functions
 
@@ -321,6 +425,15 @@ int main() {
 ```
 
 Favor the normal function call syntax over template argument deduction when using function templates.
+
+#### Inline
+
+**Inline expansion** is a process where a function call is replaced by the code from the called function’s definition. Modern optimizing compilers are typically very good at determining which functions should be made inline to improve final executable performance.
+
+A function that is eligible to have its function calls expanded is called an **inline function**. Functions that are always expanded inline:
+
+- defined inside a class, struct, or union.
+- constexpr functions
 
 #### Namespacing
 
@@ -400,6 +513,16 @@ int main() {
 ```
 
 Now when you decide to make v2 the official version, switch the inline keyword of the two versions.
+
+#### Function pointers
+
+C++ implicitly converts a function into a **function pointer** as needed. Functions used as arguments to another function are sometimes called **callback functions**.
+
+Function pointers can be initialized like so `int (*fcnPtr)(int){ &foo };` which makes fcnPtr points to function foo that has return type of int and takes one int parameter. It can also be initialized with `nullptr` value. Calling with function pointer is like so `(*fcnPtr)(10);` or `fcnPtr(10);`.
+
+Make the function pointer type shorter with type alias: `using FooFunction = int(*)(int);`, or use `auto` type deduction.
+
+Alternatively, use `std::function` from `<functional>`, `std::function<int(int)> fcn` to declare a std::function object.
 
 #### Global variables
 
@@ -543,18 +666,21 @@ for (<init>; <condition>; <step>) {
     // body
 }
 
-for (<type> <variable> : array) {
-    // body
+for (<type> <variable> : <array>) {
+    // element will be a copy of the current array element
+}
+for (<type>& <variable> : <array>) {
+    // reference avoids copying array element
 }
 ```
 
 Use `continue` and `break` in loops when it simplifies the logic.
 
-### Reference types
+## Reference types
 
 Prior to C++11, there were only two possible value categories: `lvalue` and `rvalue`. In C++11, three additional value categories (`glvalue, prvalue, and xvalue`) were added to support a new feature called `move semantics`.
 
-#### lvalue and rvalue
+### lvalue and rvalue
 
 **lvalue** is an expression that evaluates to a function or object that has an **identity** (identifier such as variable or function name, or identifiable memory address). Identifiable objects persist beyond the scope of the expression.
 
@@ -580,7 +706,7 @@ int main()
 }
 ```
 
-#### references
+### References
 
 An **lvalue reference** acts as an alias for an existing **modifiable lvalue**.
 
@@ -600,9 +726,169 @@ Generally, prefer pass by value for objects that are cheap to copy, and pass by 
 
 Common types that are cheap to copy include all of the fundamental types, enumerated types, and std::string_view. Common types that are expensive to copy include std::array, std::string, std::vector, and std::ostream.
 
-### STD Libraries
+Note that type deduction using `auto` drops the `const` qualifier and the reference.
 
-#### `<iostream>`
+### Pointers
+
+Variable memory addresses aren't exposed, but use the **address-of** operator `&` can access the memory address of the operand. i.e. `&x` gets variable x's mem address.
+
+The **dereference operator** `*` returns the value at a given memory address as an **lvalue**. i.e. `*ref` gets you the lvalue reference from the memory address ref.
+
+A **pointer** is an object that holds a memory address as its value. Pointer types are declared using an asterisk (*). i.e. `int* ptr;`. Always initialize your pointers.
+
+Pointers behave much like lvalue references. Some main differences between the two:
+
+- References must be initialized, pointers are not required to (but should be)
+- References are not objects, pointers are
+- References can not be reseated, pointers can
+- References must always point at an object, pointers can point to nothing
+- References are safe from dangling references, pointers are not
+
+**Favor references over pointers whenever possible**.
+
+A **dangling pointers** is a pointer that is holding the address of an object that is no longer valid.
+
+A **null pointer** can be initialized with empty initializer or the `nullptr` keyword. Always verify non-null pointer before dereferencing it. Further, pointers implicitly convert to Boolean values, with null pointer a value of false. It is also acceptable to use `assert(ptr);`.
+
+However, there is NO convenient way to determine whether a non-null pointer is pointing to a valid object or dangling (pointing to an invalid object). Thus, ensure that any pointer that is not pointing at a valid object is set to `nullptr`.
+
+A **pointer to a `const` value** is a non-const pointer that points to a constant value. i.e. `const int* ptr { &x };` given x is a const int.
+
+A **const pointer** is a pointer whose address cannot be changed after initialization. i.e. `int* const ptr { &x };`
+
+Now it is possible to combine the two to have a const pointer to a const value.
+
+Three ways to pass data to functions:
+
+```c++
+using string = std:string;
+void passByValue(string val);
+void passByReference(string& val);
+void passByAddress(string* val);
+int main() {
+    string str{ "Hello" };
+    passByValue(str);
+    passByReference(str);
+    passByAddress(&str);
+}
+```
+
+### Return references
+
+It is allowed to **return by reference or by address**.
+
+Objects returned by reference must live beyond the scope of the function returning the reference, or a dangling reference will result.
+
+Never return a local variable by reference. Avoid returning references to non-const local static variables.
+
+Prefer return by reference over return by address unless the ability to return “no object” (using `nullptr`) is important.
+
+### Memory allocation
+
+**Static** memory allocation happens for static and global variables which is allocated once at program start and persists throughout program life time.
+
+**Automatic** memory allocation happens for function parameters and local variables which is allocated when the relevant block is entered, and freed when the block is exited.
+
+**Dynamic** memory allocation allows requesting **heap memory** from the os when needed, using the `new` operator. i.e. `int* ptr{ new int { 6 } };`
+
+Dynamically allocated memory stays allocated until it is explicitly deallocated or until the program ends. **Memory leaks** happen when your program loses the address of some bit of dynamically allocated memory before giving it back to the operating system.
+
+The memory bing dynamically allocated to variable can be freed up when not needed, through the `delete <ptr>;` operator. Deleting a null pointer has no effect. Do delete the pointer before reassigning it a new value.
+
+Avoid having multiple pointers point at the same piece of dynamic memory. When deleting a pointer, set it to **nullptr** if it is not going out of scope immediately.
+
+## Program-defined types
+
+Consider Enums, Structs, Classes as program-defined types to distinguish from standard C++ defined types.
+
+Whenever you create a new program-defined type, name it starting with a capital letter.
+
+A program-defined type used in only one code file should be defined in that code file as close to the first point of use as possible.
+
+A program-defined type used in multiple code files should be defined in a header file with the same name as the program-defined type and then `#include` into each code file as needed.
+
+### Enumerations
+
+An **enumeration** (`enum`) is a compound data type where every possible value is defined as a symbolic constant. Enumerated types are considered part of the integer family of types. You can `static_cast` integers to a defined enumerator.
+
+```c++
+enum Color {
+    color_red,
+    color_green,
+    color_blue,
+};
+```
+
+An enumeration or enumerated type is the program-defined type itself. An enumerator is a symbolic constant that is a possible value for a given enumeration.
+
+Name your enumerated types starting with a capital letter. Name your enumerators starting with a lower case letter. Avoid assigning explicit values to your enumerators unless you have a compelling reason to do so.
+
+**Unscoped enumerations** are named such because they put their enumerator names into the same scope as the enumeration definition itself. If an unscoped enum is defined in the global scope, it pollutes the global scope and significantly raises the chance of naming collisions.
+
+One common way to reduce chances of naming collision is to prefix each enumerator with the name of the enumeration itself. A better way is to put the enumerated type definition in a namespace. It is also common to put enumerated types related to a class inside the scope region of the class.
+
+**Scoped enumeration** are strongly typed (no implicit integer convertion) and strongly scoped (enumerators scoped within the enumeration region). 
+
+```c++
+enum class Color {
+    red,
+    green,
+    blue,
+};
+```
+
+Enumerators must be accessed with prefixing the enumeration type. i.e. `Color c { Color::blue };`. `static_cast` can still be used to cast enumerators into integers. It is acceptable to use **operator overloading** to reduce the typing in conversions of scoped enumerators.
+
+### Structs
+
+A `struct` allows bundling multiple variables together into a single type. The variables that are part of the struct are called data **members** (or member variables).
+
+```c++
+struct Employee {
+    int id {};
+    int age {};
+    double wage { 0 }; // explicit default value
+};
+```
+
+To access a specific member variable, use the **member selection operator** `.` on normal variables or references of structs. For pointers, use the **pointer/arrow operator** `->` which does an implicit dereference of the pointer object before selecting the member.
+
+An **aggregate** data type is any type that can contain multiple data members. `structs` with only data members are aggregates.
+
+Aggregates use a form of initialization called **aggregate initialization** which is just a list of comma-separated initialization values. Each member in the struct is initialized in the order of declaration.
+
+When adding a new member to an aggregate, it's safest to add it to the bottom of the definition list so the initializers for other members don't shift.
+
+```c++
+int main() {
+    Employee frank = { 1, 32, 60000.0 }; // copy-list initialization
+    Employee robert ( 3, 45, 62500.0 );  // direct initialization (C++20)
+    Employee joe { 2, 28, 45000.0 };     // list initialization
+    return 0;
+}
+```
+
+Variables of a struct type can be const and must be initialized. Structs are generally passed by (const) reference to functions to avoid making copies.
+
+### Classes
+
+## STD Libraries
+
+### `<algorithm>`
+
+Includes functions like sort, fill, find, binary_search, reverse, shuffle, min/max, count_if.
+
+`std::find(start_iterator, end_iterator, target)` searches for the first occurrence of a value in a container. `std::find_if` works similarly but allows passing in a callable object (function pointer or lambda) that checks to see if a match is found.
+
+`std::count, std::count_if` works similarly and count all occurrences of element or elements fulfilling the condition.
+
+`std::sort` sorts an array to ascending with an optional custom comparing function.
+
+`std::for_each` applies a custom function to every element in an array, which is an alternative to writing a loop. It can also be parallelized for faster processing.
+
+Favor using functions from the algorithms library over writing your own functionality to do the same thing.
+
+### `<iostream>`
 
 `std::cout`, allows print text to program STDOUT. Similarily for `std::cerr` for print text to STDERR. Put a line break and flushes output with `std::endl`. Prefer to use `\n` for adding line breaks to avoid high frequency in flush.
 
@@ -614,7 +900,11 @@ When doing extraction with `std::cin`, an extraction of user input can fail for 
 
 What to do in this case where bad user input can be anticipated is to use `std::cin.fail()` to check if the extraction failed, then `std::cin.clear()` to reset the failure flag and something like `std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');` to skip what user entered (before hitting the enter key), any probably ask the user to enter again and tell them why it failed.
 
-#### `<random>`
+### `<iterator>`
+
+Contains functions like `begin, end` on arrays.
+
+### `<random>`
 
 Provides PRNG (Pseudo Random Number Generator) function that generates fairly evenly distributed random numbers.
 
@@ -652,7 +942,11 @@ namespace Random { // capital R to avoid conflicts with functions named random()
 }
 ```
 
-#### `<cassert>`
+### `<utility>`
+
+Provides useful types like Pairs, generic swap function
+
+### `<cassert>`
 
 An assertion tests if an expression evaluates to true. If not, the program terminates with an error message. This is useful to do precondition check anywhere fits.
 
@@ -664,11 +958,11 @@ If the macro `NDEBUG` is defined, the assert macro gets disabled.
 
 `static_assert(<condition>, "diagnostic_message");` to evaluate something at compile time.
 
-#### `<cstdint>`
+### `<cstdint>`
 
 For defining fixed-width integers.
 
-#### `<cstdlib>`
+### `<cstdlib>`
 
 Halt functions:
 
@@ -682,6 +976,6 @@ In a multi-threaded program, it is better to use `std::quick_exit()` to exit the
 
 Furthermore, `std::abort()` function causes your program to terminate abnormally. There is also `std::terminate()` which is typically used in conjunction with exceptions. Both does not do propery cleanups. Generally use exceptions for error handling.
 
-#### `<cmath>`
+### `<cmath>`
 
 Handy math functions. i.e. `pow, abs, max, min`
