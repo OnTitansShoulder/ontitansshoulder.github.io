@@ -14,6 +14,7 @@ jobs:
       - run: |
           pip install \
             'click==7.1.2' \
+            'jsmin==2.2.2' \
             'Jinja2==2.11.2' \
             'Markdown==3.3.3' \
             'MarkupSafe==1.1.1' \
