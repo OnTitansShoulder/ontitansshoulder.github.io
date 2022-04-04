@@ -10,34 +10,6 @@ Some of the images references from this notes are referenced from geeksforgeeks.
 
 # Data Structures Implementation
 
-## Heap
-
-A **heap** is a tree-based data structure that is essentially a complete tree in the sense that new elements are always filling in the last level from left to right, then bobble up the tree.
-
-Heap is only "partially sorted", that it can only yield a min/max value of all elements in the tree, one at a time. It is useful for **repeatedly removing objects from the heap to get ordered output**.
-
-Heap can be easily implemented using an array. Each insert and remove operation takes O(log(n)). Thus for n elements it can take O(nlog(n)) sorting with a heap, which is how the Heap Sort got its name.
-
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Heap-as-array.svg/330px-Heap-as-array.svg.png" />
-
-A tricky case where heap can be used is, given a matrix of numbers, how can you visit the numbers from the outter loop and closing in until all are visited, while always visit the smallest number possible.
-
-It is also useful when dynamically calculate medians of a set of numbers that have numbers shift around.
-
-In Java you can use `PriorityQueue` or `TreeSet`.
-
-Signs for using Heap:
-
-- Find the min or max from a given list of elements
-- Find the kth largest/smallest
-- When desires O(log(n)) for each operation
-
-Signs for not using Heap:
-
-- Find the closest value to some value (balanced BST)
-- Find the min/max from a given range (Segment Tree)
-- Use O(n) to find kth largest (Quick Select)
-
 ## Stack
 
 **Stack** is a **first-in-last-out** data structure, good for hold state (**temporarily**) then process more recent elements.
@@ -269,6 +241,34 @@ Java's `TreeMap` has a Red-Black tree implementation which allows it to do all b
         - After fixing z, we may have to fix ancestors of z as well
 
 https://www.geeksforgeeks.org/avl-tree-set-1-insertion/?ref=lbp
+
+## Heap
+
+A **heap** is a tree-based data structure that is essentially a complete tree in the sense that new elements are always filling in the last level from left to right, then bobble up the tree.
+
+Heap is only "partially sorted", that it can only yield a min/max value of all elements in the tree, one at a time. It is useful for **repeatedly removing objects from the heap to get ordered output**.
+
+Heap can be easily implemented using an array. Each insert and remove operation takes O(log(n)). Thus for n elements it can take O(nlog(n)) sorting with a heap, which is how the Heap Sort got its name.
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Heap-as-array.svg/330px-Heap-as-array.svg.png" />
+
+A tricky case where heap can be used is, given a matrix of numbers, how can you visit the numbers from the outter loop and closing in until all are visited, while always visit the smallest number possible.
+
+It is also useful when dynamically calculate medians of a set of numbers that have numbers shift around.
+
+In Java you can use `PriorityQueue` or `TreeSet`.
+
+Signs for using Heap:
+
+- Find the min or max from a given list of elements
+- Find the kth largest/smallest
+- When desires O(log(n)) for each operation
+
+Signs for not using Heap:
+
+- Find the closest value to some value (balanced BST)
+- Find the min/max from a given range (Segment Tree)
+- Use O(n) to find kth largest (Quick Select)
 
 ### Trie
 

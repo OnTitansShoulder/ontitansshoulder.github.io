@@ -23,13 +23,20 @@ tags: reference check
 - [luanjunyi.medium.com](https://luanjunyi.medium.com/the-table-of-contents-416d2240fa8e){target=_blank}
 - [allthingsdistributed.com](https://www.allthingsdistributed.com/){target=_blank}
 
-## Keep in Mind
-
-- [The Twelve Factors App](https://12factor.net/){target=_blank}
-
 ## Dive Deep
 
 - [A re-introduction to JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript/A_re-introduction_to_JavaScript){target=_blank}
 - [systems-performance-2nd-edition](https://www.brendangregg.com/systems-performance-2nd-edition-book.html){target=_blank}
+- [The Twelve Factors App](https://12factor.net/){target=_blank}
+
+## Books
+
+- [Designing Data-Intensive Applications](https://www.oreilly.com/library/view/designing-data-intensive-applications/9781491903063/){target=_blank} by Martin Kleppmann
+- [Enterprise Integration Patterns](https://www.enterpriseintegrationpatterns.com/){target=_blank} by Gregor Hohpe
+
+## Learnings from Incidents
+
+- [Facebook outage 2021-10](https://blog.cloudflare.com/october-2021-facebook-outage/){target=_blank}
+- [Roblox outage 2021-10-28](https://blog.roblox.com/2022/01/roblox-return-to-service-10-28-10-31-2021/){target=_blank}
 
 <!-- [](){target=_blank} -->

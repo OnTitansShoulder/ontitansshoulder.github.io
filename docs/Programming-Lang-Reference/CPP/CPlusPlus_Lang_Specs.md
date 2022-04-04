@@ -14,6 +14,8 @@ C++ language references:
 - [cplusplus.com](https://cplusplus.com/reference/){target=_blank}
 - [cppreference.com](https://en.cppreference.com/w/){target=_blank}
 
+Continue reading: https://www.learncpp.com/cpp-tutorial/stdvector-capacity-and-stack-behavior/
+
 ## Overview
 
 C++ is one of the popular high level languages and requires compiling source code into machine code for computer to run. C++ excels in situations where high performance and precise control over memory and other resources is needed. Some common places where C++ shines:
@@ -246,6 +248,8 @@ auto add(int x, int y) -> int;
 auto divide(double x, double y) -> double;
 auto printSomething() -> void;
 ```
+
+[Read more about casting](https://anteru.net/blog/2007/c-background-static-reinterpret-and-c-style-casts/){target=_blank}
 
 #### strings
 
