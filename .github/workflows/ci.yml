@@ -13,6 +13,7 @@ jobs:
           python-version: 3.9
       - run: |
           pip install \
+            'setuptools==49.2.1' \
             'click==7.1.2' \
             'jsmin==2.2.2' \
             'Jinja2==2.11.2' \
