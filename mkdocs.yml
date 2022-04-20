@@ -82,6 +82,7 @@ nav:
         - Effective Java: "Programming-Lang-Reference/Java/Best-Practices.md"
         - Java Design Patterns: "Programming-Lang-Reference/Java/Design-Patterns.md"
         - Testing Design Patterns: "Programming-Lang-Reference/Java/Testing-Design-Patterns.md"
+        - Java Std Lib Cheatsheet: "Programming-Lang-Reference/Java/Java_Std_Lib_Cheatsheet.md"
       - C++:
         - C++ Language Reference: "Programming-Lang-Reference/CPP/CPlusPlus_Lang_Specs.md"
       - Perl:
