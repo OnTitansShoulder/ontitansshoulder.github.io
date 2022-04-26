@@ -10,6 +10,14 @@ Some of the images references from this notes are referenced from geeksforgeeks.
 
 # Data Structures Implementation
 
+## These Data Structures are your friends:
+
+- Array, Matrix, LinkedList, Double LinkedList
+- Stack, Queue
+- Binary Search Tree, Trie, Heap
+- HashMap, HashSet
+- Graph Adjacent List
+
 ## Stack
 
 **Stack** is a **first-in-last-out** data structure, good for hold state (**temporarily**) then process more recent elements.
@@ -248,7 +256,7 @@ A **heap** is a tree-based data structure that is essentially a complete tree in
 
 Heap is only "partially sorted", that it can only yield a min/max value of all elements in the tree, one at a time. It is useful for **repeatedly removing objects from the heap to get ordered output**.
 
-Heap can be easily implemented using an array. Each insert and remove operation takes O(log(n)). Thus for n elements it can take O(nlog(n)) sorting with a heap, which is how the Heap Sort got its name.
+Heap can be easily implemented using an array. Each insert and remove operation takes O(log(n)). Thus for n elements it can take O(nlog(n)) sorting with a heap, which is how the Heap Sort got its name. Heapify an array using `SiftDown` approach (start from bottom of tree) takes O(n) to create the heap.
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Heap-as-array.svg/330px-Heap-as-array.svg.png" />
 
@@ -336,18 +344,79 @@ Signs for using a Trie:
 
 ### Segment Tree
 
-**Segment Tree** is a binary tree data structure that can be used to calulate the sums of elements within a given index range in `O(log(n))` time, while also allowing the data to be updated in `O(log(n))` time. It is mostly represented in array form (can also be built in pure tree structure with increased complexity), and maintain these properties;
+[**Segment Tree**](https://leetcode.com/articles/a-recursive-approach-to-segment-trees-range-sum-queries-lazy-propagation/#){target=_blank} is a binary tree data structure that can be used to calulate the sums of elements within a given index range in `O(log(n))` time, while also allowing the data to be updated in `O(log(n))` time. It is mostly represented in array form (can also be built in pure tree structure with increased complexity), and maintain these properties:
 
+- root node represents the total sum of data (entire interval)
 - leaf nodes are the elements of the input array
 - each internal node (non-leaf) represents the sum of all of its leaf nodes within its range
+- each child node represents about half the parent node's range
 - for each node at index `i` of the segment tree array, its left child is at `2*i + 1`, and right child at `2*i + 2`, and its parent at `(i-1) / 2`.
 - the size of the segment tree is bounded by `2 * 2^k - 1`, where `k` is the first number makes `2^k >= n`.
 
 ??? Note "Segment Tree"
-    The construction, updateIndex, getSum operations are all done in recursive mannor.
+    The construction, update, sumRange operations are all done in recursive mannor.
 
     ```java
-
+    class SegmentTree { 
+        private int[] segTree;
+        private int n;
+        public SegmentTree(int[] nums) {
+            n = nums.length;
+            segTree = new int[n * 4]; // ensure enough capacity, proof https://stackoverflow.com/a/65300626/6037495
+            buildSegTree(nums, 0, 0, n-1);
+        }
+        private void buildSegTree(int[] nums, int treeIndex, int lo, int hi) { 
+            if (lo == hi) { 
+                segTree[treeIndex] = nums[lo]; 
+                return; 
+            } 
+            int mid = lo + (hi - lo) / 2;
+            buildSegTree(nums, 2 * treeIndex + 1, lo, mid); // fill left child
+            buildSegTree(nums, 2 * treeIndex + 2, mid + 1, hi); // fill right child
+            segTree[treeIndex] = segTree[2 * treeIndex + 1] + segTree[2 * treeIndex + 2];
+        }
+        
+        public void update(int index, int val) {
+            updateSegTree(index, 0, 0, n-1, val);
+        }
+        private void updateSegTree(int numsIndex, int treeIndex, int lo, int hi, int val) {
+            if (lo == hi) {
+                segTree[treeIndex] = val;
+                return;
+            }
+            int mid = lo + (hi - lo) / 2;
+            if (mid < numsIndex) {
+                // look for numsIndex in the right half
+                updateSegTree(numsIndex, 2 * treeIndex + 2, mid + 1, hi, val);
+            }
+            else {
+                // look for numsIndex in the left half
+                updateSegTree(numsIndex, 2 * treeIndex + 1, lo, mid, val);
+            }
+            segTree[treeIndex] = segTree[2 * treeIndex + 1] + segTree[2 * treeIndex + 2];
+        } 
+        
+        public int sumRange(int left, int right) { 
+            return sumSegTree(0, 0, n-1, left, right); 
+        } 
+        private int sumSegTree(int treeIndex, int lo, int hi, int i, int j) { 
+            if (i > hi || j < lo) return 0; 
+            if (i <= lo && j >= hi) return segTree[treeIndex]; // this seg range [lo, hi] should all be used in the sum 
+            int mid = lo + (hi - lo) / 2; 
+            
+            // half of [lo, hi] are not relevant, shrink [lo, hi] 
+            if (i > mid) { // use the right half, [i, j] unchanged 
+                return sumSegTree(2 * treeIndex + 2, mid + 1, hi, i, j); 
+            } else if (j <= mid) { // use the left half, [i, j] unchanged 
+                return sumSegTree(2 * treeIndex + 1, lo, mid, i, j); 
+            } 
+            
+            // now [i, j] contains mid of [lo, hi], tree them as two separate partitions 
+            int leftSum = sumSegTree(2 * treeIndex + 1, lo, mid, i, mid); 
+            int rightSum = sumSegTree(2 * treeIndex + 2, mid + 1, hi, mid + 1, j); 
+            return leftSum + rightSum; 
+        } 
+    }
     ```
 
 ## Sorting
@@ -509,7 +578,7 @@ Signs for using DFS:
 
 Breath-First-Search (BFS) is an algorithm good for level-order traversing trees, topology sort, search in graphs.
 
-BFS can be implemented iteratively using a Queue. Consider use Set to track node visisted, or Map to track distances between visited nodes. Some problems can be optimized using two BFS traversing from two ends to reduce number of nodes visited.
+BFS can be implemented iteratively using a Queue. Consider use Set to track node visited, or Map to track distances between visited nodes. Some problems can be optimized using two BFS traversing from two ends to reduce number of nodes visited.
 
 Signs for using BFS:
 
@@ -640,7 +709,26 @@ The two pointers can move in the same direction or the opposite direction
 
 ### Topology Sort
 
-Classical problem where dependency relationships are clear.
+Classical problem where dependency relationships are clear. Topology sort sorts the Nodes within a Directed Acyclic Graph in an order that does not violate the edges relations.
+
+??? Note "Topology sort"
+    ```
+    L = Empty list that will contain the sorted elements
+    S = Set of all nodes with no incoming edge
+
+    while S is non-empty do
+        remove a node n from S
+        add n to tail of L
+        for each node m with an edge e from n to m do
+            remove edge e from the graph
+            if m has no other incoming edges then
+                insert m into S
+
+    if graph has edges then
+        return error   (graph has at least one cycle)
+    else 
+        return L   (a topologically sorted order)
+    ```
 
 ### Disjoint Sets for Union Find
 

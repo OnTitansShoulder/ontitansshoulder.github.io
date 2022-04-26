@@ -17,6 +17,8 @@ tags: reference check
 - [news.ycombinator.com](https://news.ycombinator.com/){target=_blank}
 - [insights.sei.cmu.edu](https://insights.sei.cmu.edu/blog/){target=_blank}
 - [particular.net/blog](https://particular.net/blog){target=_blank}
+- [konghq.com/blog](https://konghq.com/blog){target=_blank}
+- [lecloud.net](https://www.lecloud.net/){target=_blank}
 
 ## Inspiring Private Blogs
 
@@ -28,6 +30,8 @@ tags: reference check
 - [A re-introduction to JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript/A_re-introduction_to_JavaScript){target=_blank}
 - [systems-performance-2nd-edition](https://www.brendangregg.com/systems-performance-2nd-edition-book.html){target=_blank}
 - [The Twelve Factors App](https://12factor.net/){target=_blank}
+- [Sharding explained in deep](http://highscalability.com/blog/2009/8/6/an-unorthodox-approach-to-database-design-the-coming-of-the.html){target=_blank}
+- [Numbers Everyone Should Know](https://everythingisdata.wordpress.com/2009/10/17/numbers-everyone-should-know/){target=_blank}
 
 ## Books
 

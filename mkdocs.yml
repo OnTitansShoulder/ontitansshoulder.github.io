@@ -91,10 +91,11 @@ nav:
         - Shell Scripting: "Programming-Lang-Reference/Shell/Shell-Scripting.md"
       - Github Markdown Guide: "Programming-Lang-Reference/Github-Markdown.md"
       - Regex Cheatsheet: "Programming-Lang-Reference/Regex-Specs.md"
-    - Other Reading Notes:
+    - Reading Notes:
       - How Netflix Works: "Reading-Notes/How-Netflix-Works.md"
       - System Design Guide: "Reading-Notes/System-Design-Concepts.md"
       - Why Latency Matters: "Reading-Notes/Why-Latency-Matters.md"
       - Intro to DevOps and SRE: "Reading-Notes/DevOps_SRE.md"
       - Leading Without Formal Authority: "Reading-Notes/Leading-without-formal-authority.md"
+      - Google SRE Book: "Reading-Notes/Google-SRE-Book.md"
     - Good Reads: "Good-Reads.md"

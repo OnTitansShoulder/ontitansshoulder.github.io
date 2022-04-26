@@ -96,14 +96,24 @@ Indent with 4 spaces. Put the opening curly brace on the same line as the statem
 Every C++ program must have a main function or it will fail to link.
 
 ```c++
-int main()
-{
-   // main function body
-   return 0;
+int main() {
+    // main function body
+    return 0;
 }
 ```
 
 The main function must have int return type, which will be the exit code. An exit code of 0 typically signals the program execution was successful.
+
+To make the program take command line arguments, write the main function this way:
+
+```c++
+int main(int argc, char* argv[]) {
+    // main function body
+    return 0;
+}
+```
+
+`argc` is the count of arguments passed to the program and is >= 1, since the first argument is always the absolute path to the program. `argv` is an array of C-style strings and holds the command line arguments.
 
 ### Data and Variables
 
@@ -518,6 +528,94 @@ int main() {
 
 Now when you decide to make v2 the official version, switch the inline keyword of the two versions.
 
+#### Ellipsis
+
+Ellipsis argument allows passing a variable number of parameters to a function. Ellipsis are potentially dangerous because it does not know how many parameters are actually passed, nor does it do type check for the passed data types.
+
+Functions that use ellipsis must have at least one non-ellipsis parameter. It is conceptually useful to think of the ellipsis as an array that holds any additional parameters beyond those in the argument_list.
+
+```c++
+#include <cstdarg> // needed to use ellipsis
+
+int getSum(int count, ...) {
+    int sum { 0 };
+
+    // We access the ellipsis through a va_list, so let's declare one
+    std::va_list list;
+
+    // We initialize the va_list using va_start.
+    va_start(list, count);
+
+    for (int i { 0 }; i < count; ++i) {
+        sum += va_arg(list, int); // auto advances the pointer
+    }
+
+    // cleanup va_list
+    va_end(list);
+
+    return sum;
+}
+```
+
+In general Ellipsis should be avoided unless there is a compelling reason not to.
+
+#### Lambda
+
+A **lambda expression**, aka function literal, allows us to define an anonymous function inside another function, and take advantage of the closure from naming conflicts. It is stored in the program as a functor object, which overloads the `()` operator. It takes the form:
+
+```c++
+// captureClause, parameters, and returnType can be omitted if not required
+[ captureClause ] ( parameters ) -> returnType {
+    // statements;
+}
+```
+
+A lambda can be stored in a variable and passed later. These are valid ways:
+
+```c++
+int main()
+{
+  // A regular function pointer. Only works with an empty capture clause.
+  double (*addNumbers1)(double, double){
+    [](double a, double b) {
+      return (a + b);
+    }
+  };
+
+  // Using std::function. The lambda could have a non-empty capture clause.
+  std::function addNumbers2{ // note: pre-C++17, use std::function<double(double, double)> instead
+    [](double a, double b) {
+      return (a + b);
+    }
+  };
+
+  // Using auto. Stores the lambda with its real type.
+  auto addNumbers3{
+    [](double a, double b) {
+      return (a + b);
+    }
+  };
+
+  return 0;
+}
+```
+
+Use auto when initializing variables with lambdas, and std::function if you can’t initialize the variable with the lambda.
+
+Since C++14 it is allowed to use auto for lambda parameters to define generic lambdas. A unique lambda will be **generated** for each different type that auto resolves to.
+
+The **capture clause** is used to (indirectly) give a lambda access to variables available in the surrounding scope that it normally would not have access to, by enclosing the variable name (comma-separated) within the `[]` syntax.
+
+The captured variables of a lambda are constant **clones** of the outer scope variables, not the actual variables. The cloned variable can be made **mutable** with the `mutable` keyword added after the parameter list. Captured variables are members of the lambda object, their values are persisted across multiple calls to the lambda.
+
+Passing mutable lambdas can be dangerous as the passed lambda can be copies of its functor. To pass it as a reference, wrap it with `std::ref()` function which yields a `std::reference_wrapper` type to ensure the lambda does not make copies while being passed to another function.
+
+You can also capture variables by reference (prepending `&`) to allow it affect the value of the variable within lambda calls. There is a chance for leaving dangling references in lambda so ensure captured variables outlive the lambda.
+
+**Default capture** can be used to capture all variables mentioned in the lambda. To capture by value, pass in `=`; to capture by reference, pass in `&`. Default captures can be mixed with normal captures to capture some variables by value and some by reference, default capture operator must be the first in the list.
+
+You can define new variable from captured variables in the capture brackets using initialization braces. But it is best to do it outside and capture it.
+
 #### Function pointers
 
 C++ implicitly converts a function into a **function pointer** as needed. Functions used as arguments to another function are sometimes called **callback functions**.
@@ -875,6 +973,54 @@ int main() {
 Variables of a struct type can be const and must be initialized. Structs are generally passed by (const) reference to functions to avoid making copies.
 
 ### Classes
+
+By convention, class names should begin with an upper-case letter. The class name effectively acts like a namespace for the nested type.
+
+Type alias members make code easier to maintain and can reduce typing. Generally, nested types should only be used when the nested type is used exclusively within that class.
+
+```c++
+class DateClass {
+private:
+    // private members
+    int m_year {}; // m_ prefix helps distinguish from local variables
+    int m_month {};
+    int m_day {};
+public:
+    // public members
+    // constructor
+    DateClass () = default; // tells compiler to create a default constructor
+    DateClass () : m_year{ 1999 }, m_month{ 1 }, m_day{ 1 } { // member initializer list
+    }
+    DateClass (int year, int month, int day) {
+        m_year = year;
+        m_month = month;
+        m_day = day;
+    }
+    DateClass (int year, int month, int day) // preferred, same form with initializer which can also initialize const variables
+        : m_year{ year }, m_month{ month }, m_day{ day } {
+
+    }
+protected:
+    // protected members
+};
+```
+
+When not specify any access specifiers, members are private by default. Member functions can be defined inside or outside of a class.
+
+When all members variables of a class (or struct) are public, we can use aggregate initialization to initialize the class (or struct) directly using list-initialization. Otherwise specify a constructor.
+
+Initialize variables in the initializer list in the same order in which they are declared in your class.
+
+Delegating constructors allows calling another constructor from one constructor. It is aka constructor chaining. To do so, put the other constructor call inside the initilization list, not in the body of the constructor.
+
+A class exposes the **`this` pointer** to its active instance to refer to its own object for accessing member variables and functions. It can also be reassigned to overwrite the implicit object. Like so: `*this = Foo(); // Foo is the constructor`. It can also be returned by functions to allow chaining calls.
+
+Destructors are like default constructors but has its name preceded by a `~`. Only one destructor per is class allowed. Destructors are called automatically when the object is destroyed.
+
+Note that if you use the `exit()` function, your program will terminate and no destructors will be called. Be wary if you’re relying on your destructors to do necessary cleanup work.
+
+#### Class templates
+
 
 ## STD Libraries
 
