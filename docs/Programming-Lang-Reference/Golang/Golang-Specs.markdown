@@ -102,6 +102,8 @@ func main() {
 
 When you run commands like `go install, go build, or go run`, the go command will automatically download the remote module and record its version in your `go.mod` file.
 
+An interesting [article](https://maelvls.dev/go111module-everywhere/){target=_blank} about GO111MODULE.
+
 Module dependencies are automatically downloaded to the `pkg/mod` subdirectory of the directory indicated by the `$GOPATH` environment variable.
 
 To remove all downloaded modules, use `go clean -modcache`

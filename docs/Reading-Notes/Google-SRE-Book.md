@@ -392,4 +392,147 @@ Design your monitoring system with an eye toward simplicity:
 - rules for alerting for incidents should be as simple, predictable, and reliable as possible
 - data collection, aggregation, and alerting configuration that is rarely exercised should be up for removal
 - signals that are collected, but not exposed in any prebaked dashboard nor used by any alert, are candidates for removal
+- alerts should be actionable. If some condition is not actionable then they should not be alerts. Add filters to apply non-actionable conditions
+- alerts should reflect its urgenciness and it should be easy to tell if it can wait until working hours for remediation
+- make sure the same cause does not page multiple teams, causing duplicate work. Others can be informed but not paged. Alerts should page the most relevant teams.
+
+In Google’s experience, basic collection and aggregation of metrics, paired with alerting and dashboards, has worked well as a relatively standalone system.
+
+It’s better to spend much more effort on catching **symptoms** than **causes**; when it comes to causes, only worry about very definite, very imminent causes.
+
+Actionable alerts should result in work to automate the actions or fix real issues. While short-term fix can be acceptable, long-term fix should also be tracked instead of getting forgotten and regression happens. Pages with rote, algorithmic responses should be a red flag.
+
+Achieving a successful on-call rotation and product includes choosing to alert on symptoms or imminent real problems, adapting your targets to goals that are actually achievable, and making sure that your monitoring supports rapid diagnosis.
+
+### Automation
+
+Software-based automation is superior to manual operation in most circumstances, although doing automation thoughtlessly can create as many problems as it solves.
+
+#### Value of automation
+
+- scales with the system
+- consistency in executing procedures and results
+- can evolve into a platform, extensible for more use cases and for profit, and adding monitoring and extract metrics
+- faster than manual work, reduce mean time to repair (MTTR) and time to action
+- massive amount of human time savings
+
+For truly large services, the factors of consistency, quickness, and reliability dominate most conversations about the trade-offs of performing automation.
+
+Reliability is the fundamental feature, and autonomous, resilient behavior is one useful way to get that.
+
+#### Use cases
+
+- manage machines user accounts
+- cluster scaling up and down
+- software/hardware installation, provision, or decommission
+- new software version rollout
+- runtime configuration updates
+- runtime dependency updates
+- etc.
+
+A hierarchy of automation classes, taking service failover as an example:
+
+1. no automation, manual failover that touches multiple places
+2. externally maintained specific automation, i.e. a script owned by some SRE engineer to do failover one specific system
+3. externally maintained generic automation, a generic tool that can be used to failover any system that is properly onboarded
+4. internally maintained specific automation, i.e. a database's own failover mechanism that can be used for failover, but managed by the database owner
+5. system that needs no automation, or automatically detects faults and carries out the failover
+
+Automation needs to be careful about relying on implicit "safety" signals or it can make unwanted changes that may potentially harm your system.
+
+#### Case studies
+
+**Google Ads SRE - MySQL on Borg**: Borg's infrastructure does frequent restarts and shifting jobs around to optimize resource utilization. MySQL instances gets interrupted a lot on Borg. Quick failover becomes a requirement. The SRE team developed a daemon to automate the failover process and made the system highly available on Borg. It did come with a cost that all MySQL dependencies must implement more failure-handling logic in their code. The win is still obvious in hardware savings (60%), and hands-free maintenance.
+
+**Cluster Infra SRE - Cluster Turnups**: Setting up new clusters for large services such as BigTable is a long and complex process. Early automation focused on accelerating cluster delivery through scripted SSH steps to distribute packages and initialize services. Flags for fine-tuning configurations get added later on which caused wasted time in spotting misconfigurations causing out-of-memory fails. Prodtests gets introduced to allow unit testing of real-world services to verify the cluster configurations. New bugs found extends the prodtests set. With this it is possible to predict the time for a cluster to go from "network-ready" to "live-traffic-ready".
+
+With thousands of shell scripts owned by dozens of teams, reducing the turnup time to one week becomes hard to do, as bugs found by the unit tests takes time to be fixed. Then the idea of "code fixing misconfigurations" arose. So each test is paired with a fix, and each fix is idempotent and safe to resolve; which means teams must be comfortable to run the fix-scans every 15 minute without fearing anything.
+
+The flaws in this process are that: 1) the latency between a test -> fix -> another test sometimes introduced flaky tests; 2) not all tests are idempotent and a flaky test with fix may render the system in an inconsistent state; 3) test code dies when they are not in sync with the codebase that it covers
+
+Due to some security requirement, the Admin Server becomes a mandate of service teams' workflows. SREs moved from writing shell scripts in their home directories to building peer-reviewed RPC servers with fine-grained ACLs.
+
+It becomes clear that the turnup processes had to be owned by the teams that owned the services. A Service-Oriented Architecture is built around the Admin Server: Admin Server to handle cluster turnup/turndown RPCs, while each team would provide the contract (API) that the turnup automation needed, while still being free to change the underlying implementation.
+
+### Release Engineering
+
+Release engineering can be concisely described as building and delivering software. It touches on source code management, compilers, build configuration languages, automated build tools, package managers, and installers. It requires skills from domains: development, configuration management, test integration, system administration, and customer support.
+
+At Google. Release engineers work with software engineers (SWEs) in product development and SREs to define all the steps required to release software—from how the software is stored in the source code repository, to build rules for compilation, to how testing, packaging, and deployment are conducted.
+
+Release engineers define best practices for using internal tools in order to make sure projects are released using consistent and repeatable methodologies.
+
+Teams should budget for release engineering resources at the beginning of the product development cycle. It’s cheaper to put good practices and process in place early, rather than have to retrofit your system later. It is essential that the developers, SREs, and release engineers work together.
+
+#### Philosophy
+
+Release engineering is guided by four major principles:
+
+- Self-Service Model
+    - teams must be self-sufficient to achieve high release velocity
+    - release processes can be automated
+    - invole engineer only when problems arise
+- High Velocity
+    - frequent releases with fewer changes between versions
+    - better testing and troubleshooting, less changes to look through between releases
+    - can accumulate builds then pick a version to deploy, or simply "push on green"
+- Hermetic Builds
+    - build tools must ensure consistency and repeatability
+    - build process is self-contained and does not rely on external services outside the build environment
+- Enforcement of Policies and Procedures
+    - gate operations ensure security and access control
+        - approve merging code changes
+        - release process actions selection
+        - creating a new release
+        - reploying a new release
+        - updates build configuration
+    - report what has changed in a release
+        - speeds up troubleshooting
+
+#### CI, CD
+
+Goolge's software lifecycle:
+
+- Building binaries, define build targets
+    - also saves build date, revision number, and build id for record-keeping
+- Branching
+    - all code branches off from the main source code tree
+    - major projects branch from mainline at a specific revision and never merge from mainline again
+    - bug fixes in mainline are cherry-picked into the project branch for inclusion in releases
+- Testing
+    - mainline runs unit tests at each submitted change
+    - create releases at the revision number of last continuous test build that completed all tests
+    - release re-run the unit tests and create an audit trail for all tests passed
+- Packaging
+    - software is distributed via Midas Package Manager (MPM)
+    - packaged files along with owners and permissions, named, versioned with unique hash, labeled, and signed for authenticity
+    - labels are used to indicate the environment intended for that package, i.e. dev, canary, or production
+- Rapid
+    - the CI/CD platform. Blueprints configures and defines the build and test targets, rule for deployment, and admin information
+    - role-based access control determine who can perform actions on a project
+    - compilation and testing occur in parallel and each in their dedicated environments
+    - artifacts then gets through system testing and canary deployments
+    - each step results are logged, a report is created for what changed since last release
+- Deployment
+    - for more compicated deployments, Sisyphus kicks in as a general-purpose rollout automation framework
+    - Rapid creates a rollout in a long-running Sisyphus job, and pass on the MPM package with the versioned build label
+    - rollout can be simple fan out or progressive depending on the service's risk profile
+
+#### Configuration Management
+
+Although sounds simple, configuration changes are a potential source of instability.
+
+Configuration management at Google requires storing configuration in the source code repository and enforcing a strict code review. Here are some strategies:
+
+- update configuration at the mainline
+    - decouples binary releases from configuration changes
+    - may lead to skew between checked-in version and running version of configuration files
+- pack configuration files with binary files
+    - built into MPM package
+    - simplifies deployment, limits flexibility
+- pack configuration files as configuration MPMs
+    - dedicated MPM package for configuration files
+    - can pair with a binary MPM, both package can be built independently then deployed together within the same release
+- read configuration from an external store
+    - good for projects that need frequent or dynamically updated configurations
 
