@@ -536,3 +536,104 @@ Configuration management at Google requires storing configuration in the source 
 - read configuration from an external store
     - good for projects that need frequent or dynamically updated configurations
 
+### Simplicity
+
+Changes have a side effect of introducing bugs and instability to the system.
+
+A good summary of the SRE approach to managing systems is: "At the end of the day, our job is to keep agility and stability in balance in the system." SREs work to create procedures, practices, and tools that render software more reliable. At the same time, SREs ensure that this work has as little impact on developer agility as possible.
+
+Reliable processes tend to actually increase developer agility: rapid, reliable production rollouts make changes in production easier to see. Once a bug surfaces, it takes less time to find and fix that bug.
+
+#### "Boring" virtue
+
+"Borning" is a desireable property when it comes to software source code. The lack of excitement, suspense, and puzzles, and minimizing accidental complexity helps predictably accomplish the software's business goals.
+
+#### Remove bloat
+
+When code are bound to delete, delete them, never do commenting them out, or put a flag and hope they can be used at some point later. SRE should promote practices that ensure existing code all serve the essential purpose, routinely removing dead code, and building bloat detection into all levels of testing.
+
+Software bloat are the tendency of software to become slower and bigger over time as a result of constant additional features. A smaller project is easier to understand, easier to test, and frequently has fewer defects.
+
+#### Minimal, Modularity, Simple Release
+
+The ability to make changes to parts of the system in isolation is essential to creating a supportable system. Loose coupling between binaries, or between binaries and configuration, is a simplicity pattern that simultaneously promotes developer agility and system stability.
+
+Versioning APIs allows developers to continue to use the version that their system depends upon while they upgrade to a newer version in a safe and considered way. One of the central strengths and design goals of Google’s protocol buffers was to create a wire format that was backward and forward compatible.
+
+Writing clear, minimal APIs is an essential aspect of managing simplicity in a software system.
+
+Prefer simple releases. It is much easier to measure and understand the impact of a single change rather than a batch of changes released simultaneously.
+
+## Practices
+
+Successfully operating a service entails a wide range of activities: developing monitoring systems, planning capacity, responding to incidents, ensuring the root causes of outages are addressed, and so on.
+
+A healthy way to operate a service permits self-actualization and takes active control of the direction of the service rather than reactively fights fires.
+
+Service Reliability Hierarchy: the elements that go into making a service reliable:
+
+<img src="https://lh3.googleusercontent.com/3gX2qgys2I-9HnEIvXUA10ed3AILvg5MclnKWBquEkJKP3g5_kD6WR7Ptwp3TwAGla1DuSmHv64MdTtACNLlArFVq7BwbTrTVhigsA=s900" />
+
+- Monitoring - you want to be aware of problems before your users notice them
+- Incident Response - it is a tool we use to achieve our larger mission and remain in touch with how distributed computing systems actually work and fail
+- Postmortem and RCA - building a blameless postmortem culture is the first step in understanding what went wrong and prevent same issue gets popped up
+- Testing - offer some assurance that our software isn’t making certain classes of errors before it’s released
+- Capacity Planning - how requests are load-balanced and potential overload handled, prevent cascading failures
+- Development - large-scale system design and implementation
+- Product - reliable product launched at scale
+
+### Practical Alerting
+
+Monitoring is the fundamental element to running a stable service. Monitoring a large system is challenging:
+
+- the sheer number of components to analyze
+- maintain low maintenance burden on engineers responsible for the system
+
+#### Borgmon story
+
+Borgmon is the monitoring system for the job scheduling infrasture.
+
+It relies on a common data exposition format which allowed mass data collection with low overheads and avoids the costs of subprocess execution and network connection setup. The data is used both for rendering charts and creating alerts. The history of the collected data can be used for alert computation as well.
+
+A Borgmon can collect from other Borgmon, so it can build hierarchies that follow the topology of the service, aggregating and summarizing information and discarding some strategically at each level. Some very large services shard below the cluster level into many scraper Borgmon, which in turn feed to the cluster-level Borgmon.
+
+##### App instrumentation
+
+Borgmon used a format to export metrics in plain text as space-separated keys and values, one metric per line.
+
+Adding a metric to a program only requires a single declaration in the code where the metric is needed.
+
+The decoupling of the variable definition from its use in Borgmon rules requires careful change management, and this trade-off has been offset with proper tools to validate and generate monitoring rules.
+
+Borgmon uses service discover to figure out the targets to scrape metric data from. The target list is dynamic whic hallows the monitoring to scale automatically.
+
+Additional "synthetic" metrics variables for each target helps detect if the monitored tasks are unavailable.
+
+##### Time-series data storage
+
+Borgmon stores all the data in an in-memory database, regularly checkpointed to disk. Data points are of form `(timestamp, value)`, and stored in chronological lists aka time-series. Each time-series is named by a unique set of labels of form `name=value`.
+
+A time-series is conceptually a one-dimensional matrix of numbers, progressing through time. As you add permutations of labels to this time-series, the matrix becomes multidimensional.
+
+In practice, the structure is a fixed-sized block of memory, known as the time-series arena, with a garbage collector that expires the oldest entries once the arena is full. The time interval between the most recent and oldest entries in the arena is the horizon, which indicates how much queryable data is kept in RAM.
+
+Periodically, the in-memory state is archived to an external system known as the Time-Series Database (TSDB). Borgmon can query TSDB for older data and, while slower, TSDB is cheaper and larger than a Borgmon’s RAM.
+
+Time-series are stored as sequences of numbers and timestamps, which are referred to as vectors. The name of a time-series is a labelset.
+
+To make a time-series identifiable, it must have labels:
+
+- var - name of the variable/metric
+- job - type of server being monitored
+- service - collection of jobs that provide a service to users
+- zone - datacenter location/region
+
+Together these label variables appear like this `{var=http_requests,job=webserver,instance=host0:80,service=web,zone=us-west}[10m]` called variable expression. A search for a labelset returns all matching time-series in a vector and does not require all labels to be specified. A duration can be specified to limit the range of data to query from.
+
+##### Rules
+
+Borgmon rules consists of simple algebraic expressions that compute time-series from other time-series. Rules run in a parallel threadpool where possible.
+
+Aggregation is the cornerstone of rule evaluation in a distributed environment. 
+
+A counter is any monotonically non-decreasing variable. Gauges may take any value they like.
