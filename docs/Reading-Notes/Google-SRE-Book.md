@@ -564,7 +564,7 @@ Writing clear, minimal APIs is an essential aspect of managing simplicity in a s
 
 Prefer simple releases. It is much easier to measure and understand the impact of a single change rather than a batch of changes released simultaneously.
 
-## Practices
+## Best Practices
 
 Successfully operating a service entails a wide range of activities: developing monitoring systems, planning capacity, responding to incidents, ensuring the root causes of outages are addressed, and so on.
 
@@ -589,7 +589,7 @@ Monitoring is the fundamental element to running a stable service. Monitoring a 
 - the sheer number of components to analyze
 - maintain low maintenance burden on engineers responsible for the system
 
-#### Borgmon story
+#### The Borgmon story
 
 Borgmon is the monitoring system for the job scheduling infrasture.
 
@@ -634,6 +634,224 @@ Together these label variables appear like this `{var=http_requests,job=webserve
 
 Borgmon rules consists of simple algebraic expressions that compute time-series from other time-series. Rules run in a parallel threadpool where possible.
 
-Aggregation is the cornerstone of rule evaluation in a distributed environment. 
+Borgmon rules create new time-series, so the results of the computations are kept in the time-series arena and can be inspected just as the source time-series are. The ability to do so allows for ad hoc querying, evaluation, and exploration as tables or charts.
 
-A counter is any monotonically non-decreasing variable. Gauges may take any value they like.
+Aggregation is the cornerstone of rule evaluation in a distributed environment. A counter is any monotonically non-decreasing variable. Gauges may take any value they like.
+
+##### Alerting
+
+When an alerting rule is evaluated by a Borgmon, the result is either true, in which case the alert is triggered, or false. Alerts sometimes toggle their state quickly, thus the rules allow a minimum duration (at least two rule evalutation cycles) for which the alerting rule must be true before the alert is sent.
+
+The alert rule allows templating for filling out a message template with contextual information when the alert fires and sent to alerting RPC.
+
+Alerts get first sent as "triggering" and then as "firing". The Alertmanager is responsible for routing the alert notification to the correct destination, and alerts will be dedupted, snoozed, or fan out/in base on the labelsets.
+
+##### Sharding Monitoring
+
+A Borgmon can import time-series data from other Borgmon. To avoid scaling bottlenecks, a streaming protocol is used to transmit time-series data between Borgmon. Such deployment uses two or more global Borgmon for top-level aggregation and one Borgmon in each datacenter to monitor all the jobs running at that location.
+
+Upper-tier Borgmon can filter the data they want to stream from the lower-tier Borgmon, so that the global Borgmon does not fill its arena with all the per-task time-series from the lower tiers. Thus, the aggregation hierarchy builds local caches of relevant time-series that can be drilled down into when required.
+
+<img src="https://lh3.googleusercontent.com/tfvoHGTMSiwTrPQTYsnvWP-8mpGaAh6P1A20TXwol1lmaXOFvj3-Ne0J86jnuqfQlrIC-U9N2u5qrcp6rr4LeZk1LkQkK9MwYJPVqWs=s900" />
+
+##### Black-box monitoring
+
+Borgmon is a white-box monitoring system—it inspects the internal state of the target service, and the rules are written with knowledge of the internals in mind.
+
+Prober is used to run a protocol check against a target and reports success or failure. Prober can also validate the response payload of the protocol to verify that the contents are expected, and even extract and export values as time-series. The prober can send alerts directly to Alertmanager, or its own varz can be collected by a Borgmon.
+
+Teams often use Prober to export histograms of response times by operation type and payload size so that they can slice and dice the user-visible performance. Prober is a hybrid of the check-and-test model with some richer variable extraction to create time-series.
+
+Prober can be pointed at either the frontend domain or behind the load balancer to know that traffic is still served when a datacenter fails, or to quickly isolate an edge in the traffic flow graph where a failure has occurred.
+
+##### Configuration
+
+Borgmon configuration separates the definition of the rules from the targets being monitored. The same sets of rules can be applied to many targets at once, instead of writing nearly identical configuration over and over.
+
+Borgmon also supports language templates to reduce repetition and promote rules reuse.
+
+Borgmon adds labels indicating the target’s breakdown (data type), instance name (source of data), and the shard and datacenter (locality or aggregation) it occupies, which can be used to group and aggregate those time-series together.
+
+The templated nature of these libraries allows flexibility in their use. The same template can be used to aggregate from each tier.
+
+#### Borgmon of Ten Years
+
+Borgmon transposed the model of check-and-alert per target into mass variable collection and a centralized rule evaluation across the time-series for alerting and diagnostics. This decoupling allows the size of the system being monitored to scale independently of the size of alerting rules.
+
+New applications come ready with metric exports in all components and libraries to which they link, and well-traveled aggregation and console templates, which further reduces the burden of implementation.
+
+Ensuring that the cost of maintenance scales sublinearly with the size of the service is key to making monitoring (and all sustaining operations work) maintainable. This theme recurs in all SRE work, as SREs work to scale all aspects of their work to the global scale.
+
+The idea of treating time-series data as a data source for generating alerts is now accessible to everyone through those open source tools like Prometheus, Riemann, Heka, and Bosun.
+
+### On-Calls
+
+Historically, On-calls in IT context are performed by dedicated Ops teams tasked with the primary responsibility of keeping the service(s) for which they are responsible in good health.
+
+The SRE teams are quite different from purely operational teams in that they place heavy emphasis on the use of engineering to approach problems that exist at a scale and would be intractable without software engineering solutions.
+
+#### Duty
+
+When on-call, an engineer is available to triage the problem and perform operations on production systems possibly involving other team members and escalating as needed, within minutes. Typical values are 5 minutes for user-facing or otherwise highly time-critical services, and 30 minutes for less time-sensitive systems, depending on a service's SLO.
+
+Nonpaging production events, such as lower priority alerts or software releases, can also be handled and/or vetted by the on-call engineer during business hours.
+
+Many teams have both a primary and a secondary on-call rotation to serve as a fall-through for the pages. It is also common for two related teams to serve as secondary on-call for each other, with fall-through handling duties, rather than keeping a dedicated secondary rotation.
+
+#### Balance
+
+The quantity of on-call can be calculated by the percent of time spent by engineers on on-call duties. The quality of on-call can be calculated by the number of incidents that occur during an on-call shift.
+
+Google strive to invest at least 50% of SRE time into engineering: of the remainder, no more than 25% can be spent on-call, leaving up to another 25% on other types of operational, nonproject work.
+
+Using the 25% rule to derive the minimum number of SREs requried to sustain a 24/7 on-call rotation. Prefer a multi-site team of on-call shifts for these reasons:
+
+- a multi-site "follow the sun" rotation allows teams to avoid night shifts altogether
+- limiting the number of engineers in the on-call rotation ensures that engineers do not lose touch with the production systems
+
+For each on-call shift, an engineer should have sufficient time to deal with any incidents and follow-up activities such as writing postmortems.
+
+#### Feeling Safe
+
+It’s important that on-call SREs understand that they can rely on several resources that make the experience of being on-call less daunting than it may seem. The most important on-call resources are:
+
+- Clear escalation paths
+- Well-defined incident-management procedures
+- A blameless postmortem culture
+
+Look into adopting a formal incident-management protocol that offers an easy-to-follow and well-defined set of steps that aid an on-call engineer to rationally pursue a satisfactory incident resolution with all the required help.
+
+Build or adopt tools that automates most of the incident management actions, so the on-call engineer can focus on dealing with the incident, rather than spending time and cognitive effort on mundane actions such as formatting emails or updating several communication channels at once.
+
+When an incident occurs, it’s important to evaluate what went wrong, recognize what went well, and take action to prevent the same errors from recurring in the future. SRE teams must write postmortems after significant incidents and detail a full timeline of the events that occurred.
+
+Mistakes happen, and software should make sure that we make as few mistakes as possible. Recognizing automation opportunities is one of the best ways to prevent human errors.
+
+#### Avoid Overload
+
+The SRE team and leadership are responsible for including concrete objectives in quarterly work planning in order to make sure that the workload returns to sustainable levels.
+
+Misconfigured monitoring is a common cause of operational overload. Paging alerts should be aligned with the symptoms that threaten a service’s SLOs. All paging alerts should also be actionable. Low-priority alerts that bother the on-call engineer every hour (or more frequently) disrupt productivity, and the fatigue such alerts induce can also cause serious alerts to be treated with less attention than necessary.
+
+It is also important to control the number of alerts that the on-call engineers receive for a single incident, regulate the alert fan-out by ensuring that related alerts are grouped together by the monitoring or alerting system. Noisy alerts that systematically generate more than one alert per incident should be tweaked to approach a 1:1 alert/incident ratio.
+
+In extreme cases, SRE teams may have the option to "give back the pager"—SRE can ask the developer team to be exclusively on-call for the system until it meets the standards of the SRE team in question. It is appropriate to negotiate the reorganization of on-call responsibilities with the development team, possibly routing some or all paging alerts to the developer on-call.
+
+#### Avoid Underload
+
+When SREs are not on-call often enough, they start losing confidence in operations touching the production, and creating knowledge gaps.
+
+SRE teams should be sized to allow every engineer to be on-call at least once or twice a quarter, thus ensuring that each team member is sufficiently exposed to production.
+
+Regular trainings and exercises should also be conducted to help improve troubleshooting skills and knowledge of the services.
+
+### Effective Troubleshooting
+
+> Be warned that being an expert is more than understanding how a system is supposed to work. Expertise is gained by investigating why a system doesn't work.
+
+While you can investigate a problem using only the generic process and derivation from first principles, it is less efficient and less effective than understanding how things are supposed to work.
+
+#### Theory
+
+Think of the troubleshooting process as an application of the hypothetico-deductive method: given a set of observations about a system and a theoretical basis for understanding system behavior, we iteratively hypothesize potential causes for the failure and try to test those hypotheses.
+
+We’d start with a problem report telling us that something is wrong with the system. Then we can look at the system’s telemetry and logs to understand its current state. This information, combined with our knowledge of how the system is built, how it should operate, and its failure modes, enables us to identify some possible causes.
+
+<img src="https://lh3.googleusercontent.com/c7gwlSuqwgJcWvlzTAK9z4sN5Qm7OWmyXv1_ImvJSURPsljkIjCflKkb2ZRF_8GFONLpTv8R2DWGELQYJBKxL7DywP8iE59Mk6GR=s893" />
+
+#### Avoid Pitfalls
+
+The following are common pitfalls to avoid:
+
+- Looking at symptoms that aren’t relevant or misunderstanding the meaning of system metrics
+- Misunderstanding how to change the system, its inputs, or its environment, so as to safely and effectively test hypotheses
+- Coming up with wildly improbable theories about what’s wrong, or latching on to causes of past problems, reasoning that since it happened once, it must be happening again
+- Hunting down spurious correlations that are actually coincidences or are correlated with shared causes
+
+Understanding failures in our reasoning process is the first step to avoiding them and becoming more effective in solving problems. A methodical approach to knowing what we do know, what we don’t know, and what we need to know, makes it simpler and more straightforward to figure out what’s gone wrong and how to fix it.
+
+#### In Practice
+
+##### Problem Report
+
+An effective problem report should tell you the expected behavior, the actual behavior, and, if possible, how to reproduce the behavior. Ideally, the reports should have a consistent form and be stored in a searchable location.
+
+It’s common practice at Google to open a bug for every issue, even those received via email or instant messaging. Doing so creates a log of investigation and remediation activities that can be referenced in the future.
+
+Discourage reporting problems directly to a person, which introduces an additional step of transcribing the report into a bug, produces lower-quality reports that aren’t visible to other members of the team, and tends to concentrate the problem-solving load on a handful of team members that the reporters happen to know, rather than the person currently on duty.
+
+##### Triage
+
+Problems can vary in severity: an issue might affect only one user under very specific circumstances, or it might entail a complete global outage for a service. Your response should be appropriate for the problem’s impact and your course of action should be to make the system work as well as it can under the circumstances.
+
+For example, if a bug is leading to possibly unrecoverable data corruption, freezing the system to prevent further failure may be better than letting this behavior continue.
+
+##### Examine
+
+Graphing time-series and operations on time-series can be an effective way to understand the behavior of specific pieces of a system and find correlations that might suggest where problems began.
+
+Logging and exporting information about each operation and about system state makes it possible to understand exactly what a process was doing at a given point in time.
+
+Text logs are very helpful for reactive debugging in real time, while storing logs in a structured binary format can make it possible to build tools to conduct retrospective analysis with much more information.
+
+It’s really useful to have multiple verbosity levels available, along with a way to increase these levels on the fly. This functionality enables you to examine any or all operations in incredible detail without having to restart your process, while still allowing you to dial back the verbosity levels when your service is operating normally.
+
+Exposing current state is the third trick. Google servers have endpoints that show a sample of RPCs recently sent or received, to help understand how any one server is communicating with others without referencing an architecture diagram. These endpoints also show histograms of error rates and latency for each type of RPC, their current configuration or allow examination of their data.
+
+Lastly, you may even need to instrument a client to experiment with, in order to discover what a component is returning in response to requests.
+
+##### Diagnose
+
+Ideally, components in a system have well-defined interfaces and perform known transformations from their input to their output. It's then possible to look at the data flows between components to determine whether a given component is working properly.
+
+Injecting known test data in order to check that the resulting output is expected at each step can be especially effective (a form of black-box testing).
+
+Dividing and conquering is a very useful general-purpose solution technique. An alternative, bisection, splits the system in half and examines the communication paths between components on one side and the other.
+
+Finding out what a malfunctioning system is doing (symptom), then asking why (cause of symptom) it’s doing that and where (locate the code) its resources are being used or where its output is going can help you understand how things have gone wrong and forge a solution.
+
+A working computer system tends to remain in motion until acted upon by an external force, such as a configuration change or a shift in the type of load served. Recent changes to a system can be a productive place to start identifying what’s going wrong.
+
+Correlating changes in a system’s performance and behavior with other events in the system and environment can also be helpful in constructing monitoring dashboards, i.e. annotate a graph showing the system’s error rates with the start and end times of a deployment of a new version.
+
+##### Test and Treat
+
+Using the experimental method, we can try to rule in or rule out our hypothetic list of possible causes. Following the code and trying to imitate the code flow, step-by-step, may point to exactly what’s going wrong.
+
+Consider these when designing tests:
+
+- a test should have mutually exclusive alternatives, so that it can rule one group of hypotheses in and rule another set out
+- obvious first: perform the tests in decreasing order of likelihood
+- an experiment may provide misleading results due to confounding factors
+    - i.e. firewall rules against your workstation but not for the application server
+- side effects that change future test results
+    -  if you performed active testing by changing a system—for instance by giving more resources to a process—making changes in a systematic and documented fashion will help you return the system to its pre-test setup
+- tests can be suggestive rather than definitive
+    - i.e. it can be very difficult to make race conditions or deadlocks happen in a timely and reproducible manner
+
+#### Negative Results
+
+Negative results should not be ignored or discounted. Realizing you’re wrong has much value: a clear negative result can resolve some of the hardest design questions. Often a team has two seemingly reasonable designs but progress in one direction has to address vague and speculative questions about whether the other direction might be better.
+
+Experiments with negative results are conclusive. They tell us something certain about production, or the design space, or the performance limits of an existing system. They can help others determine whether their own experiments or designs are worthwhile. Microbenchmarks, documented antipatterns, and project postmortems all fit this category.
+
+Tools and methods can outlive the experiment and inform future work. As an example, benchmarking tools and load generators can result just as easily from a disconfirming experiment as a supporting one.
+
+Publishing negative results improves our industry’s data-driven culture. Accounting for negative results and statistical insignificance reduces the bias in our metrics and provides an example to others of how to maturely accept uncertainty.
+
+#### Cure
+
+Often, we can only find probable root cause factors than definitive factor, given that a production system can be complex and reproducing the problem in a live production system may not be an option.
+
+Once you’ve found the factors that caused the problem, it’s time to write up notes on what went wrong with the system, how you tracked down the problem, how you fixed the problem, and how to prevent it from happening again (a postmortem).
+
+### Emergency Response
+
+What to Do When Systems Break? Don't panic. If you can’t think of a solution, cast your net farther. Involve more of your teammates, seek help, do whatever you have to do, but do it quickly. The highest priority is to resolve the issue at hand quickly. Oftentimes, the person with the most state is the one whose actions somehow triggered the event. Utilize that person.
+
+Keep a History of Outages. History is about learning from everyone’s mistakes. Be thorough, be honest, but most of all, ask hard questions. Look for specific actions that might prevent such an outage from recurring, not just tactically, but also strategically.
+
+Hold yourself and others accountable to following up on the specific actions detailed in these postmortems. Doing so will prevent a future outage that’s nearly identical to, and caused by nearly the same triggers as, an outage that has already been documented.
+
+### Managing Incidents
+
