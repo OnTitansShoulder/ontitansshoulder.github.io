@@ -1,0 +1,1047 @@
+<!doctype html><html lang=en class=no-js> <head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="We are all standing on the shoulders of the giants..."><meta name=author content="Zhongkai Liu"><link rel="shortcut icon" href=../../../assets/favicon.ico><meta name=generator content="mkdocs-1.1.2, mkdocs-material-6.2.6"><title>Go library modules and usecases examples - Ontitansshoulder</title><link rel=stylesheet href=../../../assets/stylesheets/main.cb6bc1d0.min.css><link rel=stylesheet href=../../../assets/stylesheets/palette.39b8e14a.min.css><meta name=theme-color content=#4051b5><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback"><style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style><link rel=stylesheet href=../../../css/extra.css></head> <body dir=ltr data-md-color-scheme=default data-md-color-primary=indigo data-md-color-accent=indigo> <input class=md-toggle data-md-toggle=drawer type=checkbox id=__drawer autocomplete=off> <input class=md-toggle data-md-toggle=search type=checkbox id=__search autocomplete=off> <label class=md-overlay for=__drawer></label> <div data-md-component=skip> <a href=#time-package class=md-skip> Skip to content </a> </div> <div data-md-component=announce> </div> <header class=md-header data-md-component=header> <nav class="md-header-nav md-grid" aria-label=Header> <a href=../../.. title=Ontitansshoulder class="md-header-nav__button md-logo" aria-label=Ontitansshoulder> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg> </a> <label class="md-header-nav__button md-icon" for=__drawer> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg> </label> <div class=md-header-nav__title data-md-component=header-title> <div class=md-header-nav__ellipsis> <div class=md-header-nav__topic> <span class=md-ellipsis> Ontitansshoulder </span> </div> <div class=md-header-nav__topic> <span class=md-ellipsis> Go library modules and usecases examples </span> </div> </div> </div> <label class="md-header-nav__button md-icon" for=__search> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg> </label> <div class=md-search data-md-component=search role=dialog> <label class=md-search__overlay for=__search></label> <div class=md-search__inner role=search> <form class=md-search__form name=search> <input type=text class=md-search__input name=query aria-label=Search placeholder=Search autocapitalize=off autocorrect=off autocomplete=off spellcheck=false data-md-component=search-query data-md-state=active required> <label class="md-search__icon md-icon" for=__search> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg> </label> <button type=reset class="md-search__icon md-icon" aria-label=Clear data-md-component=search-reset tabindex=-1> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg> </button> </form> <div class=md-search__output> <div class=md-search__scrollwrap data-md-scrollfix> <div class=md-search-result data-md-component=search-result> <div class=md-search-result__meta> Initializing search </div> <ol class=md-search-result__list></ol> </div> </div> </div> </div> </div> </nav> </header> <div class=md-container data-md-component=container> <nav class=md-tabs aria-label=Tabs data-md-component=tabs> <div class="md-tabs__inner md-grid"> <ul class=md-tabs__list> <li class=md-tabs__item> <a href=../../.. class="md-tabs__link md-tabs__link--active"> Notes </a> </li> </ul> </div> </nav> <main class=md-main data-md-component=main> <div class="md-main__inner md-grid"> <div class="md-sidebar md-sidebar--primary" data-md-component=navigation> <div class=md-sidebar__scrollwrap> <div class=md-sidebar__inner> <nav class="md-nav md-nav--primary md-nav--lifted" aria-label=Navigation data-md-level=0> <label class=md-nav__title for=__drawer> <a href=../../.. title=Ontitansshoulder class="md-nav__button md-logo" aria-label=Ontitansshoulder> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg> </a> Ontitansshoulder </label> <ul class=md-nav__list data-md-scrollfix> <li class="md-nav__item md-nav__item--active md-nav__item--nested"> <input class="md-nav__toggle md-toggle" data-md-toggle=nav-1 type=checkbox id=nav-1 checked> <label class=md-nav__link for=nav-1> Notes <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav aria-label=Notes data-md-level=1> <label class=md-nav__title for=nav-1> <span class="md-nav__icon md-icon"></span> Notes </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=../../.. class=md-nav__link> Welcome </a> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle" data-md-toggle=nav-1-2 type=checkbox id=nav-1-2> <label class=md-nav__link for=nav-1-2> Foundamentals <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav aria-label=Foundamentals data-md-level=2> <label class=md-nav__title for=nav-1-2> <span class="md-nav__icon md-icon"></span> Foundamentals </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=../../../Foundamental/Data_Structures_and_Algos/ class=md-nav__link> Data Structures and Algos </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle" data-md-toggle=nav-1-3 type=checkbox id=nav-1-3> <label class=md-nav__link for=nav-1-3> Linux <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav aria-label=Linux data-md-level=2> <label class=md-nav__title for=nav-1-3> <span class="md-nav__icon md-icon"></span> Linux </label> <ul class=md-nav__list data-md-scrollfix> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle" data-md-toggle=nav-1-3-1 type=checkbox id=nav-1-3-1> <label class=md-nav__link for=nav-1-3-1> Concepts <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav aria-label=Concepts data-md-level=3> <label class=md-nav__title for=nav-1-3-1> <span class="md-nav__icon md-icon"></span> Concepts </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=../../../Linux/Concepts/Linux_Foundation/ class=md-nav__link> Linux Foundation </a> </li> <li class=md-nav__item> <a href=../../../Linux/Concepts/Linux_Foundation_System_Admin/ class=md-nav__link> Linux System Administration </a> </li> <li class=md-nav__item> <a href=../../../Linux/Concepts/Linux_Foundation_Network_Admin/ class=md-nav__link> Linux Network Administration </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle" data-md-toggle=nav-1-3-2 type=checkbox id=nav-1-3-2> <label class=md-nav__link for=nav-1-3-2> Practical References <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav aria-label="Practical References" data-md-level=3> <label class=md-nav__title for=nav-1-3-2> <span class="md-nav__icon md-icon"></span> Practical References </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=../../../Linux/Commands/Freq-Used-Shell-Cmds/ class=md-nav__link> Freq Used Shell Cmds </a> </li> <li class=md-nav__item> <a href=../../../Linux/Commands/Networking-Shell-Cmds/ class=md-nav__link> Freq Used Network Cmds </a> </li> <li class=md-nav__item> <a href=../../../Linux/Commands/Text-Manipulating-Cmds/ class=md-nav__link> Text Manipulating Cmds </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle" data-md-toggle=nav-1-3-3 type=checkbox id=nav-1-3-3> <label class=md-nav__link for=nav-1-3-3> Tricks <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav aria-label=Tricks data-md-level=3> <label class=md-nav__title for=nav-1-3-3> <span class="md-nav__icon md-icon"></span> Tricks </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=../../../Linux/References/Freq-Tasks/ class=md-nav__link> Freq Linux Tasks </a> </li> <li class=md-nav__item> <a href=../../../Linux/References/Terminal-Tricks/ class=md-nav__link> Linux Terminal Tricks </a> </li> <li class=md-nav__item> <a href=../../../Linux/References/Vim-Tricks/ class=md-nav__link> Vim Tricks </a> </li> <li class=md-nav__item> <a href=../../../Linux/References/Account-Administration/ class=md-nav__link> Manage Accounts & Groups </a> </li> </ul> </nav> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle" data-md-toggle=nav-1-4 type=checkbox id=nav-1-4> <label class=md-nav__link for=nav-1-4> Cloud <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav aria-label=Cloud data-md-level=2> <label class=md-nav__title for=nav-1-4> <span class="md-nav__icon md-icon"></span> Cloud </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=../../../Cloud-and-Containers/Architecture/Cloud-App-Architecture/ class=md-nav__link> Cloud App Architecture </a> </li> <li class=md-nav__item> <a href=../../../Cloud-and-Containers/Docker/Docker/ class=md-nav__link> Docker and Containers </a> </li> <li class=md-nav__item> <a href=../../../Cloud-and-Containers/Docker/Docker-Practical/ class=md-nav__link> Docker Practical </a> </li> <li class=md-nav__item> <a href=../../../Cloud-and-Containers/k8s/K8s-Knowledge/ class=md-nav__link> K8s Knowledge </a> </li> <li class=md-nav__item> <a href=../../../Cloud-and-Containers/k8s/service_mesh/ class=md-nav__link> Service Mesh </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle" data-md-toggle=nav-1-5 type=checkbox id=nav-1-5> <label class=md-nav__link for=nav-1-5> Monitoring <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav aria-label=Monitoring data-md-level=2> <label class=md-nav__title for=nav-1-5> <span class="md-nav__icon md-icon"></span> Monitoring </label> <ul class=md-nav__list data-md-scrollfix> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle" data-md-toggle=nav-1-5-1 type=checkbox id=nav-1-5-1> <label class=md-nav__link for=nav-1-5-1> Splunk <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav aria-label=Splunk data-md-level=3> <label class=md-nav__title for=nav-1-5-1> <span class="md-nav__icon md-icon"></span> Splunk </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=../../../Dev-Tools-Reference/Splunk/Splunk-References/ class=md-nav__link> Splunk Knowledge </a> </li> <li class=md-nav__item> <a href=../../../Dev-Tools-Reference/Splunk/Splunk-Dashboarding/ class=md-nav__link> Splunk Dashboarding </a> </li> </ul> </nav> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--active md-nav__item--nested"> <input class="md-nav__toggle md-toggle" data-md-toggle=nav-1-6 type=checkbox id=nav-1-6 checked> <label class=md-nav__link for=nav-1-6> Programming Langs <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav aria-label="Programming Langs" data-md-level=2> <label class=md-nav__title for=nav-1-6> <span class="md-nav__icon md-icon"></span> Programming Langs </label> <ul class=md-nav__list data-md-scrollfix> <li class="md-nav__item md-nav__item--active md-nav__item--nested"> <input class="md-nav__toggle md-toggle" data-md-toggle=nav-1-6-1 type=checkbox id=nav-1-6-1 checked> <label class=md-nav__link for=nav-1-6-1> Golang <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav aria-label=Golang data-md-level=3> <label class=md-nav__title for=nav-1-6-1> <span class="md-nav__icon md-icon"></span> Golang </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=../Golang-Specs/ class=md-nav__link> Golang Language Reference </a> </li> <li class=md-nav__item> <a href=../Best-Practices/ class=md-nav__link> Effective Go </a> </li> <li class="md-nav__item md-nav__item--active"> <input class="md-nav__toggle md-toggle" data-md-toggle=toc type=checkbox id=__toc> <label class="md-nav__link md-nav__link--active" for=__toc> Go libraries and examples <span class="md-nav__icon md-icon"></span> </label> <a href=./ class="md-nav__link md-nav__link--active"> Go libraries and examples </a> <nav class="md-nav md-nav--secondary" aria-label="Table of contents"> <label class=md-nav__title for=__toc> <span class="md-nav__icon md-icon"></span> Table of contents </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=#time-package class=md-nav__link> time package </a> </li> <li class=md-nav__item> <a href=#channel-and-goroutine-with-sync-package class=md-nav__link> Channel and goroutine with sync package </a> </li> <li class=md-nav__item> <a href=#stateful-goroutines class=md-nav__link> Stateful goroutines </a> </li> <li class=md-nav__item> <a href=#sorting class=md-nav__link> Sorting </a> </li> <li class=md-nav__item> <a href=#work-with-collection-functions class=md-nav__link> Work with Collection Functions </a> </li> <li class=md-nav__item> <a href=#regex class=md-nav__link> Regex </a> </li> <li class=md-nav__item> <a href=#json class=md-nav__link> JSON </a> </li> <li class=md-nav__item> <a href=#xml class=md-nav__link> XML </a> </li> <li class=md-nav__item> <a href=#the-time-related-packages class=md-nav__link> The time-related packages </a> </li> <li class=md-nav__item> <a href=#random-numbers class=md-nav__link> Random Numbers </a> </li> <li class=md-nav__item> <a href=#string-functions class=md-nav__link> String functions </a> </li> <li class=md-nav__item> <a href=#url-parsing class=md-nav__link> URL Parsing </a> </li> <li class=md-nav__item> <a href=#encryption-and-hashing-functions class=md-nav__link> Encryption and Hashing Functions </a> </li> <li class=md-nav__item> <a href=#file-io class=md-nav__link> File I/O </a> </li> <li class=md-nav__item> <a href=#files-directories class=md-nav__link> Files, Directories </a> </li> <li class=md-nav__item> <a href=#testing class=md-nav__link> Testing </a> </li> <li class=md-nav__item> <a href=#command-environment-variables class=md-nav__link> Command, Environment Variables </a> </li> <li class=md-nav__item> <a href=#processes-and-signals class=md-nav__link> Processes and Signals </a> </li> <li class=md-nav__item> <a href=#http-serverclient class=md-nav__link> HTTP Server/Client </a> </li> </ul> </nav> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle" data-md-toggle=nav-1-6-2 type=checkbox id=nav-1-6-2> <label class=md-nav__link for=nav-1-6-2> Java <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav aria-label=Java data-md-level=3> <label class=md-nav__title for=nav-1-6-2> <span class="md-nav__icon md-icon"></span> Java </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=../../Java/Style-Guide/ class=md-nav__link> Style Guide </a> </li> <li class=md-nav__item> <a href=../../Java/Best-Practices/ class=md-nav__link> Effective Java </a> </li> <li class=md-nav__item> <a href=../../Java/Design-Patterns/ class=md-nav__link> Java Design Patterns </a> </li> <li class=md-nav__item> <a href=../../Java/Testing-Design-Patterns/ class=md-nav__link> Testing Design Patterns </a> </li> <li class=md-nav__item> <a href=../../Java/Java_Std_Lib_Cheatsheet/ class=md-nav__link> Java Std Lib Cheatsheet </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle" data-md-toggle=nav-1-6-3 type=checkbox id=nav-1-6-3> <label class=md-nav__link for=nav-1-6-3> C++ <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav aria-label=C++ data-md-level=3> <label class=md-nav__title for=nav-1-6-3> <span class="md-nav__icon md-icon"></span> C++ </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=../../CPP/CPlusPlus_Lang_Specs/ class=md-nav__link> C++ Language Reference </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle" data-md-toggle=nav-1-6-4 type=checkbox id=nav-1-6-4> <label class=md-nav__link for=nav-1-6-4> Perl <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav aria-label=Perl data-md-level=3> <label class=md-nav__title for=nav-1-6-4> <span class="md-nav__icon md-icon"></span> Perl </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=../../Perl/Perl-Lang-Specs/ class=md-nav__link> Perl Language Reference </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle" data-md-toggle=nav-1-6-5 type=checkbox id=nav-1-6-5> <label class=md-nav__link for=nav-1-6-5> Shell <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav aria-label=Shell data-md-level=3> <label class=md-nav__title for=nav-1-6-5> <span class="md-nav__icon md-icon"></span> Shell </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=../../Shell/Shell-Scripting/ class=md-nav__link> Shell Scripting </a> </li> </ul> </nav> </li> <li class=md-nav__item> <a href=../../Github-Markdown/ class=md-nav__link> Github Markdown Guide </a> </li> <li class=md-nav__item> <a href=../../Regex-Specs/ class=md-nav__link> Regex Cheatsheet </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle" data-md-toggle=nav-1-7 type=checkbox id=nav-1-7> <label class=md-nav__link for=nav-1-7> Reading Notes <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav aria-label="Reading Notes" data-md-level=2> <label class=md-nav__title for=nav-1-7> <span class="md-nav__icon md-icon"></span> Reading Notes </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=../../../Reading-Notes/How-Netflix-Works/ class=md-nav__link> How Netflix Works </a> </li> <li class=md-nav__item> <a href=../../../Reading-Notes/System-Design-Concepts/ class=md-nav__link> System Design Guide </a> </li> <li class=md-nav__item> <a href=../../../Reading-Notes/Why-Latency-Matters/ class=md-nav__link> Why Latency Matters </a> </li> <li class=md-nav__item> <a href=../../../Reading-Notes/DevOps_SRE/ class=md-nav__link> Intro to DevOps and SRE </a> </li> <li class=md-nav__item> <a href=../../../Reading-Notes/Leading-without-formal-authority/ class=md-nav__link> Leading Without Formal Authority </a> </li> <li class=md-nav__item> <a href=../../../Reading-Notes/Google-SRE-Book/ class=md-nav__link> Google SRE Book </a> </li> </ul> </nav> </li> <li class=md-nav__item> <a href=../../../Good-Reads/ class=md-nav__link> Good Reads </a> </li> </ul> </nav> </li> </ul> </nav> </div> </div> </div> <div class="md-sidebar md-sidebar--secondary" data-md-component=toc> <div class=md-sidebar__scrollwrap> <div class=md-sidebar__inner> <nav class="md-nav md-nav--secondary" aria-label="Table of contents"> <label class=md-nav__title for=__toc> <span class="md-nav__icon md-icon"></span> Table of contents </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=#time-package class=md-nav__link> time package </a> </li> <li class=md-nav__item> <a href=#channel-and-goroutine-with-sync-package class=md-nav__link> Channel and goroutine with sync package </a> </li> <li class=md-nav__item> <a href=#stateful-goroutines class=md-nav__link> Stateful goroutines </a> </li> <li class=md-nav__item> <a href=#sorting class=md-nav__link> Sorting </a> </li> <li class=md-nav__item> <a href=#work-with-collection-functions class=md-nav__link> Work with Collection Functions </a> </li> <li class=md-nav__item> <a href=#regex class=md-nav__link> Regex </a> </li> <li class=md-nav__item> <a href=#json class=md-nav__link> JSON </a> </li> <li class=md-nav__item> <a href=#xml class=md-nav__link> XML </a> </li> <li class=md-nav__item> <a href=#the-time-related-packages class=md-nav__link> The time-related packages </a> </li> <li class=md-nav__item> <a href=#random-numbers class=md-nav__link> Random Numbers </a> </li> <li class=md-nav__item> <a href=#string-functions class=md-nav__link> String functions </a> </li> <li class=md-nav__item> <a href=#url-parsing class=md-nav__link> URL Parsing </a> </li> <li class=md-nav__item> <a href=#encryption-and-hashing-functions class=md-nav__link> Encryption and Hashing Functions </a> </li> <li class=md-nav__item> <a href=#file-io class=md-nav__link> File I/O </a> </li> <li class=md-nav__item> <a href=#files-directories class=md-nav__link> Files, Directories </a> </li> <li class=md-nav__item> <a href=#testing class=md-nav__link> Testing </a> </li> <li class=md-nav__item> <a href=#command-environment-variables class=md-nav__link> Command, Environment Variables </a> </li> <li class=md-nav__item> <a href=#processes-and-signals class=md-nav__link> Processes and Signals </a> </li> <li class=md-nav__item> <a href=#http-serverclient class=md-nav__link> HTTP Server/Client </a> </li> </ul> </nav> </div> </div> </div> <div class=md-content> <article class="md-content__inner md-typeset"> <h1>Go libraries and examples</h1> <p>This is set of notes is taking from https://golang.org/ref/spec and https://gobyexample.com/</p> <p>This set of notes will show some use cases simple implementations using go's library modules.</p> <p>All golang packages: https://golang.org/pkg/</p> <p>Good source of golang updates: https://blog.golang.org/</p> <p><br></p> <h3 id=time-package><code>time</code> package<a class=headerlink href=#time-package title="Permanent link">&para;</a></h3> <p>When requesting external resources or doing work that need to bound to an <strong>execution time limit</strong>, we can achieve it using the <code>&lt;-time.After</code> function from the <code>"time"</code> package.</p> <p>This function awaits a value to be sent after the specified timeout.</p> <div class=highlight><pre><span></span><code><span class=nx>c1</span> <span class=o>:=</span> <span class=nb>make</span><span class=p>(</span><span class=kd>chan</span> <span class=kt>string</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
+<span class=k>go</span> <span class=kd>func</span><span class=p>()</span> <span class=p>{</span>
+  <span class=nx>time</span><span class=p>.</span><span class=nx>Sleep</span><span class=p>(</span><span class=mi>2</span> <span class=o>*</span> <span class=nx>time</span><span class=p>.</span><span class=nx>Second</span><span class=p>)</span>
+  <span class=nx>c1</span> <span class=o>&lt;-</span> <span class=s>&quot;result 1&quot;</span>
+<span class=p>}()</span>
+<span class=k>select</span> <span class=p>{</span>
+<span class=k>case</span> <span class=nx>res</span> <span class=o>:=</span> <span class=o>&lt;-</span><span class=nx>c1</span><span class=p>:</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=nx>res</span><span class=p>)</span>
+<span class=k>case</span> <span class=o>&lt;-</span><span class=nx>time</span><span class=p>.</span><span class=nx>After</span><span class=p>(</span><span class=mi>1</span> <span class=o>*</span> <span class=nx>time</span><span class=p>.</span><span class=nx>Second</span><span class=p>):</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=s>&quot;timeout 1&quot;</span><span class=p>)</span>
+<span class=p>}</span>
+</code></pre></div> <p>When trying to schedule a goroutine in a future time, or to schedule a function at some interval, use the built-in <code>timer</code> and <code>ticker</code> from the <code>"time"</code> package</p> <p><strong>Timers</strong> represent a single <em>event</em> in the future. You tell the timer how long you want to wait, and it provides a <strong>channel</strong> that will be notified at that time.</p> <div class=highlight><pre><span></span><code><span class=nx>timer1</span> <span class=o>:=</span> <span class=nx>time</span><span class=p>.</span><span class=nx>NewTimer</span><span class=p>(</span><span class=mi>2</span> <span class=o>*</span> <span class=nx>time</span><span class=p>.</span><span class=nx>Second</span><span class=p>)</span>
+<span class=o>&lt;-</span><span class=nx>timer1</span><span class=p>.</span><span class=nx>C</span> <span class=c1>// blocks until the timer event is received</span>
+<span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=s>&quot;Timer 1 fired&quot;</span><span class=p>)</span> <span class=c1>// will print after 2 seconds</span>
+
+<span class=nx>time</span><span class=p>.</span><span class=nx>Sleep</span><span class=p>(</span><span class=mi>2</span> <span class=o>*</span> <span class=nx>time</span><span class=p>.</span><span class=nx>Second</span><span class=p>)</span> <span class=c1>// achieves the same thing above timer does</span>
+</code></pre></div> <p><strong>Tickers</strong> can schedule a function repeatedly at regular intervals</p> <div class=highlight><pre><span></span><code><span class=kn>package</span> <span class=nx>main</span>
+
+<span class=kn>import</span> <span class=p>(</span>
+  <span class=s>&quot;fmt&quot;</span>
+  <span class=s>&quot;time&quot;</span>
+<span class=p>)</span>
+
+<span class=kd>func</span> <span class=nx>main</span><span class=p>()</span> <span class=p>{</span>
+  <span class=nx>ticker</span> <span class=o>:=</span> <span class=nx>time</span><span class=p>.</span><span class=nx>NewTicker</span><span class=p>(</span><span class=mi>500</span> <span class=o>*</span> <span class=nx>time</span><span class=p>.</span><span class=nx>Millisecond</span><span class=p>)</span>
+  <span class=nx>done</span> <span class=o>:=</span> <span class=nb>make</span><span class=p>(</span><span class=kd>chan</span> <span class=kt>bool</span><span class=p>)</span>
+  <span class=k>go</span> <span class=kd>func</span><span class=p>()</span> <span class=p>{</span>
+    <span class=k>for</span> <span class=p>{</span>
+      <span class=k>select</span> <span class=p>{</span>
+      <span class=k>case</span> <span class=o>&lt;-</span><span class=nx>done</span><span class=p>:</span>
+        <span class=k>return</span>
+      <span class=k>case</span> <span class=nx>t</span> <span class=o>:=</span> <span class=o>&lt;-</span><span class=nx>ticker</span><span class=p>.</span><span class=nx>C</span><span class=p>:</span>
+        <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=s>&quot;Tick at&quot;</span><span class=p>,</span> <span class=nx>t</span><span class=p>)</span>
+      <span class=p>}</span>
+    <span class=p>}</span>
+  <span class=p>}()</span>
+
+  <span class=nx>time</span><span class=p>.</span><span class=nx>Sleep</span><span class=p>(</span><span class=mi>1600</span> <span class=o>*</span> <span class=nx>time</span><span class=p>.</span><span class=nx>Millisecond</span><span class=p>)</span>
+  <span class=nx>ticker</span><span class=p>.</span><span class=nx>Stop</span><span class=p>()</span>
+  <span class=nx>done</span> <span class=o>&lt;-</span> <span class=kc>true</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=s>&quot;Ticker stopped&quot;</span><span class=p>)</span>
+<span class=p>}</span>
+</code></pre></div> <p><strong>Rate limit</strong> is a common requirement to consider when designing a service. In go this can be achieved using the <strong>tickers</strong> as a source of creating "gaps" between processing requests.</p> <div class=highlight><pre><span></span><code><span class=kn>package</span> <span class=nx>main</span>
+
+<span class=kn>import</span> <span class=p>(</span>
+  <span class=s>&quot;fmt&quot;</span>
+  <span class=s>&quot;time&quot;</span>
+<span class=p>)</span>
+
+<span class=kd>func</span> <span class=nx>main</span><span class=p>()</span> <span class=p>{</span>
+  <span class=nx>requests</span> <span class=o>:=</span> <span class=nb>make</span><span class=p>(</span><span class=kd>chan</span> <span class=kt>int</span><span class=p>,</span> <span class=mi>5</span><span class=p>)</span>
+  <span class=k>for</span> <span class=nx>i</span> <span class=o>:=</span> <span class=mi>1</span><span class=p>;</span> <span class=nx>i</span> <span class=o>&lt;=</span> <span class=mi>5</span><span class=p>;</span> <span class=nx>i</span><span class=o>++</span> <span class=p>{</span>
+    <span class=nx>requests</span> <span class=o>&lt;-</span> <span class=nx>i</span>
+  <span class=p>}</span>
+  <span class=nb>close</span><span class=p>(</span><span class=nx>requests</span><span class=p>)</span>
+  <span class=nx>limiter</span> <span class=o>:=</span> <span class=nx>time</span><span class=p>.</span><span class=nx>Tick</span><span class=p>(</span><span class=mi>200</span> <span class=o>*</span> <span class=nx>time</span><span class=p>.</span><span class=nx>Millisecond</span><span class=p>)</span>
+
+  <span class=k>for</span> <span class=nx>req</span> <span class=o>:=</span> <span class=k>range</span> <span class=nx>requests</span> <span class=p>{</span>
+    <span class=o>&lt;-</span><span class=nx>limiter</span>
+    <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=s>&quot;request&quot;</span><span class=p>,</span> <span class=nx>req</span><span class=p>,</span> <span class=nx>time</span><span class=p>.</span><span class=nx>Now</span><span class=p>())</span>
+  <span class=p>}</span>
+
+  <span class=nx>burstyLimiter</span> <span class=o>:=</span> <span class=nb>make</span><span class=p>(</span><span class=kd>chan</span> <span class=nx>time</span><span class=p>.</span><span class=nx>Time</span><span class=p>,</span> <span class=mi>3</span><span class=p>)</span>
+  <span class=k>for</span> <span class=nx>i</span> <span class=o>:=</span> <span class=mi>0</span><span class=p>;</span> <span class=nx>i</span> <span class=p>&lt;</span> <span class=mi>3</span><span class=p>;</span> <span class=nx>i</span><span class=o>++</span> <span class=p>{</span>
+    <span class=nx>burstyLimiter</span> <span class=o>&lt;-</span> <span class=nx>time</span><span class=p>.</span><span class=nx>Now</span><span class=p>()</span>
+  <span class=p>}</span>
+  <span class=k>go</span> <span class=kd>func</span><span class=p>()</span> <span class=p>{</span>
+    <span class=k>for</span> <span class=nx>t</span> <span class=o>:=</span> <span class=k>range</span> <span class=nx>time</span><span class=p>.</span><span class=nx>Tick</span><span class=p>(</span><span class=mi>200</span> <span class=o>*</span> <span class=nx>time</span><span class=p>.</span><span class=nx>Millisecond</span><span class=p>)</span> <span class=p>{</span>
+      <span class=nx>burstyLimiter</span> <span class=o>&lt;-</span> <span class=nx>t</span>
+    <span class=p>}</span>
+  <span class=p>}()</span>
+  <span class=nx>burstyRequests</span> <span class=o>:=</span> <span class=nb>make</span><span class=p>(</span><span class=kd>chan</span> <span class=kt>int</span><span class=p>,</span> <span class=mi>5</span><span class=p>)</span>
+  <span class=k>for</span> <span class=nx>i</span> <span class=o>:=</span> <span class=mi>1</span><span class=p>;</span> <span class=nx>i</span> <span class=o>&lt;=</span> <span class=mi>5</span><span class=p>;</span> <span class=nx>i</span><span class=o>++</span> <span class=p>{</span>
+    <span class=nx>burstyRequests</span> <span class=o>&lt;-</span> <span class=nx>i</span>
+  <span class=p>}</span>
+  <span class=nb>close</span><span class=p>(</span><span class=nx>burstyRequests</span><span class=p>)</span>
+  <span class=k>for</span> <span class=nx>req</span> <span class=o>:=</span> <span class=k>range</span> <span class=nx>burstyRequests</span> <span class=p>{</span>
+    <span class=o>&lt;-</span><span class=nx>burstyLimiter</span>
+    <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=s>&quot;request&quot;</span><span class=p>,</span> <span class=nx>req</span><span class=p>,</span> <span class=nx>time</span><span class=p>.</span><span class=nx>Now</span><span class=p>())</span>
+  <span class=p>}</span>
+<span class=p>}</span>
+</code></pre></div> <p><br></p> <h3 id=channel-and-goroutine-with-sync-package>Channel and goroutine with <code>sync</code> package<a class=headerlink href=#channel-and-goroutine-with-sync-package title="Permanent link">&para;</a></h3> <p>A simple worker pool implementation using channels</p> <div class=highlight><pre><span></span><code><span class=kn>package</span> <span class=nx>main</span>
+
+<span class=kn>import</span> <span class=p>(</span>
+  <span class=s>&quot;fmt&quot;</span>
+  <span class=s>&quot;time&quot;</span>
+<span class=p>)</span>
+
+<span class=kd>func</span> <span class=nx>worker</span><span class=p>(</span><span class=nx>id</span> <span class=kt>int</span><span class=p>,</span> <span class=nx>jobs</span> <span class=o>&lt;-</span><span class=kd>chan</span> <span class=kt>int</span><span class=p>,</span> <span class=nx>results</span> <span class=kd>chan</span><span class=o>&lt;-</span> <span class=kt>int</span><span class=p>)</span> <span class=p>{</span>
+  <span class=k>for</span> <span class=nx>j</span> <span class=o>:=</span> <span class=k>range</span> <span class=nx>jobs</span> <span class=p>{</span>
+    <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=s>&quot;worker&quot;</span><span class=p>,</span> <span class=nx>id</span><span class=p>,</span> <span class=s>&quot;started  job&quot;</span><span class=p>,</span> <span class=nx>j</span><span class=p>)</span>
+    <span class=nx>time</span><span class=p>.</span><span class=nx>Sleep</span><span class=p>(</span><span class=nx>time</span><span class=p>.</span><span class=nx>Second</span><span class=p>)</span>
+    <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=s>&quot;worker&quot;</span><span class=p>,</span> <span class=nx>id</span><span class=p>,</span> <span class=s>&quot;finished job&quot;</span><span class=p>,</span> <span class=nx>j</span><span class=p>)</span>
+    <span class=nx>results</span> <span class=o>&lt;-</span> <span class=nx>j</span> <span class=o>*</span> <span class=mi>2</span>
+  <span class=p>}</span>
+<span class=p>}</span>
+
+<span class=kd>func</span> <span class=nx>main</span><span class=p>()</span> <span class=p>{</span>
+  <span class=kd>const</span> <span class=nx>numJobs</span> <span class=p>=</span> <span class=mi>5</span>
+  <span class=nx>jobs</span> <span class=o>:=</span> <span class=nb>make</span><span class=p>(</span><span class=kd>chan</span> <span class=kt>int</span><span class=p>,</span> <span class=nx>numJobs</span><span class=p>)</span>
+  <span class=nx>results</span> <span class=o>:=</span> <span class=nb>make</span><span class=p>(</span><span class=kd>chan</span> <span class=kt>int</span><span class=p>,</span> <span class=nx>numJobs</span><span class=p>)</span>
+  <span class=k>for</span> <span class=nx>w</span> <span class=o>:=</span> <span class=mi>1</span><span class=p>;</span> <span class=nx>w</span> <span class=o>&lt;=</span> <span class=mi>3</span><span class=p>;</span> <span class=nx>w</span><span class=o>++</span> <span class=p>{</span>
+    <span class=k>go</span> <span class=nx>worker</span><span class=p>(</span><span class=nx>w</span><span class=p>,</span> <span class=nx>jobs</span><span class=p>,</span> <span class=nx>results</span><span class=p>)</span>
+  <span class=p>}</span>
+  <span class=k>for</span> <span class=nx>j</span> <span class=o>:=</span> <span class=mi>1</span><span class=p>;</span> <span class=nx>j</span> <span class=o>&lt;=</span> <span class=nx>numJobs</span><span class=p>;</span> <span class=nx>j</span><span class=o>++</span> <span class=p>{</span>
+    <span class=nx>jobs</span> <span class=o>&lt;-</span> <span class=nx>j</span>
+  <span class=p>}</span>
+  <span class=nb>close</span><span class=p>(</span><span class=nx>jobs</span><span class=p>)</span>
+  <span class=k>for</span> <span class=nx>a</span> <span class=o>:=</span> <span class=mi>1</span><span class=p>;</span> <span class=nx>a</span> <span class=o>&lt;=</span> <span class=nx>numJobs</span><span class=p>;</span> <span class=nx>a</span><span class=o>++</span> <span class=p>{</span>
+    <span class=o>&lt;-</span><span class=nx>results</span>
+  <span class=p>}</span>
+<span class=p>}</span>
+</code></pre></div> <p>To wait for <strong>multiple</strong> goroutines to finish, can use wait group from <code>"sync"</code> package</p> <div class=highlight><pre><span></span><code><span class=kn>package</span> <span class=nx>main</span>
+
+<span class=kn>import</span> <span class=p>(</span>
+  <span class=s>&quot;fmt&quot;</span>
+  <span class=s>&quot;sync&quot;</span>
+  <span class=s>&quot;time&quot;</span>
+<span class=p>)</span>
+
+<span class=kd>func</span> <span class=nx>worker</span><span class=p>(</span><span class=nx>id</span> <span class=kt>int</span><span class=p>,</span> <span class=nx>wg</span> <span class=o>*</span><span class=nx>sync</span><span class=p>.</span><span class=nx>WaitGroup</span><span class=p>)</span> <span class=p>{</span>
+  <span class=k>defer</span> <span class=nx>wg</span><span class=p>.</span><span class=nx>Done</span><span class=p>()</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Printf</span><span class=p>(</span><span class=s>&quot;Worker %d starting\n&quot;</span><span class=p>,</span> <span class=nx>id</span><span class=p>)</span>
+  <span class=nx>time</span><span class=p>.</span><span class=nx>Sleep</span><span class=p>(</span><span class=nx>time</span><span class=p>.</span><span class=nx>Second</span><span class=p>)</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Printf</span><span class=p>(</span><span class=s>&quot;Worker %d done\n&quot;</span><span class=p>,</span> <span class=nx>id</span><span class=p>)</span>
+<span class=p>}</span>
+
+<span class=kd>func</span> <span class=nx>main</span><span class=p>()</span> <span class=p>{</span>
+  <span class=kd>var</span> <span class=nx>wg</span> <span class=nx>sync</span><span class=p>.</span><span class=nx>WaitGroup</span>
+  <span class=k>for</span> <span class=nx>i</span> <span class=o>:=</span> <span class=mi>1</span><span class=p>;</span> <span class=nx>i</span> <span class=o>&lt;=</span> <span class=mi>5</span><span class=p>;</span> <span class=nx>i</span><span class=o>++</span> <span class=p>{</span>
+    <span class=nx>wg</span><span class=p>.</span><span class=nx>Add</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span> <span class=c1>// increment wg&#39;s counter</span>
+    <span class=k>go</span> <span class=nx>worker</span><span class=p>(</span><span class=nx>i</span><span class=p>,</span> <span class=o>&amp;</span><span class=nx>wg</span><span class=p>)</span>
+  <span class=p>}</span>
+  <span class=nx>wg</span><span class=p>.</span><span class=nx>Wait</span><span class=p>()</span> <span class=c1>// wait until all works returned</span>
+<span class=p>}</span>
+</code></pre></div> <p><code>"sync/atomic"</code> package provides atomic counters that is thread-safe and can be accessed by multiple concurrent goroutines.</p> <div class=highlight><pre><span></span><code><span class=kn>package</span> <span class=nx>main</span>
+
+<span class=kn>import</span> <span class=p>(</span>
+  <span class=s>&quot;fmt&quot;</span>
+  <span class=s>&quot;sync&quot;</span>
+  <span class=s>&quot;sync/atomic&quot;</span>
+<span class=p>)</span>
+
+<span class=kd>func</span> <span class=nx>main</span><span class=p>()</span> <span class=p>{</span>
+  <span class=kd>var</span> <span class=nx>ops</span> <span class=kt>uint64</span>
+  <span class=kd>var</span> <span class=nx>wg</span> <span class=nx>sync</span><span class=p>.</span><span class=nx>WaitGroup</span>
+  <span class=k>for</span> <span class=nx>i</span> <span class=o>:=</span> <span class=mi>0</span><span class=p>;</span> <span class=nx>i</span> <span class=p>&lt;</span> <span class=mi>50</span><span class=p>;</span> <span class=nx>i</span><span class=o>++</span> <span class=p>{</span>
+    <span class=nx>wg</span><span class=p>.</span><span class=nx>Add</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
+    <span class=k>go</span> <span class=kd>func</span><span class=p>()</span> <span class=p>{</span>
+      <span class=k>for</span> <span class=nx>c</span> <span class=o>:=</span> <span class=mi>0</span><span class=p>;</span> <span class=nx>c</span> <span class=p>&lt;</span> <span class=mi>1000</span><span class=p>;</span> <span class=nx>c</span><span class=o>++</span> <span class=p>{</span>
+        <span class=nx>atomic</span><span class=p>.</span><span class=nx>AddUint64</span><span class=p>(</span><span class=o>&amp;</span><span class=nx>ops</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
+      <span class=p>}</span>
+      <span class=nx>wg</span><span class=p>.</span><span class=nx>Done</span><span class=p>()</span>
+    <span class=p>}()</span>
+  <span class=p>}</span>
+  <span class=nx>wg</span><span class=p>.</span><span class=nx>Wait</span><span class=p>()</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=s>&quot;ops:&quot;</span><span class=p>,</span> <span class=nx>ops</span><span class=p>)</span> <span class=c1>// yields 50000</span>
+<span class=p>}</span>
+</code></pre></div> <p><code>mutex</code> from the package <code>"sync"</code> provides a safe way for multiple goroutines to access the same data</p> <div class=highlight><pre><span></span><code><span class=kn>package</span> <span class=nx>main</span>
+
+<span class=kn>import</span> <span class=p>(</span>
+  <span class=s>&quot;fmt&quot;</span>
+  <span class=s>&quot;math/rand&quot;</span>
+  <span class=s>&quot;sync&quot;</span>
+  <span class=s>&quot;sync/atomic&quot;</span>
+  <span class=s>&quot;time&quot;</span>
+<span class=p>)</span>
+
+<span class=kd>func</span> <span class=nx>main</span><span class=p>()</span> <span class=p>{</span>
+  <span class=kd>var</span> <span class=nx>state</span> <span class=p>=</span> <span class=nb>make</span><span class=p>(</span><span class=kd>map</span><span class=p>[</span><span class=kt>int</span><span class=p>]</span><span class=kt>int</span><span class=p>)</span>
+  <span class=kd>var</span> <span class=nx>mutex</span> <span class=p>=</span> <span class=o>&amp;</span><span class=nx>sync</span><span class=p>.</span><span class=nx>Mutex</span><span class=p>{}</span>
+  <span class=kd>var</span> <span class=nx>readOps</span> <span class=kt>uint64</span>
+  <span class=kd>var</span> <span class=nx>writeOps</span> <span class=kt>uint64</span>
+
+  <span class=k>for</span> <span class=nx>r</span> <span class=o>:=</span> <span class=mi>0</span><span class=p>;</span> <span class=nx>r</span> <span class=p>&lt;</span> <span class=mi>100</span><span class=p>;</span> <span class=nx>r</span><span class=o>++</span> <span class=p>{</span>
+    <span class=k>go</span> <span class=kd>func</span><span class=p>()</span> <span class=p>{</span>
+      <span class=nx>total</span> <span class=o>:=</span> <span class=mi>0</span>
+      <span class=k>for</span> <span class=p>{</span>
+        <span class=nx>key</span> <span class=o>:=</span> <span class=nx>rand</span><span class=p>.</span><span class=nx>Intn</span><span class=p>(</span><span class=mi>5</span><span class=p>)</span>
+        <span class=nx>mutex</span><span class=p>.</span><span class=nx>Lock</span><span class=p>()</span>
+        <span class=nx>total</span> <span class=o>+=</span> <span class=nx>state</span><span class=p>[</span><span class=nx>key</span><span class=p>]</span>
+        <span class=nx>mutex</span><span class=p>.</span><span class=nx>Unlock</span><span class=p>()</span>
+        <span class=nx>atomic</span><span class=p>.</span><span class=nx>AddUint64</span><span class=p>(</span><span class=o>&amp;</span><span class=nx>readOps</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
+        <span class=nx>time</span><span class=p>.</span><span class=nx>Sleep</span><span class=p>(</span><span class=nx>time</span><span class=p>.</span><span class=nx>Millisecond</span><span class=p>)</span>
+      <span class=p>}</span>
+    <span class=p>}()</span>
+  <span class=p>}</span>
+  <span class=k>for</span> <span class=nx>w</span> <span class=o>:=</span> <span class=mi>0</span><span class=p>;</span> <span class=nx>w</span> <span class=p>&lt;</span> <span class=mi>10</span><span class=p>;</span> <span class=nx>w</span><span class=o>++</span> <span class=p>{</span>
+    <span class=k>go</span> <span class=kd>func</span><span class=p>()</span> <span class=p>{</span>
+      <span class=k>for</span> <span class=p>{</span>
+        <span class=nx>key</span> <span class=o>:=</span> <span class=nx>rand</span><span class=p>.</span><span class=nx>Intn</span><span class=p>(</span><span class=mi>5</span><span class=p>)</span>
+        <span class=nx>val</span> <span class=o>:=</span> <span class=nx>rand</span><span class=p>.</span><span class=nx>Intn</span><span class=p>(</span><span class=mi>100</span><span class=p>)</span>
+        <span class=nx>mutex</span><span class=p>.</span><span class=nx>Lock</span><span class=p>()</span>
+        <span class=nx>state</span><span class=p>[</span><span class=nx>key</span><span class=p>]</span> <span class=p>=</span> <span class=nx>val</span>
+        <span class=nx>mutex</span><span class=p>.</span><span class=nx>Unlock</span><span class=p>()</span>
+        <span class=nx>atomic</span><span class=p>.</span><span class=nx>AddUint64</span><span class=p>(</span><span class=o>&amp;</span><span class=nx>writeOps</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
+        <span class=nx>time</span><span class=p>.</span><span class=nx>Sleep</span><span class=p>(</span><span class=nx>time</span><span class=p>.</span><span class=nx>Millisecond</span><span class=p>)</span>
+      <span class=p>}</span>
+    <span class=p>}()</span>
+  <span class=p>}</span>
+
+  <span class=nx>time</span><span class=p>.</span><span class=nx>Sleep</span><span class=p>(</span><span class=nx>time</span><span class=p>.</span><span class=nx>Second</span><span class=p>)</span>
+  <span class=nx>readOpsFinal</span> <span class=o>:=</span> <span class=nx>atomic</span><span class=p>.</span><span class=nx>LoadUint64</span><span class=p>(</span><span class=o>&amp;</span><span class=nx>readOps</span><span class=p>)</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=s>&quot;readOps:&quot;</span><span class=p>,</span> <span class=nx>readOpsFinal</span><span class=p>)</span>
+  <span class=nx>writeOpsFinal</span> <span class=o>:=</span> <span class=nx>atomic</span><span class=p>.</span><span class=nx>LoadUint64</span><span class=p>(</span><span class=o>&amp;</span><span class=nx>writeOps</span><span class=p>)</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=s>&quot;writeOps:&quot;</span><span class=p>,</span> <span class=nx>writeOpsFinal</span><span class=p>)</span>
+<span class=p>}</span>
+</code></pre></div> <p><br></p> <h3 id=stateful-goroutines>Stateful goroutines<a class=headerlink href=#stateful-goroutines title="Permanent link">&para;</a></h3> <p>To have shared states owned by a single goroutine and use channel communications to coordinate read/write to the states.</p> <p>This will guarantee that the data is never corrupted with concurrent access.</p> <div class=highlight><pre><span></span><code><span class=kn>package</span> <span class=nx>main</span>
+
+<span class=kn>import</span> <span class=p>(</span>
+  <span class=s>&quot;fmt&quot;</span>
+  <span class=s>&quot;math/rand&quot;</span>
+  <span class=s>&quot;sync/atomic&quot;</span>
+  <span class=s>&quot;time&quot;</span>
+<span class=p>)</span>
+
+<span class=kd>type</span> <span class=nx>readOp</span> <span class=kd>struct</span> <span class=p>{</span>
+  <span class=nx>key</span>  <span class=kt>int</span>
+  <span class=nx>resp</span> <span class=kd>chan</span> <span class=kt>int</span>
+<span class=p>}</span>
+<span class=kd>type</span> <span class=nx>writeOp</span> <span class=kd>struct</span> <span class=p>{</span>
+  <span class=nx>key</span>  <span class=kt>int</span>
+  <span class=nx>val</span>  <span class=kt>int</span>
+  <span class=nx>resp</span> <span class=kd>chan</span> <span class=kt>bool</span>
+<span class=p>}</span>
+
+<span class=kd>func</span> <span class=nx>main</span><span class=p>()</span> <span class=p>{</span>
+  <span class=kd>var</span> <span class=nx>readOps</span> <span class=kt>uint64</span>
+  <span class=kd>var</span> <span class=nx>writeOps</span> <span class=kt>uint64</span>
+  <span class=nx>reads</span> <span class=o>:=</span> <span class=nb>make</span><span class=p>(</span><span class=kd>chan</span> <span class=nx>readOp</span><span class=p>)</span>
+  <span class=nx>writes</span> <span class=o>:=</span> <span class=nb>make</span><span class=p>(</span><span class=kd>chan</span> <span class=nx>writeOp</span><span class=p>)</span>
+  <span class=k>go</span> <span class=kd>func</span><span class=p>()</span> <span class=p>{</span>
+    <span class=kd>var</span> <span class=nx>state</span> <span class=p>=</span> <span class=nb>make</span><span class=p>(</span><span class=kd>map</span><span class=p>[</span><span class=kt>int</span><span class=p>]</span><span class=kt>int</span><span class=p>)</span> <span class=c1>// shared state owned by this goroutine</span>
+    <span class=k>for</span> <span class=p>{</span>
+      <span class=k>select</span> <span class=p>{</span> <span class=c1>// act like a worker to process access requests</span>
+      <span class=k>case</span> <span class=nx>read</span> <span class=o>:=</span> <span class=o>&lt;-</span><span class=nx>reads</span><span class=p>:</span>
+        <span class=nx>read</span><span class=p>.</span><span class=nx>resp</span> <span class=o>&lt;-</span> <span class=nx>state</span><span class=p>[</span><span class=nx>read</span><span class=p>.</span><span class=nx>key</span><span class=p>]</span>
+      <span class=k>case</span> <span class=nx>write</span> <span class=o>:=</span> <span class=o>&lt;-</span><span class=nx>writes</span><span class=p>:</span>
+        <span class=nx>state</span><span class=p>[</span><span class=nx>write</span><span class=p>.</span><span class=nx>key</span><span class=p>]</span> <span class=p>=</span> <span class=nx>write</span><span class=p>.</span><span class=nx>val</span>
+        <span class=nx>write</span><span class=p>.</span><span class=nx>resp</span> <span class=o>&lt;-</span> <span class=kc>true</span>
+      <span class=p>}</span>
+    <span class=p>}</span>
+  <span class=p>}()</span>
+
+  <span class=k>for</span> <span class=nx>r</span> <span class=o>:=</span> <span class=mi>0</span><span class=p>;</span> <span class=nx>r</span> <span class=p>&lt;</span> <span class=mi>100</span><span class=p>;</span> <span class=nx>r</span><span class=o>++</span> <span class=p>{</span>
+    <span class=k>go</span> <span class=kd>func</span><span class=p>()</span> <span class=p>{</span>
+      <span class=k>for</span> <span class=p>{</span>
+        <span class=nx>read</span> <span class=o>:=</span> <span class=nx>readOp</span><span class=p>{</span>
+          <span class=nx>key</span><span class=p>:</span>  <span class=nx>rand</span><span class=p>.</span><span class=nx>Intn</span><span class=p>(</span><span class=mi>5</span><span class=p>),</span>
+          <span class=nx>resp</span><span class=p>:</span> <span class=nb>make</span><span class=p>(</span><span class=kd>chan</span> <span class=kt>int</span><span class=p>)}</span>
+        <span class=nx>reads</span> <span class=o>&lt;-</span> <span class=nx>read</span>
+        <span class=o>&lt;-</span><span class=nx>read</span><span class=p>.</span><span class=nx>resp</span>
+        <span class=nx>atomic</span><span class=p>.</span><span class=nx>AddUint64</span><span class=p>(</span><span class=o>&amp;</span><span class=nx>readOps</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
+        <span class=nx>time</span><span class=p>.</span><span class=nx>Sleep</span><span class=p>(</span><span class=nx>time</span><span class=p>.</span><span class=nx>Millisecond</span><span class=p>)</span>
+      <span class=p>}</span>
+    <span class=p>}()</span>
+  <span class=p>}</span>
+  <span class=k>for</span> <span class=nx>w</span> <span class=o>:=</span> <span class=mi>0</span><span class=p>;</span> <span class=nx>w</span> <span class=p>&lt;</span> <span class=mi>10</span><span class=p>;</span> <span class=nx>w</span><span class=o>++</span> <span class=p>{</span>
+    <span class=k>go</span> <span class=kd>func</span><span class=p>()</span> <span class=p>{</span>
+      <span class=k>for</span> <span class=p>{</span>
+        <span class=nx>write</span> <span class=o>:=</span> <span class=nx>writeOp</span><span class=p>{</span>
+          <span class=nx>key</span><span class=p>:</span>  <span class=nx>rand</span><span class=p>.</span><span class=nx>Intn</span><span class=p>(</span><span class=mi>5</span><span class=p>),</span>
+          <span class=nx>val</span><span class=p>:</span>  <span class=nx>rand</span><span class=p>.</span><span class=nx>Intn</span><span class=p>(</span><span class=mi>100</span><span class=p>),</span>
+          <span class=nx>resp</span><span class=p>:</span> <span class=nb>make</span><span class=p>(</span><span class=kd>chan</span> <span class=kt>bool</span><span class=p>)}</span>
+        <span class=nx>writes</span> <span class=o>&lt;-</span> <span class=nx>write</span>
+        <span class=o>&lt;-</span><span class=nx>write</span><span class=p>.</span><span class=nx>resp</span>
+        <span class=nx>atomic</span><span class=p>.</span><span class=nx>AddUint64</span><span class=p>(</span><span class=o>&amp;</span><span class=nx>writeOps</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
+        <span class=nx>time</span><span class=p>.</span><span class=nx>Sleep</span><span class=p>(</span><span class=nx>time</span><span class=p>.</span><span class=nx>Millisecond</span><span class=p>)</span>
+      <span class=p>}</span>
+    <span class=p>}()</span>
+  <span class=p>}</span>
+
+  <span class=nx>time</span><span class=p>.</span><span class=nx>Sleep</span><span class=p>(</span><span class=nx>time</span><span class=p>.</span><span class=nx>Second</span><span class=p>)</span>
+  <span class=nx>readOpsFinal</span> <span class=o>:=</span> <span class=nx>atomic</span><span class=p>.</span><span class=nx>LoadUint64</span><span class=p>(</span><span class=o>&amp;</span><span class=nx>readOps</span><span class=p>)</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=s>&quot;readOps:&quot;</span><span class=p>,</span> <span class=nx>readOpsFinal</span><span class=p>)</span>
+  <span class=nx>writeOpsFinal</span> <span class=o>:=</span> <span class=nx>atomic</span><span class=p>.</span><span class=nx>LoadUint64</span><span class=p>(</span><span class=o>&amp;</span><span class=nx>writeOps</span><span class=p>)</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=s>&quot;writeOps:&quot;</span><span class=p>,</span> <span class=nx>writeOpsFinal</span><span class=p>)</span>
+<span class=p>}</span>
+</code></pre></div> <p><br></p> <h3 id=sorting>Sorting<a class=headerlink href=#sorting title="Permanent link">&para;</a></h3> <p>Go’s <code>"sort"</code> package implements sorting for built-ins and user-defined types.</p> <p>Note that sorting is <strong>in-place</strong>, so it changes the given slice and doesn't return a new one.</p> <p>We can also use sort to check if a slice is already in sorted order.</p> <div class=highlight><pre><span></span><code><span class=nx>strs</span> <span class=o>:=</span> <span class=p>[]</span><span class=kt>string</span><span class=p>{</span><span class=s>&quot;c&quot;</span><span class=p>,</span> <span class=s>&quot;a&quot;</span><span class=p>,</span> <span class=s>&quot;b&quot;</span><span class=p>}</span>
+<span class=nx>sort</span><span class=p>.</span><span class=nx>Strings</span><span class=p>(</span><span class=nx>strs</span><span class=p>)</span>
+<span class=nx>ints</span> <span class=o>:=</span> <span class=p>[]</span><span class=kt>int</span><span class=p>{</span><span class=mi>7</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>4</span><span class=p>}</span>
+<span class=nx>sort</span><span class=p>.</span><span class=nx>Ints</span><span class=p>(</span><span class=nx>ints</span><span class=p>)</span>
+</code></pre></div> <p><strong>Sorting by Functions</strong> allows sort something other than its natural order, by implementing the <code>sort.Interface</code> and provide methods for <code>Len()</code>, <code>Less(i, j)</code> and <code>Swap(i, j)</code> so that <code>sort.Sort</code> can be used on</p> <div class=highlight><pre><span></span><code><span class=kn>package</span> <span class=nx>main</span>
+
+<span class=kn>import</span> <span class=p>(</span>
+  <span class=s>&quot;fmt&quot;</span>
+  <span class=s>&quot;sort&quot;</span>
+<span class=p>)</span>
+
+<span class=kd>type</span> <span class=nx>byLength</span> <span class=p>[]</span><span class=kt>string</span> <span class=c1>// an alias for []string; alias creates a type that can implement an interface</span>
+<span class=kd>func</span> <span class=p>(</span><span class=nx>s</span> <span class=nx>byLength</span><span class=p>)</span> <span class=nx>Len</span><span class=p>()</span> <span class=kt>int</span> <span class=p>{</span>
+  <span class=k>return</span> <span class=nb>len</span><span class=p>(</span><span class=nx>s</span><span class=p>)</span>
+<span class=p>}</span>
+<span class=kd>func</span> <span class=p>(</span><span class=nx>s</span> <span class=nx>byLength</span><span class=p>)</span> <span class=nx>Swap</span><span class=p>(</span><span class=nx>i</span><span class=p>,</span> <span class=nx>j</span> <span class=kt>int</span><span class=p>)</span> <span class=p>{</span>
+  <span class=nx>s</span><span class=p>[</span><span class=nx>i</span><span class=p>],</span> <span class=nx>s</span><span class=p>[</span><span class=nx>j</span><span class=p>]</span> <span class=p>=</span> <span class=nx>s</span><span class=p>[</span><span class=nx>j</span><span class=p>],</span> <span class=nx>s</span><span class=p>[</span><span class=nx>i</span><span class=p>]</span>
+<span class=p>}</span>
+<span class=kd>func</span> <span class=p>(</span><span class=nx>s</span> <span class=nx>byLength</span><span class=p>)</span> <span class=nx>Less</span><span class=p>(</span><span class=nx>i</span><span class=p>,</span> <span class=nx>j</span> <span class=kt>int</span><span class=p>)</span> <span class=kt>bool</span> <span class=p>{</span>
+  <span class=k>return</span> <span class=nb>len</span><span class=p>(</span><span class=nx>s</span><span class=p>[</span><span class=nx>i</span><span class=p>])</span> <span class=p>&lt;</span> <span class=nb>len</span><span class=p>(</span><span class=nx>s</span><span class=p>[</span><span class=nx>j</span><span class=p>])</span>
+<span class=p>}</span>
+<span class=kd>func</span> <span class=nx>main</span><span class=p>()</span> <span class=p>{</span>
+  <span class=nx>fruits</span> <span class=o>:=</span> <span class=p>[]</span><span class=kt>string</span><span class=p>{</span><span class=s>&quot;peach&quot;</span><span class=p>,</span> <span class=s>&quot;banana&quot;</span><span class=p>,</span> <span class=s>&quot;kiwi&quot;</span><span class=p>}</span>
+  <span class=nx>sort</span><span class=p>.</span><span class=nx>Sort</span><span class=p>(</span><span class=nx>byLength</span><span class=p>(</span><span class=nx>fruits</span><span class=p>))</span> <span class=c1>// converting the slice into &quot;byLength&quot; type</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=nx>fruits</span><span class=p>)</span>
+<span class=p>}</span>
+</code></pre></div> <p><br></p> <h3 id=work-with-collection-functions>Work with Collection Functions<a class=headerlink href=#work-with-collection-functions title="Permanent link">&para;</a></h3> <p>Go does not support generics like other languages does; in Go it’s common to provide <strong>collection functions</strong> when they are specifically needed for your program and data types.</p> <p>Note that in some cases it may be clearest to just <strong>inline</strong> the functions directly instead of creating and calling a helper function.</p> <div class=highlight><pre><span></span><code><span class=kd>func</span> <span class=nx>Index</span><span class=p>(</span><span class=nx>vs</span> <span class=p>[]</span><span class=kt>string</span><span class=p>,</span> <span class=nx>t</span> <span class=kt>string</span><span class=p>)</span> <span class=kt>int</span> <span class=p>{</span>
+  <span class=k>for</span> <span class=nx>i</span><span class=p>,</span> <span class=nx>v</span> <span class=o>:=</span> <span class=k>range</span> <span class=nx>vs</span> <span class=p>{</span>
+    <span class=k>if</span> <span class=nx>v</span> <span class=o>==</span> <span class=nx>t</span> <span class=p>{</span>
+      <span class=k>return</span> <span class=nx>i</span>
+    <span class=p>}</span>
+  <span class=p>}</span>
+  <span class=k>return</span> <span class=o>-</span><span class=mi>1</span>
+<span class=p>}</span>
+<span class=kd>func</span> <span class=nx>Include</span><span class=p>(</span><span class=nx>vs</span> <span class=p>[]</span><span class=kt>string</span><span class=p>,</span> <span class=nx>t</span> <span class=kt>string</span><span class=p>)</span> <span class=kt>bool</span> <span class=p>{</span>
+  <span class=k>return</span> <span class=nx>Index</span><span class=p>(</span><span class=nx>vs</span><span class=p>,</span> <span class=nx>t</span><span class=p>)</span> <span class=o>&gt;=</span> <span class=mi>0</span>
+<span class=p>}</span>
+<span class=kd>func</span> <span class=nx>Any</span><span class=p>(</span><span class=nx>vs</span> <span class=p>[]</span><span class=kt>string</span><span class=p>,</span> <span class=nx>f</span> <span class=kd>func</span><span class=p>(</span><span class=kt>string</span><span class=p>)</span> <span class=kt>bool</span><span class=p>)</span> <span class=kt>bool</span> <span class=p>{</span>
+  <span class=k>for</span> <span class=nx>_</span><span class=p>,</span> <span class=nx>v</span> <span class=o>:=</span> <span class=k>range</span> <span class=nx>vs</span> <span class=p>{</span>
+    <span class=k>if</span> <span class=nx>f</span><span class=p>(</span><span class=nx>v</span><span class=p>)</span> <span class=p>{</span>
+      <span class=k>return</span> <span class=kc>true</span>
+    <span class=p>}</span>
+  <span class=p>}</span>
+  <span class=k>return</span> <span class=kc>false</span>
+<span class=p>}</span>
+<span class=kd>func</span> <span class=nx>All</span><span class=p>(</span><span class=nx>vs</span> <span class=p>[]</span><span class=kt>string</span><span class=p>,</span> <span class=nx>f</span> <span class=kd>func</span><span class=p>(</span><span class=kt>string</span><span class=p>)</span> <span class=kt>bool</span><span class=p>)</span> <span class=kt>bool</span> <span class=p>{</span>
+  <span class=k>for</span> <span class=nx>_</span><span class=p>,</span> <span class=nx>v</span> <span class=o>:=</span> <span class=k>range</span> <span class=nx>vs</span> <span class=p>{</span>
+    <span class=k>if</span> <span class=p>!</span><span class=nx>f</span><span class=p>(</span><span class=nx>v</span><span class=p>)</span> <span class=p>{</span>
+      <span class=k>return</span> <span class=kc>false</span>
+    <span class=p>}</span>
+  <span class=p>}</span>
+  <span class=k>return</span> <span class=kc>true</span>
+<span class=p>}</span>
+<span class=kd>func</span> <span class=nx>Filter</span><span class=p>(</span><span class=nx>vs</span> <span class=p>[]</span><span class=kt>string</span><span class=p>,</span> <span class=nx>f</span> <span class=kd>func</span><span class=p>(</span><span class=kt>string</span><span class=p>)</span> <span class=kt>bool</span><span class=p>)</span> <span class=p>[]</span><span class=kt>string</span> <span class=p>{</span>
+  <span class=nx>vsf</span> <span class=o>:=</span> <span class=nb>make</span><span class=p>([]</span><span class=kt>string</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
+  <span class=k>for</span> <span class=nx>_</span><span class=p>,</span> <span class=nx>v</span> <span class=o>:=</span> <span class=k>range</span> <span class=nx>vs</span> <span class=p>{</span>
+    <span class=k>if</span> <span class=nx>f</span><span class=p>(</span><span class=nx>v</span><span class=p>)</span> <span class=p>{</span>
+      <span class=nx>vsf</span> <span class=p>=</span> <span class=nb>append</span><span class=p>(</span><span class=nx>vsf</span><span class=p>,</span> <span class=nx>v</span><span class=p>)</span>
+    <span class=p>}</span>
+  <span class=p>}</span>
+  <span class=k>return</span> <span class=nx>vsf</span>
+<span class=p>}</span>
+<span class=kd>func</span> <span class=nx>Map</span><span class=p>(</span><span class=nx>vs</span> <span class=p>[]</span><span class=kt>string</span><span class=p>,</span> <span class=nx>f</span> <span class=kd>func</span><span class=p>(</span><span class=kt>string</span><span class=p>)</span> <span class=kt>string</span><span class=p>)</span> <span class=p>[]</span><span class=kt>string</span> <span class=p>{</span>
+  <span class=nx>vsm</span> <span class=o>:=</span> <span class=nb>make</span><span class=p>([]</span><span class=kt>string</span><span class=p>,</span> <span class=nb>len</span><span class=p>(</span><span class=nx>vs</span><span class=p>))</span>
+  <span class=k>for</span> <span class=nx>i</span><span class=p>,</span> <span class=nx>v</span> <span class=o>:=</span> <span class=k>range</span> <span class=nx>vs</span> <span class=p>{</span>
+    <span class=nx>vsm</span><span class=p>[</span><span class=nx>i</span><span class=p>]</span> <span class=p>=</span> <span class=nx>f</span><span class=p>(</span><span class=nx>v</span><span class=p>)</span>
+  <span class=p>}</span>
+  <span class=k>return</span> <span class=nx>vsm</span>
+<span class=p>}</span>
+</code></pre></div> <p><br></p> <h3 id=regex>Regex<a class=headerlink href=#regex title="Permanent link">&para;</a></h3> <p>Go offers built-in support for regular expressions from the <code>"regexp"</code> package</p> <div class=highlight><pre><span></span><code><span class=kn>package</span> <span class=nx>main</span>
+
+<span class=kn>import</span> <span class=p>(</span>
+  <span class=s>&quot;bytes&quot;</span>
+  <span class=s>&quot;fmt&quot;</span>
+  <span class=s>&quot;regexp&quot;</span>
+<span class=p>)</span>
+
+<span class=kd>func</span> <span class=nx>main</span><span class=p>()</span> <span class=p>{</span>
+  <span class=nx>match</span><span class=p>,</span> <span class=nx>_</span> <span class=o>:=</span> <span class=nx>regexp</span><span class=p>.</span><span class=nx>MatchString</span><span class=p>(</span><span class=s>&quot;p([a-z]+)ch&quot;</span><span class=p>,</span> <span class=s>&quot;peach&quot;</span><span class=p>)</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=nx>match</span><span class=p>)</span>
+  <span class=nx>r</span><span class=p>,</span> <span class=nx>_</span> <span class=o>:=</span> <span class=nx>regexp</span><span class=p>.</span><span class=nx>Compile</span><span class=p>(</span><span class=s>&quot;p([a-z]+)ch&quot;</span><span class=p>)</span> <span class=c1>// cache the pattern struct</span>
+
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=nx>r</span><span class=p>.</span><span class=nx>MatchString</span><span class=p>(</span><span class=s>&quot;peach&quot;</span><span class=p>))</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=nx>r</span><span class=p>.</span><span class=nx>FindString</span><span class=p>(</span><span class=s>&quot;peach punch&quot;</span><span class=p>))</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=nx>r</span><span class=p>.</span><span class=nx>FindStringIndex</span><span class=p>(</span><span class=s>&quot;peach punch&quot;</span><span class=p>))</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=nx>r</span><span class=p>.</span><span class=nx>FindStringSubmatch</span><span class=p>(</span><span class=s>&quot;peach punch&quot;</span><span class=p>))</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=nx>r</span><span class=p>.</span><span class=nx>FindStringSubmatchIndex</span><span class=p>(</span><span class=s>&quot;peach punch&quot;</span><span class=p>))</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=nx>r</span><span class=p>.</span><span class=nx>FindAllString</span><span class=p>(</span><span class=s>&quot;peach punch pinch&quot;</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=p>))</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=nx>r</span><span class=p>.</span><span class=nx>FindAllStringSubmatchIndex</span><span class=p>(</span>
+      <span class=s>&quot;peach punch pinch&quot;</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=p>))</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=nx>r</span><span class=p>.</span><span class=nx>Match</span><span class=p>([]</span><span class=nb>byte</span><span class=p>(</span><span class=s>&quot;peach&quot;</span><span class=p>)))</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=nx>r</span><span class=p>.</span><span class=nx>ReplaceAllString</span><span class=p>(</span><span class=s>&quot;a peach&quot;</span><span class=p>,</span> <span class=s>&quot;&lt;fruit&gt;&quot;</span><span class=p>))</span>
+
+  <span class=nx>in</span> <span class=o>:=</span> <span class=p>[]</span><span class=nb>byte</span><span class=p>(</span><span class=s>&quot;a peach&quot;</span><span class=p>)</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=nx>r</span><span class=p>.</span><span class=nx>ReplaceAllFunc</span><span class=p>(</span><span class=nx>in</span><span class=p>,</span> <span class=nx>bytes</span><span class=p>.</span><span class=nx>ToUpper</span><span class=p>))</span>
+<span class=p>}</span>
+</code></pre></div> <p><br></p> <h3 id=json>JSON<a class=headerlink href=#json title="Permanent link">&para;</a></h3> <p>Go offers built-in support for JSON encoding and decoding through the package <code>"encoding/json"</code>, including conversion to and from built-in and custom data types.</p> <div class=highlight><pre><span></span><code><span class=kn>package</span> <span class=nx>main</span>
+
+<span class=kn>import</span> <span class=p>(</span>
+  <span class=s>&quot;encoding/json&quot;</span>
+  <span class=s>&quot;fmt&quot;</span>
+  <span class=s>&quot;os&quot;</span>
+<span class=p>)</span>
+
+<span class=kd>type</span> <span class=nx>response1</span> <span class=kd>struct</span> <span class=p>{</span>
+  <span class=nx>Page</span>   <span class=kt>int</span>
+  <span class=nx>Fruits</span> <span class=p>[]</span><span class=kt>string</span>
+<span class=p>}</span>
+<span class=c1>// field tags contain directives for the encoder and decoder</span>
+<span class=kd>type</span> <span class=nx>response2</span> <span class=kd>struct</span> <span class=p>{</span>
+  <span class=nx>Page</span>   <span class=kt>int</span>      <span class=s>`json:&quot;page&quot;`</span>
+  <span class=nx>Fruits</span> <span class=p>[]</span><span class=kt>string</span> <span class=s>`json:&quot;fruits&quot;`</span>
+<span class=p>}</span>
+
+<span class=kd>func</span> <span class=nx>main</span><span class=p>()</span> <span class=p>{</span>
+  <span class=nx>slcD</span> <span class=o>:=</span> <span class=p>[]</span><span class=kt>string</span><span class=p>{</span><span class=s>&quot;apple&quot;</span><span class=p>,</span> <span class=s>&quot;peach&quot;</span><span class=p>,</span> <span class=s>&quot;pear&quot;</span><span class=p>}</span>
+  <span class=nx>slcB</span><span class=p>,</span> <span class=nx>_</span> <span class=o>:=</span> <span class=nx>json</span><span class=p>.</span><span class=nx>Marshal</span><span class=p>(</span><span class=nx>slcD</span><span class=p>)</span> <span class=c1>// produces a json list string</span>
+
+  <span class=nx>mapD</span> <span class=o>:=</span> <span class=kd>map</span><span class=p>[</span><span class=kt>string</span><span class=p>]</span><span class=kt>int</span><span class=p>{</span><span class=s>&quot;apple&quot;</span><span class=p>:</span> <span class=mi>5</span><span class=p>,</span> <span class=s>&quot;lettuce&quot;</span><span class=p>:</span> <span class=mi>7</span><span class=p>}</span>
+  <span class=nx>mapB</span><span class=p>,</span> <span class=nx>_</span> <span class=o>:=</span> <span class=nx>json</span><span class=p>.</span><span class=nx>Marshal</span><span class=p>(</span><span class=nx>mapD</span><span class=p>)</span> <span class=c1>// produces a json object string</span>
+
+  <span class=nx>res1D</span> <span class=o>:=</span> <span class=o>&amp;</span><span class=nx>response1</span><span class=p>{</span>
+      <span class=nx>Page</span><span class=p>:</span>   <span class=mi>1</span><span class=p>,</span>
+      <span class=nx>Fruits</span><span class=p>:</span> <span class=p>[]</span><span class=kt>string</span><span class=p>{</span><span class=s>&quot;apple&quot;</span><span class=p>,</span> <span class=s>&quot;peach&quot;</span><span class=p>,</span> <span class=s>&quot;pear&quot;</span><span class=p>}}</span>
+  <span class=nx>res1B</span><span class=p>,</span> <span class=nx>_</span> <span class=o>:=</span> <span class=nx>json</span><span class=p>.</span><span class=nx>Marshal</span><span class=p>(</span><span class=nx>res1D</span><span class=p>)</span> <span class=c1>// produces a json object string with keys as-is</span>
+
+  <span class=nx>res2D</span> <span class=o>:=</span> <span class=o>&amp;</span><span class=nx>response2</span><span class=p>{</span>
+      <span class=nx>Page</span><span class=p>:</span>   <span class=mi>1</span><span class=p>,</span>
+      <span class=nx>Fruits</span><span class=p>:</span> <span class=p>[]</span><span class=kt>string</span><span class=p>{</span><span class=s>&quot;apple&quot;</span><span class=p>,</span> <span class=s>&quot;peach&quot;</span><span class=p>,</span> <span class=s>&quot;pear&quot;</span><span class=p>}}</span>
+  <span class=nx>res2B</span><span class=p>,</span> <span class=nx>_</span> <span class=o>:=</span> <span class=nx>json</span><span class=p>.</span><span class=nx>Marshal</span><span class=p>(</span><span class=nx>res2D</span><span class=p>)</span> <span class=c1>// produces a json object string with keys specified in the struct</span>
+
+  <span class=nx>byt</span> <span class=o>:=</span> <span class=p>[]</span><span class=nb>byte</span><span class=p>(</span><span class=s>`{&quot;num&quot;:6.13,&quot;strs&quot;:[&quot;a&quot;,&quot;b&quot;]}`</span><span class=p>)</span>
+  <span class=kd>var</span> <span class=nx>dat</span> <span class=kd>map</span><span class=p>[</span><span class=kt>string</span><span class=p>]</span><span class=kd>interface</span><span class=p>{}</span> <span class=c1>// will hold a map of strings to arbitrary data types.</span>
+  <span class=k>if</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nx>json</span><span class=p>.</span><span class=nx>Unmarshal</span><span class=p>(</span><span class=nx>byt</span><span class=p>,</span> <span class=o>&amp;</span><span class=nx>dat</span><span class=p>);</span> <span class=nx>err</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+      <span class=nb>panic</span><span class=p>(</span><span class=nx>err</span><span class=p>)</span>
+  <span class=p>}</span>
+  <span class=nx>num</span> <span class=o>:=</span> <span class=nx>dat</span><span class=p>[</span><span class=s>&quot;num&quot;</span><span class=p>].(</span><span class=kt>float64</span><span class=p>)</span> <span class=c1>// cast values to the appropriate type</span>
+  <span class=nx>strs</span> <span class=o>:=</span> <span class=nx>dat</span><span class=p>[</span><span class=s>&quot;strs&quot;</span><span class=p>].([]</span><span class=kd>interface</span><span class=p>{})</span>
+  <span class=nx>str1</span> <span class=o>:=</span> <span class=nx>strs</span><span class=p>[</span><span class=mi>0</span><span class=p>].(</span><span class=kt>string</span><span class=p>)</span>
+
+  <span class=nx>str</span> <span class=o>:=</span> <span class=s>`{&quot;page&quot;: 1, &quot;fruits&quot;: [&quot;apple&quot;, &quot;peach&quot;]}`</span>
+  <span class=nx>res</span> <span class=o>:=</span> <span class=nx>response2</span><span class=p>{}</span> <span class=c1>// creates a shell object</span>
+  <span class=nx>json</span><span class=p>.</span><span class=nx>Unmarshal</span><span class=p>([]</span><span class=nb>byte</span><span class=p>(</span><span class=nx>str</span><span class=p>),</span> <span class=o>&amp;</span><span class=nx>res</span><span class=p>)</span> <span class=c1>// decode JSON string and save data into object</span>
+
+  <span class=nx>enc</span> <span class=o>:=</span> <span class=nx>json</span><span class=p>.</span><span class=nx>NewEncoder</span><span class=p>(</span><span class=nx>os</span><span class=p>.</span><span class=nx>Stdout</span><span class=p>)</span> <span class=c1>// stream JSON encoding to other things directly</span>
+  <span class=nx>d</span> <span class=o>:=</span> <span class=kd>map</span><span class=p>[</span><span class=kt>string</span><span class=p>]</span><span class=kt>int</span><span class=p>{</span><span class=s>&quot;apple&quot;</span><span class=p>:</span> <span class=mi>5</span><span class=p>,</span> <span class=s>&quot;lettuce&quot;</span><span class=p>:</span> <span class=mi>7</span><span class=p>}</span>
+  <span class=nx>enc</span><span class=p>.</span><span class=nx>Encode</span><span class=p>(</span><span class=nx>d</span><span class=p>)</span>
+<span class=p>}</span>
+</code></pre></div> <p>https://golang.org/pkg/encoding/json/</p> <p><br></p> <h3 id=xml>XML<a class=headerlink href=#xml title="Permanent link">&para;</a></h3> <p><code>"encoding.xml"</code> package offers built-in support for XML</p> <div class=highlight><pre><span></span><code><span class=kn>package</span> <span class=nx>main</span>
+
+<span class=kn>import</span> <span class=p>(</span>
+  <span class=s>&quot;encoding/xml&quot;</span>
+  <span class=s>&quot;fmt&quot;</span>
+<span class=p>)</span>
+
+<span class=c1>// field tags contain directives for the encoder and decoder</span>
+<span class=kd>type</span> <span class=nx>Plant</span> <span class=kd>struct</span> <span class=p>{</span>
+  <span class=nx>XMLName</span> <span class=nx>xml</span><span class=p>.</span><span class=nx>Name</span> <span class=s>`xml:&quot;plant&quot;`</span> <span class=c1>// the root element</span>
+  <span class=nx>Id</span>      <span class=kt>int</span>      <span class=s>`xml:&quot;id,attr&quot;`</span> <span class=c1>// an attribute of this element</span>
+  <span class=nx>Name</span>    <span class=kt>string</span>   <span class=s>`xml:&quot;name&quot;`</span> <span class=c1>// an element</span>
+  <span class=nx>Origin</span>  <span class=p>[]</span><span class=kt>string</span> <span class=s>`xml:&quot;origin&quot;`</span> <span class=c1>// an element</span>
+<span class=p>}</span>
+
+<span class=kd>func</span> <span class=p>(</span><span class=nx>p</span> <span class=nx>Plant</span><span class=p>)</span> <span class=nx>String</span><span class=p>()</span> <span class=kt>string</span> <span class=p>{</span>
+  <span class=k>return</span> <span class=nx>fmt</span><span class=p>.</span><span class=nx>Sprintf</span><span class=p>(</span><span class=s>&quot;Plant id=%v, name=%v, origin=%v&quot;</span><span class=p>,</span>
+    <span class=nx>p</span><span class=p>.</span><span class=nx>Id</span><span class=p>,</span> <span class=nx>p</span><span class=p>.</span><span class=nx>Name</span><span class=p>,</span> <span class=nx>p</span><span class=p>.</span><span class=nx>Origin</span><span class=p>)</span>
+<span class=p>}</span>
+
+<span class=kd>func</span> <span class=nx>main</span><span class=p>()</span> <span class=p>{</span>
+  <span class=nx>coffee</span> <span class=o>:=</span> <span class=o>&amp;</span><span class=nx>Plant</span><span class=p>{</span><span class=nx>Id</span><span class=p>:</span> <span class=mi>27</span><span class=p>,</span> <span class=nx>Name</span><span class=p>:</span> <span class=s>&quot;Coffee&quot;</span><span class=p>}</span>
+  <span class=nx>coffee</span><span class=p>.</span><span class=nx>Origin</span> <span class=p>=</span> <span class=p>[]</span><span class=kt>string</span><span class=p>{</span><span class=s>&quot;Ethiopia&quot;</span><span class=p>,</span> <span class=s>&quot;Brazil&quot;</span><span class=p>}</span>
+
+  <span class=nx>out</span><span class=p>,</span> <span class=nx>_</span> <span class=o>:=</span> <span class=nx>xml</span><span class=p>.</span><span class=nx>MarshalIndent</span><span class=p>(</span><span class=nx>coffee</span><span class=p>,</span> <span class=s>&quot; &quot;</span><span class=p>,</span> <span class=s>&quot;  &quot;</span><span class=p>)</span> <span class=c1>// encode into a readable XML string</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=nb>string</span><span class=p>(</span><span class=nx>out</span><span class=p>))</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=nx>xml</span><span class=p>.</span><span class=nx>Header</span> <span class=o>+</span> <span class=nb>string</span><span class=p>(</span><span class=nx>out</span><span class=p>))</span>
+
+  <span class=kd>var</span> <span class=nx>p</span> <span class=nx>Plant</span>
+  <span class=k>if</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nx>xml</span><span class=p>.</span><span class=nx>Unmarshal</span><span class=p>(</span><span class=nx>out</span><span class=p>,</span> <span class=o>&amp;</span><span class=nx>p</span><span class=p>);</span> <span class=nx>err</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span> <span class=c1>// decode into a object</span>
+    <span class=nb>panic</span><span class=p>(</span><span class=nx>err</span><span class=p>)</span>
+  <span class=p>}</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=nx>p</span><span class=p>)</span>
+
+  <span class=nx>tomato</span> <span class=o>:=</span> <span class=o>&amp;</span><span class=nx>Plant</span><span class=p>{</span><span class=nx>Id</span><span class=p>:</span> <span class=mi>81</span><span class=p>,</span> <span class=nx>Name</span><span class=p>:</span> <span class=s>&quot;Tomato&quot;</span><span class=p>}</span>
+  <span class=nx>tomato</span><span class=p>.</span><span class=nx>Origin</span> <span class=p>=</span> <span class=p>[]</span><span class=kt>string</span><span class=p>{</span><span class=s>&quot;Mexico&quot;</span><span class=p>,</span> <span class=s>&quot;California&quot;</span><span class=p>}</span>
+
+  <span class=kd>type</span> <span class=nx>Nesting</span> <span class=kd>struct</span> <span class=p>{</span>
+      <span class=nx>XMLName</span> <span class=nx>xml</span><span class=p>.</span><span class=nx>Name</span> <span class=s>`xml:&quot;nesting&quot;`</span>
+      <span class=nx>Plants</span>  <span class=p>[]</span><span class=o>*</span><span class=nx>Plant</span> <span class=s>`xml:&quot;parent&gt;plant&quot;`</span> <span class=c1>// to nest all &lt;plant&gt;s within &lt;parent&gt;</span>
+  <span class=p>}</span>
+
+  <span class=nx>nesting</span> <span class=o>:=</span> <span class=o>&amp;</span><span class=nx>Nesting</span><span class=p>{}</span>
+  <span class=nx>nesting</span><span class=p>.</span><span class=nx>Plants</span> <span class=p>=</span> <span class=p>[]</span><span class=o>*</span><span class=nx>Plant</span><span class=p>{</span><span class=nx>coffee</span><span class=p>,</span> <span class=nx>tomato</span><span class=p>}</span>
+
+  <span class=nx>out</span><span class=p>,</span> <span class=nx>_</span> <span class=p>=</span> <span class=nx>xml</span><span class=p>.</span><span class=nx>MarshalIndent</span><span class=p>(</span><span class=nx>nesting</span><span class=p>,</span> <span class=s>&quot; &quot;</span><span class=p>,</span> <span class=s>&quot;  &quot;</span><span class=p>)</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=nb>string</span><span class=p>(</span><span class=nx>out</span><span class=p>))</span>
+<span class=p>}</span>
+</code></pre></div> <p><br></p> <h3 id=the-time-related-packages>The time-related packages<a class=headerlink href=#the-time-related-packages title="Permanent link">&para;</a></h3> <p>Go's <code>"time"</code> package offers handy functions for basic time operations.</p> <div class=highlight><pre><span></span><code><span class=kn>package</span> <span class=nx>main</span>
+
+<span class=kn>import</span> <span class=p>(</span>
+  <span class=s>&quot;fmt&quot;</span>
+  <span class=s>&quot;time&quot;</span>
+<span class=p>)</span>
+
+<span class=kd>func</span> <span class=nx>main</span><span class=p>()</span> <span class=p>{</span>
+  <span class=nx>p</span> <span class=o>:=</span> <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span> <span class=c1>// alias a function</span>
+
+  <span class=nx>now</span> <span class=o>:=</span> <span class=nx>time</span><span class=p>.</span><span class=nx>Now</span><span class=p>()</span>
+  <span class=nx>secs</span> <span class=o>:=</span> <span class=nx>now</span><span class=p>.</span><span class=nx>Unix</span><span class=p>()</span>
+  <span class=nx>nanos</span> <span class=o>:=</span> <span class=nx>now</span><span class=p>.</span><span class=nx>UnixNano</span><span class=p>()</span>
+  <span class=nx>p</span><span class=p>(</span><span class=nx>now</span><span class=p>)</span>
+  <span class=nx>p</span><span class=p>(</span><span class=nx>time</span><span class=p>.</span><span class=nx>Unix</span><span class=p>(</span><span class=nx>secs</span><span class=p>,</span> <span class=mi>0</span><span class=p>))</span> <span class=c1>// converts seconds to time string</span>
+  <span class=nx>p</span><span class=p>(</span><span class=nx>time</span><span class=p>.</span><span class=nx>Unix</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=nx>nanos</span><span class=p>))</span> <span class=c1>// converts nanoseconds to time string</span>
+
+  <span class=nx>then</span> <span class=o>:=</span> <span class=nx>time</span><span class=p>.</span><span class=nx>Date</span><span class=p>(</span>
+      <span class=mi>2009</span><span class=p>,</span> <span class=mi>11</span><span class=p>,</span> <span class=mi>17</span><span class=p>,</span> <span class=mi>20</span><span class=p>,</span> <span class=mi>34</span><span class=p>,</span> <span class=mi>58</span><span class=p>,</span> <span class=mi>651387237</span><span class=p>,</span> <span class=nx>time</span><span class=p>.</span><span class=nx>UTC</span><span class=p>)</span>
+  <span class=nx>p</span><span class=p>(</span><span class=nx>then</span><span class=p>)</span>
+  <span class=nx>p</span><span class=p>(</span><span class=nx>then</span><span class=p>.</span><span class=nx>Year</span><span class=p>())</span>
+  <span class=nx>p</span><span class=p>(</span><span class=nx>then</span><span class=p>.</span><span class=nx>Month</span><span class=p>())</span>
+  <span class=nx>p</span><span class=p>(</span><span class=nx>then</span><span class=p>.</span><span class=nx>Day</span><span class=p>())</span>
+  <span class=nx>p</span><span class=p>(</span><span class=nx>then</span><span class=p>.</span><span class=nx>Hour</span><span class=p>())</span>
+  <span class=nx>p</span><span class=p>(</span><span class=nx>then</span><span class=p>.</span><span class=nx>Minute</span><span class=p>())</span>
+  <span class=nx>p</span><span class=p>(</span><span class=nx>then</span><span class=p>.</span><span class=nx>Second</span><span class=p>())</span>
+  <span class=nx>p</span><span class=p>(</span><span class=nx>then</span><span class=p>.</span><span class=nx>Nanosecond</span><span class=p>())</span>
+  <span class=nx>p</span><span class=p>(</span><span class=nx>then</span><span class=p>.</span><span class=nx>Location</span><span class=p>())</span>
+  <span class=nx>p</span><span class=p>(</span><span class=nx>then</span><span class=p>.</span><span class=nx>Weekday</span><span class=p>())</span>
+  <span class=nx>p</span><span class=p>(</span><span class=nx>then</span><span class=p>.</span><span class=nx>Before</span><span class=p>(</span><span class=nx>now</span><span class=p>))</span>
+  <span class=nx>p</span><span class=p>(</span><span class=nx>then</span><span class=p>.</span><span class=nx>After</span><span class=p>(</span><span class=nx>now</span><span class=p>))</span>
+  <span class=nx>p</span><span class=p>(</span><span class=nx>then</span><span class=p>.</span><span class=nx>Equal</span><span class=p>(</span><span class=nx>now</span><span class=p>))</span>
+
+  <span class=nx>diff</span> <span class=o>:=</span> <span class=nx>now</span><span class=p>.</span><span class=nx>Sub</span><span class=p>(</span><span class=nx>then</span><span class=p>)</span>
+  <span class=nx>p</span><span class=p>(</span><span class=nx>diff</span><span class=p>)</span>
+
+  <span class=nx>p</span><span class=p>(</span><span class=nx>then</span><span class=p>.</span><span class=nx>Add</span><span class=p>(</span><span class=nx>diff</span><span class=p>))</span>
+  <span class=nx>p</span><span class=p>(</span><span class=nx>then</span><span class=p>.</span><span class=nx>Add</span><span class=p>(</span><span class=o>-</span><span class=nx>diff</span><span class=p>))</span>
+
+  <span class=c1>// formatting time</span>
+  <span class=nx>t</span> <span class=o>:=</span> <span class=nx>time</span><span class=p>.</span><span class=nx>Now</span><span class=p>()</span>
+  <span class=nx>p</span><span class=p>(</span><span class=nx>t</span><span class=p>.</span><span class=nx>Format</span><span class=p>(</span><span class=nx>time</span><span class=p>.</span><span class=nx>RFC3339</span><span class=p>))</span> <span class=c1>// 2014-04-15T18:00:15-07:00</span>
+  <span class=nx>t1</span><span class=p>,</span> <span class=nx>e</span> <span class=o>:=</span> <span class=nx>time</span><span class=p>.</span><span class=nx>Parse</span><span class=p>(</span> <span class=c1>// parse to get a time object</span>
+    <span class=nx>time</span><span class=p>.</span><span class=nx>RFC3339</span><span class=p>,</span>      <span class=c1>// from this format</span>
+    <span class=s>&quot;2012-11-01T22:08:41+00:00&quot;</span><span class=p>)</span> <span class=c1>// actual time string</span>
+  <span class=nx>p</span><span class=p>(</span><span class=nx>t1</span><span class=p>)</span>
+  <span class=c1>// given an example of the desired format, then time will do the formatting</span>
+  <span class=nx>p</span><span class=p>(</span><span class=nx>t</span><span class=p>.</span><span class=nx>Format</span><span class=p>(</span><span class=s>&quot;3:04PM&quot;</span><span class=p>))</span>
+  <span class=nx>p</span><span class=p>(</span><span class=nx>t</span><span class=p>.</span><span class=nx>Format</span><span class=p>(</span><span class=s>&quot;Mon Jan _2 15:04:05 2006&quot;</span><span class=p>))</span>
+  <span class=nx>p</span><span class=p>(</span><span class=nx>t</span><span class=p>.</span><span class=nx>Format</span><span class=p>(</span><span class=s>&quot;2006-01-02T15:04:05.999999-07:00&quot;</span><span class=p>))</span>
+  <span class=nx>form</span> <span class=o>:=</span> <span class=s>&quot;3 04 PM&quot;</span>
+  <span class=nx>t2</span><span class=p>,</span> <span class=nx>e</span> <span class=o>:=</span> <span class=nx>time</span><span class=p>.</span><span class=nx>Parse</span><span class=p>(</span><span class=nx>form</span><span class=p>,</span> <span class=s>&quot;8 41 PM&quot;</span><span class=p>)</span>
+  <span class=nx>p</span><span class=p>(</span><span class=nx>t2</span><span class=p>)</span>
+<span class=p>}</span>
+</code></pre></div> <p><br></p> <h3 id=random-numbers>Random Numbers<a class=headerlink href=#random-numbers title="Permanent link">&para;</a></h3> <p>Go’s <code>"math/rand"</code> package provides pseudorandom number generation. Use <code>"crypto/rand"</code> for random numbers for security related tasks.</p> <div class=highlight><pre><span></span><code><span class=kn>package</span> <span class=nx>main</span>
+
+<span class=kn>import</span> <span class=p>(</span>
+  <span class=s>&quot;fmt&quot;</span>
+  <span class=s>&quot;math/rand&quot;</span>
+  <span class=s>&quot;time&quot;</span>
+<span class=p>)</span>
+
+<span class=kd>func</span> <span class=nx>main</span><span class=p>()</span> <span class=p>{</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=nx>rand</span><span class=p>.</span><span class=nx>Intn</span><span class=p>(</span><span class=mi>100</span><span class=p>))</span> <span class=c1>// generates an integer from [0,100)</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=nx>rand</span><span class=p>.</span><span class=nx>Float64</span><span class=p>())</span> <span class=c1>// generates a 64-bit floating-point from [0.0, 1.0)</span>
+
+  <span class=nx>s1</span> <span class=o>:=</span> <span class=nx>rand</span><span class=p>.</span><span class=nx>NewSource</span><span class=p>(</span><span class=nx>time</span><span class=p>.</span><span class=nx>Now</span><span class=p>().</span><span class=nx>UnixNano</span><span class=p>())</span> <span class=c1>// get a new seed object</span>
+  <span class=nx>r1</span> <span class=o>:=</span> <span class=nx>rand</span><span class=p>.</span><span class=nx>New</span><span class=p>(</span><span class=nx>s1</span><span class=p>)</span> <span class=c1>// get a new generator from the seed</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=nx>r1</span><span class=p>.</span><span class=nx>Intn</span><span class=p>(</span><span class=mi>100</span><span class=p>))</span>
+<span class=p>}</span>
+</code></pre></div> <p>http://golang.org/pkg/math/rand/</p> <p><br></p> <h3 id=string-functions>String functions<a class=headerlink href=#string-functions title="Permanent link">&para;</a></h3> <div class=highlight><pre><span></span><code><span class=kn>package</span> <span class=nx>main</span>
+
+<span class=kn>import</span> <span class=p>(</span>
+    <span class=s>&quot;fmt&quot;</span>
+    <span class=nx>s</span> <span class=s>&quot;strings&quot;</span>
+<span class=p>)</span>
+<span class=kd>var</span> <span class=nx>p</span> <span class=p>=</span> <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span>
+
+<span class=kd>func</span> <span class=nx>main</span><span class=p>()</span> <span class=p>{</span>
+  <span class=nx>p</span><span class=p>(</span><span class=s>&quot;Contains:  &quot;</span><span class=p>,</span> <span class=nx>s</span><span class=p>.</span><span class=nx>Contains</span><span class=p>(</span><span class=s>&quot;test&quot;</span><span class=p>,</span> <span class=s>&quot;es&quot;</span><span class=p>))</span>
+  <span class=nx>p</span><span class=p>(</span><span class=s>&quot;Count:     &quot;</span><span class=p>,</span> <span class=nx>s</span><span class=p>.</span><span class=nx>Count</span><span class=p>(</span><span class=s>&quot;test&quot;</span><span class=p>,</span> <span class=s>&quot;t&quot;</span><span class=p>))</span>
+  <span class=nx>p</span><span class=p>(</span><span class=s>&quot;HasPrefix: &quot;</span><span class=p>,</span> <span class=nx>s</span><span class=p>.</span><span class=nx>HasPrefix</span><span class=p>(</span><span class=s>&quot;test&quot;</span><span class=p>,</span> <span class=s>&quot;te&quot;</span><span class=p>))</span>
+  <span class=nx>p</span><span class=p>(</span><span class=s>&quot;HasSuffix: &quot;</span><span class=p>,</span> <span class=nx>s</span><span class=p>.</span><span class=nx>HasSuffix</span><span class=p>(</span><span class=s>&quot;test&quot;</span><span class=p>,</span> <span class=s>&quot;st&quot;</span><span class=p>))</span>
+  <span class=nx>p</span><span class=p>(</span><span class=s>&quot;Index:     &quot;</span><span class=p>,</span> <span class=nx>s</span><span class=p>.</span><span class=nx>Index</span><span class=p>(</span><span class=s>&quot;test&quot;</span><span class=p>,</span> <span class=s>&quot;e&quot;</span><span class=p>))</span>
+  <span class=nx>p</span><span class=p>(</span><span class=s>&quot;Join:      &quot;</span><span class=p>,</span> <span class=nx>s</span><span class=p>.</span><span class=nx>Join</span><span class=p>([]</span><span class=kt>string</span><span class=p>{</span><span class=s>&quot;a&quot;</span><span class=p>,</span> <span class=s>&quot;b&quot;</span><span class=p>},</span> <span class=s>&quot;-&quot;</span><span class=p>))</span>
+  <span class=nx>p</span><span class=p>(</span><span class=s>&quot;Repeat:    &quot;</span><span class=p>,</span> <span class=nx>s</span><span class=p>.</span><span class=nx>Repeat</span><span class=p>(</span><span class=s>&quot;a&quot;</span><span class=p>,</span> <span class=mi>5</span><span class=p>))</span>
+  <span class=nx>p</span><span class=p>(</span><span class=s>&quot;Replace:   &quot;</span><span class=p>,</span> <span class=nx>s</span><span class=p>.</span><span class=nx>Replace</span><span class=p>(</span><span class=s>&quot;foo&quot;</span><span class=p>,</span> <span class=s>&quot;o&quot;</span><span class=p>,</span> <span class=s>&quot;0&quot;</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=p>))</span> <span class=c1>// replace all indexes</span>
+  <span class=nx>p</span><span class=p>(</span><span class=s>&quot;Replace:   &quot;</span><span class=p>,</span> <span class=nx>s</span><span class=p>.</span><span class=nx>Replace</span><span class=p>(</span><span class=s>&quot;foo&quot;</span><span class=p>,</span> <span class=s>&quot;o&quot;</span><span class=p>,</span> <span class=s>&quot;0&quot;</span><span class=p>,</span> <span class=mi>1</span><span class=p>))</span>
+  <span class=nx>p</span><span class=p>(</span><span class=s>&quot;Split:     &quot;</span><span class=p>,</span> <span class=nx>s</span><span class=p>.</span><span class=nx>Split</span><span class=p>(</span><span class=s>&quot;a-b-c-d-e&quot;</span><span class=p>,</span> <span class=s>&quot;-&quot;</span><span class=p>))</span>
+  <span class=nx>p</span><span class=p>(</span><span class=s>&quot;ToLower:   &quot;</span><span class=p>,</span> <span class=nx>s</span><span class=p>.</span><span class=nx>ToLower</span><span class=p>(</span><span class=s>&quot;TEST&quot;</span><span class=p>))</span>
+  <span class=nx>p</span><span class=p>(</span><span class=s>&quot;ToUpper:   &quot;</span><span class=p>,</span> <span class=nx>s</span><span class=p>.</span><span class=nx>ToUpper</span><span class=p>(</span><span class=s>&quot;test&quot;</span><span class=p>))</span>
+  <span class=nx>p</span><span class=p>(</span><span class=s>&quot;Len: &quot;</span><span class=p>,</span> <span class=nb>len</span><span class=p>(</span><span class=s>&quot;hello&quot;</span><span class=p>))</span>
+  <span class=nx>p</span><span class=p>(</span><span class=s>&quot;Char:&quot;</span><span class=p>,</span> <span class=s>&quot;hello&quot;</span><span class=p>[</span><span class=mi>1</span><span class=p>])</span> <span class=c1>// numerical char value is evaluated</span>
+<span class=p>}</span>
+</code></pre></div> <p>http://golang.org/pkg/strings/</p> <p>https://blog.golang.org/strings more on wide multi-byte characters</p> <p><code>"fmt"</code> offers <code>Printf</code> that can help print out formatted results</p> <div class=highlight><pre><span></span><code><span class=kn>package</span> <span class=nx>main</span>
+
+<span class=kn>import</span> <span class=p>(</span>
+  <span class=s>&quot;fmt&quot;</span>
+  <span class=s>&quot;os&quot;</span>
+<span class=p>)</span>
+
+<span class=kd>type</span> <span class=nx>point</span> <span class=kd>struct</span> <span class=p>{</span>
+    <span class=nx>x</span><span class=p>,</span> <span class=nx>y</span> <span class=kt>int</span>
+<span class=p>}</span>
+
+<span class=kd>func</span> <span class=nx>main</span><span class=p>()</span> <span class=p>{</span>
+  <span class=nx>p</span> <span class=o>:=</span> <span class=nx>point</span><span class=p>{</span><span class=mi>1</span><span class=p>,</span> <span class=mi>2</span><span class=p>}</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Printf</span><span class=p>(</span><span class=s>&quot;%v\n&quot;</span><span class=p>,</span> <span class=nx>p</span><span class=p>)</span> <span class=c1>// p&#39;s object values</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Printf</span><span class=p>(</span><span class=s>&quot;%+v\n&quot;</span><span class=p>,</span> <span class=nx>p</span><span class=p>)</span> <span class=c1>// p&#39;s object values and field names if p is a struct</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Printf</span><span class=p>(</span><span class=s>&quot;%#v\n&quot;</span><span class=p>,</span> <span class=nx>p</span><span class=p>)</span> <span class=c1>// the source code snippet that would produce p</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Printf</span><span class=p>(</span><span class=s>&quot;%T\n&quot;</span><span class=p>,</span> <span class=nx>p</span><span class=p>)</span> <span class=c1>// the type of p</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Printf</span><span class=p>(</span><span class=s>&quot;%t\n&quot;</span><span class=p>,</span> <span class=kc>true</span><span class=p>)</span> <span class=c1>// for boolean</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Printf</span><span class=p>(</span><span class=s>&quot;%d\n&quot;</span><span class=p>,</span> <span class=mi>123</span><span class=p>)</span> <span class=c1>// for base-10 integer</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Printf</span><span class=p>(</span><span class=s>&quot;%b\n&quot;</span><span class=p>,</span> <span class=mi>14</span><span class=p>)</span> <span class=c1>// for binary representation</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Printf</span><span class=p>(</span><span class=s>&quot;%c\n&quot;</span><span class=p>,</span> <span class=mi>33</span><span class=p>)</span> <span class=c1>// for char value of the integer</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Printf</span><span class=p>(</span><span class=s>&quot;%x\n&quot;</span><span class=p>,</span> <span class=mi>456</span><span class=p>)</span> <span class=c1>// for hex representation</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Printf</span><span class=p>(</span><span class=s>&quot;%f\n&quot;</span><span class=p>,</span> <span class=mf>78.9</span><span class=p>)</span> <span class=c1>// for floating-point number</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Printf</span><span class=p>(</span><span class=s>&quot;%e\n&quot;</span><span class=p>,</span> <span class=mf>123400000.0</span><span class=p>)</span> <span class=c1>// for scientific notation</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Printf</span><span class=p>(</span><span class=s>&quot;%E\n&quot;</span><span class=p>,</span> <span class=mf>123400000.0</span><span class=p>)</span> <span class=c1>// for scientific notation</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Printf</span><span class=p>(</span><span class=s>&quot;%s\n&quot;</span><span class=p>,</span> <span class=s>&quot;\&quot;string\&quot;&quot;</span><span class=p>)</span> <span class=c1>// for string</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Printf</span><span class=p>(</span><span class=s>&quot;%q\n&quot;</span><span class=p>,</span> <span class=s>&quot;string&quot;</span><span class=p>)</span> <span class=c1>// add quotes around the string</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Printf</span><span class=p>(</span><span class=s>&quot;%x\n&quot;</span><span class=p>,</span> <span class=s>&quot;hex this&quot;</span><span class=p>)</span> <span class=c1>// renders string in base-16</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Printf</span><span class=p>(</span><span class=s>&quot;%p\n&quot;</span><span class=p>,</span> <span class=o>&amp;</span><span class=nx>p</span><span class=p>)</span> <span class=c1>// for pointer representation</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Printf</span><span class=p>(</span><span class=s>&quot;|%6d|%6d|\n&quot;</span><span class=p>,</span> <span class=mi>12</span><span class=p>,</span> <span class=mi>345</span><span class=p>)</span>  <span class=c1>// control the width of the print</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Printf</span><span class=p>(</span><span class=s>&quot;|%6.2f|%6.2f|\n&quot;</span><span class=p>,</span> <span class=mf>1.2</span><span class=p>,</span> <span class=mf>3.45</span><span class=p>)</span> <span class=c1>// control the precision after &#39;.&#39;</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Printf</span><span class=p>(</span><span class=s>&quot;|%-6s|%-6s|\n&quot;</span><span class=p>,</span> <span class=s>&quot;foo&quot;</span><span class=p>,</span> <span class=s>&quot;b&quot;</span><span class=p>)</span> <span class=c1>// left-justify the print</span>
+  <span class=nx>s</span> <span class=o>:=</span> <span class=nx>fmt</span><span class=p>.</span><span class=nx>Sprintf</span><span class=p>(</span><span class=s>&quot;a %s&quot;</span><span class=p>,</span> <span class=s>&quot;string&quot;</span><span class=p>)</span> <span class=c1>// saves formatted string as output</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Fprintf</span><span class=p>(</span><span class=nx>os</span><span class=p>.</span><span class=nx>Stderr</span><span class=p>,</span> <span class=s>&quot;an %s\n&quot;</span><span class=p>,</span> <span class=s>&quot;error&quot;</span><span class=p>)</span> <span class=c1>// prints to other io.Writers</span>
+<span class=p>}</span>
+</code></pre></div> <p>The package <code>"strconv"</code> offers functions to parse numbers from strings</p> <div class=highlight><pre><span></span><code><span class=kn>package</span> <span class=nx>main</span>
+
+<span class=kn>import</span> <span class=p>(</span>
+  <span class=s>&quot;fmt&quot;</span>
+  <span class=s>&quot;strconv&quot;</span>
+<span class=p>)</span>
+
+<span class=kd>func</span> <span class=nx>main</span><span class=p>()</span> <span class=p>{</span>
+  <span class=nx>f</span><span class=p>,</span> <span class=nx>_</span> <span class=o>:=</span> <span class=nx>strconv</span><span class=p>.</span><span class=nx>ParseFloat</span><span class=p>(</span><span class=s>&quot;1.234&quot;</span><span class=p>,</span> <span class=mi>64</span><span class=p>)</span> <span class=c1>// parse a 64-bit precision floating point</span>
+  <span class=nx>i</span><span class=p>,</span> <span class=nx>_</span> <span class=o>:=</span> <span class=nx>strconv</span><span class=p>.</span><span class=nx>ParseInt</span><span class=p>(</span><span class=s>&quot;123&quot;</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>64</span><span class=p>)</span> <span class=c1>// 0 means auto-base, 64-bit integer</span>
+  <span class=nx>k</span><span class=p>,</span> <span class=nx>_</span> <span class=o>:=</span> <span class=nx>strconv</span><span class=p>.</span><span class=nx>Atoi</span><span class=p>(</span><span class=s>&quot;135&quot;</span><span class=p>)</span> <span class=c1>// parse a base-10 integer</span>
+  <span class=nx>_</span><span class=p>,</span> <span class=nx>e</span> <span class=o>:=</span> <span class=nx>strconv</span><span class=p>.</span><span class=nx>Atoi</span><span class=p>(</span><span class=s>&quot;wat&quot;</span><span class=p>)</span> <span class=c1>// error on bad input</span>
+<span class=p>}</span>
+</code></pre></div> <p><br></p> <h3 id=url-parsing>URL Parsing<a class=headerlink href=#url-parsing title="Permanent link">&para;</a></h3> <p>The packages <code>"net"</code> and <code>"net/url"</code> provides functions to parse URLs</p> <div class=highlight><pre><span></span><code><span class=kn>package</span> <span class=nx>main</span>
+
+<span class=kn>import</span> <span class=p>(</span>
+  <span class=s>&quot;fmt&quot;</span>
+  <span class=s>&quot;net&quot;</span>
+  <span class=s>&quot;net/url&quot;</span>
+<span class=p>)</span>
+
+<span class=kd>func</span> <span class=nx>main</span><span class=p>()</span> <span class=p>{</span>
+  <span class=nx>s</span> <span class=o>:=</span> <span class=s>&quot;postgres://user:pass@host.com:5432/path?k=v#f&quot;</span>
+
+  <span class=nx>u</span><span class=p>,</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nx>url</span><span class=p>.</span><span class=nx>Parse</span><span class=p>(</span><span class=nx>s</span><span class=p>)</span>
+  <span class=k>if</span> <span class=nx>err</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+      <span class=nb>panic</span><span class=p>(</span><span class=nx>err</span><span class=p>)</span>
+  <span class=p>}</span>
+
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=nx>u</span><span class=p>.</span><span class=nx>Scheme</span><span class=p>)</span> <span class=c1>// postgres</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=nx>u</span><span class=p>.</span><span class=nx>User</span><span class=p>)</span> <span class=c1>// user:pass</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=nx>u</span><span class=p>.</span><span class=nx>User</span><span class=p>.</span><span class=nx>Username</span><span class=p>())</span> <span class=c1>// user</span>
+  <span class=nx>p</span><span class=p>,</span> <span class=nx>_</span> <span class=o>:=</span> <span class=nx>u</span><span class=p>.</span><span class=nx>User</span><span class=p>.</span><span class=nx>Password</span><span class=p>()</span> <span class=c1>// pass</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=nx>u</span><span class=p>.</span><span class=nx>Host</span><span class=p>)</span> <span class=c1>// host.com:5432</span>
+  <span class=nx>host</span><span class=p>,</span> <span class=nx>port</span><span class=p>,</span> <span class=nx>_</span> <span class=o>:=</span> <span class=nx>net</span><span class=p>.</span><span class=nx>SplitHostPort</span><span class=p>(</span><span class=nx>u</span><span class=p>.</span><span class=nx>Host</span><span class=p>)</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=nx>u</span><span class=p>.</span><span class=nx>Path</span><span class=p>)</span> <span class=c1>// /path</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=nx>u</span><span class=p>.</span><span class=nx>Fragment</span><span class=p>)</span> <span class=c1>// f</span>
+
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=nx>u</span><span class=p>.</span><span class=nx>RawQuery</span><span class=p>)</span> <span class=c1>// k=v everything between &#39;?&#39; and &#39;#&#39;</span>
+  <span class=nx>m</span><span class=p>,</span> <span class=nx>_</span> <span class=o>:=</span> <span class=nx>url</span><span class=p>.</span><span class=nx>ParseQuery</span><span class=p>(</span><span class=nx>u</span><span class=p>.</span><span class=nx>RawQuery</span><span class=p>)</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=nx>m</span><span class=p>)</span> <span class=c1>// map[k:[v]]</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=nx>m</span><span class=p>[</span><span class=s>&quot;k&quot;</span><span class=p>][</span><span class=mi>0</span><span class=p>])</span> <span class=c1>// v</span>
+<span class=p>}</span>
+</code></pre></div> <p><br></p> <h3 id=encryption-and-hashing-functions>Encryption and Hashing Functions<a class=headerlink href=#encryption-and-hashing-functions title="Permanent link">&para;</a></h3> <p>Go implements several hash functions in various <code>"crypto/*"</code> packages. Go provides built-in support for base64 encoding/decoding from the <code>"encoding/base64"</code> package, which can do URL encoding.</p> <div class=highlight><pre><span></span><code><span class=kn>package</span> <span class=nx>main</span>
+
+<span class=kn>import</span> <span class=p>(</span>
+  <span class=s>&quot;crypto/sha1&quot;</span> <span class=c1>// others like &quot;crypto/md5&quot; &quot;crypto/sha256&quot; has similar usage</span>
+  <span class=nx>b64</span> <span class=s>&quot;encoding/base64&quot;</span>
+  <span class=s>&quot;fmt&quot;</span>
+<span class=p>)</span>
+
+<span class=kd>func</span> <span class=nx>main</span><span class=p>()</span> <span class=p>{</span>
+  <span class=nx>s</span> <span class=o>:=</span> <span class=s>&quot;sha1 this string&quot;</span>
+  <span class=nx>h</span> <span class=o>:=</span> <span class=nx>sha1</span><span class=p>.</span><span class=nx>New</span><span class=p>()</span>
+  <span class=nx>h</span><span class=p>.</span><span class=nx>Write</span><span class=p>([]</span><span class=nb>byte</span><span class=p>(</span><span class=nx>s</span><span class=p>))</span> <span class=c1>// create a byte array from the string and pass in</span>
+  <span class=nx>bs</span> <span class=o>:=</span> <span class=nx>h</span><span class=p>.</span><span class=nx>Sum</span><span class=p>(</span><span class=kc>nil</span><span class=p>)</span>  <span class=c1>// creates the final hash; the argument will be appended another byte slice to the end of the existing byte slice (such as a salt)</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=nx>s</span><span class=p>)</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Printf</span><span class=p>(</span><span class=s>&quot;%x\n&quot;</span><span class=p>,</span> <span class=nx>bs</span><span class=p>)</span> <span class=c1>// sha values usually printed in hex</span>
+
+  <span class=nx>data</span> <span class=o>:=</span> <span class=s>&quot;abc123!?$*&amp;()&#39;-=@~&quot;</span>
+  <span class=nx>stdEncode</span> <span class=o>:=</span> <span class=nx>b64</span><span class=p>.</span><span class=nx>StdEncoding</span><span class=p>.</span><span class=nx>EncodeToString</span><span class=p>([]</span><span class=nb>byte</span><span class=p>(</span><span class=nx>data</span><span class=p>))</span>
+  <span class=nx>stdDecode</span><span class=p>,</span> <span class=nx>_</span> <span class=o>:=</span> <span class=nx>b64</span><span class=p>.</span><span class=nx>StdEncoding</span><span class=p>.</span><span class=nx>DecodeString</span><span class=p>(</span><span class=nx>sEnc</span><span class=p>)</span>
+
+  <span class=nx>urlEnc</span> <span class=o>:=</span> <span class=nx>b64</span><span class=p>.</span><span class=nx>URLEncoding</span><span class=p>.</span><span class=nx>EncodeToString</span><span class=p>([]</span><span class=nb>byte</span><span class=p>(</span><span class=nx>data</span><span class=p>))</span>
+  <span class=nx>urlDec</span><span class=p>,</span> <span class=nx>_</span> <span class=o>:=</span> <span class=nx>b64</span><span class=p>.</span><span class=nx>URLEncoding</span><span class=p>.</span><span class=nx>DecodeString</span><span class=p>(</span><span class=nx>uEnc</span><span class=p>)</span>
+<span class=p>}</span>
+</code></pre></div> <p><br></p> <h3 id=file-io>File I/O<a class=headerlink href=#file-io title="Permanent link">&para;</a></h3> <p>Reading and writing files are basic tasks needed for many Go programs. Some related packages: <code>"bufio" "fmt" "io" "io/ioutil" "os"</code></p> <div class=highlight><pre><span></span><code><span class=kn>package</span> <span class=nx>main</span>
+
+<span class=kn>import</span> <span class=p>(</span>
+  <span class=s>&quot;bufio&quot;</span>
+  <span class=s>&quot;fmt&quot;</span>
+  <span class=s>&quot;io&quot;</span>
+  <span class=s>&quot;io/ioutil&quot;</span>
+  <span class=s>&quot;os&quot;</span>
+<span class=p>)</span>
+
+<span class=kd>func</span> <span class=nx>check</span><span class=p>(</span><span class=nx>e</span> <span class=kt>error</span><span class=p>)</span> <span class=p>{</span> <span class=c1>// always check error for file operations</span>
+  <span class=k>if</span> <span class=nx>e</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+    <span class=nb>panic</span><span class=p>(</span><span class=nx>e</span><span class=p>)</span>
+  <span class=p>}</span>
+<span class=p>}</span>
+
+<span class=kd>func</span> <span class=nx>main</span><span class=p>()</span> <span class=p>{</span>
+  <span class=nx>dat</span><span class=p>,</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nx>ioutil</span><span class=p>.</span><span class=nx>ReadFile</span><span class=p>(</span><span class=s>&quot;/tmp/dat&quot;</span><span class=p>)</span> <span class=c1>// reads entire file into memory</span>
+  <span class=nx>check</span><span class=p>(</span><span class=nx>err</span><span class=p>)</span>
+
+  <span class=nx>f</span><span class=p>,</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nx>os</span><span class=p>.</span><span class=nx>Open</span><span class=p>(</span><span class=s>&quot;/tmp/dat&quot;</span><span class=p>)</span> <span class=c1>// open a file to gain more control over various file operations</span>
+  <span class=nx>check</span><span class=p>(</span><span class=nx>err</span><span class=p>)</span>
+  <span class=nx>b1</span> <span class=o>:=</span> <span class=nb>make</span><span class=p>([]</span><span class=kt>byte</span><span class=p>,</span> <span class=mi>5</span><span class=p>)</span> <span class=c1>// make a byte array with a fixed size</span>
+  <span class=nx>n1</span><span class=p>,</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nx>f</span><span class=p>.</span><span class=nx>Read</span><span class=p>(</span><span class=nx>b1</span><span class=p>)</span> <span class=c1>// read bytes in, up to the size of the array; n1 is number of bytes actually read</span>
+  <span class=nx>check</span><span class=p>(</span><span class=nx>err</span><span class=p>)</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Printf</span><span class=p>(</span><span class=s>&quot;%d bytes: %s\n&quot;</span><span class=p>,</span> <span class=nx>n1</span><span class=p>,</span> <span class=nb>string</span><span class=p>(</span><span class=nx>b1</span><span class=p>[:</span><span class=nx>n1</span><span class=p>]))</span>
+
+  <span class=nx>o3</span><span class=p>,</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nx>f</span><span class=p>.</span><span class=nx>Seek</span><span class=p>(</span><span class=mi>6</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span> <span class=c1>// start next read from a byte position in the file check(err)</span>
+  <span class=nx>b3</span> <span class=o>:=</span> <span class=nb>make</span><span class=p>([]</span><span class=kt>byte</span><span class=p>,</span> <span class=mi>2</span><span class=p>)</span>
+  <span class=nx>n3</span><span class=p>,</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nx>io</span><span class=p>.</span><span class=nx>ReadAtLeast</span><span class=p>(</span><span class=nx>f</span><span class=p>,</span> <span class=nx>b3</span><span class=p>,</span> <span class=mi>2</span><span class=p>)</span>
+
+  <span class=nx>_</span><span class=p>,</span> <span class=nx>err</span> <span class=p>=</span> <span class=nx>f</span><span class=p>.</span><span class=nx>Seek</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span> <span class=c1>// rewind to the beginning of this file</span>
+
+  <span class=nx>r4</span> <span class=o>:=</span> <span class=nx>bufio</span><span class=p>.</span><span class=nx>NewReader</span><span class=p>(</span><span class=nx>f</span><span class=p>)</span>
+  <span class=nx>b4</span><span class=p>,</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nx>r4</span><span class=p>.</span><span class=nx>Peek</span><span class=p>(</span><span class=mi>5</span><span class=p>)</span> <span class=c1>// directly returns the byte array for you</span>
+  <span class=nx>check</span><span class=p>(</span><span class=nx>err</span><span class=p>)</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Printf</span><span class=p>(</span><span class=s>&quot;5 bytes: %s\n&quot;</span><span class=p>,</span> <span class=nb>string</span><span class=p>(</span><span class=nx>b4</span><span class=p>))</span>
+
+  <span class=nx>f</span><span class=p>.</span><span class=nx>Close</span><span class=p>()</span>
+
+  <span class=nx>d1</span> <span class=o>:=</span> <span class=p>[]</span><span class=nb>byte</span><span class=p>(</span><span class=s>&quot;hello\ngo\n&quot;</span><span class=p>)</span>
+  <span class=nx>err</span> <span class=o>:=</span> <span class=nx>ioutil</span><span class=p>.</span><span class=nx>WriteFile</span><span class=p>(</span><span class=s>&quot;/tmp/dat1&quot;</span><span class=p>,</span> <span class=nx>d1</span><span class=p>,</span> <span class=mo>0644</span><span class=p>)</span> <span class=c1>// write a byte array to a file directly</span>
+  <span class=nx>check</span><span class=p>(</span><span class=nx>err</span><span class=p>)</span>
+
+  <span class=nx>f</span><span class=p>,</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nx>os</span><span class=p>.</span><span class=nx>Create</span><span class=p>(</span><span class=s>&quot;/tmp/dat2&quot;</span><span class=p>)</span> <span class=c1>// create an empty file</span>
+  <span class=nx>check</span><span class=p>(</span><span class=nx>err</span><span class=p>)</span>
+  <span class=k>defer</span> <span class=nx>f</span><span class=p>.</span><span class=nx>Close</span><span class=p>()</span> <span class=c1>// will close the file when out of scope</span>
+  <span class=nx>d2</span> <span class=o>:=</span> <span class=p>[]</span><span class=kt>byte</span><span class=p>{</span><span class=mi>115</span><span class=p>,</span> <span class=mi>111</span><span class=p>,</span> <span class=mi>109</span><span class=p>,</span> <span class=mi>101</span><span class=p>,</span> <span class=mi>10</span><span class=p>}</span>
+  <span class=nx>n2</span><span class=p>,</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nx>f</span><span class=p>.</span><span class=nx>Write</span><span class=p>(</span><span class=nx>d2</span><span class=p>)</span> <span class=c1>// write some bytes into the file</span>
+  <span class=nx>check</span><span class=p>(</span><span class=nx>err</span><span class=p>)</span>
+  <span class=nx>n3</span><span class=p>,</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nx>f</span><span class=p>.</span><span class=nx>WriteString</span><span class=p>(</span><span class=s>&quot;writes\n&quot;</span><span class=p>)</span> <span class=c1>// write a string into the file</span>
+  <span class=nx>check</span><span class=p>(</span><span class=nx>err</span><span class=p>)</span>
+  <span class=nx>f</span><span class=p>.</span><span class=nx>Sync</span><span class=p>()</span> <span class=c1>// flush writes to the disk</span>
+
+  <span class=nx>w</span> <span class=o>:=</span> <span class=nx>bufio</span><span class=p>.</span><span class=nx>NewWriter</span><span class=p>(</span><span class=nx>f</span><span class=p>)</span> <span class=c1>// buffered writer</span>
+  <span class=nx>n4</span><span class=p>,</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nx>w</span><span class=p>.</span><span class=nx>WriteString</span><span class=p>(</span><span class=s>&quot;buffered\n&quot;</span><span class=p>)</span> <span class=c1>// write a string to the file</span>
+  <span class=nx>check</span><span class=p>(</span><span class=nx>err</span><span class=p>)</span>
+  <span class=nx>w</span><span class=p>.</span><span class=nx>Flush</span><span class=p>()</span> <span class=c1>// flush writes to the disk</span>
+<span class=p>}</span>
+</code></pre></div> <p>A <em>line filter</em> is a common type of program that reads input on STDIN, processes it, and then prints some derived result to STDOUT. <code>grep</code> and <code>sed</code> are common line filters.</p> <p>This is an example line filter written with go.</p> <div class=highlight><pre><span></span><code><span class=kn>package</span> <span class=nx>main</span>
+
+<span class=kn>import</span> <span class=p>(</span>
+  <span class=s>&quot;bufio&quot;</span>
+  <span class=s>&quot;fmt&quot;</span>
+  <span class=s>&quot;os&quot;</span>
+  <span class=s>&quot;strings&quot;</span>
+<span class=p>)</span>
+
+<span class=kd>func</span> <span class=nx>main</span><span class=p>()</span> <span class=p>{</span>
+  <span class=nx>scanner</span> <span class=o>:=</span> <span class=nx>bufio</span><span class=p>.</span><span class=nx>NewScanner</span><span class=p>(</span><span class=nx>os</span><span class=p>.</span><span class=nx>Stdin</span><span class=p>)</span>
+
+  <span class=k>for</span> <span class=nx>scanner</span><span class=p>.</span><span class=nx>Scan</span><span class=p>()</span> <span class=p>{</span>
+    <span class=nx>ucl</span> <span class=o>:=</span> <span class=nx>strings</span><span class=p>.</span><span class=nx>ToUpper</span><span class=p>(</span><span class=nx>scanner</span><span class=p>.</span><span class=nx>Text</span><span class=p>())</span>
+    <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=nx>ucl</span><span class=p>)</span>
+  <span class=p>}</span>
+
+  <span class=k>if</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nx>scanner</span><span class=p>.</span><span class=nx>Err</span><span class=p>();</span> <span class=nx>err</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+    <span class=nx>fmt</span><span class=p>.</span><span class=nx>Fprintln</span><span class=p>(</span><span class=nx>os</span><span class=p>.</span><span class=nx>Stderr</span><span class=p>,</span> <span class=s>&quot;error:&quot;</span><span class=p>,</span> <span class=nx>err</span><span class=p>)</span>
+    <span class=nx>os</span><span class=p>.</span><span class=nx>Exit</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
+  <span class=p>}</span>
+<span class=p>}</span>
+</code></pre></div> <p><br></p> <h3 id=files-directories>Files, Directories<a class=headerlink href=#files-directories title="Permanent link">&para;</a></h3> <p>The <code>"path/filepath"</code> package provides lots of convenient functions to parse and construct <strong>file paths</strong> in a way that is <strong>portable between operating systems</strong></p> <p>The <code>"os"</code> package offers functions for interacting with <strong>files and directories</strong></p> <div class=highlight><pre><span></span><code><span class=kn>package</span> <span class=nx>main</span>
+
+<span class=kn>import</span> <span class=p>(</span>
+  <span class=s>&quot;fmt&quot;</span>
+  <span class=s>&quot;io/ioutil&quot;</span>
+  <span class=s>&quot;os&quot;</span>
+  <span class=s>&quot;path/filepath&quot;</span>
+  <span class=s>&quot;strings&quot;</span>
+<span class=p>)</span>
+
+<span class=kd>func</span> <span class=nx>main</span><span class=p>()</span> <span class=p>{</span>
+  <span class=nx>p</span> <span class=o>:=</span> <span class=nx>filepath</span><span class=p>.</span><span class=nx>Join</span><span class=p>(</span><span class=s>&quot;dir1&quot;</span><span class=p>,</span> <span class=s>&quot;dir2&quot;</span><span class=p>,</span> <span class=s>&quot;filename&quot;</span><span class=p>)</span> <span class=c1>// prepare a path by concatenate tokens</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=nx>filepath</span><span class=p>.</span><span class=nx>Join</span><span class=p>(</span><span class=s>&quot;dir1//&quot;</span><span class=p>,</span> <span class=s>&quot;filename&quot;</span><span class=p>))</span> <span class=c1>// implicitly take care of extra chars</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=nx>filepath</span><span class=p>.</span><span class=nx>Join</span><span class=p>(</span><span class=s>&quot;dir1/../dir1&quot;</span><span class=p>,</span> <span class=s>&quot;filename&quot;</span><span class=p>))</span> <span class=c1>// implicitly evaluate &#39;..&#39;</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=s>&quot;Dir(p):&quot;</span><span class=p>,</span> <span class=nx>filepath</span><span class=p>.</span><span class=nx>Dir</span><span class=p>(</span><span class=nx>p</span><span class=p>))</span> <span class=c1>// the path to the parent dir of the file</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=s>&quot;Base(p):&quot;</span><span class=p>,</span> <span class=nx>filepath</span><span class=p>.</span><span class=nx>Base</span><span class=p>(</span><span class=nx>p</span><span class=p>))</span> <span class=c1>// the base of the path, could be a dir or file</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=nx>filepath</span><span class=p>.</span><span class=nx>IsAbs</span><span class=p>(</span><span class=s>&quot;dir/file&quot;</span><span class=p>))</span> <span class=c1>// judge if it is an absolute path or relative path</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=nx>filepath</span><span class=p>.</span><span class=nx>IsAbs</span><span class=p>(</span><span class=s>&quot;/dir/file&quot;</span><span class=p>))</span>
+
+  <span class=nx>filename</span> <span class=o>:=</span> <span class=s>&quot;config.json&quot;</span>
+  <span class=nx>ext</span> <span class=o>:=</span> <span class=nx>filepath</span><span class=p>.</span><span class=nx>Ext</span><span class=p>(</span><span class=nx>filename</span><span class=p>)</span> <span class=c1>// gets the extension of the file</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=nx>strings</span><span class=p>.</span><span class=nx>TrimSuffix</span><span class=p>(</span><span class=nx>filename</span><span class=p>,</span> <span class=nx>ext</span><span class=p>))</span> <span class=c1>// rid of extension</span>
+
+  <span class=nx>rel</span><span class=p>,</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nx>filepath</span><span class=p>.</span><span class=nx>Rel</span><span class=p>(</span><span class=s>&quot;a/b&quot;</span><span class=p>,</span> <span class=s>&quot;a/b/t/file&quot;</span><span class=p>)</span> <span class=c1>// finds relative path between the two dirs (they must share a common root)</span>
+  <span class=k>if</span> <span class=nx>err</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+      <span class=nb>panic</span><span class=p>(</span><span class=nx>err</span><span class=p>)</span>
+  <span class=p>}</span>
+
+  <span class=nx>err</span> <span class=o>:=</span> <span class=nx>os</span><span class=p>.</span><span class=nx>Mkdir</span><span class=p>(</span><span class=s>&quot;subdir&quot;</span><span class=p>,</span> <span class=mo>0755</span><span class=p>)</span> <span class=c1>// creates a dir in current working directory</span>
+  <span class=nx>check</span><span class=p>(</span><span class=nx>err</span><span class=p>)</span>
+  <span class=k>defer</span> <span class=nx>os</span><span class=p>.</span><span class=nx>RemoveAll</span><span class=p>(</span><span class=s>&quot;subdir&quot;</span><span class=p>)</span> <span class=c1>// remove a dir tree; it is good practice to defer removing temp dirs</span>
+
+  <span class=nx>createEmptyFile</span> <span class=o>:=</span> <span class=kd>func</span><span class=p>(</span><span class=nx>name</span> <span class=kt>string</span><span class=p>)</span> <span class=p>{</span>
+    <span class=nx>d</span> <span class=o>:=</span> <span class=p>[]</span><span class=nb>byte</span><span class=p>(</span><span class=s>&quot;&quot;</span><span class=p>)</span>
+    <span class=nx>check</span><span class=p>(</span><span class=nx>ioutil</span><span class=p>.</span><span class=nx>WriteFile</span><span class=p>(</span><span class=nx>name</span><span class=p>,</span> <span class=nx>d</span><span class=p>,</span> <span class=mo>0644</span><span class=p>))</span> <span class=c1>// creates an empty file</span>
+  <span class=p>}</span>
+  <span class=nx>createEmptyFile</span><span class=p>(</span><span class=s>&quot;subdir/file1&quot;</span><span class=p>)</span>
+
+  <span class=nx>err</span> <span class=p>=</span> <span class=nx>os</span><span class=p>.</span><span class=nx>MkdirAll</span><span class=p>(</span><span class=s>&quot;subdir/parent/child&quot;</span><span class=p>,</span> <span class=mo>0755</span><span class=p>)</span> <span class=c1>// create a hierarchy of dirs</span>
+  <span class=nx>check</span><span class=p>(</span><span class=nx>err</span><span class=p>)</span>
+  <span class=nx>c</span><span class=p>,</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nx>ioutil</span><span class=p>.</span><span class=nx>ReadDir</span><span class=p>(</span><span class=s>&quot;subdir/parent&quot;</span><span class=p>)</span> <span class=c1>// lists dir contents, returns a slice of `os.FileInfo` objects</span>
+  <span class=nx>check</span><span class=p>(</span><span class=nx>err</span><span class=p>)</span>
+  <span class=k>for</span> <span class=nx>_</span><span class=p>,</span> <span class=nx>entry</span> <span class=o>:=</span> <span class=k>range</span> <span class=nx>c</span> <span class=p>{</span>
+    <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=s>&quot; &quot;</span><span class=p>,</span> <span class=nx>entry</span><span class=p>.</span><span class=nx>Name</span><span class=p>(),</span> <span class=nx>entry</span><span class=p>.</span><span class=nx>IsDir</span><span class=p>())</span> <span class=c1>// some functions on the os.FileInfo</span>
+  <span class=p>}</span>
+
+  <span class=nx>err</span> <span class=p>=</span> <span class=nx>os</span><span class=p>.</span><span class=nx>Chdir</span><span class=p>(</span><span class=s>&quot;subdir/parent/child&quot;</span><span class=p>)</span> <span class=c1>// change the current working directory</span>
+  <span class=nx>check</span><span class=p>(</span><span class=nx>err</span><span class=p>)</span>
+  <span class=nx>c</span><span class=p>,</span> <span class=nx>err</span> <span class=p>=</span> <span class=nx>ioutil</span><span class=p>.</span><span class=nx>ReadDir</span><span class=p>(</span><span class=s>&quot;.&quot;</span><span class=p>)</span> <span class=c1>// list current dir contents</span>
+  <span class=nx>check</span><span class=p>(</span><span class=nx>err</span><span class=p>)</span>
+
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=s>&quot;Visiting subdir&quot;</span><span class=p>)</span>
+  <span class=nx>err</span> <span class=p>=</span> <span class=nx>filepath</span><span class=p>.</span><span class=nx>Walk</span><span class=p>(</span><span class=s>&quot;subdir&quot;</span><span class=p>,</span> <span class=nx>visit</span><span class=p>)</span> <span class=c1>// accepts a callback function to handle every file or directory visited</span>
+
+  <span class=nx>f</span><span class=p>,</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nx>ioutil</span><span class=p>.</span><span class=nx>TempFile</span><span class=p>(</span><span class=s>&quot;&quot;</span><span class=p>,</span> <span class=s>&quot;sample&quot;</span><span class=p>)</span> <span class=c1>// creates and open a temp file for read/write; &quot;&quot; as first arg tells to create the file in OS default temp location</span>
+  <span class=nx>check</span><span class=p>(</span><span class=nx>err</span><span class=p>)</span>
+  <span class=k>defer</span> <span class=nx>os</span><span class=p>.</span><span class=nx>Remove</span><span class=p>(</span><span class=nx>f</span><span class=p>.</span><span class=nx>Name</span><span class=p>())</span>
+
+  <span class=nx>dname</span><span class=p>,</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nx>ioutil</span><span class=p>.</span><span class=nx>TempDir</span><span class=p>(</span><span class=s>&quot;&quot;</span><span class=p>,</span> <span class=s>&quot;sampledir&quot;</span><span class=p>)</span> <span class=c1>// similarly create a temp dir</span>
+  <span class=nx>check</span><span class=p>(</span><span class=nx>err</span><span class=p>)</span>
+  <span class=k>defer</span> <span class=nx>os</span><span class=p>.</span><span class=nx>RemoveAll</span><span class=p>(</span><span class=nx>dname</span><span class=p>)</span>
+
+  <span class=nx>fname</span> <span class=o>:=</span> <span class=nx>filepath</span><span class=p>.</span><span class=nx>Join</span><span class=p>(</span><span class=nx>dname</span><span class=p>,</span> <span class=s>&quot;file1&quot;</span><span class=p>)</span>
+  <span class=nx>err</span> <span class=p>=</span> <span class=nx>ioutil</span><span class=p>.</span><span class=nx>WriteFile</span><span class=p>(</span><span class=nx>fname</span><span class=p>,</span> <span class=p>[]</span><span class=kt>byte</span><span class=p>{</span><span class=mi>1</span><span class=p>,</span> <span class=mi>2</span><span class=p>},</span> <span class=mo>0666</span><span class=p>)</span>
+  <span class=nx>check</span><span class=p>(</span><span class=nx>err</span><span class=p>)</span>
+<span class=p>}</span>
+
+<span class=kd>func</span> <span class=nx>visit</span><span class=p>(</span><span class=nx>p</span> <span class=kt>string</span><span class=p>,</span> <span class=nx>info</span> <span class=nx>os</span><span class=p>.</span><span class=nx>FileInfo</span><span class=p>,</span> <span class=nx>err</span> <span class=kt>error</span><span class=p>)</span> <span class=kt>error</span> <span class=p>{</span>
+  <span class=k>if</span> <span class=nx>err</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+    <span class=k>return</span> <span class=nx>err</span>
+  <span class=p>}</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=s>&quot; &quot;</span><span class=p>,</span> <span class=nx>p</span><span class=p>,</span> <span class=nx>info</span><span class=p>.</span><span class=nx>IsDir</span><span class=p>())</span>
+  <span class=k>return</span> <span class=kc>nil</span>
+<span class=p>}</span>
+</code></pre></div> <p><br></p> <h3 id=testing>Testing<a class=headerlink href=#testing title="Permanent link">&para;</a></h3> <p>The <code>"testing"</code> package provides the tools we need to write unit tests and the <code>go test</code> command runs tests.</p> <div class=highlight><pre><span></span><code><span class=kn>package</span> <span class=nx>main</span>
+
+<span class=kn>import</span> <span class=p>(</span>
+  <span class=s>&quot;fmt&quot;</span>
+  <span class=s>&quot;testing&quot;</span>
+<span class=p>)</span>
+
+<span class=kd>func</span> <span class=nx>IntMin</span><span class=p>(</span><span class=nx>a</span><span class=p>,</span> <span class=nx>b</span> <span class=kt>int</span><span class=p>)</span> <span class=kt>int</span> <span class=p>{</span>
+  <span class=k>if</span> <span class=nx>a</span> <span class=p>&lt;</span> <span class=nx>b</span> <span class=p>{</span>
+    <span class=k>return</span> <span class=nx>a</span>
+  <span class=p>}</span>
+  <span class=k>return</span> <span class=nx>b</span>
+<span class=p>}</span>
+
+<span class=kd>func</span> <span class=nx>TestIntMinTableDriven</span><span class=p>(</span><span class=nx>t</span> <span class=o>*</span><span class=nx>testing</span><span class=p>.</span><span class=nx>T</span><span class=p>)</span> <span class=p>{</span>
+  <span class=kd>var</span> <span class=nx>tests</span> <span class=p>=</span> <span class=p>[]</span><span class=kd>struct</span> <span class=p>{</span>
+    <span class=nx>a</span><span class=p>,</span> <span class=nx>b</span> <span class=kt>int</span>
+    <span class=nx>want</span> <span class=kt>int</span>
+  <span class=p>}{</span> <span class=c1>// shortcut to initialize anonymous struct</span>
+    <span class=p>{</span><span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>},</span>
+    <span class=p>{</span><span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>},</span>
+    <span class=p>{</span><span class=mi>2</span><span class=p>,</span> <span class=o>-</span><span class=mi>2</span><span class=p>,</span> <span class=o>-</span><span class=mi>2</span><span class=p>},</span>
+    <span class=p>{</span><span class=mi>0</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=p>},</span>
+    <span class=p>{</span><span class=o>-</span><span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=p>},</span>
+  <span class=p>}</span>
+  <span class=k>for</span> <span class=nx>_</span><span class=p>,</span> <span class=nx>tt</span> <span class=o>:=</span> <span class=k>range</span> <span class=nx>tests</span> <span class=p>{</span>
+    <span class=nx>testname</span> <span class=o>:=</span> <span class=nx>fmt</span><span class=p>.</span><span class=nx>Sprintf</span><span class=p>(</span><span class=s>&quot;%d,%d&quot;</span><span class=p>,</span> <span class=nx>tt</span><span class=p>.</span><span class=nx>a</span><span class=p>,</span> <span class=nx>tt</span><span class=p>.</span><span class=nx>b</span><span class=p>)</span>
+    <span class=nx>t</span><span class=p>.</span><span class=nx>Run</span><span class=p>(</span><span class=nx>testname</span><span class=p>,</span> <span class=kd>func</span><span class=p>(</span><span class=nx>t</span> <span class=o>*</span><span class=nx>testing</span><span class=p>.</span><span class=nx>T</span><span class=p>)</span> <span class=p>{</span>
+      <span class=nx>ans</span> <span class=o>:=</span> <span class=nx>IntMin</span><span class=p>(</span><span class=nx>tt</span><span class=p>.</span><span class=nx>a</span><span class=p>,</span> <span class=nx>tt</span><span class=p>.</span><span class=nx>b</span><span class=p>)</span>
+      <span class=k>if</span> <span class=nx>ans</span> <span class=o>!=</span> <span class=nx>tt</span><span class=p>.</span><span class=nx>want</span> <span class=p>{</span>
+        <span class=nx>t</span><span class=p>.</span><span class=nx>Errorf</span><span class=p>(</span><span class=s>&quot;got %d, want %d&quot;</span><span class=p>,</span> <span class=nx>ans</span><span class=p>,</span> <span class=nx>tt</span><span class=p>.</span><span class=nx>want</span><span class=p>)</span> <span class=c1>// report test failure and continue</span>
+        <span class=nx>t</span><span class=p>.</span><span class=nx>Fail</span><span class=p>(</span><span class=s>&quot;fail this test&quot;</span><span class=p>)</span> <span class=c1>// report test failure and stop this test immediately</span>
+      <span class=p>}</span>
+    <span class=p>})</span>
+  <span class=p>}</span>
+<span class=p>}</span>
+</code></pre></div> <p><br></p> <h3 id=command-environment-variables>Command, Environment Variables<a class=headerlink href=#command-environment-variables title="Permanent link">&para;</a></h3> <p>Use <code>"os"</code> package to access command-line args passed in when running the program. Need to build a binary using <code>go build</code> command first. It also provides functions to get/set environment variables.</p> <p>Go provides a <code>"flag"</code> package supporting basic command-line flag parsing. Using this package, it is easy to define <strong>subcommands</strong> that expect their own flags.</p> <div class=highlight><pre><span></span><code><span class=kn>package</span> <span class=nx>main</span>
+
+<span class=kn>import</span> <span class=p>(</span>
+  <span class=s>&quot;flag&quot;</span>
+  <span class=s>&quot;fmt&quot;</span>
+  <span class=s>&quot;os&quot;</span>
+<span class=p>)</span>
+
+<span class=kd>func</span> <span class=nx>main</span><span class=p>()</span> <span class=p>{</span>
+  <span class=nx>argsWithProg</span> <span class=o>:=</span> <span class=nx>os</span><span class=p>.</span><span class=nx>Args</span> <span class=c1>// a slice of the arguments</span>
+  <span class=nx>argsWithoutProg</span> <span class=o>:=</span> <span class=nx>os</span><span class=p>.</span><span class=nx>Args</span><span class=p>[</span><span class=mi>1</span><span class=p>:]</span> <span class=c1>// first value is the path to the program</span>
+  <span class=nx>os</span><span class=p>.</span><span class=nx>Setenv</span><span class=p>(</span><span class=s>&quot;FOO&quot;</span><span class=p>,</span> <span class=s>&quot;1&quot;</span><span class=p>)</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=s>&quot;FOO:&quot;</span><span class=p>,</span> <span class=nx>os</span><span class=p>.</span><span class=nx>Getenv</span><span class=p>(</span><span class=s>&quot;FOO&quot;</span><span class=p>))</span>
+  <span class=k>for</span> <span class=nx>_</span><span class=p>,</span> <span class=nx>e</span> <span class=o>:=</span> <span class=k>range</span> <span class=nx>os</span><span class=p>.</span><span class=nx>Environ</span><span class=p>()</span> <span class=p>{</span> <span class=c1>// os.Environ returns a list of env vars and values</span>
+    <span class=nx>pair</span> <span class=o>:=</span> <span class=nx>strings</span><span class=p>.</span><span class=nx>SplitN</span><span class=p>(</span><span class=nx>e</span><span class=p>,</span> <span class=s>&quot;=&quot;</span><span class=p>,</span> <span class=mi>2</span><span class=p>)</span>
+  <span class=p>}</span>
+
+  <span class=nx>wordPtr</span> <span class=o>:=</span> <span class=nx>flag</span><span class=p>.</span><span class=nx>String</span><span class=p>(</span><span class=s>&quot;word&quot;</span><span class=p>,</span> <span class=s>&quot;foo&quot;</span><span class=p>,</span> <span class=s>&quot;a string&quot;</span><span class=p>)</span> <span class=c1>// declare a flag for string with a default value; returns a pointer reference</span>
+  <span class=nx>numbPtr</span> <span class=o>:=</span> <span class=nx>flag</span><span class=p>.</span><span class=nx>Int</span><span class=p>(</span><span class=s>&quot;numb&quot;</span><span class=p>,</span> <span class=mi>42</span><span class=p>,</span> <span class=s>&quot;an int&quot;</span><span class=p>)</span>
+  <span class=nx>boolPtr</span> <span class=o>:=</span> <span class=nx>flag</span><span class=p>.</span><span class=nx>Bool</span><span class=p>(</span><span class=s>&quot;fork&quot;</span><span class=p>,</span> <span class=kc>false</span><span class=p>,</span> <span class=s>&quot;a bool&quot;</span><span class=p>)</span>
+
+  <span class=kd>var</span> <span class=nx>svar</span> <span class=kt>string</span>
+  <span class=nx>flag</span><span class=p>.</span><span class=nx>StringVar</span><span class=p>(</span><span class=o>&amp;</span><span class=nx>svar</span><span class=p>,</span> <span class=s>&quot;svar&quot;</span><span class=p>,</span> <span class=s>&quot;bar&quot;</span><span class=p>,</span> <span class=s>&quot;a string var&quot;</span><span class=p>)</span> <span class=c1>// declare an option that uses an existing var; pass-by-reference</span>
+
+  <span class=nx>flag</span><span class=p>.</span><span class=nx>Parse</span><span class=p>()</span> <span class=c1>// execute command-line parsing operation</span>
+
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=s>&quot;word:&quot;</span><span class=p>,</span> <span class=o>*</span><span class=nx>wordPtr</span><span class=p>)</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=s>&quot;numb:&quot;</span><span class=p>,</span> <span class=o>*</span><span class=nx>numbPtr</span><span class=p>)</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=s>&quot;fork:&quot;</span><span class=p>,</span> <span class=o>*</span><span class=nx>boolPtr</span><span class=p>)</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=s>&quot;svar:&quot;</span><span class=p>,</span> <span class=nx>svar</span><span class=p>)</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=s>&quot;tail:&quot;</span><span class=p>,</span> <span class=nx>flag</span><span class=p>.</span><span class=nx>Args</span><span class=p>())</span> <span class=c1>// get all trailing tokens (flags should be passed before these tokens otherwise won&#39;t be picked up)</span>
+  <span class=c1>// pass in -h/--help for a list of help text for each option supported</span>
+  <span class=c1>// undefined flag option will also result in help text being printed</span>
+
+  <span class=nx>fooCmd</span> <span class=o>:=</span> <span class=nx>flag</span><span class=p>.</span><span class=nx>NewFlagSet</span><span class=p>(</span><span class=s>&quot;foo&quot;</span><span class=p>,</span> <span class=nx>flag</span><span class=p>.</span><span class=nx>ExitOnError</span><span class=p>)</span> <span class=c1>// declare a subcommand</span>
+  <span class=nx>fooEnable</span> <span class=o>:=</span> <span class=nx>fooCmd</span><span class=p>.</span><span class=nx>Bool</span><span class=p>(</span><span class=s>&quot;enable&quot;</span><span class=p>,</span> <span class=kc>false</span><span class=p>,</span> <span class=s>&quot;enable&quot;</span><span class=p>)</span> <span class=c1>// define option for this subcommand</span>
+  <span class=nx>fooName</span> <span class=o>:=</span> <span class=nx>fooCmd</span><span class=p>.</span><span class=nx>String</span><span class=p>(</span><span class=s>&quot;name&quot;</span><span class=p>,</span> <span class=s>&quot;&quot;</span><span class=p>,</span> <span class=s>&quot;name&quot;</span><span class=p>)</span>
+  <span class=nx>barCmd</span> <span class=o>:=</span> <span class=nx>flag</span><span class=p>.</span><span class=nx>NewFlagSet</span><span class=p>(</span><span class=s>&quot;bar&quot;</span><span class=p>,</span> <span class=nx>flag</span><span class=p>.</span><span class=nx>ExitOnError</span><span class=p>)</span>
+  <span class=nx>barLevel</span> <span class=o>:=</span> <span class=nx>barCmd</span><span class=p>.</span><span class=nx>Int</span><span class=p>(</span><span class=s>&quot;level&quot;</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=s>&quot;level&quot;</span><span class=p>)</span>
+
+  <span class=k>switch</span> <span class=nx>os</span><span class=p>.</span><span class=nx>Args</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=p>{</span>
+  <span class=k>case</span> <span class=s>&quot;foo&quot;</span><span class=p>:</span>
+      <span class=nx>fooCmd</span><span class=p>.</span><span class=nx>Parse</span><span class=p>(</span><span class=nx>os</span><span class=p>.</span><span class=nx>Args</span><span class=p>[</span><span class=mi>2</span><span class=p>:])</span>
+  <span class=k>case</span> <span class=s>&quot;bar&quot;</span><span class=p>:</span>
+      <span class=nx>barCmd</span><span class=p>.</span><span class=nx>Parse</span><span class=p>(</span><span class=nx>os</span><span class=p>.</span><span class=nx>Args</span><span class=p>[</span><span class=mi>2</span><span class=p>:])</span>
+  <span class=k>default</span><span class=p>:</span>
+      <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=s>&quot;expected &#39;foo&#39; or &#39;bar&#39; subcommands&quot;</span><span class=p>)</span>
+      <span class=nx>os</span><span class=p>.</span><span class=nx>Exit</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
+  <span class=p>}</span>
+<span class=p>}</span>
+</code></pre></div> <p><br></p> <h3 id=processes-and-signals>Processes and Signals<a class=headerlink href=#processes-and-signals title="Permanent link">&para;</a></h3> <p>Sometimes it is useful to spawn other processes to handle work outside of this program using other programs. Then the package <code>"io/ioutil"</code> and <code>"os/exec"</code> will be helpful.</p> <p>While <code>"syscall"</code> package performs deep level process manipulation and allow us to replace current process with a new process.</p> <div class=highlight><pre><span></span><code><span class=kn>package</span> <span class=nx>main</span>
+
+<span class=kn>import</span> <span class=p>(</span>
+  <span class=s>&quot;fmt&quot;</span>
+  <span class=s>&quot;io/ioutil&quot;</span>
+  <span class=s>&quot;os/exec&quot;</span>
+  <span class=s>&quot;syscall&quot;</span>
+<span class=p>)</span>
+
+<span class=kd>func</span> <span class=nx>main</span><span class=p>()</span> <span class=p>{</span>
+  <span class=nx>dateCmd</span> <span class=o>:=</span> <span class=nx>exec</span><span class=p>.</span><span class=nx>Command</span><span class=p>(</span><span class=s>&quot;date&quot;</span><span class=p>)</span> <span class=c1>// creates an object to represent an external process running this command</span>
+  <span class=nx>dateOut</span><span class=p>,</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nx>dateCmd</span><span class=p>.</span><span class=nx>Output</span><span class=p>()</span> <span class=c1>// run the command string and collect its output</span>
+  <span class=k>if</span> <span class=nx>err</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+    <span class=nb>panic</span><span class=p>(</span><span class=nx>err</span><span class=p>)</span>
+  <span class=p>}</span>
+
+  <span class=nx>grepCmd</span> <span class=o>:=</span> <span class=nx>exec</span><span class=p>.</span><span class=nx>Command</span><span class=p>(</span><span class=s>&quot;grep&quot;</span><span class=p>,</span> <span class=s>&quot;hello&quot;</span><span class=p>)</span> <span class=c1>// build command with arguments</span>
+  <span class=nx>grepIn</span><span class=p>,</span> <span class=nx>_</span> <span class=o>:=</span> <span class=nx>grepCmd</span><span class=p>.</span><span class=nx>StdinPipe</span><span class=p>()</span> <span class=c1>// the channel for piping in stdin for the command</span>
+  <span class=nx>grepOut</span><span class=p>,</span> <span class=nx>_</span> <span class=o>:=</span> <span class=nx>grepCmd</span><span class=p>.</span><span class=nx>StdoutPipe</span><span class=p>()</span> <span class=c1>// the channel for piping out stdout from the command</span>
+  <span class=nx>grepCmd</span><span class=p>.</span><span class=nx>Start</span><span class=p>()</span> <span class=c1>// run the command in a process</span>
+  <span class=nx>grepIn</span><span class=p>.</span><span class=nx>Write</span><span class=p>([]</span><span class=nb>byte</span><span class=p>(</span><span class=s>&quot;hello grep\ngoodbye grep&quot;</span><span class=p>))</span>
+  <span class=nx>grepIn</span><span class=p>.</span><span class=nx>Close</span><span class=p>()</span>
+  <span class=nx>grepBytes</span><span class=p>,</span> <span class=nx>_</span> <span class=o>:=</span> <span class=nx>ioutil</span><span class=p>.</span><span class=nx>ReadAll</span><span class=p>(</span><span class=nx>grepOut</span><span class=p>)</span> <span class=c1>// read from the stdout</span>
+  <span class=nx>grepCmd</span><span class=p>.</span><span class=nx>Wait</span><span class=p>()</span> <span class=c1>// blocks until command finish execution</span>
+
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=s>&quot;&gt; grep hello&quot;</span><span class=p>)</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=nb>string</span><span class=p>(</span><span class=nx>grepBytes</span><span class=p>))</span>
+
+  <span class=nx>lsCmd</span> <span class=o>:=</span> <span class=nx>exec</span><span class=p>.</span><span class=nx>Command</span><span class=p>(</span><span class=s>&quot;bash&quot;</span><span class=p>,</span> <span class=s>&quot;-c&quot;</span><span class=p>,</span> <span class=s>&quot;ls -a -l -h&quot;</span><span class=p>)</span> <span class=c1>// allows pass in a full command string</span>
+  <span class=nx>lsOut</span><span class=p>,</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nx>lsCmd</span><span class=p>.</span><span class=nx>Output</span><span class=p>()</span>
+  <span class=k>if</span> <span class=nx>err</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+      <span class=nb>panic</span><span class=p>(</span><span class=nx>err</span><span class=p>)</span>
+  <span class=p>}</span>
+
+  <span class=nx>binary</span><span class=p>,</span> <span class=nx>lookErr</span> <span class=o>:=</span> <span class=nx>exec</span><span class=p>.</span><span class=nx>LookPath</span><span class=p>(</span><span class=s>&quot;ls&quot;</span><span class=p>)</span> <span class=c1>// get the absolute path to the binary</span>
+  <span class=k>if</span> <span class=nx>lookErr</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+    <span class=nb>panic</span><span class=p>(</span><span class=nx>lookErr</span><span class=p>)</span>
+  <span class=p>}</span>
+  <span class=nx>args</span> <span class=o>:=</span> <span class=p>[]</span><span class=kt>string</span><span class=p>{</span><span class=s>&quot;ls&quot;</span><span class=p>,</span> <span class=s>&quot;-a&quot;</span><span class=p>,</span> <span class=s>&quot;-l&quot;</span><span class=p>,</span> <span class=s>&quot;-h&quot;</span><span class=p>}</span> <span class=c1>// has to be in slice form</span>
+  <span class=nx>env</span> <span class=o>:=</span> <span class=nx>os</span><span class=p>.</span><span class=nx>Environ</span><span class=p>()</span>
+  <span class=nx>execErr</span> <span class=o>:=</span> <span class=nx>syscall</span><span class=p>.</span><span class=nx>Exec</span><span class=p>(</span><span class=nx>binary</span><span class=p>,</span> <span class=nx>args</span><span class=p>,</span> <span class=nx>env</span><span class=p>)</span>
+  <span class=k>if</span> <span class=nx>execErr</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+    <span class=nb>panic</span><span class=p>(</span><span class=nx>execErr</span><span class=p>)</span>
+  <span class=p>}</span>
+<span class=p>}</span>
+</code></pre></div> <p>Note that when spawning commands we need to provide an <strong>explicitly delineated command</strong> and <strong>argument array</strong>, vs. being able to just pass in one command-line string.</p> <p>Also note that Go does NOT offer a classic Unix <code>fork</code> function. Usually this isn't an issue though, since starting goroutines, spawning processes, and exec'ing processes covers most use cases for fork.</p> <p>It is possible a go program can receive Unix system signals during execution. We need to make sure the signals are handled correctly by using <code>"os/signal"</code> package.</p> <div class=highlight><pre><span></span><code><span class=kn>package</span> <span class=nx>main</span>
+
+<span class=kn>import</span> <span class=p>(</span>
+  <span class=s>&quot;fmt&quot;</span>
+  <span class=s>&quot;os&quot;</span>
+  <span class=s>&quot;os/signal&quot;</span>
+  <span class=s>&quot;syscall&quot;</span>
+<span class=p>)</span>
+
+<span class=kd>func</span> <span class=nx>main</span><span class=p>()</span> <span class=p>{</span>
+  <span class=nx>sigs</span> <span class=o>:=</span> <span class=nb>make</span><span class=p>(</span><span class=kd>chan</span> <span class=nx>os</span><span class=p>.</span><span class=nx>Signal</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
+  <span class=nx>done</span> <span class=o>:=</span> <span class=nb>make</span><span class=p>(</span><span class=kd>chan</span> <span class=kt>bool</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
+  <span class=nx>signal</span><span class=p>.</span><span class=nx>Notify</span><span class=p>(</span><span class=nx>sigs</span><span class=p>,</span> <span class=nx>syscall</span><span class=p>.</span><span class=nx>SIGINT</span><span class=p>,</span> <span class=nx>syscall</span><span class=p>.</span><span class=nx>SIGTERM</span><span class=p>)</span> <span class=c1>// registers the given channel to receive notifications of the specified signals</span>
+  <span class=k>go</span> <span class=kd>func</span><span class=p>()</span> <span class=p>{</span>
+    <span class=nx>sig</span> <span class=o>:=</span> <span class=o>&lt;-</span><span class=nx>sigs</span> <span class=c1>// blocks this routine until one of the above signals is received</span>
+    <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=nx>sig</span><span class=p>)</span>
+    <span class=nx>done</span> <span class=o>&lt;-</span> <span class=kc>true</span>
+  <span class=p>}()</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=s>&quot;awaiting signal&quot;</span><span class=p>)</span>
+  <span class=o>&lt;-</span><span class=nx>done</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=s>&quot;exiting&quot;</span><span class=p>)</span>
+  <span class=nx>os</span><span class=p>.</span><span class=nx>Exit</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span> <span class=c1>// exits the program and returns an exit-code</span>
+<span class=p>}</span>
+</code></pre></div> <p>Note that <code>defer</code> won't run when <code>os.Exit</code> is called.</p> <p><br></p> <h3 id=http-serverclient>HTTP Server/Client<a class=headerlink href=#http-serverclient title="Permanent link">&para;</a></h3> <p>The <code>"net/http"</code> package provides good support for issuing HTTP requests as a client, or serving contents as a simple server.</p> <div class=highlight><pre><span></span><code><span class=kn>package</span> <span class=nx>main</span>
+
+<span class=kn>import</span> <span class=p>(</span>
+  <span class=s>&quot;bufio&quot;</span>
+  <span class=s>&quot;fmt&quot;</span>
+  <span class=s>&quot;net/http&quot;</span>
+<span class=p>)</span>
+
+<span class=kd>func</span> <span class=nx>main</span><span class=p>()</span> <span class=p>{</span>
+  <span class=nx>resp</span><span class=p>,</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nx>http</span><span class=p>.</span><span class=nx>Get</span><span class=p>(</span><span class=s>&quot;http://gobyexample.com&quot;</span><span class=p>)</span> <span class=c1>// a GET request</span>
+  <span class=k>if</span> <span class=nx>err</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+    <span class=nb>panic</span><span class=p>(</span><span class=nx>err</span><span class=p>)</span>
+  <span class=p>}</span>
+  <span class=k>defer</span> <span class=nx>resp</span><span class=p>.</span><span class=nx>Body</span><span class=p>.</span><span class=nx>Close</span><span class=p>()</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=s>&quot;Response status:&quot;</span><span class=p>,</span> <span class=nx>resp</span><span class=p>.</span><span class=nx>Status</span><span class=p>)</span>
+
+  <span class=nx>scanner</span> <span class=o>:=</span> <span class=nx>bufio</span><span class=p>.</span><span class=nx>NewScanner</span><span class=p>(</span><span class=nx>resp</span><span class=p>.</span><span class=nx>Body</span><span class=p>)</span>
+  <span class=k>for</span> <span class=nx>scanner</span><span class=p>.</span><span class=nx>Scan</span><span class=p>()</span> <span class=p>{</span>
+    <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=nx>scanner</span><span class=p>.</span><span class=nx>Text</span><span class=p>())</span>
+  <span class=p>}</span>
+  <span class=k>if</span> <span class=nx>err</span> <span class=o>:=</span> <span class=nx>scanner</span><span class=p>.</span><span class=nx>Err</span><span class=p>();</span> <span class=nx>err</span> <span class=o>!=</span> <span class=kc>nil</span> <span class=p>{</span>
+    <span class=nb>panic</span><span class=p>(</span><span class=nx>err</span><span class=p>)</span>
+  <span class=p>}</span>
+<span class=p>}</span>
+</code></pre></div> <p>Setting up a simple HTTP server can be simple as defining some <strong>handlers</strong> on some <strong>endpoints</strong> and serve on a <strong>port</strong>.</p> <p>A handler is an object implementing the <code>http.Handler</code> interface.</p> <div class=highlight><pre><span></span><code><span class=kn>package</span> <span class=nx>main</span>
+
+<span class=kn>import</span> <span class=p>(</span>
+  <span class=s>&quot;fmt&quot;</span>
+  <span class=s>&quot;net/http&quot;</span>
+<span class=p>)</span>
+
+<span class=kd>func</span> <span class=nx>hello</span><span class=p>(</span><span class=nx>w</span> <span class=nx>http</span><span class=p>.</span><span class=nx>ResponseWriter</span><span class=p>,</span> <span class=nx>req</span> <span class=o>*</span><span class=nx>http</span><span class=p>.</span><span class=nx>Request</span><span class=p>)</span> <span class=p>{</span>
+  <span class=nx>ctx</span> <span class=o>:=</span> <span class=nx>req</span><span class=p>.</span><span class=nx>Context</span><span class=p>()</span> <span class=c1>// a `context.Context` is created for each request</span>
+  <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=s>&quot;server: hello handler started&quot;</span><span class=p>)</span>
+  <span class=k>defer</span> <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=s>&quot;server: hello handler ended&quot;</span><span class=p>)</span>
+
+  <span class=k>select</span> <span class=p>{</span>
+  <span class=k>case</span> <span class=o>&lt;-</span><span class=nx>time</span><span class=p>.</span><span class=nx>After</span><span class=p>(</span><span class=mi>10</span> <span class=o>*</span> <span class=nx>time</span><span class=p>.</span><span class=nx>Second</span><span class=p>):</span>
+    <span class=nx>fmt</span><span class=p>.</span><span class=nx>Fprintf</span><span class=p>(</span><span class=nx>w</span><span class=p>,</span> <span class=s>&quot;hello\n&quot;</span><span class=p>)</span>
+  <span class=k>case</span> <span class=o>&lt;-</span><span class=nx>ctx</span><span class=p>.</span><span class=nx>Done</span><span class=p>():</span>
+    <span class=nx>err</span> <span class=o>:=</span> <span class=nx>ctx</span><span class=p>.</span><span class=nx>Err</span><span class=p>()</span> <span class=c1>// returns an error that explains why the Done() channel was closed</span>
+    <span class=nx>fmt</span><span class=p>.</span><span class=nx>Println</span><span class=p>(</span><span class=s>&quot;server:&quot;</span><span class=p>,</span> <span class=nx>err</span><span class=p>)</span>
+    <span class=nx>internalError</span> <span class=o>:=</span> <span class=nx>http</span><span class=p>.</span><span class=nx>StatusInternalServerError</span>
+    <span class=nx>http</span><span class=p>.</span><span class=nx>Error</span><span class=p>(</span><span class=nx>w</span><span class=p>,</span> <span class=nx>err</span><span class=p>.</span><span class=nx>Error</span><span class=p>(),</span> <span class=nx>internalError</span><span class=p>)</span>
+  <span class=p>}</span>
+<span class=p>}</span>
+
+<span class=kd>func</span> <span class=nx>headers</span><span class=p>(</span><span class=nx>w</span> <span class=nx>http</span><span class=p>.</span><span class=nx>ResponseWriter</span><span class=p>,</span> <span class=nx>req</span> <span class=o>*</span><span class=nx>http</span><span class=p>.</span><span class=nx>Request</span><span class=p>)</span> <span class=p>{</span>
+  <span class=k>for</span> <span class=nx>name</span><span class=p>,</span> <span class=nx>headers</span> <span class=o>:=</span> <span class=k>range</span> <span class=nx>req</span><span class=p>.</span><span class=nx>Header</span> <span class=p>{</span>
+    <span class=k>for</span> <span class=nx>_</span><span class=p>,</span> <span class=nx>h</span> <span class=o>:=</span> <span class=k>range</span> <span class=nx>headers</span> <span class=p>{</span>
+      <span class=nx>fmt</span><span class=p>.</span><span class=nx>Fprintf</span><span class=p>(</span><span class=nx>w</span><span class=p>,</span> <span class=s>&quot;%v: %v\n&quot;</span><span class=p>,</span> <span class=nx>name</span><span class=p>,</span> <span class=nx>h</span><span class=p>)</span>
+    <span class=p>}</span>
+  <span class=p>}</span>
+<span class=p>}</span>
+
+<span class=kd>func</span> <span class=nx>main</span><span class=p>()</span> <span class=p>{</span>
+  <span class=nx>http</span><span class=p>.</span><span class=nx>HandleFunc</span><span class=p>(</span><span class=s>&quot;/hello&quot;</span><span class=p>,</span> <span class=nx>hello</span><span class=p>)</span> <span class=c1>// pass in functions to call for this endpoint</span>
+  <span class=nx>http</span><span class=p>.</span><span class=nx>HandleFunc</span><span class=p>(</span><span class=s>&quot;/headers&quot;</span><span class=p>,</span> <span class=nx>headers</span><span class=p>)</span>
+  <span class=nx>http</span><span class=p>.</span><span class=nx>ListenAndServe</span><span class=p>(</span><span class=s>&quot;:8090&quot;</span><span class=p>,</span> <span class=kc>nil</span><span class=p>)</span> <span class=c1>// can specify a different router if desired</span>
+<span class=p>}</span>
+</code></pre></div> </article> </div> </div> </main> <footer class=md-footer> <div class=md-footer-nav> <nav class="md-footer-nav__inner md-grid" aria-label=Footer> <a href=../Best-Practices/ class="md-footer-nav__link md-footer-nav__link--prev" rel=prev> <div class="md-footer-nav__button md-icon"> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg> </div> <div class=md-footer-nav__title> <div class=md-ellipsis> <span class=md-footer-nav__direction> Previous </span> Effective Go </div> </div> </a> <a href=../../Java/Style-Guide/ class="md-footer-nav__link md-footer-nav__link--next" rel=next> <div class=md-footer-nav__title> <div class=md-ellipsis> <span class=md-footer-nav__direction> Next </span> Style Guide </div> </div> <div class="md-footer-nav__button md-icon"> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg> </div> </a> </nav> </div> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-footer-copyright> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <script src=../../../assets/javascripts/vendor.53cc9318.min.js></script> <script src=../../../assets/javascripts/bundle.e9c9f54f.min.js></script><script id=__lang type=application/json>{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script> <script>
+        app = initialize({
+          base: "../../..",
+          features: ['navigation.tabs', 'navigation.instant'],
+          search: Object.assign({
+            worker: "../../../assets/javascripts/worker/search.9c0e82ba.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script> </body> </html>

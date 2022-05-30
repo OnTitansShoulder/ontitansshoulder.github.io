@@ -1,0 +1,429 @@
+<!doctype html><html lang=en class=no-js> <head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="We are all standing on the shoulders of the giants..."><meta name=author content="Zhongkai Liu"><link rel="shortcut icon" href=../../../assets/favicon.ico><meta name=generator content="mkdocs-1.1.2, mkdocs-material-6.2.6"><title>Freq Linux Tasks - Ontitansshoulder</title><link rel=stylesheet href=../../../assets/stylesheets/main.cb6bc1d0.min.css><link rel=stylesheet href=../../../assets/stylesheets/palette.39b8e14a.min.css><meta name=theme-color content=#4051b5><link rel=preconnect href=https://fonts.gstatic.com crossorigin><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback"><style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style><link rel=stylesheet href=../../../css/extra.css></head> <body dir=ltr data-md-color-scheme=default data-md-color-primary=indigo data-md-color-accent=indigo> <input class=md-toggle data-md-toggle=drawer type=checkbox id=__drawer autocomplete=off> <input class=md-toggle data-md-toggle=search type=checkbox id=__search autocomplete=off> <label class=md-overlay for=__drawer></label> <div data-md-component=skip> <a href=#add_user_to_sudoers class=md-skip> Skip to content </a> </div> <div data-md-component=announce> </div> <header class=md-header data-md-component=header> <nav class="md-header-nav md-grid" aria-label=Header> <a href=../../.. title=Ontitansshoulder class="md-header-nav__button md-logo" aria-label=Ontitansshoulder> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg> </a> <label class="md-header-nav__button md-icon" for=__drawer> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg> </label> <div class=md-header-nav__title data-md-component=header-title> <div class=md-header-nav__ellipsis> <div class=md-header-nav__topic> <span class=md-ellipsis> Ontitansshoulder </span> </div> <div class=md-header-nav__topic> <span class=md-ellipsis> Freq Linux Tasks </span> </div> </div> </div> <label class="md-header-nav__button md-icon" for=__search> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg> </label> <div class=md-search data-md-component=search role=dialog> <label class=md-search__overlay for=__search></label> <div class=md-search__inner role=search> <form class=md-search__form name=search> <input type=text class=md-search__input name=query aria-label=Search placeholder=Search autocapitalize=off autocorrect=off autocomplete=off spellcheck=false data-md-component=search-query data-md-state=active required> <label class="md-search__icon md-icon" for=__search> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg> </label> <button type=reset class="md-search__icon md-icon" aria-label=Clear data-md-component=search-reset tabindex=-1> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg> </button> </form> <div class=md-search__output> <div class=md-search__scrollwrap data-md-scrollfix> <div class=md-search-result data-md-component=search-result> <div class=md-search-result__meta> Initializing search </div> <ol class=md-search-result__list></ol> </div> </div> </div> </div> </div> </nav> </header> <div class=md-container data-md-component=container> <nav class=md-tabs aria-label=Tabs data-md-component=tabs> <div class="md-tabs__inner md-grid"> <ul class=md-tabs__list> <li class=md-tabs__item> <a href=../../.. class="md-tabs__link md-tabs__link--active"> Notes </a> </li> </ul> </div> </nav> <main class=md-main data-md-component=main> <div class="md-main__inner md-grid"> <div class="md-sidebar md-sidebar--primary" data-md-component=navigation> <div class=md-sidebar__scrollwrap> <div class=md-sidebar__inner> <nav class="md-nav md-nav--primary md-nav--lifted" aria-label=Navigation data-md-level=0> <label class=md-nav__title for=__drawer> <a href=../../.. title=Ontitansshoulder class="md-nav__button md-logo" aria-label=Ontitansshoulder> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg> </a> Ontitansshoulder </label> <ul class=md-nav__list data-md-scrollfix> <li class="md-nav__item md-nav__item--active md-nav__item--nested"> <input class="md-nav__toggle md-toggle" data-md-toggle=nav-1 type=checkbox id=nav-1 checked> <label class=md-nav__link for=nav-1> Notes <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav aria-label=Notes data-md-level=1> <label class=md-nav__title for=nav-1> <span class="md-nav__icon md-icon"></span> Notes </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=../../.. class=md-nav__link> Welcome </a> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle" data-md-toggle=nav-1-2 type=checkbox id=nav-1-2> <label class=md-nav__link for=nav-1-2> Foundamentals <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav aria-label=Foundamentals data-md-level=2> <label class=md-nav__title for=nav-1-2> <span class="md-nav__icon md-icon"></span> Foundamentals </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=../../../Foundamental/Data_Structures_and_Algos/ class=md-nav__link> Data Structures and Algos </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--active md-nav__item--nested"> <input class="md-nav__toggle md-toggle" data-md-toggle=nav-1-3 type=checkbox id=nav-1-3 checked> <label class=md-nav__link for=nav-1-3> Linux <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav aria-label=Linux data-md-level=2> <label class=md-nav__title for=nav-1-3> <span class="md-nav__icon md-icon"></span> Linux </label> <ul class=md-nav__list data-md-scrollfix> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle" data-md-toggle=nav-1-3-1 type=checkbox id=nav-1-3-1> <label class=md-nav__link for=nav-1-3-1> Concepts <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav aria-label=Concepts data-md-level=3> <label class=md-nav__title for=nav-1-3-1> <span class="md-nav__icon md-icon"></span> Concepts </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=../../Concepts/Linux_Foundation/ class=md-nav__link> Linux Foundation </a> </li> <li class=md-nav__item> <a href=../../Concepts/Linux_Foundation_System_Admin/ class=md-nav__link> Linux System Administration </a> </li> <li class=md-nav__item> <a href=../../Concepts/Linux_Foundation_Network_Admin/ class=md-nav__link> Linux Network Administration </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle" data-md-toggle=nav-1-3-2 type=checkbox id=nav-1-3-2> <label class=md-nav__link for=nav-1-3-2> Practical References <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav aria-label="Practical References" data-md-level=3> <label class=md-nav__title for=nav-1-3-2> <span class="md-nav__icon md-icon"></span> Practical References </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=../../Commands/Freq-Used-Shell-Cmds/ class=md-nav__link> Freq Used Shell Cmds </a> </li> <li class=md-nav__item> <a href=../../Commands/Networking-Shell-Cmds/ class=md-nav__link> Freq Used Network Cmds </a> </li> <li class=md-nav__item> <a href=../../Commands/Text-Manipulating-Cmds/ class=md-nav__link> Text Manipulating Cmds </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--active md-nav__item--nested"> <input class="md-nav__toggle md-toggle" data-md-toggle=nav-1-3-3 type=checkbox id=nav-1-3-3 checked> <label class=md-nav__link for=nav-1-3-3> Tricks <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav aria-label=Tricks data-md-level=3> <label class=md-nav__title for=nav-1-3-3> <span class="md-nav__icon md-icon"></span> Tricks </label> <ul class=md-nav__list data-md-scrollfix> <li class="md-nav__item md-nav__item--active"> <input class="md-nav__toggle md-toggle" data-md-toggle=toc type=checkbox id=__toc> <label class="md-nav__link md-nav__link--active" for=__toc> Freq Linux Tasks <span class="md-nav__icon md-icon"></span> </label> <a href=./ class="md-nav__link md-nav__link--active"> Freq Linux Tasks </a> <nav class="md-nav md-nav--secondary" aria-label="Table of contents"> <label class=md-nav__title for=__toc> <span class="md-nav__icon md-icon"></span> Table of contents </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=#add_user_to_sudoers class=md-nav__link> Add_User_To_Sudoers </a> </li> <li class=md-nav__item> <a href=#benchmarking_flash_drive class=md-nav__link> Benchmarking_Flash_Drive </a> </li> <li class=md-nav__item> <a href=#boot_into_another_os_of_different_grub_version class=md-nav__link> Boot_into_another_OS_of_Different_GRUB_Version </a> </li> <li class=md-nav__item> <a href=#burn_image_to_flash_drive class=md-nav__link> Burn_Image_To_Flash_Drive </a> </li> <li class=md-nav__item> <a href=#change_hostname_on_linux_machine class=md-nav__link> Change_hostname_on_Linux_machine </a> </li> <li class=md-nav__item> <a href=#change_raspberrypi_os_keyboard class=md-nav__link> Change_RaspberryPi_OS_Keyboard </a> </li> <li class=md-nav__item> <a href=#check_cpu_temperaturevolt class=md-nav__link> Check_CPU_Temperature/Volt </a> </li> <li class=md-nav__item> <a href=#check_usb_devices class=md-nav__link> Check_USB_Devices </a> </li> <li class=md-nav__item> <a href=#configuring_locale_settings class=md-nav__link> Configuring_Locale_Settings </a> </li> <li class=md-nav__item> <a href=#create_ssh_key_pair class=md-nav__link> Create_SSH_Key_Pair </a> </li> <li class=md-nav__item> <a href=#disableenable_x_windows_on_startup class=md-nav__link> Disable/Enable_X_Windows_On_Startup </a> </li> <li class=md-nav__item> <a href=#disable_wireless_on_startup class=md-nav__link> Disable_wireless_on_startup </a> </li> <li class=md-nav__item> <a href=#do_mount_filesystem class=md-nav__link> Do_Mount_FileSystem </a> </li> <li class=md-nav__item> <a href=#edit_service_command class=md-nav__link> Edit_Service_Command </a> </li> <li class=md-nav__item> <a href=#enable_service_on_startup class=md-nav__link> Enable_Service_On_Startup </a> </li> <li class=md-nav__item> <a href=#enable_ssh_on_new_linux_machine class=md-nav__link> Enable_ssh_on_new_Linux_machine </a> </li> <li class=md-nav__item> <a href=#enable_ssh_port_forwarding class=md-nav__link> Enable_ssh_port_forwarding </a> </li> <li class=md-nav__item> <a href=#enable_sshfs class=md-nav__link> Enable_sshfs </a> </li> <li class=md-nav__item> <a href=#enable_static_ip_on_linux_machine class=md-nav__link> Enable_static_ip_on_Linux_machine </a> </li> <li class=md-nav__item> <a href=#enable_disable_swap_memory class=md-nav__link> Enable_Disable_Swap_Memory </a> </li> <li class=md-nav__item> <a href=#entering_rescue_mode class=md-nav__link> Entering_Rescue_Mode </a> </li> <li class=md-nav__item> <a href=#entering_grub_rescue class=md-nav__link> Entering_Grub_Rescue </a> </li> <li class=md-nav__item> <a href=#find_usb_cam class=md-nav__link> Find_USB_Cam </a> </li> <li class=md-nav__item> <a href=#find_file_structure_difference class=md-nav__link> Find_File_Structure_Difference </a> </li> <li class=md-nav__item> <a href=#find_device_info class=md-nav__link> Find_Device_Info </a> </li> <li class=md-nav__item> <a href=#find_search_files class=md-nav__link> Find_Search_Files </a> </li> <li class=md-nav__item> <a href=#find_packages_to_install class=md-nav__link> Find_Packages_To_Install </a> </li> <li class=md-nav__item> <a href=#find_my_ip_address class=md-nav__link> Find_My_IP_Address </a> </li> <li class=md-nav__item> <a href=#find_other_machines_on_local_network class=md-nav__link> Find_Other_Machines_On_Local_Network </a> </li> <li class=md-nav__item> <a href=#fix_slow_mouse_over_bluetooth class=md-nav__link> Fix_Slow_Mouse_Over_Bluetooth </a> </li> <li class=md-nav__item> <a href=#get_date_time_formatted class=md-nav__link> Get_Date_Time_Formatted </a> </li> <li class=md-nav__item> <a href=#get_my_ip_address_on_the_internet class=md-nav__link> Get_My_Ip_Address_On_the_Internet </a> </li> <li class=md-nav__item> <a href=#install_multi_distro_linux_on_a_machine class=md-nav__link> Install_Multi_Distro_Linux_On_A_Machine </a> </li> <li class=md-nav__item> <a href=#make_time_elapse_video_with_webcam class=md-nav__link> Make_Time_Elapse_Video_With_Webcam </a> </li> <li class=md-nav__item> <a href=#network_settings class=md-nav__link> Network_Settings </a> </li> <li class=md-nav__item> <a href=#open_a_port_to_lan class=md-nav__link> Open_A_Port_To_LAN </a> </li> <li class=md-nav__item> <a href=#raspberrypi class=md-nav__link> RaspberryPi </a> </li> <li class=md-nav__item> <a href=#remote_print_from_terminal class=md-nav__link> Remote_Print_From_Terminal </a> </li> <li class=md-nav__item> <a href=#resize_disk_partitions class=md-nav__link> Resize_disk_partitions </a> </li> <li class=md-nav__item> <a href=#setup_cronjob class=md-nav__link> Setup_Cronjob </a> </li> <li class=md-nav__item> <a href=#setup_reverse_proxy class=md-nav__link> Setup_Reverse_Proxy </a> </li> <li class=md-nav__item> <a href=#view_port_binding class=md-nav__link> View_Port_Binding </a> </li> <li class=md-nav__item> <a href=#view_service_logs class=md-nav__link> View_Service_Logs </a> </li> </ul> </nav> </li> <li class=md-nav__item> <a href=../Terminal-Tricks/ class=md-nav__link> Linux Terminal Tricks </a> </li> <li class=md-nav__item> <a href=../Vim-Tricks/ class=md-nav__link> Vim Tricks </a> </li> <li class=md-nav__item> <a href=../Account-Administration/ class=md-nav__link> Manage Accounts & Groups </a> </li> </ul> </nav> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle" data-md-toggle=nav-1-4 type=checkbox id=nav-1-4> <label class=md-nav__link for=nav-1-4> Cloud <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav aria-label=Cloud data-md-level=2> <label class=md-nav__title for=nav-1-4> <span class="md-nav__icon md-icon"></span> Cloud </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=../../../Cloud-and-Containers/Architecture/Cloud-App-Architecture/ class=md-nav__link> Cloud App Architecture </a> </li> <li class=md-nav__item> <a href=../../../Cloud-and-Containers/Docker/Docker/ class=md-nav__link> Docker and Containers </a> </li> <li class=md-nav__item> <a href=../../../Cloud-and-Containers/Docker/Docker-Practical/ class=md-nav__link> Docker Practical </a> </li> <li class=md-nav__item> <a href=../../../Cloud-and-Containers/k8s/K8s-Knowledge/ class=md-nav__link> K8s Knowledge </a> </li> <li class=md-nav__item> <a href=../../../Cloud-and-Containers/k8s/service_mesh/ class=md-nav__link> Service Mesh </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle" data-md-toggle=nav-1-5 type=checkbox id=nav-1-5> <label class=md-nav__link for=nav-1-5> Monitoring <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav aria-label=Monitoring data-md-level=2> <label class=md-nav__title for=nav-1-5> <span class="md-nav__icon md-icon"></span> Monitoring </label> <ul class=md-nav__list data-md-scrollfix> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle" data-md-toggle=nav-1-5-1 type=checkbox id=nav-1-5-1> <label class=md-nav__link for=nav-1-5-1> Splunk <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav aria-label=Splunk data-md-level=3> <label class=md-nav__title for=nav-1-5-1> <span class="md-nav__icon md-icon"></span> Splunk </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=../../../Dev-Tools-Reference/Splunk/Splunk-References/ class=md-nav__link> Splunk Knowledge </a> </li> <li class=md-nav__item> <a href=../../../Dev-Tools-Reference/Splunk/Splunk-Dashboarding/ class=md-nav__link> Splunk Dashboarding </a> </li> </ul> </nav> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle" data-md-toggle=nav-1-6 type=checkbox id=nav-1-6> <label class=md-nav__link for=nav-1-6> Programming Langs <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav aria-label="Programming Langs" data-md-level=2> <label class=md-nav__title for=nav-1-6> <span class="md-nav__icon md-icon"></span> Programming Langs </label> <ul class=md-nav__list data-md-scrollfix> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle" data-md-toggle=nav-1-6-1 type=checkbox id=nav-1-6-1> <label class=md-nav__link for=nav-1-6-1> Golang <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav aria-label=Golang data-md-level=3> <label class=md-nav__title for=nav-1-6-1> <span class="md-nav__icon md-icon"></span> Golang </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=../../../Programming-Lang-Reference/Golang/Golang-Specs/ class=md-nav__link> Golang Language Reference </a> </li> <li class=md-nav__item> <a href=../../../Programming-Lang-Reference/Golang/Best-Practices/ class=md-nav__link> Effective Go </a> </li> <li class=md-nav__item> <a href=../../../Programming-Lang-Reference/Golang/Freq-Used-Libs/ class=md-nav__link> Go libraries and examples </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle" data-md-toggle=nav-1-6-2 type=checkbox id=nav-1-6-2> <label class=md-nav__link for=nav-1-6-2> Java <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav aria-label=Java data-md-level=3> <label class=md-nav__title for=nav-1-6-2> <span class="md-nav__icon md-icon"></span> Java </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=../../../Programming-Lang-Reference/Java/Style-Guide/ class=md-nav__link> Style Guide </a> </li> <li class=md-nav__item> <a href=../../../Programming-Lang-Reference/Java/Best-Practices/ class=md-nav__link> Effective Java </a> </li> <li class=md-nav__item> <a href=../../../Programming-Lang-Reference/Java/Design-Patterns/ class=md-nav__link> Java Design Patterns </a> </li> <li class=md-nav__item> <a href=../../../Programming-Lang-Reference/Java/Testing-Design-Patterns/ class=md-nav__link> Testing Design Patterns </a> </li> <li class=md-nav__item> <a href=../../../Programming-Lang-Reference/Java/Java_Std_Lib_Cheatsheet/ class=md-nav__link> Java Std Lib Cheatsheet </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle" data-md-toggle=nav-1-6-3 type=checkbox id=nav-1-6-3> <label class=md-nav__link for=nav-1-6-3> C++ <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav aria-label=C++ data-md-level=3> <label class=md-nav__title for=nav-1-6-3> <span class="md-nav__icon md-icon"></span> C++ </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=../../../Programming-Lang-Reference/CPP/CPlusPlus_Lang_Specs/ class=md-nav__link> C++ Language Reference </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle" data-md-toggle=nav-1-6-4 type=checkbox id=nav-1-6-4> <label class=md-nav__link for=nav-1-6-4> Perl <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav aria-label=Perl data-md-level=3> <label class=md-nav__title for=nav-1-6-4> <span class="md-nav__icon md-icon"></span> Perl </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=../../../Programming-Lang-Reference/Perl/Perl-Lang-Specs/ class=md-nav__link> Perl Language Reference </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle" data-md-toggle=nav-1-6-5 type=checkbox id=nav-1-6-5> <label class=md-nav__link for=nav-1-6-5> Shell <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav aria-label=Shell data-md-level=3> <label class=md-nav__title for=nav-1-6-5> <span class="md-nav__icon md-icon"></span> Shell </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=../../../Programming-Lang-Reference/Shell/Shell-Scripting/ class=md-nav__link> Shell Scripting </a> </li> </ul> </nav> </li> <li class=md-nav__item> <a href=../../../Programming-Lang-Reference/Github-Markdown/ class=md-nav__link> Github Markdown Guide </a> </li> <li class=md-nav__item> <a href=../../../Programming-Lang-Reference/Regex-Specs/ class=md-nav__link> Regex Cheatsheet </a> </li> </ul> </nav> </li> <li class="md-nav__item md-nav__item--nested"> <input class="md-nav__toggle md-toggle" data-md-toggle=nav-1-7 type=checkbox id=nav-1-7> <label class=md-nav__link for=nav-1-7> Reading Notes <span class="md-nav__icon md-icon"></span> </label> <nav class=md-nav aria-label="Reading Notes" data-md-level=2> <label class=md-nav__title for=nav-1-7> <span class="md-nav__icon md-icon"></span> Reading Notes </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=../../../Reading-Notes/How-Netflix-Works/ class=md-nav__link> How Netflix Works </a> </li> <li class=md-nav__item> <a href=../../../Reading-Notes/System-Design-Concepts/ class=md-nav__link> System Design Guide </a> </li> <li class=md-nav__item> <a href=../../../Reading-Notes/Why-Latency-Matters/ class=md-nav__link> Why Latency Matters </a> </li> <li class=md-nav__item> <a href=../../../Reading-Notes/DevOps_SRE/ class=md-nav__link> Intro to DevOps and SRE </a> </li> <li class=md-nav__item> <a href=../../../Reading-Notes/Leading-without-formal-authority/ class=md-nav__link> Leading Without Formal Authority </a> </li> <li class=md-nav__item> <a href=../../../Reading-Notes/Google-SRE-Book/ class=md-nav__link> Google SRE Book </a> </li> </ul> </nav> </li> <li class=md-nav__item> <a href=../../../Good-Reads/ class=md-nav__link> Good Reads </a> </li> </ul> </nav> </li> </ul> </nav> </div> </div> </div> <div class="md-sidebar md-sidebar--secondary" data-md-component=toc> <div class=md-sidebar__scrollwrap> <div class=md-sidebar__inner> <nav class="md-nav md-nav--secondary" aria-label="Table of contents"> <label class=md-nav__title for=__toc> <span class="md-nav__icon md-icon"></span> Table of contents </label> <ul class=md-nav__list data-md-scrollfix> <li class=md-nav__item> <a href=#add_user_to_sudoers class=md-nav__link> Add_User_To_Sudoers </a> </li> <li class=md-nav__item> <a href=#benchmarking_flash_drive class=md-nav__link> Benchmarking_Flash_Drive </a> </li> <li class=md-nav__item> <a href=#boot_into_another_os_of_different_grub_version class=md-nav__link> Boot_into_another_OS_of_Different_GRUB_Version </a> </li> <li class=md-nav__item> <a href=#burn_image_to_flash_drive class=md-nav__link> Burn_Image_To_Flash_Drive </a> </li> <li class=md-nav__item> <a href=#change_hostname_on_linux_machine class=md-nav__link> Change_hostname_on_Linux_machine </a> </li> <li class=md-nav__item> <a href=#change_raspberrypi_os_keyboard class=md-nav__link> Change_RaspberryPi_OS_Keyboard </a> </li> <li class=md-nav__item> <a href=#check_cpu_temperaturevolt class=md-nav__link> Check_CPU_Temperature/Volt </a> </li> <li class=md-nav__item> <a href=#check_usb_devices class=md-nav__link> Check_USB_Devices </a> </li> <li class=md-nav__item> <a href=#configuring_locale_settings class=md-nav__link> Configuring_Locale_Settings </a> </li> <li class=md-nav__item> <a href=#create_ssh_key_pair class=md-nav__link> Create_SSH_Key_Pair </a> </li> <li class=md-nav__item> <a href=#disableenable_x_windows_on_startup class=md-nav__link> Disable/Enable_X_Windows_On_Startup </a> </li> <li class=md-nav__item> <a href=#disable_wireless_on_startup class=md-nav__link> Disable_wireless_on_startup </a> </li> <li class=md-nav__item> <a href=#do_mount_filesystem class=md-nav__link> Do_Mount_FileSystem </a> </li> <li class=md-nav__item> <a href=#edit_service_command class=md-nav__link> Edit_Service_Command </a> </li> <li class=md-nav__item> <a href=#enable_service_on_startup class=md-nav__link> Enable_Service_On_Startup </a> </li> <li class=md-nav__item> <a href=#enable_ssh_on_new_linux_machine class=md-nav__link> Enable_ssh_on_new_Linux_machine </a> </li> <li class=md-nav__item> <a href=#enable_ssh_port_forwarding class=md-nav__link> Enable_ssh_port_forwarding </a> </li> <li class=md-nav__item> <a href=#enable_sshfs class=md-nav__link> Enable_sshfs </a> </li> <li class=md-nav__item> <a href=#enable_static_ip_on_linux_machine class=md-nav__link> Enable_static_ip_on_Linux_machine </a> </li> <li class=md-nav__item> <a href=#enable_disable_swap_memory class=md-nav__link> Enable_Disable_Swap_Memory </a> </li> <li class=md-nav__item> <a href=#entering_rescue_mode class=md-nav__link> Entering_Rescue_Mode </a> </li> <li class=md-nav__item> <a href=#entering_grub_rescue class=md-nav__link> Entering_Grub_Rescue </a> </li> <li class=md-nav__item> <a href=#find_usb_cam class=md-nav__link> Find_USB_Cam </a> </li> <li class=md-nav__item> <a href=#find_file_structure_difference class=md-nav__link> Find_File_Structure_Difference </a> </li> <li class=md-nav__item> <a href=#find_device_info class=md-nav__link> Find_Device_Info </a> </li> <li class=md-nav__item> <a href=#find_search_files class=md-nav__link> Find_Search_Files </a> </li> <li class=md-nav__item> <a href=#find_packages_to_install class=md-nav__link> Find_Packages_To_Install </a> </li> <li class=md-nav__item> <a href=#find_my_ip_address class=md-nav__link> Find_My_IP_Address </a> </li> <li class=md-nav__item> <a href=#find_other_machines_on_local_network class=md-nav__link> Find_Other_Machines_On_Local_Network </a> </li> <li class=md-nav__item> <a href=#fix_slow_mouse_over_bluetooth class=md-nav__link> Fix_Slow_Mouse_Over_Bluetooth </a> </li> <li class=md-nav__item> <a href=#get_date_time_formatted class=md-nav__link> Get_Date_Time_Formatted </a> </li> <li class=md-nav__item> <a href=#get_my_ip_address_on_the_internet class=md-nav__link> Get_My_Ip_Address_On_the_Internet </a> </li> <li class=md-nav__item> <a href=#install_multi_distro_linux_on_a_machine class=md-nav__link> Install_Multi_Distro_Linux_On_A_Machine </a> </li> <li class=md-nav__item> <a href=#make_time_elapse_video_with_webcam class=md-nav__link> Make_Time_Elapse_Video_With_Webcam </a> </li> <li class=md-nav__item> <a href=#network_settings class=md-nav__link> Network_Settings </a> </li> <li class=md-nav__item> <a href=#open_a_port_to_lan class=md-nav__link> Open_A_Port_To_LAN </a> </li> <li class=md-nav__item> <a href=#raspberrypi class=md-nav__link> RaspberryPi </a> </li> <li class=md-nav__item> <a href=#remote_print_from_terminal class=md-nav__link> Remote_Print_From_Terminal </a> </li> <li class=md-nav__item> <a href=#resize_disk_partitions class=md-nav__link> Resize_disk_partitions </a> </li> <li class=md-nav__item> <a href=#setup_cronjob class=md-nav__link> Setup_Cronjob </a> </li> <li class=md-nav__item> <a href=#setup_reverse_proxy class=md-nav__link> Setup_Reverse_Proxy </a> </li> <li class=md-nav__item> <a href=#view_port_binding class=md-nav__link> View_Port_Binding </a> </li> <li class=md-nav__item> <a href=#view_service_logs class=md-nav__link> View_Service_Logs </a> </li> </ul> </nav> </div> </div> </div> <div class=md-content> <article class="md-content__inner md-typeset"> <h1>Freq Linux Tasks</h1> <p>Not a place to explain things, but for some quick reference to do things in Linux</p> <p><br></p> <h3 id=add_user_to_sudoers>Add_User_To_Sudoers<a class=headerlink href=#add_user_to_sudoers title="Permanent link">&para;</a></h3> <div class=highlight><pre><span></span><code><span class=c1># first add user to group sudo</span>
+usermod -aG sudo &lt;user&gt;
+<span class=c1># makesure this line is in /etc/sudoers</span>
+%sudo <span class=nv>ALL</span><span class=o>=(</span>ALL<span class=o>)</span> ALL
+</code></pre></div> <p><br></p> <h3 id=benchmarking_flash_drive>Benchmarking_Flash_Drive<a class=headerlink href=#benchmarking_flash_drive title="Permanent link">&para;</a></h3> <div class=highlight><pre><span></span><code><span class=c1># General command to use:</span>
+<span class=c1># 1. create a large file for benchmarking from device 0</span>
+dd <span class=k>if</span><span class=o>=</span>/dev/zero <span class=nv>of</span><span class=o>=</span>./largefile <span class=nv>bs</span><span class=o>=</span>1M <span class=nv>count</span><span class=o>=</span><span class=m>1024</span>
+<span class=c1># 2. Write to a drive</span>
+dd <span class=k>if</span><span class=o>=</span>path/to/input_file <span class=nv>of</span><span class=o>=</span>/path/to/output_file <span class=nv>bs</span><span class=o>=</span>block_size <span class=nv>count</span><span class=o>=</span>number_of_blocks
+<span class=c1># Reference:</span>
+<span class=c1># https://www.binarytides.com/linux-test-drive-speed/</span>
+<span class=c1># alternatively, use Ubuntu&#39;s disk software for benchmark</span>
+</code></pre></div> <h3 id=boot_into_another_os_of_different_grub_version>Boot_into_another_OS_of_Different_GRUB_Version<a class=headerlink href=#boot_into_another_os_of_different_grub_version title="Permanent link">&para;</a></h3> <div class=highlight><pre><span></span><code><span class=c1># https://howtoubuntu.org/how-to-repair-restore-reinstall-grub-2-with-a-ubuntu-live-cd</span>
+lsblk <span class=c1># find out which disk to boot into</span>
+sudo mount -t ext4 /dev/sdXY /mnt
+sudo mount --bind /dev /mnt/dev <span class=o>&amp;&amp;</span>
+sudo mount --bind /dev/pts /mnt/dev/pts <span class=o>&amp;&amp;</span>
+sudo mount --bind /proc /mnt/proc <span class=o>&amp;&amp;</span>
+sudo mount --bind /sys /mnt/sys
+sudo chroot /mnt
+grub-install /dev/sdX
+grub-install --recheck /dev/sdX
+update-grub
+<span class=nb>exit</span> <span class=o>&amp;&amp;</span>
+sudo umount /mnt/sys /mnt/proc /mnt/dev/pts /mnt/dev <span class=o>&amp;&amp;</span>
+sudo umount /mnt
+</code></pre></div> <p><br></p> <h3 id=burn_image_to_flash_drive>Burn_Image_To_Flash_Drive<a class=headerlink href=#burn_image_to_flash_drive title="Permanent link">&para;</a></h3> <div class=highlight><pre><span></span><code>lsblk -p
+  <span class=c1># -&gt; see which devices are connected</span>
+umount /dev/sdX<span class=o>[</span><span class=m>1</span>-9<span class=o>]</span>
+  <span class=c1># -&gt; unmount the usb device drives</span>
+  <span class=c1># -&gt; replace &#39;X&#39; with the device letter [a-z]</span>
+dd <span class=nv>bs</span><span class=o>=</span>4M <span class=k>if</span><span class=o>=</span>path/to/linux_image.img <span class=nv>of</span><span class=o>=</span>/dev/sdX <span class=nv>conv</span><span class=o>=</span>fsync <span class=nv>status</span><span class=o>=</span>progress
+  <span class=c1># -&gt; the command to copy the image into the drive</span>
+  <span class=c1># -&gt; replace &#39;X&#39; with the device letter [a-z]</span>
+sync <span class=c1># flush out write cache so the drive is okay to unmount</span>
+</code></pre></div> <p><br></p> <h3 id=change_hostname_on_linux_machine>Change_hostname_on_Linux_machine<a class=headerlink href=#change_hostname_on_linux_machine title="Permanent link">&para;</a></h3> <div class=highlight><pre><span></span><code>sudo hostnamectl --transient set-hostname <span class=nv>$hostname</span>
+sudo hostnamectl --static set-hostname <span class=nv>$hostname</span>
+sudo hostnamectl --pretty set-hostname <span class=nv>$hostname</span>
+sudo sed -i s/&lt;old-hostname&gt;/<span class=nv>$hostname</span>/g /etc/hosts
+</code></pre></div> <h3 id=change_raspberrypi_os_keyboard>Change_RaspberryPi_OS_Keyboard<a class=headerlink href=#change_raspberrypi_os_keyboard title="Permanent link">&para;</a></h3> <div class=highlight><pre><span></span><code>sudo nano /etc/default/keyboard
+<span class=c1># update &#39;XKBLAYOUT&#39; to &#39;us&#39;</span>
+</code></pre></div> <p><br></p> <h3 id=check_cpu_temperaturevolt>Check_CPU_Temperature/Volt<a class=headerlink href=#check_cpu_temperaturevolt title="Permanent link">&para;</a></h3> <div class=highlight><pre><span></span><code><span class=c1># On RaspberryPi:</span>
+/opt/vc/bin/vcgencmd measure_temp
+/opt/vc/bin/vcgencmd measure_volts core
+<span class=c1># view a list of available commands:</span>
+/opt/vc/bin/vcgencmd commands
+<span class=c1># Install a tool called lm-sensors</span>
+sudo apt install lm-sensors
+sudo -i
+sensors-detect
+sensors <span class=c1># to check various sensor temperatures</span>
+<span class=c1># Note this method does not work if the system does not have any sensors attached to it. i.e. like a RaspberryPi</span>
+</code></pre></div> <p><br></p> <h3 id=check_usb_devices>Check_USB_Devices<a class=headerlink href=#check_usb_devices title="Permanent link">&para;</a></h3> <div class=highlight><pre><span></span><code>lsusb <span class=c1># view a list of plugged in devices via USB ports</span>
+dmesg <span class=c1># view the log related to USB devices</span>
+</code></pre></div> <p><br></p> <h3 id=configuring_locale_settings>Configuring_Locale_Settings<a class=headerlink href=#configuring_locale_settings title="Permanent link">&para;</a></h3> <div class=highlight><pre><span></span><code><span class=nb>export</span> <span class=nv>LANGUAGE</span><span class=o>=</span>en_US.UTF-8
+<span class=nb>export</span> <span class=nv>LANG</span><span class=o>=</span>en_US.UTF-8
+<span class=nb>export</span> <span class=nv>LC_ALL</span><span class=o>=</span>en_US.UTF-8
+locale-gen en_US.UTF-8
+dpkg-reconfigure locales
+</code></pre></div> <p><br></p> <h3 id=create_ssh_key_pair>Create_SSH_Key_Pair<a class=headerlink href=#create_ssh_key_pair title="Permanent link">&para;</a></h3> <div class=highlight><pre><span></span><code><span class=c1># creates an SSH key pair using RSA encryption and a bit length of 4096</span>
+ssh-keygen -m PEM -t rsa -b <span class=m>4096</span>
+cat ~/.ssh/id_rsa.pub
+<span class=c1># cp to clipboard</span>
+cat ~/.ssh/id_rsa.pub <span class=p>|</span> xclip <span class=c1># on Linux</span>
+cat ~/.ssh/id_rsa.pub <span class=p>|</span> pbcopy <span class=c1># on Mac</span>
+</code></pre></div> <p><br></p> <h3 id=disableenable_x_windows_on_startup>Disable/Enable_X_Windows_On_Startup<a class=headerlink href=#disableenable_x_windows_on_startup title="Permanent link">&para;</a></h3> <p>This method works for Ubuntu to disable X window (or Gnome) <div class=highlight><pre><span></span><code>&lt;br/&gt;
+
+<span class=c1>### Older systems</span>
+vim /etc/default/grub
+<span class=c1># Find the line:</span>
+<span class=nv>GRUB_CMDLINE_LINUX_DEFAULT</span><span class=o>=</span><span class=s2>&quot;quiet splash&quot;</span> <span class=c1># this enables UI</span>
+<span class=nv>GRUB_CMDLINE_LINUX_DEFAULT</span><span class=o>=</span><span class=s2>&quot;quiet splash text&quot;</span> <span class=c1># this disables UI</span>
+sudo update-grub
+startx <span class=c1># can still get back into user-interface in the tty</span>
+
+<span class=c1># Newer systems 15.01 and newer</span>
+sudo systemctl set-default multi-user.target <span class=c1># this disables UI</span>
+sudo systemctl set-default graphical.target <span class=c1># this enables UI</span>
+
+<span class=c1># other methods</span>
+sudo systemctl stop gdm
+sudo systemctl stop lightdm
+sudo telinit <span class=m>3</span> <span class=c1># use 5 to bring it back</span>
+
+<span class=c1>## On CentOS where systemctl is not supported</span>
+<span class=c1># edit /etc/inittab</span>
+id:3:initdefault:
+</code></pre></div></p> <p><br></p> <h3 id=disable_wireless_on_startup>Disable_wireless_on_startup<a class=headerlink href=#disable_wireless_on_startup title="Permanent link">&para;</a></h3> <div class=highlight><pre><span></span><code><span class=c1># both of following shows ip address</span>
+ifconfig
+ip addr show
+<span class=c1># take down/up a network interface</span>
+ip link <span class=nb>set</span> eth1 down
+ip link <span class=nb>set</span> eth1 up
+<span class=c1># alternatively</span>
+sudo ifdown wlan0
+sudo ifup wlan0
+<span class=c1># alternatively</span>
+sudo ifconfig wlan0 down
+sudo ifconfig wlan0 up
+</code></pre></div> <p><br></p> <h3 id=do_mount_filesystem>Do_Mount_FileSystem<a class=headerlink href=#do_mount_filesystem title="Permanent link">&para;</a></h3> <div class=highlight><pre><span></span><code>mkdir -p /path/to/mountpoint
+lsblk <span class=c1># know the device name</span>
+ls -l /dev/disk/by-label <span class=c1># show partition name</span>
+<span class=c1># alternatively</span>
+sudo lsblk -o name,mountpoint,label,size,uuid
+mount /dev/sdX /path/to/mountpoint
+<span class=c1># enable mount on start up https://wiki.archlinux.org/index.php/Fstab</span>
+vim /etc/fstab
+<span class=c1># format:</span>
+<span class=c1># device    mountpoint    fstype    options   dump    fsck</span>
+/dev/sdb1   /path/to/mountpoint   ntfs  defaults  <span class=m>0</span>   <span class=m>1</span>
+<span class=c1># View a list of mounted filesystems</span>
+less /proc/mounts
+
+<span class=c1># Install support for different filesystems</span>
+sudo apt-get install exfat-fuse exfat-utils
+</code></pre></div> <p><br></p> <h3 id=edit_service_command>Edit_Service_Command<a class=headerlink href=#edit_service_command title="Permanent link">&para;</a></h3> <p>most services has configs under: - /etc/default/NAME - /etc/init.d/NAME - /etc/init/NAME.conf</p> <p><br></p> <h3 id=enable_service_on_startup>Enable_Service_On_Startup<a class=headerlink href=#enable_service_on_startup title="Permanent link">&para;</a></h3> <p>First create a script to run for scheduling the service on startup</p> <p>Then put it into <code>/etc/init.d</code></p> <p>Note that the start of the script should have something like this right below the <em>shbang</em> <div class=highlight><pre><span></span><code><span class=c1># The following is called LSBInitScripts</span>
+<span class=c1>### BEGIN INIT INFO</span>
+<span class=c1># Provides:          haltusbpower</span>
+<span class=c1># Required-Start:    $all</span>
+<span class=c1># Required-Stop:</span>
+<span class=c1># Default-Start:     2 3 4 5  (comment: run levels)</span>
+<span class=c1># Default-Stop:      0 1 6</span>
+<span class=c1># Short-Description: Halts USB power...</span>
+<span class=c1>### END INIT INFO</span>
+
+<span class=c1># cleans up when the script receives SIGINT or SIGTERM</span>
+<span class=k>function</span> cleanup<span class=o>()</span> <span class=o>{</span>
+  <span class=nb>local</span> <span class=nv>pids</span><span class=o>=</span><span class=k>$(</span><span class=nb>jobs</span> -pr<span class=k>)</span>
+  <span class=o>[</span> -n <span class=s2>&quot;</span><span class=nv>$pids</span><span class=s2>&quot;</span> <span class=o>]</span> <span class=o>&amp;&amp;</span> <span class=nb>kill</span> <span class=nv>$pids</span>
+  <span class=nb>exit</span> <span class=m>0</span>
+<span class=o>}</span>
+
+<span class=k>function</span> goodbye<span class=o>()</span> <span class=o>{</span>
+  <span class=nb>echo</span> <span class=s2>&quot;&quot;</span>
+  <span class=nb>echo</span> <span class=s2>&quot;Goodbye...&quot;</span>
+  <span class=nb>echo</span> <span class=s2>&quot;&quot;</span>
+<span class=o>}</span>
+
+<span class=nb>trap</span> <span class=s2>&quot;cleanup&quot;</span> SIGINT SIGTERM
+<span class=nb>trap</span> <span class=s2>&quot;goodbye&quot;</span> EXIT
+</code></pre></div></p> <p>Next step <div class=highlight><pre><span></span><code>update-rc.d &lt;script_name&gt; defaults
+<span class=c1># create a file in</span>
+cat <span class=s>&lt;&lt;EOF &gt;&gt; /lib/systemd/system/myservice.service</span>
+<span class=s>[Unit]</span>
+<span class=s>Description=Example systemd service.</span>
+
+<span class=s>[Service]</span>
+<span class=s>Type=simple</span>
+<span class=s>PIDFile=/var/run/myservice/myservice.pid</span>
+<span class=s>LimitNOFILE=16384</span>
+<span class=s>ExecStart=/bin/bash /usr/bin/test_service.sh</span>
+<span class=s>ExecReload=/bin/kill -HUP $MAINPID</span>
+
+<span class=s>[Install]</span>
+<span class=s>WantedBy=multi-user.target</span>
+<span class=s>EOF</span>
+sudo chmod <span class=m>644</span> /lib/systemd/system/myservice.service
+ln -s /lib/systemd/system/myservice.service /etc/systemd/system/myservice.service
+ln -s /lib/systemd/system/myservice.service /etc/systemd/system/multi-user.target.wants/myservice.service
+
+systemctl <span class=nb>enable</span> myservice
+systemctl is-enabled myservice
+systemctl is-active myservice
+systemctl disable myservice
+</code></pre></div> Most services manage their configs in <code>/etc/&lt;servicename&gt;/&lt;servicename&gt;_config</code></p> <p>More here: https://linoxide.com/linux-how-to/enable-disable-services-ubuntu-systemd-upstart/</p> <p>Run-levels: http://www.linfo.org/runlevel_def.html</p> <p>LSBInitScripts: https://wiki.debian.org/LSBInitScripts</p> <p><br></p> <h3 id=enable_ssh_on_new_linux_machine>Enable_ssh_on_new_Linux_machine<a class=headerlink href=#enable_ssh_on_new_linux_machine title="Permanent link">&para;</a></h3> <div class=highlight><pre><span></span><code><span class=c1># install ssh</span>
+sudo apt-get install openssh-server
+</code></pre></div> <p><br></p> <h3 id=enable_ssh_port_forwarding>Enable_ssh_port_forwarding<a class=headerlink href=#enable_ssh_port_forwarding title="Permanent link">&para;</a></h3> <div class=highlight><pre><span></span><code>vim ~/.ssh/config
+Host &lt;host&gt;
+HostName &lt;host_name&gt;
+StrictHostKeyChecking no
+LocalForward &lt;port&gt; &lt;host_name&gt;:&lt;new_port&gt;
+LocalForward &lt;port&gt; &lt;host_name&gt;:&lt;new_port&gt;
+...
+<span class=c1># then this becomes possible:</span>
+mysql -h <span class=m>127</span>.0.0.1 -P <span class=m>10001</span> -u &lt;user&gt; -p
+<span class=c1># and will be forwarded to the configured host_name</span>
+</code></pre></div> <p><br></p> <h3 id=enable_sshfs>Enable_sshfs<a class=headerlink href=#enable_sshfs title="Permanent link">&para;</a></h3> <div class=highlight><pre><span></span><code>mkdir /media/remote/fs/mountpoint
+sshfs -o <span class=nv>idmap</span><span class=o>=</span>user username@hostname:/path/to/dir /media/remote/fs/mountpoint
+<span class=c1># to unmount:</span>
+fusermount -u /media/remote/fs/mountpoint
+</code></pre></div> <p><br></p> <h3 id=enable_static_ip_on_linux_machine>Enable_static_ip_on_Linux_machine<a class=headerlink href=#enable_static_ip_on_linux_machine title="Permanent link">&para;</a></h3> <div class=highlight><pre><span></span><code><span class=c1># for Debian</span>
+route add default gw <span class=o>{</span>ROUTER-IP-ADDRESS<span class=o>}</span> <span class=o>{</span>INTERFACE-NAME<span class=o>}</span>
+sudo ifconfig eth0 <span class=m>192</span>.168.1.30 netmask <span class=m>255</span>.255.255.0
+<span class=c1># add set this in /etc/network/interfaces file</span>
+<span class=c1># auto eth0 static ip on start up</span>
+iface eth0 inet static
+    address <span class=m>192</span>.168.1.30
+    network <span class=m>192</span>.168.1.0
+    netmask <span class=m>255</span>.255.255.0
+    broadcast <span class=m>192</span>.168.1.255
+    gateway <span class=m>192</span>.168.1.1
+    dns-nameservers <span class=m>192</span>.168.1.1
+
+<span class=c1># for CentOS</span>
+<span class=c1># use a CLI GUI</span>
+nmtui edit eth0
+
+<span class=c1># OR Do it yourself</span>
+<span class=c1># update /etc/sysconfig/network-scripts/ifcfg-eth0</span>
+<span class=c1># and make sure these fields are updated as follows</span>
+<span class=nv>DEVICE</span><span class=o>=</span>eth0
+<span class=nv>BOOTPROTO</span><span class=o>=</span>none
+<span class=nv>ONBOOT</span><span class=o>=</span>yes
+<span class=nv>PREFIX</span><span class=o>=</span><span class=m>24</span>
+<span class=nv>IPADDR</span><span class=o>=</span><span class=m>192</span>.168.100.5 <span class=c1># desired static IP</span>
+<span class=c1># EOF</span>
+<span class=c1># IF DOES NOT EXIST, here is a template</span>
+<span class=nv>TYPE</span><span class=o>=</span>Ethernet
+<span class=nv>BOOTPROTO</span><span class=o>=</span>none
+<span class=nv>IPADDR</span><span class=o>=</span><span class=m>192</span>.168.100.5 <span class=c1># Desired static server IP #</span>
+<span class=nv>PREFIX</span><span class=o>=</span><span class=m>24</span> <span class=c1># Subnet #</span>
+<span class=nv>GATEWAY</span><span class=o>=</span><span class=m>192</span>.168.1.1 <span class=c1># Set default gateway IP #</span>
+<span class=nv>DNS1</span><span class=o>=</span><span class=m>192</span>.168.1.1 <span class=c1># Set dns servers #</span>
+<span class=nv>DNS2</span><span class=o>=</span><span class=m>8</span>.8.8.8
+<span class=nv>DNS3</span><span class=o>=</span><span class=m>8</span>.8.4.4
+<span class=nv>DEFROUTE</span><span class=o>=</span>yes
+<span class=nv>IPV4_FAILURE_FATAL</span><span class=o>=</span>no
+<span class=nv>IPV6INIT</span><span class=o>=</span>no <span class=c1># Disable ipv6 #</span>
+<span class=nv>NAME</span><span class=o>=</span>eth0
+<span class=nv>UUID</span><span class=o>=</span>41171a6f-bce1-44de-8a6e-cf5e782f8bd6 <span class=c1># created using &#39;uuidgen eth0&#39; command #</span>
+<span class=nv>DEVICE</span><span class=o>=</span>eth0
+<span class=nv>ONBOOT</span><span class=o>=</span>yes
+<span class=c1># EOF</span>
+systemctl restart network <span class=c1># then do this</span>
+
+<span class=c1># alternatively, if above method didn&#39;t work</span>
+<span class=nv>ip</span><span class=o>=</span>&lt;desired_static_ip&gt;
+<span class=nv>dns</span><span class=o>=</span>&lt;router_dns_address&gt;
+<span class=nv>ns</span><span class=o>=</span>&lt;name_server_address<span class=p>|</span><span class=m>8</span>.8.8.8&gt;
+  <span class=c1># here router dns is usually the router admin portal address with 0 as the last of the four numbers, i.e. 192.168.1.0</span>
+sudo cat <span class=s>&lt;&lt;EOT &gt;&gt; /etc/dhcpcd.conf</span>
+<span class=s>interface eth0</span>
+<span class=s>static ip_address=$ip/24</span>
+<span class=s>static routers=$dns</span>
+<span class=s>static domain_name_servers=$dns</span>
+<span class=s>EOT</span>
+sudo reboot
+</code></pre></div> <p><br></p> <h3 id=enable_disable_swap_memory>Enable_Disable_Swap_Memory<a class=headerlink href=#enable_disable_swap_memory title="Permanent link">&para;</a></h3> <div class=highlight><pre><span></span><code>sudo dphys-swapfile swapoff <span class=o>&amp;&amp;</span> <span class=se>\</span>
+sudo dphys-swapfile uninstall <span class=o>&amp;&amp;</span> <span class=se>\</span>
+sudo update-rc.d dphys-swapfile remove
+
+<span class=c1># verify empty means disabled</span>
+sudo swapon --summary
+</code></pre></div> <h3 id=entering_rescue_mode>Entering_Rescue_Mode<a class=headerlink href=#entering_rescue_mode title="Permanent link">&para;</a></h3> <div class=highlight><pre><span></span><code><span class=c1># reboot the machine and at the grub boot menu, choose the correct Distro and press &#39;e&#39;</span>
+<span class=c1># find the line &#39;linux&#39; and add this at the end of the line</span>
+systemd.unit<span class=o>=</span>rescue.target
+<span class=c1># press Ctrl-X to write (emacs command)</span>
+</code></pre></div> <h3 id=entering_grub_rescue>Entering_Grub_Rescue<a class=headerlink href=#entering_grub_rescue title="Permanent link">&para;</a></h3> <div class=highlight><pre><span></span><code><span class=c1># after updating the partition that touches the root filesystem, very likely</span>
+<span class=c1># you will stuck in Grub rescue mode</span>
+<span class=c1># do follow steps</span>
+ls
+ls <span class=o>(</span>hd0,msdosx<span class=o>)</span> <span class=c1># or something like this from the above command</span>
+<span class=c1># until one shows something not &#39;Device Not Found&#39;</span>
+<span class=nb>set</span> <span class=nv>prefix</span><span class=o>=(</span>hd0,msdos6<span class=o>)</span>/boot/grub
+insmod normal
+normal
+
+<span class=c1># after boot into the os successfully</span>
+sudo update-grub <span class=c1># which is the same as running &#39;grub-mkconfig -o /boot/grub/grub.cfg&#39;</span>
+sudo grub-install /dev/sda <span class=c1># If the drive is hd0 the equivalent is sda, if it&#39;s hd1 then use sdb</span>
+<span class=c1># might need to replace the disk uuid with the newer one</span>
+
+<span class=c1># install grub 2</span>
+<span class=c1># http://ftp.gnu.org/gnu/grub/</span>
+</code></pre></div> <p><br></p> <h3 id=find_usb_cam>Find_USB_Cam<a class=headerlink href=#find_usb_cam title="Permanent link">&para;</a></h3> <div class=highlight><pre><span></span><code>sudo apt-get install v4l-utils
+v4l2-ctl --list-devices
+<span class=c1># view more info about this device</span>
+sudo v4l2-ctl --device<span class=o>=</span>/dev/video0 --all
+v4l2-ctl --list-formats-ext <span class=c1># show available resolution settings</span>
+ffmpeg -f v4l2 -list_formats all -i /dev/video0 <span class=c1># show supported resolutions</span>
+ffprobe &lt;file&gt; <span class=c1># check video resolution</span>
+</code></pre></div> <p><br></p> <h3 id=find_file_structure_difference>Find_File_Structure_Difference<a class=headerlink href=#find_file_structure_difference title="Permanent link">&para;</a></h3> <div class=highlight><pre><span></span><code>diff -qr dir-1/ dir-2
+<span class=c1># alternatively, use a tool called meld</span>
+sudo apt-get install meld
+</code></pre></div> <p><br></p> <h3 id=find_device_info>Find_Device_Info<a class=headerlink href=#find_device_info title="Permanent link">&para;</a></h3> <div class=highlight><pre><span></span><code>dmesg <span class=p>|</span> egrep -i --color <span class=s1>&#39;cdrom|dvd|cd/rw|writer&#39;</span>
+</code></pre></div> <p><br></p> <h3 id=find_search_files>Find_Search_Files<a class=headerlink href=#find_search_files title="Permanent link">&para;</a></h3> <div class=highlight><pre><span></span><code>locate file <span class=c1># uses database search to find file names that match a given pattern</span>
+
+find /home/pi -mmin -3 -ls <span class=c1># give files changed in /home/pi in last 3 minutes</span>
+find /home/pi -name <span class=s2>&quot;*.bak&quot;</span> -exec rm <span class=o>{}</span> <span class=s1>&#39;;&#39;</span> <span class=c1># find and remove files named like xxx.bak in /home/pi</span>
+find /home/pi -name <span class=s2>&quot;*.bak&quot;</span> -ok rm <span class=o>{}</span> <span class=s1>&#39;;&#39;</span> <span class=c1># ask for permission before executing the rm command for each file</span>
+find / -ctime -3 <span class=c1># find files whose inode metadata (ownership, permissions) changed within last 3 days</span>
+find / -atime +3 <span class=c1># find files accessed earlier than 3 days before</span>
+find / -mtime <span class=m>3</span> <span class=c1># find files modified/written exactly 3 days before</span>
+find / -size +10M <span class=c1># find files greater than 10 MB in size</span>
+</code></pre></div> <p><br></p> <h3 id=find_packages_to_install>Find_Packages_To_Install<a class=headerlink href=#find_packages_to_install title="Permanent link">&para;</a></h3> <div class=highlight><pre><span></span><code><span class=c1># debian linux</span>
+sudo apt-get update <span class=o>&amp;&amp;</span> sudo apt-get upgrade
+sudo apt-cache search &lt;pkg&gt;
+sudo apt-get install &lt;pkg&gt;
+
+<span class=c1># downgrade a package</span>
+sudo apt-cache showpkg &lt;pkg&gt; <span class=c1># list pkg versions</span>
+sudo aptitude install &lt;pkg&gt;<span class=o>=</span>&lt;version&gt;
+
+<span class=c1># pin a package version</span>
+sudo apt-mark hold &lt;pkg&gt;
+
+<span class=c1># to install .deb file</span>
+sudo dpkg -i /path/to/deb/file
+<span class=c1># alternatively</span>
+sudo apt install /path/to/deb/file
+</code></pre></div> <p><br></p> <h3 id=find_my_ip_address>Find_My_IP_Address<a class=headerlink href=#find_my_ip_address title="Permanent link">&para;</a></h3> <div class=highlight><pre><span></span><code><span class=c1># give private IP address</span>
+ifconfig <span class=c1># look for ethX or enX, physical connections</span>
+ip addr
+hostname -I
+
+<span class=c1># give public IP address via an echo server</span>
+curl https://checkip.amazonaws.com
+curl https://icanhazip.com
+</code></pre></div> <p><br></p> <h3 id=find_other_machines_on_local_network>Find_Other_Machines_On_Local_Network<a class=headerlink href=#find_other_machines_on_local_network title="Permanent link">&para;</a></h3> <div class=highlight><pre><span></span><code>sudo nmap -sA <span class=m>192</span>.168.1.0/24
+</code></pre></div> <h3 id=fix_slow_mouse_over_bluetooth>Fix_Slow_Mouse_Over_Bluetooth<a class=headerlink href=#fix_slow_mouse_over_bluetooth title="Permanent link">&para;</a></h3> <div class=highlight><pre><span></span><code><span class=c1># a common problem on Raspberry pi</span>
+<span class=c1># add this to the end of the single line in /boot/cmdline.txt (or update it if exists)</span>
+<span class=c1># the number can be 0-8, the lower the more frequently the mouse is polled</span>
+usbhid.mousepoll<span class=o>=</span><span class=m>0</span>
+</code></pre></div> <p><br></p> <h3 id=get_date_time_formatted>Get_Date_Time_Formatted<a class=headerlink href=#get_date_time_formatted title="Permanent link">&para;</a></h3> <div class=highlight><pre><span></span><code>date +%Y%m%d-%H <span class=c1># give format 20190718-02</span>
+date +%M <span class=c1># give format 15</span>
+</code></pre></div> <p><br></p> <h3 id=get_my_ip_address_on_the_internet>Get_My_Ip_Address_On_the_Internet<a class=headerlink href=#get_my_ip_address_on_the_internet title="Permanent link">&para;</a></h3> <div class=highlight><pre><span></span><code><span class=c1># Here are a few ways to get it:</span>
+curl ifconfig.me
+curl -4/-6 icanhazip.com
+curl ipinfo.io/ip
+curl api.ipify.org
+curl checkip.dyndns.org
+dig +short myip.opendns.com @resolver1.opendns.com
+host myip.opendns.com resolver1.opendns.com
+curl ident.me
+curl bot.whatismyipaddress.com
+curl ipecho.net/plain
+<span class=c1># Following gives the private Ip Address on the LAN:</span>
+ifconfig -a
+ip addr <span class=o>(</span>ip a<span class=o>)</span>
+hostname -I <span class=p>|</span> awk <span class=s1>&#39;{print $1}&#39;</span>
+ip route get <span class=m>1</span>.2.3.4 <span class=p>|</span> awk <span class=s1>&#39;{print $7}&#39;</span>
+<span class=o>(</span>Fedora<span class=o>)</span> Wifi-Settings→ click the setting icon next to the Wifi name that you are connected to → Ipv4 and Ipv6 both can be seen
+nmcli -p device show
+</code></pre></div> <p><br></p> <h3 id=install_multi_distro_linux_on_a_machine>Install_Multi_Distro_Linux_On_A_Machine<a class=headerlink href=#install_multi_distro_linux_on_a_machine title="Permanent link">&para;</a></h3> <div class=highlight><pre><span></span><code><span class=c1># a good article explains all this, not going to put the steps here</span>
+<span class=c1># see https://www.garron.me/en/linux/dual-boot-two-linux-distributions-distros.html</span>
+<span class=c1># see reduce root fs size https://www.thegeekdiary.com/how-to-shrink-root-filesystem-on-centos-rhel-6/</span>
+</code></pre></div> <p><br></p> <h3 id=make_time_elapse_video_with_webcam>Make_Time_Elapse_Video_With_Webcam<a class=headerlink href=#make_time_elapse_video_with_webcam title="Permanent link">&para;</a></h3> <p><div class=highlight><pre><span></span><code>streamer -o <span class=m>0000</span>.jpeg -s 640x480 -j <span class=m>100</span> -t <span class=m>2000</span> -r <span class=m>1</span>
+ffmpeg -framerate <span class=m>1</span>/5 -i img%04d.jpeg -c:v libx264 -r <span class=m>30</span> -pix_fmt yuv420p out.mp4
+ffmpeg -framerate <span class=m>4</span> -i %04d.jpeg -c:v libx264 -pix_fmt yuv420p video.mp4
+ffmpeg -f concat -safe <span class=m>0</span> -i out%01d.mp4 -c copy combined.mp4
+</code></pre></div> <code>-t</code> says how many frames(images) to record, <code>-r</code> says frames per second</p> <p><br></p> <h3 id=network_settings>Network_Settings<a class=headerlink href=#network_settings title="Permanent link">&para;</a></h3> <p>Usually stored in <code>/etc/NetworkManager/system-connections/NETGEAR-VPN.nmconnection</code> for Ubuntu Might need root access to view Network logs can be found in <code>/var/run/syslog</code> service network restart</p> <p><br></p> <h3 id=open_a_port_to_lan>Open_A_Port_To_LAN<a class=headerlink href=#open_a_port_to_lan title="Permanent link">&para;</a></h3> <div class=highlight><pre><span></span><code><span class=c1># use ufw on ubuntu</span>
+sudo ufw allow <span class=m>3306</span>
+<span class=c1># to delete/remove the rule</span>
+sudo ufw delete allow <span class=m>3306</span>
+
+<span class=c1># use iptables on other Linux flavors</span>
+sudo iptables -A INPUT -p tcp --dport <span class=m>3306</span> -j ACCEPT
+sudo iptables -A INPUT -p tcp --sport <span class=m>3306</span> -j ACCEPT
+<span class=c1># to delete/remove the rule</span>
+sudo iptables -D INPUT -p tcp --dport <span class=m>3306</span> -j ACCEPT
+sudo iptables -D INPUT -p tcp --sport <span class=m>3306</span> -j ACCEPT
+</code></pre></div> <p><br></p> <h3 id=raspberrypi>RaspberryPi<a class=headerlink href=#raspberrypi title="Permanent link">&para;</a></h3> <div class=highlight><pre><span></span><code><span class=c1># RaspberryPi Configs (terminal and ssh friendly)</span>
+<span class=c1>## default password is also changed this way instead of the passwd command</span>
+sudo raspi-config
+</code></pre></div> <p><br></p> <h3 id=remote_print_from_terminal>Remote_Print_From_Terminal<a class=headerlink href=#remote_print_from_terminal title="Permanent link">&para;</a></h3> <div class=highlight><pre><span></span><code>lp file.pdf
+lpstat -p -d <span class=c1># will list available printers</span>
+use options:
+  -P <span class=m>3</span>-5 <span class=c1>#for pages, separated by commas</span>
+  -o <span class=nv>sides</span><span class=o>=</span>two-sided-long-edge <span class=c1>#for print on both sides</span>
+  -n <span class=m>5</span> <span class=c1>#for number of copies</span>
+lp filename -P <span class=m>1</span>-5 -d ps114 -o <span class=nv>sides</span><span class=o>=</span>two-sided-long-edge -n <span class=m>1</span>
+lpr -<span class=se>\#</span> <span class=m>1</span> -P ps114 -o <span class=nv>sides</span><span class=o>=</span>two-sided-long-edge filename
+cancel printer-name
+cancel -u zhongkai
+</code></pre></div> <p><br></p> <h3 id=resize_disk_partitions>Resize_disk_partitions<a class=headerlink href=#resize_disk_partitions title="Permanent link">&para;</a></h3> <div class=highlight><pre><span></span><code>fdisk -l <span class=c1># shows current partitions</span>
+fdisk &lt;dev&gt; <span class=c1># edit a drive&#39;s partitions</span>
+<span class=c1># use &#39;p&#39; to see current partitions</span>
+<span class=c1># if the root is the last partition then follows the free space, then it is very easy</span>
+<span class=c1># use &#39;d&#39; to delete the root partition, take note its start sector</span>
+<span class=c1># use &#39;n&#39; to create the new partition, put in the start sector and leave the end sector as default</span>
+<span class=c1># use &#39;p&#39; to make sure it looks right</span>
+<span class=c1># use &#39;w&#39; to write out and reboot</span>
+resize2fs &lt;dev-subpartition-name&gt;
+
+<span class=c1># might want to double check the soft links under /dev/disks/by-uuid</span>
+<span class=c1># if you messed with the dev labels by re-partitioning</span>
+
+<span class=c1># after performing re-partition it is likely to get stuck in grub recovery mode</span>
+<span class=c1># try the advice on the #Entering_Grub_Rescue section on this page</span>
+<span class=c1># or try the recovery steps from this post</span>
+<span class=c1># https://askubuntu.com/questions/119597/grub-rescue-error-unknown-filesystem</span>
+</code></pre></div> <p><br></p> <h3 id=setup_cronjob>Setup_Cronjob<a class=headerlink href=#setup_cronjob title="Permanent link">&para;</a></h3> <div class=highlight><pre><span></span><code>crontab -e
+<span class=c1># Add an entry with the schedule string followed by the command</span>
+minute<span class=o>(</span><span class=m>0</span>-59<span class=o>)</span> hour<span class=o>(</span><span class=m>0</span>-23<span class=o>)</span> day<span class=o>(</span><span class=m>1</span>-31<span class=o>)</span> month<span class=o>(</span><span class=m>1</span>-12<span class=o>)</span> weekday<span class=o>(</span><span class=m>0</span>-6<span class=o>)</span> <span class=nb>command</span>
+<span class=c1># Like this:</span>
+<span class=m>29</span> <span class=m>0</span> * * * /usr/bin/example
+</code></pre></div> <p><br></p> <h3 id=setup_reverse_proxy>Setup_Reverse_Proxy<a class=headerlink href=#setup_reverse_proxy title="Permanent link">&para;</a></h3> <p><strong>Use nginx to set it up</strong> <div class=highlight><pre><span></span><code>sudo apt-get install nginx
+<span class=c1># verify going to this machine&#39;s ip address and can see the nginx server page</span>
+</code></pre></div></p> <p>Files containing routing rules go in the <code>/etc/nginx/sites-available/</code> folder. To activate those rules you need to create a symlink of those files to the <code>/etc/nginx/sites-enabled/</code> folder. <div class=highlight><pre><span></span><code>server <span class=o>{</span>
+    listen <span class=m>80</span><span class=p>;</span>
+    listen <span class=o>[</span>::<span class=o>]</span>:80<span class=p>;</span>
+    server_name example.com www.example.com<span class=p>;</span> <span class=c1># domains that will need to be handled</span>
+    location / <span class=o>{</span>
+        proxy_pass http://10.0.0.3:3000<span class=p>;</span> <span class=c1># the local IP address and port of the machine that your chosen domains should to redirect to</span>
+        proxy_http_version <span class=m>1</span>.1<span class=p>;</span>
+        proxy_set_header Upgrade <span class=nv>$http_upgrade</span><span class=p>;</span>
+        proxy_set_header Connection <span class=s1>&#39;upgrade&#39;</span><span class=p>;</span>
+        proxy_set_header Host <span class=nv>$host</span><span class=p>;</span>
+        proxy_cache_bypass <span class=nv>$http_upgrade</span><span class=p>;</span>
+    <span class=o>}</span>
+<span class=o>}</span>
+</code></pre></div></p> <p>You can add multiple config files, a config file can contain multiple server{} server blocks, a server block can contain multiple location{} blocks.</p> <p><strong>Use <code>certbot</code> to generate certs</strong> <div class=highlight><pre><span></span><code>sudo apt-get install python-certbot-nginx -t stretch-backports
+sudo certbot certonly --webroot -w /var/www/example.com/ -d example.com -d www.example.com
+</code></pre></div> And the cert files are put in <code>/etc/letsencrypt/live/example.com/</code></p> <p>Now update the default config with <div class=highlight><pre><span></span><code>server <span class=o>{</span>
+    listen <span class=m>443</span> ssl http2<span class=p>;</span>
+    listen <span class=o>[</span>::<span class=o>]</span>:443 ssl http2<span class=p>;</span>    server_name example.com www.example.com<span class=p>;</span>    ssl_certificate /etc/letsencrypt/live/example.com/fullchain.pem<span class=p>;</span>
+    ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem<span class=p>;</span>    ssl_stapling on<span class=p>;</span>
+    ssl_stapling_verify on<span class=p>;</span>    add_header Strict-Transport-Security <span class=s2>&quot;max-age=31536000&quot;</span><span class=p>;</span>    access_log /var/log/nginx/sub.log combined<span class=p>;</span>    location /.well-known <span class=o>{</span>
+        <span class=nb>alias</span> /var/www/example.com/.well-known<span class=p>;</span>
+    <span class=o>}</span>    location / <span class=o>{</span>
+        <span class=c1># reverse proxy commands</span>
+    <span class=o>}</span>
+<span class=o>}</span>
+</code></pre></div></p> <p><br></p> <h3 id=view_port_binding>View_Port_Binding<a class=headerlink href=#view_port_binding title="Permanent link">&para;</a></h3> <div class=highlight><pre><span></span><code>netstat -nlp <span class=c1># add -t if want TCP only</span>
+lsof -i TCP
+ss -ap
+</code></pre></div> <p><br></p> <h3 id=view_service_logs>View_Service_Logs<a class=headerlink href=#view_service_logs title="Permanent link">&para;</a></h3> <div class=highlight><pre><span></span><code>systemctl --state<span class=o>=</span>failed
+systemctl status &lt;service-name&gt;
+service &lt;service-name&gt; status
+journalctl -u &lt;service-name&gt; -b
+</code></pre></div> </article> </div> </div> </main> <footer class=md-footer> <div class=md-footer-nav> <nav class="md-footer-nav__inner md-grid" aria-label=Footer> <a href=../../Commands/Text-Manipulating-Cmds/ class="md-footer-nav__link md-footer-nav__link--prev" rel=prev> <div class="md-footer-nav__button md-icon"> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg> </div> <div class=md-footer-nav__title> <div class=md-ellipsis> <span class=md-footer-nav__direction> Previous </span> Text Manipulating Cmds </div> </div> </a> <a href=../Terminal-Tricks/ class="md-footer-nav__link md-footer-nav__link--next" rel=next> <div class=md-footer-nav__title> <div class=md-ellipsis> <span class=md-footer-nav__direction> Next </span> Linux Terminal Tricks </div> </div> <div class="md-footer-nav__button md-icon"> <svg xmlns=http://www.w3.org/2000/svg viewbox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg> </div> </a> </nav> </div> <div class="md-footer-meta md-typeset"> <div class="md-footer-meta__inner md-grid"> <div class=md-footer-copyright> Made with <a href=https://squidfunk.github.io/mkdocs-material/ target=_blank rel=noopener> Material for MkDocs </a> </div> </div> </div> </footer> </div> <script src=../../../assets/javascripts/vendor.53cc9318.min.js></script> <script src=../../../assets/javascripts/bundle.e9c9f54f.min.js></script><script id=__lang type=application/json>{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script> <script>
+        app = initialize({
+          base: "../../..",
+          features: ['navigation.tabs', 'navigation.instant'],
+          search: Object.assign({
+            worker: "../../../assets/javascripts/worker/search.9c0e82ba.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script> </body> </html>
